@@ -6,28 +6,169 @@
 <title>Project Manager Dashboard</title>
 
 <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f8ff;
+    }
 
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f4f8ff;
-}
+    .container {
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
 
-.container{
-    padding:40px;
-}
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 25px; /* Tambahan margin bawah agar berjarak dengan card berikutnya */
+    }
 
-.card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
+    h1 {
+        color: #1565c0;
+        margin-bottom: 30px;
+    }
 
-h1{
-    color:#1565c0;
-}
+    h2 {
+        color: #333;
+        border-bottom: 2px solid #f4f8ff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        margin-top: 0;
+    }
 
+    /* --- STYLING UNTUK SUMMARY & DONUT CHART --- */
+    .summary-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 0;
+    }
+
+    .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-box p {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #555;
+        font-size: 16px;
+    }
+
+    .donut-chart {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* Warna background abu-abu terang sebagai dasar */
+        background-color: #f0f0f0; 
+    }
+
+    .donut-inner {
+        width: 75px;
+        height: 75px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    /* Cara kerja conic-gradient: 
+      (Warna Utama persentase%, Warna Dasar 0)
+      Ubah persentase (misal 40%) sesuai dengan proporsi data asli Anda.
+    */
+    .chart-pending {
+        background: conic-gradient(#ff9800 40%, #f0f0f0 0); /* 40% kuning */
+    }
+
+    .chart-approved {
+        background: conic-gradient(#4CAF50 40%, #f0f0f0 0); /* 40% hijau */
+    }
+
+    .chart-rejected {
+        background: conic-gradient(#f44336 20%, #f0f0f0 0); /* 20% merah */
+    }
+    /* ------------------------------------------ */
+
+
+    /* Styling untuk kotak persetujuan */
+    .approval-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fafafa;
+    }
+
+    .approval-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .approval-header span {
+        font-weight: bold;
+        color: #555;
+    }
+
+    /* Styling untuk teks query SQL */
+    .sql-query {
+        background-color: #282c34;
+        color: #abb2bf;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    /* Styling untuk tombol */
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-accept {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-accept:hover {
+        background-color: #45a049;
+    }
+
+    .btn-reject {
+        background-color: #f44336;
+        color: white;
+    }
+
+    .btn-reject:hover {
+        background-color: #e53935;
+    }
 </style>
 
 </head>
@@ -35,13 +176,60 @@ h1{
 
 <div class="container">
 
-<h1>Project Manager Dashboard</h1>
+    <h1>Project Manager Dashboard</h1>
 
-<div class="card">
+    <div class="card">
+        <h2>Dashboard Summary</h2>
+        <div class="summary-container">
+            
+            <div class="stat-box">
+                <div class="donut-chart chart-pending">
+                    <div class="donut-inner">4</div>
+                </div>
+                <p>Pending</p>
+            </div>
 
-<h2>SIPPP</h2>
+            <div class="stat-box">
+                <div class="donut-chart chart-approved">
+                    <div class="donut-inner">4</div>
+                </div>
+                <p>Approved</p>
+            </div>
 
-</div>
+            <div class="stat-box">
+                <div class="donut-chart chart-rejected">
+                    <div class="donut-inner">2</div>
+                </div>
+                <p>Rejected</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Ongoing Approval</h2>
+
+        <div class="approval-box">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1024</span>
+                <span>Diminta oleh: Kanz Dzaki PR (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-accept">Accept</button>
+                <button class="btn btn-reject">Reject</button>
+            </div>
+        </div>
+
+    </div>
 
 </div>
 
