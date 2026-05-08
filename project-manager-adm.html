@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Manager Dashboard Interaktif</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Poppins',sans-serif;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f8ff;
+    }
+
+    .container {
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+    }
+
+    a {
+        text-decoration: none; /* Removes the underline */
+        color: white;          /* Sets the font color to white */
+    }  
+    
+    h1 {
+        color: #1565c0;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        color: #333;
+        border-bottom: 2px solid #f4f8ff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        margin-top: 0;
+    }
+
+    /* --- SUMMARY & DONUT CHART --- */
+    .summary-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 0;
+    }
+
+    .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-box p {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #555;
+        font-size: 16px;
+    }
+
+    .donut-chart {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0; 
+        transition: background 0.5s ease;
+    }
+
+    .donut-inner {
+        width: 75px;
+        height: 75px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* --- APPROVAL BOX --- */
+    .approval-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fafafa;
+        transition: all 0.3s ease;
+    }
+
+    .approval-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .approval-header span {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .sql-query {
+        background-color: #282c34;
+        color: #abb2bf;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .sidebar-menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    }
+
+    .sidebar{
+    width:260px;
+    background:linear-gradient(180deg,#1565c0,#0d47a1);
+    color:white;
+    padding:30px 20px;
+    position:fixed;
+    height:100%;
+    }
+
+    .menu-item{
+    padding:14px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:500;
+    }
+
+    .menu-item:hover{
+    background:rgba(255,255,255,0.15);
+    }
+
+    .active{
+    background:white;
+    color:#1565c0;
+    }
+
+    /* Pesan konfirmasi yang muncul setelah klik */
+    .status-message {
+        display: none;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-accept { background-color: #4CAF50; color: white; }
+    .btn-accept:hover { background-color: #45a049; }
+
+    .btn-reject { background-color: #f44336; color: white; }
+    .btn-reject:hover { background-color: #e53935; }
+
+
+    @media(max-width:768px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+    }
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="sidebar-menu">
+        <div class="menu-item"><a href=admin.html>Dashboard</a></div>
+        <div class="menu-item active">Project Management</div>
+        <div class="menu-item"><a href="site-engineer.html">Site Engineer</a></div>
+        <div class="menu-item">Reports</div>
+    </div>
+
+</div>
+
+<div class="container">
+
+    <h1>Project Manager Dashboard</h1>
+
+    <div class="card">
+        <h2>Dashboard Summary</h2>
+        <div class="summary-container">
+            
+            <div class="stat-box">
+                <div id="chart-pending" class="donut-chart">
+                    <div class="donut-inner" id="count-pending">0</div>
+                </div>
+                <p>Pending</p>
+            </div>
+
+            <div class="stat-box">
+                <div id="chart-approved" class="donut-chart">
+                    <div class="donut-inner" id="count-approved">0</div>
+                </div>
+                <p>Approved</p>
+            </div>
+
+            <div class="stat-box">
+                <div id="chart-rejected" class="donut-chart">
+                    <div class="donut-inner" id="count-rejected">0</div>
+                </div>
+                <p>Rejected</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Ongoing Approval</h2>
+
+        <div class="approval-box" id="req-1024">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1024</span>
+                <span>Diminta oleh: Kanz Dzaki PR (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-accept" onclick="processApproval('1024', 'accept')">Accept</button>
+                <button class="btn btn-reject" onclick="processApproval('1024', 'reject')">Reject</button>
+            </div>
+            <div class="status-message" id="msg-1024"></div>
+        </div>
+
+        <div class="approval-box" id="req-1025">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1025</span>
+                <span>Diminta oleh: Brian Nugraha P (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-accept" onclick="processApproval('1025', 'accept')">Accept</button>
+                <button class="btn btn-reject" onclick="processApproval('1025', 'reject')">Reject</button>
+            </div>
+            <div class="status-message" id="msg-1025"></div>
+        </div>
+        
+
+    </div>
+
+</div>
+
+<script>
+    // Data Default
+    let stats = {
+        pending: 2, // Set 1 karena ada satu contoh data di bawah
+        approved: 0,
+        rejected: 0
+    };
+
+    // Fungsi untuk memperbarui tampilan angka dan chart
+    function updateDashboardUI() {
+        const total = stats.pending + stats.approved + stats.rejected;
+        
+        // Update Angka
+        document.getElementById('count-pending').innerText = stats.pending;
+        document.getElementById('count-approved').innerText = stats.approved;
+        document.getElementById('count-rejected').innerText = stats.rejected;
+
+        // Update Donut Chart Visual (conic-gradient)
+        // Jika total 0, maka chart abu-abu semua. Jika ada data, hitung persentase.
+        const pPerc = total > 0 ? (stats.pending / total) * 100 : 0;
+        const aPerc = total > 0 ? (stats.approved / total) * 100 : 0;
+        const rPerc = total > 0 ? (stats.rejected / total) * 100 : 0;
+
+        document.getElementById('chart-pending').style.background = `conic-gradient(#ff9800 ${pPerc}%, #f0f0f0 0)`;
+        document.getElementById('chart-approved').style.background = `conic-gradient(#4CAF50 ${aPerc}%, #f0f0f0 0)`;
+        document.getElementById('chart-rejected').style.background = `conic-gradient(#f44336 ${rPerc}%, #f0f0f0 0)`;
+    }
+
+    // Fungsi saat tombol ditekan
+    function processApproval(id, action) {
+        // 1. Update data internal
+        stats.pending--;
+        if (action === 'accept') {
+            stats.approved++;
+        } else {
+            stats.rejected++;
+        }
+
+        // 2. Update UI Dashboard
+        updateDashboardUI();
+
+        // 3. Sembunyikan tombol dan tampilkan pesan
+        const box = document.getElementById('req-' + id);
+        const btnContainer = box.querySelector('.action-buttons');
+        const msgElement = document.getElementById('msg-' + id);
+
+        btnContainer.style.display = 'none'; // Tombol Vanish
+        
+        msgElement.style.display = 'block';
+        if (action === 'accept') {
+            msgElement.innerText = "✓ Request Approved Successfully";
+            msgElement.style.color = "#4CAF50";
+            box.style.borderLeft = "10px solid #4CAF50";
+        } else {
+            msgElement.innerText = "✕ Request Rejected";
+            msgElement.style.color = "#f44336";
+            box.style.borderLeft = "10px solid #f44336";
+        }
+    }
+
+    // Jalankan update saat halaman pertama kali dimuat
+    window.onload = updateDashboardUI;
+</script>
+
+</body>
+</html>
