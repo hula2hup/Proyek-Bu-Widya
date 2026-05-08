@@ -208,6 +208,28 @@ WHERE project_id = 'PRJ-998';
             <div class="status-message" id="msg-1024"></div>
         </div>
 
+        <div class="approval-box" id="req-1025">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1025</span>
+                <span>Diminta oleh: Brian Nugraha P (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-accept" onclick="processApproval('1025', 'accept')">Accept</button>
+                <button class="btn btn-reject" onclick="processApproval('1025', 'reject')">Reject</button>
+            </div>
+            <div class="status-message" id="msg-1025"></div>
+        </div>
+        
+
     </div>
 
 </div>
@@ -215,7 +237,7 @@ WHERE project_id = 'PRJ-998';
 <script>
     // Data Default
     let stats = {
-        pending: 1, // Set 1 karena ada satu contoh data di bawah
+        pending: 2, // Set 1 karena ada satu contoh data di bawah
         approved: 0,
         rejected: 0
     };
