@@ -3,49 +3,603 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+
+<title>Admin Dashboard - Project Monitoring</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-body{
+*{
     margin:0;
-    font-family:Arial;
-    background:#f4f8ff;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
 }
 
-.container{
-    padding:40px;
+body{
+    background:#f4f7fe;
+    display:flex;
+    min-height:100vh;
 }
 
-.card{
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    background:linear-gradient(180deg,#1565c0,#0d47a1);
+    color:white;
+    padding:30px 20px;
+    position:fixed;
+    height:100%;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:40px;
+}
+
+.sidebar-menu{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.menu-item{
+    padding:14px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.3s;
+    font-weight:500;
+}
+
+.menu-item:hover{
+    background:rgba(255,255,255,0.15);
+}
+
+.active{
     background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-h1{
     color:#1565c0;
 }
 
-</style>
+/* MAIN */
 
+.main{
+    margin-left:260px;
+    width:100%;
+    padding:35px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    color:#1a1a1a;
+}
+
+.admin-profile{
+    background:white;
+    padding:12px 18px;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+}
+
+.stat-card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-card h3{
+    font-size:16px;
+    color:#777;
+    margin-bottom:10px;
+}
+
+.stat-card h2{
+    font-size:35px;
+    color:#1565c0;
+}
+
+/* TABLE */
+
+.table-section{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.08);
+}
+
+.table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.table-header h2{
+    color:#222;
+}
+
+.add-btn{
+    background:#1565c0;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.add-btn:hover{
+    background:#0d47a1;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#1565c0;
+    color:white;
+}
+
+th,td{
+    padding:15px;
+    text-align:left;
+}
+
+tbody tr{
+    border-bottom:1px solid #eee;
+    transition:0.3s;
+}
+
+tbody tr:hover{
+    background:#f5f8ff;
+}
+
+.status{
+    padding:7px 14px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.completed{
+    background:#d4edda;
+    color:#28a745;
+}
+
+.progress{
+    background:#fff3cd;
+    color:#ff9800;
+}
+
+.pending{
+    background:#f8d7da;
+    color:#dc3545;
+}
+
+.action-btn{
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    margin-right:8px;
+    transition:0.3s;
+}
+
+.edit{
+    background:#1565c0;
+    color:white;
+}
+
+.delete{
+    background:#dc3545;
+    color:white;
+}
+
+.action-btn:hover{
+    opacity:0.85;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    width:90%;
+    max-width:500px;
+    padding:30px;
+    border-radius:20px;
+}
+
+.modal-content h2{
+    margin-bottom:20px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:500;
+}
+
+.input-group input,
+.input-group select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+}
+
+.modal-buttons{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
+
+.save-btn{
+    background:#1565c0;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.cancel-btn{
+    background:#ccc;
+    border:none;
+    padding:12px 20px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+    }
+
+    table{
+        font-size:13px;
+    }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="container">
+<!-- SIDEBAR -->
 
-<h1>Admin Dashboard</h1>
+<div class="sidebar">
 
-<div class="card">
-<h2>SIPPP</h2>
-</div>
-<br>
-<div class="card">
-<h2><a href="wbsbuwidya.html">Work Breakdown Structure (Perlu Revisi)</a></h2>
-</div>
+    <div class="sidebar-menu">
+        <div class="menu-item active">Dashboard</div>
+        <div class="menu-item">Project Management</div>
+        <div class="menu-item">User Management</div>
+        <div class="menu-item">Reports</div>
+    </div>
 
 </div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Admin Dashboard</h1>
+
+        <div class="admin-profile">
+            Admin
+        </div>
+    </div>
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h3>Total Projects</h3>
+            <h2 id="totalProjects">3</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Completed</h3>
+            <h2 id="completedProjects">1</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>In Progress</h3>
+            <h2 id="progressProjects">1</h2>
+        </div>
+
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <h2 id="pendingProjects">1</h2>
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-section">
+
+        <div class="table-header">
+            <h2>Project Data</h2>
+
+            <button class="add-btn" onclick="openModal()">
+                + Add Project
+            </button>
+        </div>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Project</th>
+                    <th>Engineer</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody id="projectTable">
+
+                <tr>
+                    <td>PRJ-001</td>
+                    <td>Gedung Sekolah</td>
+                    <td>Kanz Dzaki</td>
+                    <td><span class="status completed">Completed</span></td>
+                    <td>100%</td>
+                    <td>
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn delete">Delete</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>PRJ-002</td>
+                    <td>Renovasi Jalan</td>
+                    <td>Brian Nugraha</td>
+                    <td><span class="status progress">In Progress</span></td>
+                    <td>70%</td>
+                    <td>
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn delete">Delete</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>PRJ-003</td>
+                    <td>Pembangunan Jembatan</td>
+                    <td>Rizky</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td>20%</td>
+                    <td>
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn delete">Delete</button>
+                    </td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal" id="projectModal">
+
+    <div class="modal-content">
+
+        <h2>Add New Project</h2>
+
+        <div class="input-group">
+            <label>Project ID</label>
+            <input type="text" id="projectId">
+        </div>
+
+        <div class="input-group">
+            <label>Project Name</label>
+            <input type="text" id="projectName">
+        </div>
+
+        <div class="input-group">
+            <label>Site Engineer</label>
+            <input type="text" id="engineerName">
+        </div>
+
+        <div class="input-group">
+            <label>Status</label>
+
+            <select id="projectStatus">
+                <option>Completed</option>
+                <option>In Progress</option>
+                <option>Pending</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Progress</label>
+            <input type="number" id="projectProgress">
+        </div>
+
+        <div class="modal-buttons">
+
+            <button class="cancel-btn" onclick="closeModal()">
+                Cancel
+            </button>
+
+            <button class="save-btn" onclick="addProject()">
+                Save
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const modal = document.getElementById("projectModal");
+
+function openModal(){
+    modal.style.display = "flex";
+}
+
+function closeModal(){
+    modal.style.display = "none";
+}
+
+function addProject(){
+
+    const id = document.getElementById("projectId").value;
+    const name = document.getElementById("projectName").value;
+    const engineer = document.getElementById("engineerName").value;
+    const status = document.getElementById("projectStatus").value;
+    const progress = document.getElementById("projectProgress").value;
+
+    let statusClass = "";
+
+    if(status === "Completed"){
+        statusClass = "completed";
+    }
+    else if(status === "In Progress"){
+        statusClass = "progress";
+    }
+    else{
+        statusClass = "pending";
+    }
+
+    const table = document.getElementById("projectTable");
+
+    const row = `
+        <tr>
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${engineer}</td>
+            <td>
+                <span class="status ${statusClass}">
+                    ${status}
+                </span>
+            </td>
+            <td>${progress}%</td>
+            <td>
+                <button class="action-btn edit">
+                    Edit
+                </button>
+
+                <button class="action-btn delete" onclick="deleteRow(this)">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    `;
+
+    table.innerHTML += row;
+
+    updateStats();
+
+    closeModal();
+
+}
+
+function deleteRow(button){
+
+    button.parentElement.parentElement.remove();
+
+    updateStats();
+
+}
+
+function updateStats(){
+
+    const rows = document.querySelectorAll("#projectTable tr");
+
+    let completed = 0;
+    let progress = 0;
+    let pending = 0;
+
+    rows.forEach(row => {
+
+        const status = row.querySelector(".status").innerText;
+
+        if(status === "Completed"){
+            completed++;
+        }
+        else if(status === "In Progress"){
+            progress++;
+        }
+        else{
+            pending++;
+        }
+
+    });
+
+    document.getElementById("totalProjects").innerText = rows.length;
+    document.getElementById("completedProjects").innerText = completed;
+    document.getElementById("progressProjects").innerText = progress;
+    document.getElementById("pendingProjects").innerText = pending;
+
+}
+
+</script>
 
 </body>
 </html>
