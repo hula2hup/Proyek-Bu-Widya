@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="container">
 
   <div class="login-box">
@@ -21,7 +20,11 @@
 
     <input type="text" id="username" placeholder="Username">
 
-    <input type="password" id="password" placeholder="Password">
+    <!-- MODIFIED: Wrapped the password input in the div and added the button -->
+    <div class="password-field">
+        <input type="password" id="password" placeholder="Password">
+        <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+    </div>
 
     <button onclick="login()">
       Login
