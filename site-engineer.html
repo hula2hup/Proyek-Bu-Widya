@@ -1,48 +1,1740 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site Engineer Dashboard</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Engineer Dashboard</title>
 
-<style>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-body{
-    margin:0;
-    font-family:Arial;
-    background:#f4f8ff;
+      :root {
+        --primary: #1e3a5f;
+        --primary-light: #2d5b8f;
+        --secondary: #f8fafc;
+        --border: #d6dee8;
+        --text: #1f2937;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #eef3f9;
+        padding: 40px;
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1250px;
+        margin: auto;
+      }
+
+      /* PAGE TITLE */
+      .page-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #1e3a5f;
+
+        padding: 24px 32px;
+        margin-bottom: 25px;
+
+        background: linear-gradient(
+          135deg,
+          #ffffff,
+          #f1f5f9
+        );
+
+        border-left: 8px solid #3a5cf3;
+
+        border-radius: 18px;
+
+        box-shadow:
+          0 10px 25px rgba(15, 23, 42, 0.08),
+          0 2px 6px rgba(15, 23, 42, 0.04);
+      }
+
+      /* NAVBAR */
+.top-navbar {
+  background: linear-gradient(
+    135deg,
+    #263238,
+    #37474f
+  );
+
+  height: 78px;
+
+  border-radius: 22px;
+
+  margin-bottom: 18px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 18px;
+
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.12);
+
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
-.container{
-    padding:40px;
+/* NAV MENU */
+.nav-menu {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  height: 100%;
+
+  margin-left: 10px;
+  margin-bottom: 20px;
 }
 
-.card{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+/* NAV ITEM */
+.nav-item {
+  background: transparent;
+
+  border: none;
+  outline: none;
+
+  color: rgba(255,255,255,0.82);
+
+  font-size: 15px;
+  font-weight: 600;
+  font-family: "Segoe UI", sans-serif;
+
+  height: 54px;
+
+  padding: 0 32px;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-h1{
-    color:#1565c0;
+/* HOVER */
+.nav-item:hover {
+  background: rgba(255,255,255,0.08);
+
+  color: #ffffff;
 }
-</style>
 
-</head>
-<body>
+/* ACTIVE */
+.nav-item.active {
+  background: linear-gradient(
+    135deg,
+    #4f7cff,
+    #251bff
+  );
 
-<div class="container">
+  color: white;
 
-<h1>Site Engineer Dashboard</h1>
+  font-weight: 700;
 
-<div class="card">
+  box-shadow:
+    0 8px 18px rgba(59,130,246,0.35);
+}
 
-<h2>SIPPPP</h2>
+/* REMOVE OLD ACTIVE LINE */
+.nav-item.active::after {
+  display: none;
+}
 
+/* CLICK EFFECT */
+.nav-item:active {
+  transform: scale(0.98);
+}
+
+      /* CARD */
+      .form-card,
+      .summary-card {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+
+        box-shadow:
+          0 10px 25px rgba(15, 23, 42, 0.08);
+      }
+
+      /* SECTION TITLE */
+      h2 {
+        font-size: 24px;
+        color: var(--primary);
+
+        margin-bottom: 30px;
+      }
+
+      /* FORM */
+      .form-group {
+        margin-bottom: 22px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+
+        font-weight: 600;
+        color: #334155;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 15px 18px;
+
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+
+        font-size: 14px;
+      }
+
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+
+        border-color: var(--primary-light);
+
+        box-shadow:
+          0 0 0 4px rgba(45, 91, 143, 0.12);
+      }
+
+      input[readonly] {
+        background: #f3f6fa;
+      }
+
+      /* BUTTON */
+      button {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-light)
+        );
+
+        color: white;
+        border: none;
+
+        padding: 15px 28px;
+
+        border-radius: 12px;
+
+        font-size: 15px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        margin-top: 20px;
+      }
+
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        background: #f1f5f9;
+        padding: 16px;
+        text-align: left;
+      }
+
+      td {
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      tr:hover {
+        background: #f8fafc;
+      }
+
+      /* BADGE */
+      .badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .submitted {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+
+      .approved {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      .review {
+        background: #fef3c7;
+        color: #b45309;
+      }
+
+      /* MOBILE */
+      @media (max-width: 768px) {
+        body {
+          padding: 20px;
+        }
+
+        .page-title {
+          font-size: 28px;
+        }
+
+        .form-card,
+        .summary-card {
+          padding: 24px;
+        }
+
+        .nav-menu {
+          gap: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+
+      <!-- TITLE -->
+      <div class="page-title">
+        Site Engineer
+      </div>
+
+      <!-- NAVBAR -->
+      <div class="top-navbar">
+  <div class="nav-menu">
+
+    <button
+      type="button"
+      class="nav-item active"
+      onclick="showSection('form-page', this)"
+    >
+      Pengisian Form
+    </button>
+
+    <button
+      type="button"
+      class="nav-item"
+      onclick="showSection('summary-page', this)"
+    >
+      Ringkasan
+    </button>
+
+  </div>
 </div>
 
-</div>
+      <!-- FORM PAGE -->
+      <div id="form-page">
 
-</body>
+        <div class="form-card">
+
+          <h2>Form Change Control</h2>
+
+            <!-- Pertanyaan 1 -->
+            <div class="form-group">
+              <label>Identitas CR *</label>
+              <input
+                type="text"
+                name="cr_id"
+                value="CR-001"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Pertanyaan 2 -->
+            <div class="form-group">
+              <label>Identitas Proyek *</label>
+              <select name="project_id" required>
+                <option value="">-- Pilih Proyek --</option>
+                <option value="PRJ001">Project A</option>
+                <option value="PRJ002">Project B</option>
+              </select>
+            </div>
+
+            <!-- Tanggal Pengajuan -->
+            <div class="form-group">
+              <label>Tanggal Pengajuan *</label>
+              <input type="date" name="cr_date" required />
+            </div>
+
+            <!-- Pengaju Perubahan -->
+            <div class="form-group">
+              <label>Pengaju Perubahan *</label>
+              <select name="requester_id" id="requester_id" required>
+                <option value="">-- Pilih Pengaju --</option>
+                <option value="ahmad">Ahmad</option>
+                <option value="budi">Budi</option>
+                <option value="laksono">laksono</option>
+              </select>
+            </div>
+
+            <!-- Jabatan Pengaju -->
+            <div class="form-group">
+              <label>Jabatan Pengaju *</label>
+              <input
+                type="text"
+                name="requester_role"
+                id="requester_role"
+                placeholder="Auto fill jabatan"
+                required
+              />
+            </div>
+
+            <script>
+              const requesterSelect = document.getElementById("requester_id");
+              const requesterRole = document.getElementById("requester_role");
+
+              requesterSelect.addEventListener("change", function () {
+                if (this.value === "ahmad") {
+                  requesterRole.value = "Site Engineer 1";
+                  requesterRole.readOnly = true;
+                } else if (this.value === "budi") {
+                  requesterRole.value = "Site Engineer 2";
+                  requesterRole.readOnly = true;
+                } else if (this.value === "laksono") {
+                  requesterRole.value = "Project Team";
+                  requesterRole.readOnly = true;
+                } else {
+                  requesterRole.value = "";
+                }
+              });
+            </script>
+
+            <!-- Jenis Perubahan -->
+            <div class="form-group">
+              <label>Jenis Perubahan *</label>
+              <select name="change_category" required>
+                <option value="">-- Pilih Jenis Perubahan --</option>
+                <option value="desain">Desain</option>
+                <option value="metode_kerja">Metode Kerja</option>
+                <option value="material">Material</option>
+                <option value="volume">Volume</option>
+                <option value="mutu">Mutu</option>
+                <option value="jadwal">Jadwal</option>
+                <option value="alat">Alat</option>
+                <option value="supply_chain">Supply Chain</option>
+                <option value="kondisi_lapangan">Kondisi Lapangan</option>
+              </select>
+            </div>
+
+            <!-- Sifat Perubahan -->
+            <div class="form-group">
+              <label>Sifat Perubahan *</label>
+              <select name="change_type" required>
+                <option value="">-- Pilih Sifat Perubahan --</option>
+                <option value="preventif">Preventif</option>
+                <option value="korektif">Korektif</option>
+                <option value="darurat">Darurat</option>
+              </select>
+            </div>
+
+            <!-- Sumber Perubahan -->
+            <div class="form-group">
+              <label>Sumber Perubahan *</label>
+              <select name="change_trigger" required>
+                <option value="">-- Pilih Sumber Perubahan --</option>
+                <option value="risiko_tinggi">Risiko Tinggi</option>
+                <option value="deviasi_jadwal">Deviasi Jadwal</option>
+                <option value="perubahan_desain">Perubahan Desain</option>
+                <option value="instruksi_owner">Instruksi Owner</option>
+                <option value="kondisi_lapangan">Kondisi Lapangan</option>
+                <option value="clash_bim">Clash BIM</option>
+                <option value="keterlambatan_material">
+                  Keterlambatan Material
+                </option>
+              </select>
+            </div>
+
+            <!-- Pertanyaan 8 -->
+            <div class="form-group">
+              <label>Deskripsi Perubahan *</label>
+              <textarea
+                name="change_description"
+                rows="4"
+                placeholder="Masukkan deskripsi perubahan"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Pertanyaan 9 -->
+            <div class="form-group">
+              <label>Penyebab Perubahan *</label>
+              <textarea
+                name="root_cause"
+                rows="4"
+                placeholder="Masukkan penyebab perubahan"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Pertanyaan 10 -->
+            <div class="form-group">
+              <label>Dasar Dokumen</label>
+
+              <!-- Upload File -->
+              <input type="file" name="document_reference" />
+
+              <!-- Atau Link Dokumen -->
+              <input
+                type="url"
+                name="document_link"
+                placeholder="Masukkan link dokumen (opsional)"
+              />
+            </div>
+
+            <!-- Pertanyaan 11 -->
+            <div class="form-group">
+              <label>Relasi WBS *</label>
+              <select name="wbs_code" required>
+                <option value="">-- Pilih WBS --</option>
+                <option value="WBS001">WBS001</option>
+                <option value="WBS002">WBS002</option>
+              </select>
+            </div>
+
+            <!-- Pertanyaan 12 -->
+            <div class="form-group">
+              <label>Nama Aktivitas WBS *</label>
+              <input
+                type="text"
+                name="activity_name"
+                placeholder="Auto fill nama aktivitas"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Pertanyaan 13 -->
+            <div class="form-group">
+              <label>Status Jalur Kritis *</label>
+              <div class="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="critical_path_status"
+                    value="critical"
+                    required
+                  />
+                </label>
+              </div>
+            </div>
+
+            <!-- Relasi BIM -->
+            <div class="form-group">
+              <label>Relasi BIM *</label>
+              <select name="bim_object_id" required>
+                <option value="">-- Pilih BIM Object --</option>
+              </select>
+            </div>
+
+            <!-- Elemen BIM -->
+            <div class="form-group">
+              <label>Elemen BIM *</label>
+              <input
+                type="text"
+                name="bim_element_name"
+                placeholder="Auto fill elemen BIM"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Lokasi Objek -->
+            <div class="form-group">
+              <label>Lokasi Objek *</label>
+              <select name="object_location" required>
+                <option value="">-- Pilih Lokasi Objek --</option>
+                <option value="pier">Pier</option>
+                <option value="abutment">Abutment</option>
+                <option value="span">Span</option>
+                <option value="segment">Segment</option>
+                <option value="sta">STA</option>
+              </select>
+            </div>
+
+            <!-- Relasi Risiko -->
+            <div class="form-group">
+              <label>Relasi Risiko *</label>
+              <select name="risk_id" required>
+                <option value="">-- Pilih Risiko --</option>
+              </select>
+            </div>
+
+            <!-- Kategori Risiko Terkait -->
+            <div class="form-group">
+              <label>Kategori Risiko Terkait *</label>
+              <input
+                type="text"
+                name="risk_category"
+                placeholder="Auto fill kategori risiko"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Risk Score Saat CR -->
+            <div class="form-group">
+              <label>Risk Score Saat CR *</label>
+              <input
+                type="number"
+                name="risk_score_at_cr"
+                placeholder="Auto generated risk score"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Dampak Waktu Awal -->
+            <div class="form-group">
+              <label>Dampak Waktu Awal (Hari) *</label>
+              <input
+                type="number"
+                name="estimated_time_impact_days"
+                placeholder="Masukkan estimasi dampak waktu"
+                required
+              />
+            </div>
+
+            <!-- Dampak Biaya Awal -->
+            <div class="form-group">
+              <label>Dampak Biaya Awal</label>
+              <input
+                type="number"
+                name="estimated_cost_impact"
+                placeholder="Masukkan estimasi biaya"
+              />
+            </div>
+
+            <!-- Dampak Mutu -->
+            <div class="form-group">
+              <label>Dampak Mutu</label>
+              <select name="quality_impact">
+                <option value="">-- Pilih Dampak Mutu --</option>
+                <option value="rendah">Rendah</option>
+                <option value="sedang">Sedang</option>
+                <option value="tinggi">Tinggi</option>
+              </select>
+            </div>
+            <!-- Dampak Risiko -->
+            <div class="form-group">
+              <label>Dampak Risiko</label>
+              <input
+                type="number"
+                name="risk_score_change"
+                placeholder="Masukkan perubahan risk score"
+              />
+            </div>
+
+            <!-- Dampak Aktivitas Lanjutan -->
+            <div class="form-group">
+              <label>Dampak Aktivitas Lanjutan</label>
+              <select name="affected_successors" multiple>
+                <option value="activity_1">Aktivitas 1</option>
+                <option value="activity_2">Aktivitas 2</option>
+              </select>
+            </div>
+
+            <!-- Potensi Rework -->
+            <div class="form-group">
+              <label>Potensi Rework *</label>
+              <select name="rework_potential" required>
+                <option value="">-- Pilih Potensi Rework --</option>
+                <option value="low">Rendah</option>
+                <option value="medium">Sedang</option>
+                <option value="high">Tinggi</option>
+              </select>
+            </div>
+
+            <!-- Analisis Dampak -->
+            <div class="form-group">
+              <label>Analisis Dampak *</label>
+              <textarea
+                name="impact_summary"
+                rows="4"
+                placeholder="Masukkan analisis dampak"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Rekomendasi Sistem -->
+            <div class="form-group">
+              <label>Rekomendasi Sistem</label>
+              <input
+                type="text"
+                name="system_recommendation"
+                placeholder="Auto generated recommendation"
+                readonly
+              />
+            </div>
+
+            <!-- Alternatif Solusi -->
+            <div class="form-group">
+              <label>Alternatif Solusi</label>
+              <textarea
+                name="alternative_actions"
+                rows="4"
+                placeholder="Masukkan alternatif solusi"
+              ></textarea>
+            </div>
+
+            <!-- Prioritas CR -->
+            <div class="form-group">
+              <label>Prioritas CR *</label>
+              <select name="priority_level" required>
+                <option value="">-- Pilih Prioritas --</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
+              </select>
+            </div>
+
+            <!-- Status CR -->
+            <div class="form-group">
+              <label>Status CR *</label>
+              <select name="cr_status" required>
+                <option value="">-- Pilih Status CR --</option>
+                <option value="draft">Draft</option>
+                <option value="submitted">Submitted</option>
+                <option value="under_review">Under Review</option>
+                <option value="revised">Revised</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="implemented">Implemented</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+
+            <!-- Approval Level -->
+            <div class="form-group">
+              <label>Approval Level *</label>
+              <select name="approval_level" required>
+                <option value="">-- Pilih Approval Level --</option>
+                <option value="site_manager">Site Manager</option>
+                <option value="pm">PM</option>
+                <option value="owner">Owner</option>
+                <option value="konsultan">Konsultan</option>
+                <option value="manajemen">Manajemen</option>
+              </select>
+            </div>
+
+            <!-- Keputusan Approval -->
+            <div class="form-group">
+              <label>Keputusan Approval</label>
+              <select name="approval_decision">
+                <option value="">-- Pilih Keputusan --</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="revised">Revised</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+
+            <!-- Catatan Approval -->
+            <div class="form-group">
+              <label>Catatan Approval</label>
+              <textarea
+                name="approval_notes"
+                rows="4"
+                placeholder="Masukkan catatan approval"
+              ></textarea>
+            </div>
+
+            <!-- Tanggal Approval -->
+            <div class="form-group">
+              <label>Tanggal Approval</label>
+              <input type="date" name="approval_date" />
+            </div>
+
+            <!-- Status Implementasi -->
+            <div class="form-group">
+              <label>Status Implementasi</label>
+              <select name="implementation_status">
+                <option value="">-- Pilih Status Implementasi --</option>
+                <option value="not_started">Not Started</option>
+                <option value="on_progress">On Progress</option>
+                <option value="completed">Completed</option>
+                <option value="delayed">Delayed</option>
+              </select>
+            </div>
+
+            <!-- Progress Implementasi -->
+            <div class="form-group">
+              <label>Progress Implementasi</label>
+              <input
+                type="number"
+                name="implementation_progress"
+                placeholder="Masukkan progress (%)"
+                min="0"
+                max="100"
+              />
+            </div>
+
+            <!-- Bukti Implementasi -->
+            <div class="form-group">
+              <label>Bukti Implementasi</label>
+              <input type="file" name="evidence_file" />
+            </div>
+
+            <!-- Dampak Aktual Waktu -->
+            <div class="form-group">
+              <label>Dampak Aktual Waktu</label>
+              <input
+                type="number"
+                name="actual_time_impact_days"
+                placeholder="Masukkan dampak aktual waktu"
+              />
+            </div>
+
+            <!-- Status Knowledge -->
+            <div class="form-group">
+              <label>Status Knowledge *</label>
+
+              <div class="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="convert_to_knowledge"
+                    value="yes"
+                    required
+                  />
+                  Jadikan sebagai knowledge project
+                </label>
+              </div>
+            </div>
+
+            <!-- Form Risk Register -->
+            <h2>Form Risk Register</h2>
+
+            <!-- Identitas Risiko -->
+            <div class="form-group">
+              <label>Identitas Risiko *</label>
+              <input
+                type="text"
+                name="risk_id"
+                value="RISK-001"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Identitas Proyek -->
+            <div class="form-group">
+              <label>Identitas Proyek *</label>
+              <select name="project_id" required>
+                <option value="">-- Pilih Proyek --</option>
+              </select>
+            </div>
+
+            <!-- Tanggal Identifikasi -->
+            <div class="form-group">
+              <label>Tanggal Identifikasi *</label>
+              <input type="date" name="risk_identification_date" required />
+            </div>
+
+            <!-- Diidentifikasi Oleh -->
+            <div class="form-group">
+              <label>Diidentifikasi Oleh *</label>
+              <select name="risk_owner_id" required>
+                <option value="">-- Pilih User --</option>
+              </select>
+            </div>
+
+            <!-- Paket Pekerjaan -->
+            <div class="form-group">
+              <label>Paket Pekerjaan *</label>
+              <select name="wbs_code" required>
+                <option value="">-- Pilih WBS --</option>
+              </select>
+            </div>
+
+            <!-- Nama Aktivitas -->
+            <div class="form-group">
+              <label>Nama Aktivitas *</label>
+              <input
+                type="text"
+                name="activity_name"
+                placeholder="Auto fill aktivitas"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Status Jalur Kritis -->
+            <div class="form-group">
+              <label>Status Jalur Kritis *</label>
+
+              <div class="checkbox-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="critical_activity"
+                    value="critical"
+                    required
+                  />
+                  Aktivitas Jalur Kritis
+                </label>
+              </div>
+            </div>
+
+            <!-- Relasi BIM -->
+            <div class="form-group">
+              <label>Relasi BIM</label>
+              <select name="bim_object_id">
+                <option value="">-- Pilih BIM Object --</option>
+              </select>
+            </div>
+
+            <!-- Elemen Struktur -->
+            <div class="form-group">
+              <label>Elemen Struktur</label>
+              <input
+                type="text"
+                name="bim_element_name"
+                placeholder="Auto fill elemen struktur"
+                readonly
+              />
+            </div>
+
+            <!-- Lokasi Risiko -->
+            <div class="form-group">
+              <label>Lokasi Risiko *</label>
+              <input
+                type="text"
+                name="risk_location"
+                placeholder="Masukkan lokasi risiko"
+                required
+              />
+            </div>
+
+            <!-- Kategori Risiko -->
+            <div class="form-group">
+              <label>Kategori Risiko *</label>
+              <select name="risk_category" required>
+                <option value="">-- Pilih Kategori Risiko --</option>
+              </select>
+            </div>
+
+            <!-- Subkategori Risiko -->
+            <div class="form-group">
+              <label>Subkategori Risiko</label>
+              <select name="risk_subcategory">
+                <option value="">-- Pilih Subkategori --</option>
+              </select>
+            </div>
+
+            <!-- Peristiwa Risiko -->
+            <div class="form-group">
+              <label>Peristiwa Risiko *</label>
+              <textarea
+                name="risk_event"
+                rows="3"
+                placeholder="Masukkan peristiwa risiko"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Penyebab Risiko -->
+            <div class="form-group">
+              <label>Penyebab Risiko *</label>
+              <textarea
+                name="risk_cause"
+                rows="3"
+                placeholder="Masukkan penyebab risiko"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Dampak Risiko -->
+            <div class="form-group">
+              <label>Dampak Risiko *</label>
+              <textarea
+                name="risk_impact_description"
+                rows="3"
+                placeholder="Masukkan dampak risiko"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Potensi Memicu Perubahan -->
+            <div class="form-group">
+              <label>Potensi Memicu Perubahan *</label>
+              <select name="change_trigger_potential" required>
+                <option value="">-- Pilih Potensi --</option>
+                <option value="yes">Ya</option>
+                <option value="no">Tidak</option>
+              </select>
+            </div>
+
+            <!-- Probabilitas -->
+            <div class="form-group">
+              <label>Probabilitas *</label>
+              <input
+                type="number"
+                name="probability_score"
+                min="1"
+                max="5"
+                placeholder="1 - 5"
+                required
+              />
+            </div>
+
+            <!-- Risk Score -->
+            <div class="form-group">
+              <label>Risk Score *</label>
+              <input
+                type="number"
+                name="risk_score"
+                placeholder="Auto calculate"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Risk Level -->
+            <div class="form-group">
+              <label>Risk Level *</label>
+              <input
+                type="text"
+                name="risk_level"
+                placeholder="Auto generated"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Risk Priority -->
+            <div class="form-group">
+              <label>Risk Priority *</label>
+              <input
+                type="text"
+                name="risk_priority"
+                placeholder="Auto generated"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Status Mitigasi -->
+            <div class="form-group">
+              <label>Status Mitigasi *</label>
+              <select name="mitigation_status" required>
+                <option value="">-- Pilih Status Mitigasi --</option>
+                <option value="not_started">Belum Dimulai</option>
+                <option value="on_progress">On Progress</option>
+                <option value="completed">Selesai</option>
+              </select>
+            </div>
+
+            <!-- Rencana Mitigasi -->
+            <div class="form-group">
+              <label>Rencana Mitigasi *</label>
+              <textarea
+                name="mitigation_plan"
+                rows="3"
+                placeholder="Masukkan rencana mitigasi"
+                required
+              ></textarea>
+            </div>
+
+            <!-- PIC Mitigasi -->
+            <div class="form-group">
+              <label>PIC Mitigasi *</label>
+              <select name="mitigation_owner_id" required>
+                <option value="">-- Pilih PIC --</option>
+              </select>
+            </div>
+
+            <!-- Target Tanggal Mitigasi -->
+            <div class="form-group">
+              <label>Target Tanggal Mitigasi</label>
+              <input type="date" name="mitigation_due_date" />
+            </div>
+
+            <!-- Biaya Mitigasi -->
+            <div class="form-group">
+              <label>Biaya Mitigasi</label>
+              <input
+                type="number"
+                name="mitigation_cost"
+                placeholder="Masukkan biaya mitigasi"
+              />
+            </div>
+
+            <!-- Residual Probability -->
+            <div class="form-group">
+              <label>Residual Probability</label>
+              <input
+                type="number"
+                name="residual_probability"
+                min="1"
+                max="5"
+                placeholder="1 - 5"
+              />
+            </div>
+
+            <!-- Residual Impact -->
+            <div class="form-group">
+              <label>Residual Impact</label>
+              <input
+                type="number"
+                name="residual_impact"
+                min="1"
+                max="5"
+                placeholder="1 - 5"
+              />
+            </div>
+
+            <!-- Residual Risk Score -->
+            <div class="form-group">
+              <label>Residual Risk Score</label>
+              <input
+                type="number"
+                name="residual_risk_score"
+                placeholder="Auto calculate"
+                readonly
+              />
+            </div>
+
+            <!-- Trigger Early Warning -->
+            <div class="form-group">
+              <label>Trigger Early Warning</label>
+              <input
+                type="text"
+                name="early_warning_rule"
+                placeholder="Auto generated"
+                readonly
+              />
+            </div>
+
+            <!-- Status Risiko -->
+            <div class="form-group">
+              <label>Status Risiko *</label>
+              <select name="risk_status" required>
+                <option value="">-- Pilih Status Risiko --</option>
+                <option value="open">Open</option>
+                <option value="monitoring">Monitoring</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+
+            <!-- Apakah Menjadi CR -->
+            <div class="form-group">
+              <label>Apakah Menjadi CR?</label>
+
+              <div class="checkbox-group">
+                <label>
+                  <input type="checkbox" name="generate_cr" value="yes" />
+                  Generate Change Request
+                </label>
+              </div>
+            </div>
+
+            <!-- CR ID Terkait -->
+            <div class="form-group">
+              <label>CR ID Terkait</label>
+              <select name="linked_cr_id">
+                <option value="">-- Pilih CR --</option>
+              </select>
+            </div>
+
+            <!-- Knowledge Terkait -->
+            <div class="form-group">
+              <label>Knowledge Terkait</label>
+              <input
+                type="text"
+                name="related_knowledge_id"
+                placeholder="Auto generated"
+                readonly
+              />
+            </div>
+
+            <!-- Rekomendasi Preventif -->
+            <div class="form-group">
+              <label>Rekomendasi Preventif</label>
+              <input
+                type="text"
+                name="preventive_recommendation"
+                placeholder="Masukkan rekomendasi preventif"
+              />
+            </div>
+
+            <!-- Dokumen Pendukung -->
+            <div class="form-group">
+              <label>Dokumen Pendukung</label>
+              <input type="file" name="risk_evidence" />
+            </div>
+
+            <!-- Catatan Monitoring -->
+            <div class="form-group">
+              <label>Catatan Monitoring</label>
+              <textarea
+                name="monitoring_notes"
+                rows="3"
+                placeholder="Masukkan catatan monitoring"
+              ></textarea>
+            </div>
+
+            <!-- Form Knowledge Base -->
+            <h2>Form Knowledge Base</h2>
+
+            <!-- Identitas Knowledge -->
+            <div class="form-group">
+              <label>Identitas Knowledge *</label>
+              <input
+                type="text"
+                name="knowledge_id"
+                value="KNW-001"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Judul Kasus -->
+            <div class="form-group">
+              <label>Judul Kasus *</label>
+              <input
+                type="text"
+                name="knowledge_title"
+                placeholder="Masukkan judul kasus"
+                required
+              />
+            </div>
+
+            <!-- Project ID -->
+            <div class="form-group">
+              <label>Project ID *</label>
+              <select name="project_id" required>
+                <option value="">-- Pilih Project --</option>
+              </select>
+            </div>
+
+            <!-- Nama Proyek -->
+            <div class="form-group">
+              <label>Nama Proyek *</label>
+              <input
+                type="text"
+                name="project_name"
+                placeholder="Auto fill nama proyek"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Sumber Knowledge -->
+            <div class="form-group">
+              <label>Sumber Knowledge *</label>
+              <select name="source_type" required>
+                <option value="">-- Pilih Sumber --</option>
+                <option value="change_request">Change Request</option>
+                <option value="risk_register">Risk Register</option>
+                <option value="manual_input">Manual Input</option>
+              </select>
+            </div>
+
+            <!-- CR ID -->
+            <div class="form-group">
+              <label>CR ID *</label>
+              <select name="cr_id" required>
+                <option value="">-- Pilih CR --</option>
+              </select>
+            </div>
+
+            <!-- Risk ID -->
+            <div class="form-group">
+              <label>Risk ID</label>
+              <select name="risk_id">
+                <option value="">-- Pilih Risk --</option>
+              </select>
+            </div>
+
+            <!-- WBS Code -->
+            <div class="form-group">
+              <label>WBS Code *</label>
+              <select name="wbs_code" required>
+                <option value="">-- Pilih WBS --</option>
+              </select>
+            </div>
+
+            <!-- Nama Aktivitas -->
+            <div class="form-group">
+              <label>Nama Aktivitas *</label>
+              <input
+                type="text"
+                name="activity_name"
+                placeholder="Auto fill aktivitas"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- BIM Object ID -->
+            <div class="form-group">
+              <label>BIM Object ID</label>
+              <select name="bim_object_id">
+                <option value="">-- Pilih BIM Object --</option>
+              </select>
+            </div>
+
+            <!-- Elemen BIM -->
+            <div class="form-group">
+              <label>Elemen BIM</label>
+              <input
+                type="text"
+                name="bim_element"
+                placeholder="Auto fill elemen BIM"
+                readonly
+              />
+            </div>
+
+            <!-- Jenis Perubahan -->
+            <div class="form-group">
+              <label>Jenis Perubahan *</label>
+              <select name="change_category" required>
+                <option value="">-- Pilih Jenis Perubahan --</option>
+              </select>
+            </div>
+
+            <!-- Jenis Risiko -->
+            <div class="form-group">
+              <label>Jenis Risiko</label>
+              <select name="risk_category">
+                <option value="">-- Pilih Jenis Risiko --</option>
+              </select>
+            </div>
+
+            <!-- Kata Kunci -->
+            <div class="form-group">
+              <label>Kata Kunci *</label>
+              <input
+                type="text"
+                name="keywords"
+                placeholder="Contoh: delay, redesign, struktur"
+                required
+              />
+            </div>
+
+            <!-- Ringkasan Masalah -->
+            <div class="form-group">
+              <label>Ringkasan Masalah *</label>
+              <textarea
+                name="problem_summary"
+                rows="4"
+                placeholder="Masukkan ringkasan masalah"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Penyebab Utama -->
+            <div class="form-group">
+              <label>Penyebab Utama *</label>
+              <textarea
+                name="root_cause"
+                rows="4"
+                placeholder="Masukkan penyebab utama"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Kronologi Kasus -->
+            <div class="form-group">
+              <label>Kronologi Kasus</label>
+              <textarea
+                name="case_chronology"
+                rows="4"
+                placeholder="Masukkan kronologi kasus"
+              ></textarea>
+            </div>
+
+            <!-- Dampak Waktu -->
+            <div class="form-group">
+              <label>Dampak Waktu *</label>
+              <input
+                type="number"
+                name="time_impact"
+                placeholder="Masukkan dampak waktu"
+                required
+              />
+            </div>
+
+            <!-- Dampak Biaya -->
+            <div class="form-group">
+              <label>Dampak Biaya</label>
+              <input
+                type="number"
+                name="cost_impact"
+                placeholder="Masukkan dampak biaya"
+              />
+            </div>
+
+            <!-- Dampak Mutu -->
+            <div class="form-group">
+              <label>Dampak Mutu</label>
+              <input
+                type="text"
+                name="quality_impact"
+                placeholder="Masukkan dampak mutu"
+              />
+            </div>
+
+            <!-- Dampak Risiko -->
+            <div class="form-group">
+              <label>Dampak Risiko</label>
+              <input
+                type="text"
+                name="risk_impact"
+                placeholder="Masukkan dampak risiko"
+              />
+            </div>
+
+            <!-- Critical Path Impact -->
+            <div class="form-group">
+              <label>Critical Path Impact *</label>
+              <select name="critical_path_impact" required>
+                <option value="">-- Pilih Dampak --</option>
+                <option value="yes">Ya</option>
+                <option value="no">Tidak</option>
+              </select>
+            </div>
+
+            <!-- Keputusan yang Diambil -->
+            <div class="form-group">
+              <label>Keputusan yang Diambil *</label>
+              <textarea
+                name="decision_taken"
+                rows="4"
+                placeholder="Masukkan keputusan"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Solusi Teknis -->
+            <div class="form-group">
+              <label>Solusi Teknis *</label>
+              <textarea
+                name="technical_solution"
+                rows="4"
+                placeholder="Masukkan solusi teknis"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Mitigasi -->
+            <div class="form-group">
+              <label>Mitigasi *</label>
+              <textarea
+                name="mitigation_action"
+                rows="4"
+                placeholder="Masukkan mitigasi"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Hasil Implementasi -->
+            <div class="form-group">
+              <label>Hasil Implementasi *</label>
+              <textarea
+                name="implementation_result"
+                rows="4"
+                placeholder="Masukkan hasil implementasi"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Efektivitas Solusi -->
+            <div class="form-group">
+              <label>Efektivitas Solusi</label>
+
+              <div class="input-group">
+                <select name="solution_effectiveness">
+                  <option value="">-- Pilih Score --</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+
+                <input type="text" placeholder="Catatan efektivitas" />
+              </div>
+            </div>
+
+            <!-- Lesson Learned -->
+            <div class="form-group">
+              <label>Lesson Learned *</label>
+              <textarea
+                name="lesson_learned"
+                rows="4"
+                placeholder="Masukkan lesson learned"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Rekomendasi Preventif -->
+            <div class="form-group">
+              <label>Rekomendasi Preventif *</label>
+              <textarea
+                name="preventive_recommendation"
+                rows="4"
+                placeholder="Masukkan rekomendasi preventif"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Kondisi Penggunaan Ulang -->
+            <div class="form-group">
+              <label>Kondisi Penggunaan Ulang</label>
+              <textarea
+                name="reuse_condition"
+                rows="4"
+                placeholder="Masukkan kondisi penggunaan ulang"
+              ></textarea>
+            </div>
+
+            <!-- Similarity Criteria -->
+            <div class="form-group">
+              <label>Similarity Criteria *</label>
+              <select name="similarity_criteria" multiple required>
+                <option value="same_risk">Same Risk</option>
+                <option value="same_wbs">Same WBS</option>
+                <option value="same_bim">Same BIM Element</option>
+                <option value="same_change">Same Change Type</option>
+              </select>
+            </div>
+
+            <!-- Jenis Pengetahuan -->
+            <div class="form-group">
+              <label>Jenis Pengetahuan</label>
+              <select name="knowledge_type">
+                <option value="">-- Pilih Jenis Pengetahuan --</option>
+                <option value="explicit">Explicit</option>
+                <option value="tacit">Tacit</option>
+              </select>
+            </div>
+
+            <!-- Proses SECI -->
+            <div class="form-group">
+              <label>Proses SECI *</label>
+              <select name="seci_category" required>
+                <option value="">-- Pilih Proses SECI --</option>
+                <option value="socialization">Socialization</option>
+                <option value="externalization">Externalization</option>
+                <option value="combination">Combination</option>
+                <option value="internalization">Internalization</option>
+              </select>
+            </div>
+
+            <!-- Status Validasi -->
+            <div class="form-group">
+              <label>Status Validasi</label>
+              <select name="validation_status">
+                <option value="">-- Pilih Status Validasi --</option>
+                <option value="draft">Draft</option>
+                <option value="reviewed">Reviewed</option>
+                <option value="validated">Validated</option>
+              </select>
+            </div>
+
+            <!-- Validator -->
+            <div class="form-group">
+              <label>Validator</label>
+              <select name="validator_id">
+                <option value="">-- Pilih Validator --</option>
+              </select>
+            </div>
+
+            <!-- Catatan Validasi -->
+            <div class="form-group">
+              <label>Catatan Validasi</label>
+              <textarea
+                name="validation_notes"
+                rows="4"
+                placeholder="Masukkan catatan validasi"
+              ></textarea>
+            </div>
+
+            <!-- Tanggal Validasi -->
+            <div class="form-group">
+              <label>Tanggal Validasi</label>
+              <input type="date" name="validation_date" />
+            </div>
+
+            <!-- Dokumen Pendukung -->
+            <div class="form-group">
+              <label>Dokumen Pendukung</label>
+
+              <input type="file" name="supporting_document" />
+
+              <input type="url" placeholder="Masukkan link dokumen" />
+            </div>
+
+            <!-- Versi Knowledge -->
+            <div class="form-group">
+              <label>Versi Knowledge *</label>
+              <input
+                type="text"
+                name="version"
+                value="v1.0"
+                readonly
+                required
+              />
+            </div>
+
+            <!-- Frekuensi Digunakan -->
+            <div class="form-group">
+              <label>Frekuensi Digunakan</label>
+              <input type="number" name="retrieval_count" value="0" readonly />
+            </div>
+
+            <!-- Digunakan pada CR -->
+            <div class="form-group">
+              <label>Digunakan pada CR</label>
+              <select name="reused_in_cr_id" multiple>
+                <option value="">-- Pilih CR --</option>
+              </select>
+            </div>
+
+            <button type="submit">Submit Change Request</button>
+          </form>
+        </div>
+      </div>
+
+    <!-- SUMMARY PAGE -->
+      <div
+        id="summary-page"
+        style="display: none"
+      >
+
+        <div class="summary-card">
+
+          <h2>Ringkasan Change Request</h2>
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Daftar CR</th>
+                <th>Status</th>
+                <th>Pengaju</th>
+                <th>Tanggal</th>
+                <th>Prioritas</th>
+                <th>Dampak</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>CR-001</td>
+
+                <td>
+                  <span class="badge submitted">
+                    Submitted
+                  </span>
+                </td>
+
+                <td>Ahmad</td>
+
+                <td>2026-05-11</td>
+
+                <td>High</td>
+
+                <td>
+                  Delay pekerjaan pier
+                </td>
+              </tr>
+
+              <tr>
+                <td>CR-002</td>
+
+                <td>
+                  <span class="badge approved">
+                    Approved
+                  </span>
+                </td>
+
+                <td>Budi</td>
+
+                <td>2026-05-10</td>
+
+                <td>Medium</td>
+
+                <td>
+                  Revisi metode kerja
+                </td>
+              </tr>
+
+              <tr>
+                <td>CR-003</td>
+
+                <td>
+                  <span class="badge review">
+                    Under Review
+                  </span>
+                </td>
+
+                <td>Laksono</td>
+
+                <td>2026-05-09</td>
+
+                <td>Urgent</td>
+
+                <td>
+                  Clash BIM area abutment
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <script>
+  function showSection(sectionId, element) {
+
+    const formPage =
+      document.getElementById("form-page");
+
+    const summaryPage =
+      document.getElementById("summary-page");
+
+    formPage.style.display = "none";
+    summaryPage.style.display = "none";
+
+    document.getElementById(sectionId)
+      .style.display = "block";
+
+    document.querySelectorAll(".nav-item")
+      .forEach((item) => {
+        item.classList.remove("active");
+      });
+
+    element.classList.add("active");
+  }
+</script>
+  </body>
 </html>
