@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site Engineer Dashboard</title>
+
+    <style>
+      body {
+        background: #f4f7fe;
+        display: flex;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
+      /* SIDEBAR galuh */
+
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, #1565c0, #0d47a1);
+        color: white;
+        padding: 30px 20px;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        height: 100vh;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 40px;
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .menu-item {
+        padding: 14px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 500;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .active {
+        background: white;
+        color: #1565c0;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #1e3a5f;
+        --primary-light: #2d5b8f;
+        --secondary: #f8fafc;
+        --border: #d6dee8;
+        --text: #1f2937;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: #eef3f9;
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1250px;
+        margin: auto;
+      }
+
+      /* PAGE TITLE */
+      .page-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #1e3a5f;
+
+        padding: 24px 32px;
+        margin-bottom: 25px;
+
+        background: linear-gradient(135deg, #ffffff, #f1f5f9);
+
+        border-left: 8px solid #3a5cf3;
+
+        border-radius: 18px;
+
+        box-shadow:
+          0 10px 25px rgba(15, 23, 42, 0.08),
+          0 2px 6px rgba(15, 23, 42, 0.04);
+      }
+
+      /* CARD */
+      .summary-card {
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      }
+
+      /* SECTION TITLE */
+      h2 {
+        font-size: 24px;
+        color: var(--primary);
+
+        margin-bottom: 30px;
+      }
+
+      /* TABLE */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        background: #f1f5f9;
+        padding: 16px;
+        text-align: left;
+      }
+
+      td {
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      tr:hover {
+        background: #f8fafc;
+      }
+
+      /* BADGE */
+      .badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .submitted {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+
+      .approved {
+        background: #dcfce7;
+        color: #15803d;
+      }
+
+      .review {
+        background: #fef3c7;
+        color: #b45309;
+      }
+
+      /* MOBILE */
+      @media (max-width: 768px) {
+        body {
+          padding: 20px;
+        }
+
+        .page-title {
+          font-size: 28px;
+        }
+
+        .form-card,
+        .summary-card {
+          padding: 20px;
+        }
+
+        .nav-menu {
+          gap: 20px;
+        }
+      }
+      /* MAIN */
+
+      .main {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        padding: 40px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+
+        .navbar {
+          padding: 0 20px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-menu">
+        <div class="menu-item"><a href="admin.html">Dashboard</a></div>
+        <div class="menu-item">
+          <a href="project-manager-adm.html">Project Management</a>
+        </div>
+        <div class="menu-item active">Site Engineer</div>
+        <div class="menu-item">
+          <a href="WBS-adm.html">WBS</a>
+        </div>
+        <div class="menu-item">Reports</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="container">
+        <!-- TITLE -->
+        <div class="page-title">Summary Site Engineer</div>
+
+        <!-- SUMMARY PAGE -->
+        <div class="summary-card">
+          <h2>Ringkasan Change Request</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Daftar CR</th>
+                <th>Status</th>
+                <th>Pengaju</th>
+                <th>Tanggal</th>
+                <th>Prioritas</th>
+                <th>Dampak</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>CR-001</td>
+
+                <td>
+                  <span class="badge submitted"> Submitted </span>
+                </td>
+
+                <td>Ahmad</td>
+
+                <td>2026-05-11</td>
+
+                <td>High</td>
+
+                <td>Delay pekerjaan pier</td>
+              </tr>
+
+              <tr>
+                <td>CR-002</td>
+
+                <td>
+                  <span class="badge approved"> Approved </span>
+                </td>
+
+                <td>Budi</td>
+
+                <td>2026-05-10</td>
+
+                <td>Medium</td>
+
+                <td>Revisi metode kerja</td>
+              </tr>
+
+              <tr>
+                <td>CR-003</td>
+
+                <td>
+                  <span class="badge review"> Under Review </span>
+                </td>
+
+                <td>Laksono</td>
+
+                <td>2026-05-09</td>
+
+                <td>Urgent</td>
+
+                <td>Clash BIM area abutment</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
