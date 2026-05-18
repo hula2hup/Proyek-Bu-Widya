@@ -12,6 +12,16 @@
     />
 
     <style>
+      body {
+        background: #f4f7fe;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+      }
       * {
         margin: 0;
         padding: 0;
@@ -39,8 +49,50 @@
         font-size: 22px;
       }
 
+      /* SIDEBAR galuh */
+
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, #1565c0, #0d47a1);
+        color: white;
+        padding: 30px 20px;
+        position: fixed;
+        height: 100%;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 40px;
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .menu-item {
+        padding: 14px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 500;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .active {
+        background: white;
+        color: #1565c0;
+      }
+
       .container {
         padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
       }
 
       .card {
@@ -118,6 +170,14 @@
         font-weight: 600;
       }
 
+      /* MAIN */
+
+      .main {
+        margin-left: 260px;
+        width: 100%;
+        padding: 35px;
+      }
+
       @media (max-width: 768px) {
         .container {
           padding: 20px;
@@ -127,12 +187,40 @@
           padding: 0 20px;
         }
       }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          margin-left: 0;
+          padding: 20px;
+        }
+
+        table {
+          font-size: 13px;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="navbar">
-      <h1>WBS Construction Management</h1>
-      <span>Project Dashboard</span>
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+      <div class="sidebar-menu">
+        <div class="menu-item">
+          <a href="admin.html">Dashboard</a>
+        </div>
+        <div class="menu-item">
+          <a href="project-manager-adm.html">Project Management</a>
+        </div>
+        <div class="menu-item">
+          <a href="site-engineer.html">Site Engineer</a>
+        </div>
+        <div class="menu-item active">WBS</div>
+        <div class="menu-item">Reports</div>
+      </div>
     </div>
 
     <div class="container">
