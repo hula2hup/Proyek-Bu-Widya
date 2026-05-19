@@ -353,7 +353,7 @@
           </select>
         </div>
         
-        <form id="form-cr" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST">
           <div class="form-card">
             <h2>Form Change Control</h2>
               <!-- Pertanyaan 1 -->
@@ -389,9 +389,9 @@
                 <label>Pengaju Perubahan *</label>
                 <select name="requester_id" id="requester_id" required>
                   <option value="">-- Pilih Pengaju --</option>
-                  <option value="ahmad">Ahmad</option>
-                  <option value="budi">Budi</option>
-                  <option value="laksono">laksono</option>
+                  <option value="Ahmad">Ahmad</option>
+                  <option value="Budi">Budi</option>
+                  <option value="Laksono">Laksono</option>
                 </select>
               </div>
 
@@ -412,13 +412,13 @@
                 const requesterRole = document.getElementById("requester_role");
 
                 requesterSelect.addEventListener("change", function () {
-                  if (this.value === "ahmad") {
+                  if (this.value === "Ahmad") {
                     requesterRole.value = "Site Engineer 1";
                     requesterRole.readOnly = true;
-                  } else if (this.value === "budi") {
+                  } else if (this.value === "Budi") {
                     requesterRole.value = "Site Engineer 2";
                     requesterRole.readOnly = true;
-                  } else if (this.value === "laksono") {
+                  } else if (this.value === "Laksono") {
                     requesterRole.value = "Project Team";
                     requesterRole.readOnly = true;
                   } else {
@@ -840,7 +840,7 @@
         </form>
 
           <!-- Form Risk Register -->
-        <form id="form-risk" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-risk" class="sub-form" action="save_data_risk.php" method="POST">
           <div class="form-card">
             <h2>Form Risk Register</h2>
 
@@ -861,6 +861,8 @@
               <label>Identitas Proyek *</label>
               <select name="project_id" required>
                 <option value="">-- Pilih Proyek --</option>
+                <option value="PRJ001">Project A</option>
+                <option value="PRJ002">Project B</option>
               </select>
             </div>
 
@@ -1216,7 +1218,7 @@
           <button type="submit">Submit Risk Register</button>
         </form>  
 
-        <form id="form-kb" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-kb" class="sub-form" action="save_data_kb.php" method="POST">
           <div class="form-card">
             <!-- Form Knowledge Base -->
             <h2>Form Knowledge Base</h2>
