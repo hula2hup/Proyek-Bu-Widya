@@ -6,62 +6,6 @@
     <title>Site Engineer Dashboard</title>
 
     <style>
-      body {
-        background: #f4f7fe;
-        display: flex;
-        min-height: 100vh;
-        margin: 0;
-        padding: 0;
-      }
-
-      a {
-        text-decoration: none;
-        color: white;
-      }
-      /* SIDEBAR galuh */
-
-      .sidebar {
-        width: 260px;
-        background: linear-gradient(180deg, #1565c0, #0d47a1);
-        color: white;
-        padding: 30px 20px;
-
-        position: fixed;
-        top: 0;
-        left: 0;
-
-        height: 100vh;
-      }
-
-      .logo {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 40px;
-      }
-
-      .sidebar-menu {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .menu-item {
-        padding: 14px 18px;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: 0.3s;
-        font-weight: 500;
-      }
-
-      .menu-item:hover {
-        background: rgba(255, 255, 255, 0.15);
-      }
-
-      .active {
-        background: white;
-        color: #1565c0;
-      }
-
       * {
         margin: 0;
         padding: 0;
@@ -81,6 +25,61 @@
         font-family: "Segoe UI", sans-serif;
         background: #eef3f9;
         color: var(--text);
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, #1565c0, #0d47a1);
+        color: white;
+        padding: 30px 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 40px;
+      }
+
+      .sidebar-menu {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      /* menu-item diubah menjadi block agar area klik penuh */
+      .menu-item {
+        display: block;
+        padding: 14px 18px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-weight: 500;
+        text-decoration: none;
+        color: white;
+      }
+
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+
+      .active {
+        background: white;
+        color: #1565c0 !important;
+      }
+
+      /* MAIN */
+      .main {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        padding: 40px;
       }
 
       .container {
@@ -93,16 +92,11 @@
         font-size: 38px;
         font-weight: 800;
         color: #1e3a5f;
-
         padding: 24px 32px;
         margin-bottom: 25px;
-
         background: linear-gradient(135deg, #ffffff, #f1f5f9);
-
         border-left: 8px solid #3a5cf3;
-
         border-radius: 18px;
-
         box-shadow:
           0 10px 25px rgba(15, 23, 42, 0.08),
           0 2px 6px rgba(15, 23, 42, 0.04);
@@ -116,11 +110,9 @@
         box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
       }
 
-      /* SECTION TITLE */
       h2 {
         font-size: 24px;
         color: var(--primary);
-
         margin-bottom: 30px;
       }
 
@@ -168,50 +160,46 @@
         color: #b45309;
       }
 
+      /* ACTION BUTTONS (Sama persis dengan Admin) */
+      .action-btn {
+        border: none;
+        padding: 8px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-right: 8px;
+        transition: 0.3s;
+        font-family: inherit;
+      }
+
+      .edit {
+        background: #1565c0;
+        color: white;
+      }
+
+      .delete {
+        background: #dc3545;
+        color: white;
+      }
+
+      .action-btn:hover {
+        opacity: 0.85;
+      }
+
       /* MOBILE */
-      @media (max-width: 768px) {
-        body {
-          padding: 20px;
-        }
-
-        .page-title {
-          font-size: 28px;
-        }
-
-        .form-card,
-        .summary-card {
-          padding: 20px;
-        }
-
-        .nav-menu {
-          gap: 20px;
-        }
-      }
-      /* MAIN */
-
-      .main {
-        margin-left: 260px;
-        width: calc(100% - 260px);
-        padding: 40px;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 20px;
-        }
-
-        .navbar {
-          padding: 0 20px;
-        }
-      }
-
       @media (max-width: 768px) {
         .sidebar {
           display: none;
         }
-
         .main {
           margin-left: 0;
+          padding: 20px;
+          width: 100%;
+        }
+        .page-title {
+          font-size: 28px;
+        }
+        .summary-card {
           padding: 20px;
         }
       }
@@ -220,25 +208,20 @@
 
   <body>
     <div class="sidebar">
+      <div class="logo">Project</div>
       <div class="sidebar-menu">
-        <div class="menu-item"><a href="admin.html">Dashboard</a></div>
-        <div class="menu-item">
-          <a href="project-manager-adm.html">Project Management</a>
-        </div>
+        <a href="admin.html" class="menu-item">Dashboard</a>
+        <a href="project-manager-adm.html" class="menu-item">Project Management</a>
         <div class="menu-item active">Site Engineer</div>
-        <div class="menu-item">
-          <a href="WBS-adm.html">WBS</a>
-        </div>
+        <a href="WBS-adm.html" class="menu-item">WBS</a>
         <div class="menu-item">Reports</div>
       </div>
     </div>
 
     <div class="main">
       <div class="container">
-        <!-- TITLE -->
         <div class="page-title">Summary Site Engineer</div>
 
-        <!-- SUMMARY PAGE -->
         <div class="summary-card">
           <h2>Ringkasan Change Request</h2>
           <table>
@@ -250,61 +233,57 @@
                 <th>Tanggal</th>
                 <th>Prioritas</th>
                 <th>Dampak</th>
+                <th>Action</th>
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="crTable">
               <tr>
                 <td>CR-001</td>
-
-                <td>
-                  <span class="badge submitted"> Submitted </span>
-                </td>
-
+                <td><span class="badge submitted"> Submitted </span></td>
                 <td>Ahmad</td>
-
                 <td>2026-05-11</td>
-
                 <td>High</td>
-
                 <td>Delay pekerjaan pier</td>
+                <td>
+                  <button class="action-btn edit">Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                </td>
               </tr>
-
               <tr>
                 <td>CR-002</td>
-
-                <td>
-                  <span class="badge approved"> Approved </span>
-                </td>
-
+                <td><span class="badge approved"> Approved </span></td>
                 <td>Budi</td>
-
                 <td>2026-05-10</td>
-
                 <td>Medium</td>
-
                 <td>Revisi metode kerja</td>
+                <td>
+                  <button class="action-btn edit">Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                </td>
               </tr>
-
               <tr>
                 <td>CR-003</td>
-
-                <td>
-                  <span class="badge review"> Under Review </span>
-                </td>
-
+                <td><span class="badge review"> Under Review </span></td>
                 <td>Laksono</td>
-
                 <td>2026-05-09</td>
-
                 <td>Urgent</td>
-
                 <td>Clash BIM area abutment</td>
+                <td>
+                  <button class="action-btn edit">Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
     </div>
+
+    <script>
+      function deleteRow(button) {
+        button.parentElement.parentElement.remove();
+      }
+    </script>
   </body>
 </html>

@@ -24,13 +24,7 @@
         min-height: 100vh;
       }
 
-      a {
-        text-decoration: none; /* Removes the underline */
-        color: white; /* Sets the font color to white */
-      }
-
-      /* SIDEBAR galuh */
-
+      /* SIDEBAR */
       .sidebar {
         width: 260px;
         background: linear-gradient(180deg, #1565c0, #0d47a1);
@@ -52,25 +46,29 @@
         gap: 15px;
       }
 
+      /* menu-item diubah menjadi block agar area klik penuh */
       .menu-item {
+        display: block;
         padding: 14px 18px;
         border-radius: 12px;
         cursor: pointer;
         transition: 0.3s;
         font-weight: 500;
+        text-decoration: none;
+        color: white;
       }
 
       .menu-item:hover {
         background: rgba(255, 255, 255, 0.15);
+        color: white;
       }
 
       .active {
         background: white;
-        color: #1565c0;
+        color: #1565c0 !important;
       }
 
       /* MAIN */
-
       .main {
         margin-left: 260px;
         width: 100%;
@@ -96,7 +94,6 @@
       }
 
       /* STATS */
-
       .stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -128,7 +125,6 @@
       }
 
       /* TABLE */
-
       .table-section {
         background: white;
         border-radius: 20px;
@@ -236,7 +232,6 @@
       }
 
       /* MODAL */
-
       .modal {
         position: fixed;
         top: 0;
@@ -322,63 +317,45 @@
   </head>
 
   <body>
-    <!-- SIDEBAR -->
-
     <div class="sidebar">
+      <div class="logo">Project</div>
       <div class="sidebar-menu">
         <div class="menu-item active">Dashboard</div>
-        <div class="menu-item">
-          <a href="project-manager-adm.html">Project Management</a>
-        </div>
-        <div class="menu-item">
-          <a href="site-engineer-adm.html">Site Engineer</a>
-        </div>
-        <div class="menu-item">
-          <a href="WBS-adm.html">WBS</a>
-        </div>
+        <a href="project-manager-adm.html" class="menu-item">Project Management</a>
+        <a href="site-engineer-adm.html" class="menu-item">Site Engineer</a>
+        <a href="WBS-adm.html" class="menu-item">WBS</a>
         <div class="menu-item">Reports</div>
       </div>
     </div>
 
-    <!-- MAIN -->
-
     <div class="main">
       <div class="topbar">
         <h1>Admin Dashboard</h1>
-
         <div class="admin-profile">Admin</div>
       </div>
-
-      <!-- STATS -->
 
       <div class="stats">
         <div class="stat-card">
           <h3>Total Projects</h3>
           <h2 id="totalProjects">3</h2>
         </div>
-
         <div class="stat-card">
           <h3>Completed</h3>
           <h2 id="completedProjects">1</h2>
         </div>
-
         <div class="stat-card">
           <h3>In Progress</h3>
           <h2 id="progressProjects">1</h2>
         </div>
-
         <div class="stat-card">
           <h3>Pending</h3>
           <h2 id="pendingProjects">1</h2>
         </div>
       </div>
 
-      <!-- TABLE -->
-
       <div class="table-section">
         <div class="table-header">
           <h2>Project Data</h2>
-
           <button class="add-btn" onclick="openModal()">+ Add Project</button>
         </div>
 
@@ -403,10 +380,9 @@
               <td>100%</td>
               <td>
                 <button class="action-btn edit">Edit</button>
-                <button class="action-btn delete">Delete</button>
+                <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
               </td>
             </tr>
-
             <tr>
               <td>PRJ-002</td>
               <td>Renovasi Jalan</td>
@@ -415,10 +391,9 @@
               <td>70%</td>
               <td>
                 <button class="action-btn edit">Edit</button>
-                <button class="action-btn delete">Delete</button>
+                <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
               </td>
             </tr>
-
             <tr>
               <td>PRJ-003</td>
               <td>Pembangunan Jembatan</td>
@@ -427,7 +402,7 @@
               <td>20%</td>
               <td>
                 <button class="action-btn edit">Edit</button>
-                <button class="action-btn delete">Delete</button>
+                <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
               </td>
             </tr>
           </tbody>
@@ -435,45 +410,35 @@
       </div>
     </div>
 
-    <!-- MODAL -->
-
     <div class="modal" id="projectModal">
       <div class="modal-content">
         <h2>Add New Project</h2>
-
         <div class="input-group">
           <label>Project ID</label>
           <input type="text" id="projectId" />
         </div>
-
         <div class="input-group">
           <label>Project Name</label>
           <input type="text" id="projectName" />
         </div>
-
         <div class="input-group">
           <label>Site Engineer</label>
           <input type="text" id="engineerName" />
         </div>
-
         <div class="input-group">
           <label>Status</label>
-
           <select id="projectStatus">
             <option>Completed</option>
             <option>In Progress</option>
             <option>Pending</option>
           </select>
         </div>
-
         <div class="input-group">
           <label>Progress</label>
           <input type="number" id="projectProgress" />
         </div>
-
         <div class="modal-buttons">
           <button class="cancel-btn" onclick="closeModal()">Cancel</button>
-
           <button class="save-btn" onclick="addProject()">Save</button>
         </div>
       </div>
@@ -498,7 +463,6 @@
         const progress = document.getElementById("projectProgress").value;
 
         let statusClass = "";
-
         if (status === "Completed") {
           statusClass = "completed";
         } else if (status === "In Progress") {
@@ -508,53 +472,37 @@
         }
 
         const table = document.getElementById("projectTable");
-
         const row = `
         <tr>
             <td>${id}</td>
             <td>${name}</td>
             <td>${engineer}</td>
-            <td>
-                <span class="status ${statusClass}">
-                    ${status}
-                </span>
-            </td>
+            <td><span class="status ${statusClass}">${status}</span></td>
             <td>${progress}%</td>
             <td>
-                <button class="action-btn edit">
-                    Edit
-                </button>
-
-                <button class="action-btn delete" onclick="deleteRow(this)">
-                    Delete
-                </button>
+                <button class="action-btn edit">Edit</button>
+                <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
             </td>
-        </tr>
-    `;
+        </tr>`;
 
         table.innerHTML += row;
-
         updateStats();
-
         closeModal();
       }
 
       function deleteRow(button) {
         button.parentElement.parentElement.remove();
-
         updateStats();
       }
 
       function updateStats() {
         const rows = document.querySelectorAll("#projectTable tr");
-
         let completed = 0;
         let progress = 0;
         let pending = 0;
 
         rows.forEach((row) => {
           const status = row.querySelector(".status").innerText;
-
           if (status === "Completed") {
             completed++;
           } else if (status === "In Progress") {
