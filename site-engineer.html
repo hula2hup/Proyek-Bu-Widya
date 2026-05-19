@@ -353,7 +353,7 @@
           </select>
         </div>
         
-        <form id="form-cr" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST">
           <div class="form-card">
             <h2>Form Change Control</h2>
               <!-- Pertanyaan 1 -->
@@ -389,9 +389,9 @@
                 <label>Pengaju Perubahan *</label>
                 <select name="requester_id" id="requester_id" required>
                   <option value="">-- Pilih Pengaju --</option>
-                  <option value="ahmad">Ahmad</option>
-                  <option value="budi">Budi</option>
-                  <option value="laksono">laksono</option>
+                  <option value="Ahmad">Ahmad</option>
+                  <option value="Budi">Budi</option>
+                  <option value="Laksono">Laksono</option>
                 </select>
               </div>
 
@@ -412,13 +412,13 @@
                 const requesterRole = document.getElementById("requester_role");
 
                 requesterSelect.addEventListener("change", function () {
-                  if (this.value === "ahmad") {
+                  if (this.value === "Ahmad") {
                     requesterRole.value = "Site Engineer 1";
                     requesterRole.readOnly = true;
-                  } else if (this.value === "budi") {
+                  } else if (this.value === "Budi") {
                     requesterRole.value = "Site Engineer 2";
                     requesterRole.readOnly = true;
-                  } else if (this.value === "laksono") {
+                  } else if (this.value === "Laksono") {
                     requesterRole.value = "Project Team";
                     requesterRole.readOnly = true;
                   } else {
@@ -840,7 +840,7 @@
         </form>
 
           <!-- Form Risk Register -->
-        <form id="form-risk" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-risk" class="sub-form" action="save_data_risk.php" method="POST">
           <div class="form-card">
             <h2>Form Risk Register</h2>
 
@@ -861,6 +861,8 @@
               <label>Identitas Proyek *</label>
               <select name="project_id" required>
                 <option value="">-- Pilih Proyek --</option>
+                <option value="PRJ001">Project A</option>
+                <option value="PRJ002">Project B</option>
               </select>
             </div>
 
@@ -875,6 +877,9 @@
               <label>Diidentifikasi Oleh *</label>
               <select name="risk_owner_id" required>
                 <option value="">-- Pilih User --</option>
+                <option value="Ahmad">Ahmad</option>
+                <option value="Budi">Budi</option>
+                <option value="Laksono">Laksono</option>
               </select>
             </div>
 
@@ -883,6 +888,8 @@
               <label>Paket Pekerjaan *</label>
               <select name="wbs_code" required>
                 <option value="">-- Pilih WBS --</option>
+                <option value="WBS001">WBS 001</option>
+                <option value="WBS002">WBS 002</option>
               </select>
             </div>
 
@@ -920,6 +927,9 @@
               <label>Relasi BIM</label>
               <select name="bim_object_id">
                 <option value="">-- Pilih BIM Object --</option>
+                <option value="BIM-001">BIM Object 001</option>
+                <option value="BIM-002">BIM Object 002</option>
+                <option value="BIM-003">BIM Object 003</option>
               </select>
             </div>
 
@@ -1216,7 +1226,7 @@
           <button type="submit">Submit Risk Register</button>
         </form>  
 
-        <form id="form-kb" class="sub-form" action="save_data.php" method="POST">
+        <form id="form-kb" class="sub-form" action="save_data_kb.php" method="POST">
           <div class="form-card">
             <!-- Form Knowledge Base -->
             <h2>Form Knowledge Base</h2>
@@ -1249,6 +1259,8 @@
               <label>Project ID *</label>
               <select name="project_id" required>
                 <option value="">-- Pilih Project --</option>
+                <option value="PRJ001">Project A</option>
+                <option value="PRJ002">Project B</option>
               </select>
             </div>
 
@@ -1280,6 +1292,9 @@
               <label>CR ID *</label>
               <select name="cr_id" required>
                 <option value="">-- Pilih CR --</option>
+                <option value="CR-001">CR-001</option>
+                <option value="CR-002">CR-002</option>
+                <option value="CR-003">CR-003</option>
               </select>
             </div>
 
@@ -1288,6 +1303,9 @@
               <label>Risk ID</label>
               <select name="risk_id">
                 <option value="">-- Pilih Risk --</option>
+                <option value="RISK-001">RISK-001</option>
+                <option value="RISK-002">RISK-002</option>
+                <option value="RISK-003">RISK-003</option>
               </select>
             </div>
 
@@ -1296,6 +1314,8 @@
               <label>WBS Code *</label>
               <select name="wbs_code" required>
                 <option value="">-- Pilih WBS --</option>
+                <option value="WBS-001">WBS-001</option>
+                <option value="WBS-002">WBS-002</option>
               </select>
             </div>
 
@@ -1335,6 +1355,8 @@
               <label>Jenis Perubahan *</label>
               <select name="change_category" required>
                 <option value="">-- Pilih Jenis Perubahan --</option>
+                <option value="design_change">Design Change</option>
+                <option value="construction_change">Construction Change</option>
               </select>
             </div>
 
@@ -1343,6 +1365,9 @@
               <label>Jenis Risiko</label>
               <select name="risk_category">
                 <option value="">-- Pilih Jenis Risiko --</option>
+                <option value="technical_risk">Technical Risk</option>
+                <option value="financial_risk">Financial Risk</option>
+                <option value="schedule_risk">Schedule Risk</option>
               </select>
             </div>
 
