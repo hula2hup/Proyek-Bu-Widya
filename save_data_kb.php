@@ -24,56 +24,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Sesuaikan variabel di bawah ini dengan atribut 'name' pada tag <input> di HTML kamu
         // Contoh jika di HTML ada <input name="nama_proyek"> dan <input name="lokasi">
-        $cr_id      = $_POST['cr_id'] ?? null;
+        $knowledge_id      = $_POST['knowledge_id'] ?? null;
+        $knowledge_title      = $_POST['knowledge_title'] ?? null;
         $project_id      = $_POST['project_id'] ?? null;
-        $date      = $_POST['date'] ?? null;
-        $requester_id      = $_POST['requester_id'] ?? null;
-        $requester_role      = $_POST['requester_role'] ?? null;
-        $change_category      = $_POST['change_category'] ?? null;
-        $change_type      = $_POST['change_type'] ?? null;
-        $change_trigger      = $_POST['change_trigger'] ?? null;
-        $change_description      = $_POST['change_description'] ?? null;
-        $root_cause      = $_POST['root_cause'] ?? null;
-        $document_reference      = $_POST['document_reference'] ?? null;
-        $document_link      = $_POST['document_link'] ?? null;
+        $project_name      = $_POST['project_name'] ?? null;
+        $source_type      = $_POST['source_type'] ?? null;
+        $cr_id      = $_POST['cr_id'] ?? null;
+        $risk_id      = $_POST['risk_id'] ?? null;
         $wbs_code      = $_POST['wbs_code'] ?? null;
         $activity_name      = $_POST['activity_name'] ?? null;
-        $critical_path_status      = $_POST['critical_path_status'] ?? null;
         $bim_object_id      = $_POST['bim_object_id'] ?? null;
-        $bim_element_name      = $_POST['bim_element_name'] ?? null;
-        $object_location      = $_POST['object_location'] ?? null;
-        $risk_id      = $_POST['risk_id'] ?? null;
+        $bim_element      = $_POST['bim_element'] ?? null;
+        $change_category      = $_POST['change_category'] ?? null;
         $risk_category      = $_POST['risk_category'] ?? null;
-        $risk_score_at_cr      = $_POST['risk_score_at_cr'] ?? null;
-        $estimated_time_impact_days      = $_POST['estimated_time_impact_days'] ?? null;
-        $estimated_cost_impact      = $_POST['estimated_cost_impact'] ?? null;
+        $keywords      = $_POST['keywords'] ?? null;
+        $problem_summary      = $_POST['problem_summary'] ?? null;
+        $root_cause      = $_POST['root_cause'] ?? null;
+        $case_chronology      = $_POST['case_chronology'] ?? null;
+        $time_impact      = $_POST['time_impact'] ?? null;
+        $cost_impact      = $_POST['cost_impact'] ?? null;
         $quality_impact      = $_POST['quality_impact'] ?? null;
-        $risk_score_change      = $_POST['risk_score_change'] ?? null;
-        $affected_successors      = $_POST['affected_successors'] ?? null;
-        $rework_potential      = $_POST['rework_potential'] ?? null;
-        $impact_summary      = $_POST['impact_summary'] ?? null;
-        $system_recommendation      = $_POST['system_recommendation'] ?? null;
-        $alternative_actions      = $_POST['alternative_actions'] ?? null;
-        $priority_level    = $_POST['priority_level'] ?? null;
-        $cr_status      = $_POST['cr_status'] ?? null;
-        $approval_level      = $_POST['approval_level'] ?? null;
-        $approval_decision      = $_POST['approval_decision'] ?? null;
-        $approval_notes      = $_POST['approval_notes'] ?? null;
-        $approval_date      = $_POST['approval_date'] ?? null;
-        $implementation_status      = $_POST['implementation_status'] ?? null;
-        $implementation_progress      = $_POST['implementation_progress'] ?? null;
-        $evidence_file      = $_POST['evidence_file'] ?? null;
-        $actual_time_impact_days      = $_POST['actual_time_impact_days'] ?? null;
-        $convert_to_knowledge      = $_POST['convert_to_knowledge'] ?? null;
+        $risk_impact      = $_POST['risk_impact'] ?? null;
+        $critical_path_impact      = $_POST['critical_path_impact'] ?? null;
+        $decision_taken      = $_POST['decision_taken'] ?? null;
+        $technical_solution      = $_POST['technical_solution'] ?? null;
+        $mitigation_action      = $_POST['mitigation_action'] ?? null;
+        $implementation_result      = $_POST['implementation_result'] ?? null;
+        $solution_effectiveness      = $_POST['solution_effectiveness'] ?? null;
+        $lesson_learned      = $_POST['lesson_learned'] ?? null;
+        $preventive_recommendation      = $_POST['preventive_recommendation'] ?? null;
+        $reuse_condition      = $_POST['reuse_condition'] ?? null;
+        $similarity_criteria      = $_POST['similarity_criteria'] ?? null;
+        $knowledge_type      = $_POST['knowledge_type'] ?? null;
+        $seci_category      = $_POST['seci_category'] ?? null;
+        $validation_status      = $_POST['validation_status'] ?? null;
+        $validation_id      = $_POST['validation_id'] ?? null;
+        $validation_notes      = $_POST['validation_notes'] ?? null;
+        $validation_date      = $_POST['validation_date'] ?? null;
+        $supporting_document      = $_POST['supporting_document'] ?? null;
+        $version      = $_POST['version'] ?? null;
+        $retrieval_count      = $_POST['retrieval_count'] ?? null;
+        $reused_in_cr_id      = $_POST['reused_in_cr_id'] ?? null;
         // Tambahkan field lainnya di sini jika ada...
 
         // 3. QUERY INSERT KE TABEL 'data_proyek_kb'
         // Sesuaikan nama kolom di dalam tanda kurung dengan kolom di database kamu
-        $sql = "INSERT INTO data_proyek_kb (id, timestamp, cr_id, project_id, date, requester_id, requester_role, change_category, change_type, change_trigger, change_description, root_cause, document_reference, document_link, wbs_code, activity_name, critical_path_status, bim_object_id, bim_element_name, object_location, risk_id, risk_category, risk_score_at_cr, estimated_time_impact_days, estimated_cost_impact, quality_impact, risk_score_change, affected_successors, rework_potential, impact_summary, system_recommendation, alternative_actions, priority_level, cr_status, approval_level, approval_decision, approval_notes, approval_date, implementation_status, implementation_progress, evidence_file, actual_time_impact_days, convert_to_knowledge) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO data_proyek_kb (id, timestamp, knowledge_id, knowledge_title, project_id, project_name, source_type, cr_id, risk_id, wbs_code, activity_name, bim_object_id, bim_element, change_category, risk_category, keywords, problem_summary, root_cause, case_chronology, time_impact, cost_impact, quality_impact, risk_impact, critical_path_impact, decision_taken, technical_solution, mitigation_action, implementation_result, solution_effectiveness, lesson_learned, preventive_recommendation, reuse_condition, similarity_criteria, knowledge_type, seci_category, validation_status, validation_id, validation_notes, validation_date, supporting_document, version, retrieval_count, reused_in_cr_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         
         // Eksekusi query dengan memasukkan data
-        $saved = $stmt->execute([$id, $timestamp, $cr_id, $project_id, $date, $requester_id, $requester_role, $change_category, $change_type, $change_trigger, $change_description, $root_cause, $document_reference, $document_link, $wbs_code, $activity_name, $critical_path_status, $bim_object_id, $bim_element_name, $object_location, $risk_id, $risk_category, $risk_score_at_cr, $estimated_time_impact_days, $estimated_cost_impact, $quality_impact, $risk_score_change, $affected_successors, $rework_potential, $impact_summary, $system_recommendation, $alternative_actions, $priority_level, $cr_status, $approval_level, $approval_decision, $approval_notes, $approval_date, $implementation_status, $implementation_progress, $evidence_file, $actual_time_impact_days, $convert_to_knowledge]);
+        $saved = $stmt->execute([$id, $timestamp, $knowledge_id, $knowledge_title, $project_id, $project_name, $source_type, $cr_id, $risk_id, $wbs_code, $activity_name, $bim_object_id, $bim_element, $change_category, $risk_category, $keywords, $problem_summary, $root_cause, $case_chronology, $time_impact, $cost_impact, $quality_impact, $risk_impact, $critical_path_impact, $decision_taken, $technical_solution, $mitigation_action, $implementation_result, $solution_effectiveness, $lesson_learned, $preventive_recommendation, $reuse_condition, $similarity_criteria, $knowledge_type, $seci_category, $validation_status, $validation_id, $validation_notes, $validation_date, $supporting_document, $version, $retrieval_count, $reused_in_cr_id]);
 
         if ($saved) {
             // Jika berhasil, redirect kembali ke halaman utama
