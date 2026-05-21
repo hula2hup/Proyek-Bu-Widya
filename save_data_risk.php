@@ -97,7 +97,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. QUERY INSERT KE TABEL 'data_proyek_risk'
         // Sesuaikan nama kolom di dalam tanda kurung dengan kolom di database kamu
-        $sql = "INSERT INTO data_proyek_risk (id, timestamp, risk_id, risk_identification_date, risk_owner_id, wbs_code, activity_name, critical_activity, bim_object_id, bim_element_name, risk_location, risk_category, risk_subcategory, risk_event, risk_cause, risk_impact_description, change_trigger_potential, probability_score, risk_score, risk_level, risk_priority, mitigation_status, mitigation_plan, mitigation_owner_id, mitigation_due_date, mitigation_cost, residual_probability, residual_impact, residual_risk_score, early_warning_rule, risk_status, generate_cr, linked_cr_id, related_knowledge_id, preventive_recommendation, risk_evidence, monitoring_notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO data_proyek_risk (
+            id, timestamp, risk_id, risk_identification_date, risk_owner_id,
+            wbs_code, activity_name, critical_activity, bim_object_id, bim_element_name,
+            risk_location, risk_category, risk_subcategory, risk_event, risk_cause,
+            risk_impact_description, change_trigger_potential, probability_score, risk_score, risk_level,
+            risk_priority, mitigation_status, mitigation_plan, mitigation_owner_id, mitigation_due_date,
+            mitigation_cost, residual_probability, residual_impact, residual_risk_score, early_warning_rule,
+            risk_status, generate_cr, linked_cr_id, related_knowledge_id, preventive_recommendation,
+            risk_evidence, monitoring_notes
+        ) VALUES (
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?
+        )";
         $stmt = $pdo->prepare($sql);
         
         // Eksekusi query dengan memasukkan data

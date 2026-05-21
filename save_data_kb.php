@@ -105,7 +105,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. QUERY INSERT KE TABEL 'data_proyek_kb'
         // Sesuaikan nama kolom di dalam tanda kurung dengan kolom di database kamu
-        $sql = "INSERT INTO data_proyek_kb (id, timestamp, knowledge_id, knowledge_title, project_id, project_name, source_type, cr_id, risk_id, wbs_code, activity_name, bim_object_id, bim_element, change_category, risk_category, keywords, problem_summary, root_cause, case_chronology, time_impact, cost_impact, quality_impact, risk_impact, critical_path_impact, decision_taken, technical_solution, mitigation_action, implementation_result, solution_effectiveness, effectiveness_notes, lesson_learned, preventive_recommendation, reuse_condition, similarity_criteria, knowledge_type, seci_category, validation_status, validation_id, validation_notes, validation_date, supporting_document, version, retrieval_count, reused_in_cr_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO data_proyek_kb (
+            id, timestamp, knowledge_id, knowledge_title, project_id,
+            project_name, source_type, cr_id, risk_id, wbs_code,
+            activity_name, bim_object_id, bim_element, change_category, risk_category,
+            keywords, problem_summary, root_cause, case_chronology, time_impact,
+            cost_impact, quality_impact, risk_impact, critical_path_impact, decision_taken,
+            technical_solution, mitigation_action, implementation_result, solution_effectiveness, effectiveness_notes,
+            lesson_learned, preventive_recommendation, reuse_condition, similarity_criteria, knowledge_type,
+            seci_category, validation_status, validation_id, validation_notes, validation_date,
+            supporting_document, version, retrieval_count, reused_in_cr_id
+        ) VALUES (
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?,
+            ?, ?, ?, ?
+        )";
         $stmt = $pdo->prepare($sql);
         
         // Eksekusi query dengan memasukkan data

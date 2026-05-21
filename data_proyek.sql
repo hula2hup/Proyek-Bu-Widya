@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS data_proyek_cr (
     document_link VARCHAR(255) DEFAULT NULL,
     wbs_code VARCHAR(50) DEFAULT NULL,
     activity_name VARCHAR(255) DEFAULT NULL,
-    critical_path_status VARCHAR(50) DEFAULT NULL,
+    critical_path_status BOOLEAN DEFAULT NULL,
     bim_object_id VARCHAR(50) DEFAULT NULL,
     bim_element_name VARCHAR(50) DEFAULT NULL,
     object_location VARCHAR(50) DEFAULT NULL,
