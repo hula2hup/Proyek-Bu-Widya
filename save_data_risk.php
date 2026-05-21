@@ -21,6 +21,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 2. MENYIAPKAN DATA
         $id = uniqid();
         $timestamp = date('Y-m-d H:i:s');
+        $target_dir = "uploads/";
+
+        // Membuat folder 'uploads' jika belum ada
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        // ============================================================
+        // PROSES UPLOAD FILE: risk_evidence
+        // ============================================================
+        $evidence_name = null;
+        if (isset($_FILES['risk_evidence']) && $_FILES['risk_evidence']['error'] == 0) {
+            $ext = pathinfo($_FILES["risk_evidence"]["name"], PATHINFO_EXTENSION);
+            $new_filename = time() . '_evidence_' . uniqid() . '.' . $ext;
+            
+            if (move_uploaded_file($_FILES["risk_evidence"]["tmp_name"], $target_dir . $new_filename)) {
+                $evidence_name = $new_filename;
+            }
+        }
+        
+        $risk_evidence = $evidence_name;
+        // ============================================================
         
         // Sesuaikan variabel di bawah ini dengan atribut 'name' pada tag <input> di HTML kamu
         // Contoh jika di HTML ada <input name="nama_proyek"> dan <input name="lokasi">
@@ -57,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $linked_cr_id      = $_POST['linked_cr_id'] ?? null;
         $related_knowledge_id      = $_POST['related_knowledge_id'] ?? null;
         $preventive_recommendation      = $_POST['preventive_recommendation'] ?? null;
-        $risk_evidence      = $_POST['risk_evidence'] ?? null;
+        $risk_evidence      = $evidence_name;
         $monitoring_notes      = $_POST['monitoring_notes'] ?? null;
 
         // 3. QUERY INSERT KE TABEL 'data_proyek_risk'

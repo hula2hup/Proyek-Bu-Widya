@@ -21,6 +21,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 2. MENYIAPKAN DATA
         $id = uniqid();
         $timestamp = date('Y-m-d H:i:s');
+        $target_dir = "uploads/";
+
+        // Membuat folder 'uploads' jika belum ada
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        // ============================================================
+        // PROSES UPLOAD FILE 1: document_reference
+        // ============================================================
+        $document_name = null;
+        if (isset($_FILES['document_reference']) && $_FILES['document_reference']['error'] == 0) {
+            $ext1 = pathinfo($_FILES["document_reference"]["name"], PATHINFO_EXTENSION);
+            $new_filename1 = time() . '_ref_' . uniqid() . '.' . $ext1;
+            
+            if (move_uploaded_file($_FILES["document_reference"]["tmp_name"], $target_dir . $new_filename1)) {
+                $document_name = $new_filename1;
+            }
+        }
+        $document_reference = $document_name;
+
+        // ============================================================
+        // PROSES UPLOAD FILE 2: evidence_file
+        // ============================================================
+        $evidence_name = null;
+        if (isset($_FILES['evidence_file']) && $_FILES['evidence_file']['error'] == 0) {
+            $ext2 = pathinfo($_FILES["evidence_file"]["name"], PATHINFO_EXTENSION);
+            // Ditambahkan penanda '_evidence_' agar nama file di folder mudah dibedakan
+            $new_filename2 = time() . '_evidence_' . uniqid() . '.' . $ext2;
+            
+            if (move_uploaded_file($_FILES["evidence_file"]["tmp_name"], $target_dir . $new_filename2)) {
+                $evidence_name = $new_filename2;
+            }
+        }
+        $evidence_file = $evidence_name;
+        // ============================================================
         
         // Sesuaikan variabel di bawah ini dengan atribut 'name' pada tag <input> di HTML kamu
         // Contoh jika di HTML ada <input name="nama_proyek"> dan <input name="lokasi">
@@ -34,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $change_trigger      = $_POST['change_trigger'] ?? null;
         $change_description      = $_POST['change_description'] ?? null;
         $root_cause      = $_POST['root_cause'] ?? null;
-        $document_reference      = $_POST['document_reference'] ?? null;
+        $document_reference      = $document_name; // Simpan nama file yang sudah diupload
         $document_link      = $_POST['document_link'] ?? null;
         $wbs_code      = $_POST['wbs_code'] ?? null;
         $activity_name      = $_POST['activity_name'] ?? null;
@@ -62,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $approval_date      = $_POST['approval_date'] ?? null;
         $implementation_status      = $_POST['implementation_status'] ?? null;
         $implementation_progress      = $_POST['implementation_progress'] ?? null;
-        $evidence_file      = $_POST['evidence_file'] ?? null;
+        $evidence_file      = $evidence_name; // Simpan nama file yang sudah diupload
         $actual_time_impact_days      = $_POST['actual_time_impact_days'] ?? null;
         $convert_to_knowledge      = $_POST['convert_to_knowledge'] ?? null;
         // Tambahkan field lainnya di sini jika ada...

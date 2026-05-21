@@ -353,7 +353,7 @@
           </select>
         </div>
         
-        <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST">
+        <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST" enctype="multipart/form-data" style="display:none;">
           <div class="form-card">
             <h2>Form Change Control</h2>
               <!-- Pertanyaan 1 -->
@@ -499,7 +499,7 @@
                 <label>Dasar Dokumen</label>
 
                 <!-- Upload File -->
-                <input type="file" name="document_reference" />
+                <input type="file" name="document_reference" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
 
                 <!-- Atau Link Dokumen -->
                 <input
@@ -806,7 +806,7 @@
               <!-- Bukti Implementasi -->
               <div class="form-group">
                 <label>Bukti Implementasi</label>
-                <input type="file" name="evidence_file" />
+                <input type="file" name="evidence_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
               </div>
 
               <!-- Dampak Aktual Waktu -->
@@ -840,7 +840,7 @@
         </form>
 
           <!-- Form Risk Register -->
-        <form id="form-risk" class="sub-form" action="save_data_risk.php" method="POST">
+        <form id="form-risk" class="sub-form" action="save_data_risk.php" method="POST" enctype="multipart/form-data" style="display:none;">
           <div class="form-card">
             <h2>Form Risk Register</h2>
 
@@ -1210,7 +1210,7 @@
             <!-- Dokumen Pendukung -->
             <div class="form-group">
               <label>Dokumen Pendukung</label>
-              <input type="file" name="risk_evidence" />
+              <input type="file" name="risk_evidence" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
             </div>
 
             <!-- Catatan Monitoring -->
@@ -1226,7 +1226,7 @@
           <button type="submit">Submit Risk Register</button>
         </form>  
 
-        <form id="form-kb" class="sub-form" action="save_data_kb.php" method="POST">
+        <form id="form-kb" class="sub-form" action="save_data_kb.php" method="POST" enctype="multipart/form-data" style="display:none;">
           <div class="form-card">
             <!-- Form Knowledge Base -->
             <h2>Form Knowledge Base</h2>
@@ -1523,7 +1523,7 @@
                   <option value="5">5</option>
                 </select>
 
-                <input type="text" placeholder="Catatan efektivitas" />
+                <input type="text" name="effectiveness_notes" placeholder="Catatan efektivitas" />
               </div>
             </div>
 
@@ -1631,7 +1631,7 @@
             <div class="form-group">
               <label>Dokumen Pendukung</label>
 
-              <input type="file" name="supporting_document" />
+              <input type="file" name="supporting_document" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg" />
 
               <input type="url" placeholder="Masukkan link dokumen" />
             </div>

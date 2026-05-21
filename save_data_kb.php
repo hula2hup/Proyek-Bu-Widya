@@ -21,6 +21,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 2. MENYIAPKAN DATA
         $id = uniqid();
         $timestamp = date('Y-m-d H:i:s');
+        $target_dir = "uploads/";
+
+        // Membuat folder 'uploads' jika belum ada
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        // ============================================================
+        // PROSES UPLOAD FILE: supporting_document
+        // ============================================================
+        $supporting_name = null;
+        if (isset($_FILES['supporting_document']) && $_FILES['supporting_document']['error'] == 0) {
+            $ext = pathinfo($_FILES["supporting_document"]["name"], PATHINFO_EXTENSION);
+            $new_filename = time() . '_evidence_' . uniqid() . '.' . $ext;
+            
+            if (move_uploaded_file($_FILES["supporting_document"]["tmp_name"], $target_dir . $new_filename)) {
+                $supporting_name = $new_filename;
+            }
+        }
+        
+        $supporting_document = $supporting_name;
+        // ============================================================
         
         // Sesuaikan variabel di bawah ini dengan atribut 'name' pada tag <input> di HTML kamu
         // Contoh jika di HTML ada <input name="nama_proyek"> dan <input name="lokasi">
@@ -51,6 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mitigation_action      = $_POST['mitigation_action'] ?? null;
         $implementation_result      = $_POST['implementation_result'] ?? null;
         $solution_effectiveness      = $_POST['solution_effectiveness'] ?? null;
+        $effectiveness_notes      = $_POST['effectiveness_notes'] ?? null;
         $lesson_learned      = $_POST['lesson_learned'] ?? null;
         $preventive_recommendation      = $_POST['preventive_recommendation'] ?? null;
         $reuse_condition      = $_POST['reuse_condition'] ?? null;
@@ -61,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $validation_id      = $_POST['validation_id'] ?? null;
         $validation_notes      = $_POST['validation_notes'] ?? null;
         $validation_date      = $_POST['validation_date'] ?? null;
-        $supporting_document      = $_POST['supporting_document'] ?? null;
+        $supporting_document      = $supporting_name;
         $version      = $_POST['version'] ?? null;
         $retrieval_count      = $_POST['retrieval_count'] ?? null;
         $reused_in_cr_id      = $_POST['reused_in_cr_id'] ?? null;
@@ -69,11 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // 3. QUERY INSERT KE TABEL 'data_proyek_kb'
         // Sesuaikan nama kolom di dalam tanda kurung dengan kolom di database kamu
-        $sql = "INSERT INTO data_proyek_kb (id, timestamp, knowledge_id, knowledge_title, project_id, project_name, source_type, cr_id, risk_id, wbs_code, activity_name, bim_object_id, bim_element, change_category, risk_category, keywords, problem_summary, root_cause, case_chronology, time_impact, cost_impact, quality_impact, risk_impact, critical_path_impact, decision_taken, technical_solution, mitigation_action, implementation_result, solution_effectiveness, lesson_learned, preventive_recommendation, reuse_condition, similarity_criteria, knowledge_type, seci_category, validation_status, validation_id, validation_notes, validation_date, supporting_document, version, retrieval_count, reused_in_cr_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO data_proyek_kb (id, timestamp, knowledge_id, knowledge_title, project_id, project_name, source_type, cr_id, risk_id, wbs_code, activity_name, bim_object_id, bim_element, change_category, risk_category, keywords, problem_summary, root_cause, case_chronology, time_impact, cost_impact, quality_impact, risk_impact, critical_path_impact, decision_taken, technical_solution, mitigation_action, implementation_result, solution_effectiveness, effectiveness_notes, lesson_learned, preventive_recommendation, reuse_condition, similarity_criteria, knowledge_type, seci_category, validation_status, validation_id, validation_notes, validation_date, supporting_document, version, retrieval_count, reused_in_cr_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $pdo->prepare($sql);
         
         // Eksekusi query dengan memasukkan data
-        $saved = $stmt->execute([$id, $timestamp, $knowledge_id, $knowledge_title, $project_id, $project_name, $source_type, $cr_id, $risk_id, $wbs_code, $activity_name, $bim_object_id, $bim_element, $change_category, $risk_category, $keywords, $problem_summary, $root_cause, $case_chronology, $time_impact, $cost_impact, $quality_impact, $risk_impact, $critical_path_impact, $decision_taken, $technical_solution, $mitigation_action, $implementation_result, $solution_effectiveness, $lesson_learned, $preventive_recommendation, $reuse_condition, $similarity_criteria, $knowledge_type, $seci_category, $validation_status, $validation_id, $validation_notes, $validation_date, $supporting_document, $version, $retrieval_count, $reused_in_cr_id]);
+        $saved = $stmt->execute([$id, $timestamp, $knowledge_id, $knowledge_title, $project_id, $project_name, $source_type, $cr_id, $risk_id, $wbs_code, $activity_name, $bim_object_id, $bim_element, $change_category, $risk_category, $keywords, $problem_summary, $root_cause, $case_chronology, $time_impact, $cost_impact, $quality_impact, $risk_impact, $critical_path_impact, $decision_taken, $technical_solution, $mitigation_action, $implementation_result, $solution_effectiveness, $effectiveness_notes, $lesson_learned, $preventive_recommendation, $reuse_condition, $similarity_criteria, $knowledge_type, $seci_category, $validation_status, $validation_id, $validation_notes, $validation_date, $supporting_document, $version, $retrieval_count, $reused_in_cr_id]);
 
         if ($saved) {
             // Jika berhasil, redirect kembali ke halaman utama
