@@ -18,6 +18,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Membuat koneksi ke MySQL
         $pdo = new PDO($dsn, $user, $pass, $options);
         
+        $file_sql_eksternal = 'data_proyek.sql'; // Nama file SQL kamu
+
+        if (file_exists($file_sql_eksternal)) {
+            // Membaca seluruh text/query di dalam file setup.sql
+            $query_dari_file = file_get_contents($file_sql_eksternal);
+            
+            // Mengeksekusi query tersebut ke MySQL Laragon
+            $pdo->exec($query_dari_file);
+        } else {
+            die("Error: File script SQL '$file_sql_eksternal' tidak ditemukan!");
+        }
+        // ============================================================
+
         // 2. MENYIAPKAN DATA
         $id = uniqid();
         $timestamp = date('Y-m-d H:i:s');
