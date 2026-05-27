@@ -347,15 +347,15 @@
           <label>Pilih Jenis Form:</label>
           <select id="form-selector" onchange="switchSubForm(this.value)">
             
-            <option value="form-cr">Change Control</option>
-            <option value="form-risk">Risk Register</option>
-            <option value="form-kb">Knowledge Base</option>
+            <option value="form-cr">Change Register</option>
+            <!-- <option value="form-risk">Risk Register</option>
+            <option value="form-kb">Knowledge Base</option> -->
           </select>
         </div>
         
         <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST" enctype="multipart/form-data" style="display:none;">
           <div class="form-card">
-            <h2>Form Change Control</h2>
+            <h2>Form Change Register</h2>
               <!-- Pertanyaan 1 -->
               <div class="form-group">
                 <label>Identitas CR *</label>
@@ -710,7 +710,8 @@
                 ></textarea>
               </div>
 
-              <!-- Prioritas CR -->
+              
+              <!-- Prioritas CR
               <div class="form-group">
                 <label>Prioritas CR *</label>
                 <select name="priority_level" required>
@@ -720,9 +721,9 @@
                   <option value="high">High</option>
                   <option value="urgent">Urgent</option>
                 </select>
-              </div>
+              </div> -->
 
-              <!-- Status CR -->
+              <!-- Status CR
               <div class="form-group">
                 <label>Status CR *</label>
                 <select name="cr_status" required>
@@ -736,9 +737,9 @@
                   <option value="implemented">Implemented</option>
                   <option value="closed">Closed</option>
                 </select>
-              </div>
+              </div> -->
 
-              <!-- Approval Level -->
+              <!-- Approval Level
               <div class="form-group">
                 <label>Approval Level *</label>
                 <select name="approval_level" required>
@@ -749,9 +750,9 @@
                   <option value="konsultan">Konsultan</option>
                   <option value="manajemen">Manajemen</option>
                 </select>
-              </div>
+              </div> -->
 
-              <!-- Keputusan Approval -->
+              <!-- Keputusan Approval
               <div class="form-group">
                 <label>Keputusan Approval</label>
                 <select name="approval_decision">
@@ -761,9 +762,9 @@
                   <option value="revised">Revised</option>
                   <option value="pending">Pending</option>
                 </select>
-              </div>
+              </div> -->
 
-              <!-- Catatan Approval -->
+              <!-- Catatan Approval
               <div class="form-group">
                 <label>Catatan Approval</label>
                 <textarea
@@ -771,15 +772,15 @@
                   rows="4"
                   placeholder="Masukkan catatan approval"
                 ></textarea>
-              </div>
+              </div> -->
 
-              <!-- Tanggal Approval -->
+              <!-- Tanggal Approval
               <div class="form-group">
                 <label>Tanggal Approval</label>
                 <input type="date" name="approval_date" />
-              </div>
+              </div> -->
 
-              <!-- Status Implementasi -->
+              <!-- Status Implementasi
               <div class="form-group">
                 <label>Status Implementasi</label>
                 <select name="implementation_status">
@@ -789,9 +790,9 @@
                   <option value="completed">Completed</option>
                   <option value="delayed">Delayed</option>
                 </select>
-              </div>
+              </div> -->
 
-              <!-- Progress Implementasi -->
+              <!-- Progress Implementasi
               <div class="form-group">
                 <label>Progress Implementasi</label>
                 <input
@@ -801,15 +802,15 @@
                   min="0"
                   max="100"
                 />
-              </div>
+              </div> -->
 
-              <!-- Bukti Implementasi -->
+              <!-- Bukti Implementasi
               <div class="form-group">
                 <label>Bukti Implementasi</label>
                 <input type="file" name="evidence_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
-              </div>
+              </div> -->
 
-              <!-- Dampak Aktual Waktu -->
+              <!-- Dampak Aktual Waktu
               <div class="form-group">
                 <label>Dampak Aktual Waktu</label>
                 <input
@@ -817,9 +818,9 @@
                   name="actual_time_impact_days"
                   placeholder="Masukkan dampak aktual waktu"
                 />
-              </div>
+              </div> -->
 
-              <!-- Status Knowledge -->
+              <!-- Status Knowledge
               <div class="form-group">
                 <label>Status Knowledge *</label>
 
@@ -834,7 +835,7 @@
                     Jadikan sebagai knowledge project
                   </label>
                 </div>
-              </div>
+              </div> -->
           </div>
           <button type="submit">Submit Change Request</button>
         </form>
