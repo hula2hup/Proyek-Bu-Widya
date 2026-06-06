@@ -1,1913 +1,3629 @@
-
 <!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Site Engineer Dashboard</title>
-
+    <title>Form Site Engineer</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+      .risk-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-      :root {
-        --primary: #1e3a5f;
-        --primary-light: #2d5b8f;
-        --secondary: #f8fafc;
-        --border: #d6dee8;
-        --text: #1f2937;
-        --white: #ffffff;
-      }
+        min-width: 140px;
+        height: 52px;
 
-      body {
-        font-family: "Segoe UI", sans-serif;
-        background: #eef3f9;
-        padding: 40px;
-        color: var(--text);
-      }
-
-      .container {
-        max-width: 1250px;
-        margin: auto;
-      }
-
-      /* PAGE TITLE */
-      .page-title {
-        font-size: 38px;
-        font-weight: 800;
-        color: #1e3a5f;
-
-        padding: 24px 32px;
-        margin-bottom: 25px;
-
-        background: linear-gradient(
-          135deg,
-          #ffffff,
-          #f1f5f9
-        );
-
-        border-left: 8px solid #3a5cf3;
+        padding: 0 25px;
 
         border-radius: 18px;
 
-        box-shadow:
-          0 10px 25px rgba(15, 23, 42, 0.08),
-          0 2px 6px rgba(15, 23, 42, 0.04);
-      }
-
-      /* NAVBAR */
-.top-navbar {
-  background: linear-gradient(
-    135deg,
-    #263238,
-    #37474f
-  );
-
-  height: 78px;
-
-  border-radius: 22px;
-
-  margin-bottom: 18px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 18px;
-
-  box-shadow:
-    0 10px 25px rgba(15, 23, 42, 0.12);
-
-  border: 1px solid rgba(255,255,255,0.05);
-}
-
-/* NAV MENU */
-.nav-menu {
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  height: 100%;
-
-  margin-left: 10px;
-  margin-bottom: 20px;
-}
-
-/* NAV ITEM */
-.nav-item {
-  background: transparent;
-
-  border: none;
-  outline: none;
-
-  color: rgba(255,255,255,0.82);
-
-  font-size: 15px;
-  font-weight: 600;
-  font-family: "Segoe UI", sans-serif;
-
-  height: 54px;
-
-  padding: 0 32px;
-
-  border-radius: 18px;
-
-  cursor: pointer;
-
-  transition: all 0.25s ease;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* HOVER */
-.nav-item:hover {
-  background: rgba(255,255,255,0.08);
-
-  color: #ffffff;
-}
-
-/* ACTIVE */
-.nav-item.active {
-  background: linear-gradient(
-    135deg,
-    #4f7cff,
-    #251bff
-  );
-
-  color: white;
-
-  font-weight: 700;
-
-  box-shadow:
-    0 8px 18px rgba(59,130,246,0.35);
-}
-
-/* REMOVE OLD ACTIVE LINE */
-.nav-item.active::after {
-  display: none;
-}
-
-/* CLICK EFFECT */
-.nav-item:active {
-  transform: scale(0.98);
-}
-
-      /* CARD */
-      .form-card,
-      .summary-card {
-        background: white;
-        padding: 35px;
-        border-radius: 20px;
-
-        box-shadow:
-          0 10px 25px rgba(15, 23, 42, 0.08);
-      }
-
-      /* SECTION TITLE */
-      h2 {
-        font-size: 24px;
-        color: var(--primary);
-
-        margin-bottom: 30px;
-      }
-
-      /* FORM */
-      .form-group {
-        margin-bottom: 22px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 10px;
-
         font-weight: 600;
-        color: #334155;
+        font-size: 15px;
+
+        border: none;
+      }
+      .risk-safe {
+        background: #dcfce7;
+        color: #166534;
       }
 
-      input,
-      select,
-      textarea {
+      .risk-low {
+        background: #fef3c7;
+        color: #92400e;
+      }
+
+      .risk-medium {
+        background: #fde68a;
+        color: #78350f;
+      }
+
+      .risk-high {
+        background: #fed7aa;
+        color: #9a3412;
+      }
+
+      .risk-critical {
+        background: #fecaca;
+        color: #991b1b;
+      }
+      .form-group input,
+      .form-group select {
+        height: 58px;
+        box-sizing: border-box;
+      }
+      #wbsLevel4,
+      #wbsLevel5,
+      #wbsLevel6 {
         width: 100%;
-        padding: 15px 18px;
-
-        border: 1.5px solid var(--border);
-        border-radius: 12px;
-
-        font-size: 14px;
+        max-width: 100%;
+      }
+      .wbs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+      }
+      .form-group textarea {
+        min-height: 120px;
+        box-sizing: border-box;
+      }
+      .section-divider {
+        border: none;
+        height: 1px;
+        background: #e5e7eb;
+        margin: 40px 0;
+      }
+      .full-width {
+        margin-top: 20px;
       }
 
-      textarea {
+      .full-width textarea {
+        min-height: 120px;
+      }
+      .header-dashboard {
+        background: #0f2d52;
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 10px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #0f2d52;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        border: 1px solid #dbe4ef;
+
+        border-radius: 16px;
+
+        padding: 16px 18px;
+
+        font-size: 16px;
+
+        background: white;
+
+        transition: 0.2s;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+
+        border-color: #0f2d52;
+
+        box-shadow: 0 0 0 4px rgba(15, 45, 82, 0.08);
+      }
+
+      .full-width {
+        margin-top: 25px;
+      }
+
+      .full-width textarea {
+        width: 100%;
         min-height: 120px;
         resize: vertical;
       }
 
-      input:focus,
-      select:focus,
-      textarea:focus {
-        outline: none;
+      .upload-section {
+        margin-top: 35px;
+        margin-bottom: 25px;
 
-        border-color: var(--primary-light);
+        padding: 25px;
 
-        box-shadow:
-          0 0 0 4px rgba(45, 91, 143, 0.12);
-      }
+        border: 2px dashed #dbe4ef;
 
-      input[readonly] {
-        background: #f3f6fa;
-      }
+        border-radius: 18px;
 
-      /* BUTTON */
-      button {
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-light)
-        );
-
-        color: white;
-        border: none;
-
-        padding: 15px 28px;
-
-        border-radius: 12px;
-
-        font-size: 15px;
-        font-weight: 700;
-
-        cursor: pointer;
-
-        margin-top: 20px;
-      }
-
-      /* TABLE */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-
-      th {
-        background: #f1f5f9;
-        padding: 16px;
-        text-align: left;
-      }
-
-      td {
-        padding: 16px;
-        border-bottom: 1px solid #e2e8f0;
-      }
-
-      tr:hover {
         background: #f8fafc;
       }
 
-      /* BADGE */
-      .badge {
-        padding: 6px 12px;
-        border-radius: 999px;
+      .section-title {
+        color: #0f2d52;
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .subtitle {
         font-size: 12px;
+        letter-spacing: 2px;
+        opacity: 0.8;
+      }
+
+      .header-dashboard h1 {
+        color: white;
+        margin: 10px 0;
+      }
+
+      .status-badge {
+        display: inline-block;
+        margin-top: 15px;
+        background: #fbbf24;
+        color: #111827;
+        padding: 10px 20px;
+        border-radius: 999px;
         font-weight: 700;
       }
-
-      .submitted {
-        background: #dbeafe;
-        color: #1d4ed8;
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+        margin-bottom: 25px;
       }
 
-      .approved {
-        background: #dcfce7;
-        color: #15803d;
+      .kpi-card {
+        background: white;
+
+        padding: 25px;
+
+        border-radius: 18px;
+
+        border: 1px solid #e2e8f0;
+
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+
+        transition: 0.2s;
       }
 
-      .review {
-        background: #fef3c7;
-        color: #b45309;
+      .kpi-card:hover {
+        transform: translateY(-2px);
       }
 
-      /* MOBILE */
-      @media (max-width: 768px) {
-        body {
-          padding: 20px;
+      .kpi-card h3 {
+        margin: 0;
+        font-size: 14px;
+        color: #64748b;
+      }
+
+      .kpi-card span {
+        font-size: 32px;
+        font-weight: bold;
+        color: #0f2d52;
+      }
+      body {
+        font-family:
+          Segoe UI,
+          sans-serif;
+        background: #eef3f9;
+        padding: 30px;
+      }
+      .container {
+        max-width: 1500px;
+        margin: auto;
+      }
+      .step-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+
+        background: #0f2d52;
+        color: white;
+
+        border-radius: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        font-weight: bold;
+      }
+      .form-section {
+        margin-top: 35px;
+      }
+
+      .form-section:first-child {
+        margin-top: 0;
+      }
+      .tooltip {
+        position: relative;
+        display: inline-block;
+      }
+
+      .tooltip-text {
+        visibility: hidden;
+        opacity: 0;
+
+        position: absolute;
+        left: 35px;
+        top: -10px;
+
+        width: 220px;
+
+        background: white;
+        color: #333;
+
+        padding: 15px;
+
+        border-radius: 12px;
+
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+        transition: all 0.2s ease;
+
+        z-index: 999;
+      }
+
+      .tooltip:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .info-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 22px;
+        height: 22px;
+
+        border-radius: 50%;
+
+        background: #2563eb;
+        color: white;
+
+        font-size: 13px;
+
+        cursor: pointer;
+
+        transition: all 0.2s ease;
+      }
+
+      .info-btn:hover {
+        transform: scale(1.15);
+        background: #1d4ed8;
+      }
+
+      .info-icon {
+        cursor: pointer;
+        color: #2563eb;
+        font-weight: bold;
+        margin-left: 6px;
+      }
+      #gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .gallery-image {
+        width: 140px;
+        height: 100px;
+
+        object-fit: cover;
+
+        border-radius: 8px;
+
+        border: 1px solid #d1d5db;
+
+        cursor: pointer;
+      }
+      .image-box:hover .image-hover-preview {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+      }
+
+      .image-hover-preview img {
+        position: absolute;
+
+        width: 200%;
+        height: 200%;
+
+        object-fit: cover;
+
+        max-width: none;
+      }
+
+      .image-box:hover .image-hover-preview {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .image-box {
+        width: 100%;
+        height: 250px;
+
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+
+        background: #f8fafc;
+
+        overflow: hidden;
+
+        position: relative;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #preview {
+        max-width: 300px;
+        max-height: 200px;
+
+        width: auto;
+        height: auto;
+
+        object-fit: contain;
+
+        display: none;
+
+        border-radius: 8px;
+      }
+
+      .image-modal {
+        display: none;
+
+        position: fixed;
+        inset: 0;
+
+        background: rgba(0, 0, 0, 0.9);
+
+        z-index: 99999;
+
+        overflow: hidden;
+      }
+
+      #modalImage {
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+
+        max-width: 90%;
+        max-height: 90%;
+
+        transform: translate(-50%, -50%) scale(1);
+
+        cursor: grab;
+
+        user-select: none;
+
+        pointer-events: auto;
+      }
+
+      .image-toolbar {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        display: flex;
+        gap: 10px;
+
+        z-index: 999999;
+      }
+
+      .image-toolbar button {
+        padding: 10px 15px;
+      }
+
+      .close-image {
+        position: fixed;
+        top: 20px;
+        right: 30px;
+
+        color: white;
+        font-size: 40px;
+
+        cursor: pointer;
+
+        z-index: 999999;
+        pointer-events: auto;
+      }
+
+      #placeholder {
+        text-align: center;
+        color: #64748b;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .card {
+        background: #fff;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
+        margin-top: 25px;
+      }
+      h1,
+      h2 {
+        color: #1e3a5f;
+      }
+      label {
+        display: block;
+        margin: 12px 0 6px;
+        font-weight: 600;
+      }
+
+      button {
+        background: #1e3a5f;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 15px;
+      }
+      .hidden {
+        display: none;
+      }
+
+      .preview-image {
+        width: 180px;
+        height: 120px;
+
+        object-fit: cover;
+
+        border-radius: 10px;
+
+        border: 1px solid #ddd;
+
+        margin-top: 10px;
+      }
+
+      img {
+        max-width: 300px;
+        margin-top: 10px;
+        border-radius: 10px;
+      }
+      .modal {
+        display: none;
+
+        position: fixed;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background: rgba(0, 0, 0, 0.55);
+
+        justify-content: center;
+        align-items: center;
+
+        z-index: 9999;
+      }
+
+      /* Hover semua tombol */
+      button {
+        transition: all 0.25s ease;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Hover tombol Next */
+      button:hover {
+        background: #294c75;
+      }
+
+      /* Hover tombol Back */
+      .btn-back:hover {
+        background: #475569;
+      }
+
+      /* Hover tombol Submit */
+      .btn-submit:hover {
+        background: #16304d;
+      }
+
+      /* Efek klik */
+      button:active {
+        transform: translateY(0);
+      }
+      .info-btn {
+        transition: all 0.2s ease;
+      }
+
+      .info-btn:hover {
+        background: #1d4ed8;
+        transform: scale(1.15);
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+      }
+
+      .modal-content {
+        animation: popupShow 0.25s ease;
+      }
+
+      @keyframes popupShow {
+        from {
+          opacity: 0;
+          transform: scale(0.85);
         }
 
-        .page-title {
-          font-size: 28px;
+        to {
+          opacity: 1;
+          transform: scale(1);
         }
+      }
 
-        .form-card,
-        .summary-card {
-          padding: 24px;
-        }
+      #infoTitle {
+        color: #1e3a5f;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 10px;
+      }
 
-        .nav-menu {
-          gap: 20px;
-        }
+      #infoText {
+        line-height: 1.8;
+        font-size: 15px;
+      }
+      .modal-content {
+        background: white;
+
+        width: 420px;
+
+        max-width: 90%;
+
+        padding: 25px;
+
+        border-radius: 15px;
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+
+        position: relative;
+      }
+
+      .close-btn {
+        position: absolute;
+
+        right: 15px;
+
+        top: 10px;
+
+        font-size: 24px;
+
+        cursor: pointer;
+      }
+      .pdf-card {
+        width: 140px;
+        height: 100px;
+
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        flex-direction: column;
+
+        text-align: center;
+
+        background: white;
+
+        font-size: 13px;
+
+        cursor: pointer;
+      }
+      .info-btn {
+        display: inline-flex;
+
+        justify-content: center;
+        align-items: center;
+
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+
+        background: #2563eb;
+
+        color: white;
+
+        font-size: 12px;
+
+        margin-left: 5px;
+
+        cursor: pointer;
+      }
+      .button-group {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .btn-back {
+        background: #64748b;
+      }
+
+      .btn-submit {
+        background: #1e3a5f;
       }
     </style>
   </head>
-
   <body>
     <div class="container">
-
-      <!-- TITLE -->
-      <div class="page-title">
-        Site Engineer
-      </div>
-
-      <!-- NAVBAR -->
-      <div class="top-navbar">
-  <div class="nav-menu">
-
-    <button
-      type="button"
-      class="nav-item active"
-      onclick="showSection('form-page', this)"
-    >
-      Pengisian Form
-    </button>
-
-    <button
-      type="button"
-      class="nav-item"
-      onclick="showSection('summary-page', this)"
-    >
-      Ringkasan
-    </button>
-
-  </div>
-</div>
-
-      <!-- FORM PAGE -->
-      <div id="form-page">
-        <div class="form-group">
-          <label>Pilih Jenis Form:</label>
-          <select id="form-selector" onchange="switchSubForm(this.value)">
-            
-            <option value="form-cr">Change Register</option>
-            <!-- <option value="form-risk">Risk Register</option>
-            <option value="form-kb">Knowledge Base</option> -->
-          </select>
-        </div>
-        
-        <form id="form-cr" class="sub-form" action="save_data_cr.php" method="POST" enctype="multipart/form-data" style="display:none;">
-          <div class="form-card">
-            <h2>Form Change Register</h2>
-              <!-- Pertanyaan 1 -->
-              <div class="form-group">
-                <label>Identitas CR *</label>
-                <input
-                  type="text"
-                  name="cr_id"
-                  value="CR-001"
-                  readonly
-                  required
-                />
-              </div>
-
-              <!-- Pertanyaan 2 -->
-              <div class="form-group">
-                <label>Identitas Proyek *</label>
-                <select name="project_id" required>
-                  <option value="">-- Pilih Proyek --</option>
-                  <option value="PRJ001">Project A</option>
-                  <option value="PRJ002">Project B</option>
-                </select>
-              </div>
-
-              <!-- Tanggal Pengajuan -->
-              <div class="form-group">
-                <label>Tanggal Pengajuan *</label>
-                <input type="date" name="cr_date" required />
-              </div>
-
-              <!-- Pengaju Perubahan -->
-              <div class="form-group">
-                <label>Pengaju Perubahan *</label>
-                <select name="requester_id" id="requester_id" required>
-                  <option value="">-- Pilih Pengaju --</option>
-                  <option value="Ahmad">Ahmad</option>
-                  <option value="Budi">Budi</option>
-                  <option value="Laksono">Laksono</option>
-                </select>
-              </div>
-
-              <!-- Jabatan Pengaju -->
-              <div class="form-group">
-                <label>Jabatan Pengaju *</label>
-                <input
-                  type="text"
-                  name="requester_role"
-                  id="requester_role"
-                  placeholder="Auto fill jabatan"
-                  required
-                />
-              </div>
-
-              <script>
-                const requesterSelect = document.getElementById("requester_id");
-                const requesterRole = document.getElementById("requester_role");
-
-                requesterSelect.addEventListener("change", function () {
-                  if (this.value === "Ahmad") {
-                    requesterRole.value = "Site Engineer 1";
-                    requesterRole.readOnly = true;
-                  } else if (this.value === "Budi") {
-                    requesterRole.value = "Site Engineer 2";
-                    requesterRole.readOnly = true;
-                  } else if (this.value === "Laksono") {
-                    requesterRole.value = "Project Team";
-                    requesterRole.readOnly = true;
-                  } else {
-                    requesterRole.value = "";
-                  }
-                });
-              </script>
-
-              <!-- Jenis Perubahan -->
-              <div class="form-group">
-                <label>Jenis Perubahan *</label>
-                <select name="change_category" required>
-                  <option value="">-- Pilih Jenis Perubahan --</option>
-                  <option value="desain">Desain</option>
-                  <option value="metode_kerja">Metode Kerja</option>
-                  <option value="material">Material</option>
-                  <option value="volume">Volume</option>
-                  <option value="mutu">Mutu</option>
-                  <option value="jadwal">Jadwal</option>
-                  <option value="alat">Alat</option>
-                  <option value="supply_chain">Supply Chain</option>
-                  <option value="kondisi_lapangan">Kondisi Lapangan</option>
-                </select>
-              </div>
-
-              <!-- Sifat Perubahan -->
-              <div class="form-group">
-                <label>Sifat Perubahan *</label>
-                <select name="change_type" required>
-                  <option value="">-- Pilih Sifat Perubahan --</option>
-                  <option value="preventif">Preventif</option>
-                  <option value="korektif">Korektif</option>
-                  <option value="darurat">Darurat</option>
-                </select>
-              </div>
-
-              <!-- Sumber Perubahan -->
-              <div class="form-group">
-                <label>Sumber Perubahan *</label>
-                <select name="change_trigger" required>
-                  <option value="">-- Pilih Sumber Perubahan --</option>
-                  <option value="risiko_tinggi">Risiko Tinggi</option>
-                  <option value="deviasi_jadwal">Deviasi Jadwal</option>
-                  <option value="perubahan_desain">Perubahan Desain</option>
-                  <option value="instruksi_owner">Instruksi Owner</option>
-                  <option value="kondisi_lapangan">Kondisi Lapangan</option>
-                  <option value="clash_bim">Clash BIM</option>
-                  <option value="keterlambatan_material">
-                    Keterlambatan Material
-                  </option>
-                </select>
-              </div>
-
-              <!-- Pertanyaan 8 -->
-              <div class="form-group">
-                <label>Deskripsi Perubahan *</label>
-                <textarea
-                  name="change_description"
-                  rows="4"
-                  placeholder="Masukkan deskripsi perubahan"
-                  required
-                ></textarea>
-              </div>
-
-              <!-- Pertanyaan 9 -->
-              <div class="form-group">
-                <label>Penyebab Perubahan *</label>
-                <textarea
-                  name="root_cause"
-                  rows="4"
-                  placeholder="Masukkan penyebab perubahan"
-                  required
-                ></textarea>
-              </div>
-
-              <!-- Pertanyaan 10 -->
-              <div class="form-group">
-                <label>Dasar Dokumen</label>
-
-                <!-- Upload File -->
-                <input type="file" name="document_reference" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
-
-                <!-- Atau Link Dokumen -->
-                <input
-                  type="url"
-                  name="document_link"
-                  placeholder="Masukkan link dokumen (opsional)"
-                />
-              </div>
-
-              <!-- Pertanyaan 11 -->
-              <div class="form-group">
-                <label>Relasi WBS *</label>
-                <select name="wbs_code" required>
-                  <option value="WBS-0">Pilih WBS</option>
-                  <option value="WBS-1.1.1">1.1.1 Program Mobilisasi</option>
-<option value="WBS-1.1.2">1.1.2 Program Demobilisasi</option>
-<option value="WBS-1.2.1">1.2.1 Kantor Penyedia Jasa dan Fasilitasnya</option>
-<option value="WBS-1.2.2">1.2.2 Bengkel dan Gudang Penyedia Jasa</option>
-<option value="WBS-1.2.3">1.2.3 Kantor dan Akomodasi untuk Direksi Pekerjaan</option>
-
-<option value="WBS-1.3.1">1.3.1 Rencana Manajemen dan Keselamatan Lalu Lintas</option>
-<option value="WBS-1.3.2">1.3.2 Uraian Perlengkapan Minimal Jalan Sementara</option>
-<option value="WBS-1.3.3">1.3.3 Pekerjaan Jalan atau Jembatan Sementara</option>
-<option value="WBS-1.3.4">1.3.4 Pemeliharaan untuk Keselamatan Lalu Lintas</option>
-
-<option value="WBS-1.4.1">1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan</option>
-<option value="WBS-1.4.2">1.4.2 Pekerjaan Survei Pelaksanaan Rutin</option>
-<option value="WBS-1.4.3">1.4.3 Penetapan Titik Pengukuran</option>
-<option value="WBS-1.4.4">1.4.4 Tenaga Ahli Rekayasa Lapangan</option>
-
-<option value="WBS-1.5.1">1.5.1 Upaya Pengelolaan Lingkungan</option>
-
-<option value="WBS-1.6.1">1.6.1 Pekerjaan Relokasi Utilitas dan Pelayanan yang Ada</option>
-
-<option value="WBS-1.7.1">1.7.1 Sistem Manajemen K3 Konstruksi</option>
-<option value="WBS-1.7.2">1.7.2 K3 Kantor Lapangan dan Fasilitasnya</option>
-<option value="WBS-1.7.3">1.7.3 Manajemen Risiko</option>
-
-<option value="WBS-1.8.1">1.8.1 Uji Karakteristik</option>
-
-<option value="WBS-1.9.1">1.9.1 Rencana Jaminan & Pengendalian Mutu Proyek</option>
-<option value="WBS-1.9.2">1.9.2 Pengendalian Mutu Material & Produk</option>
-<option value="WBS-1.9.3">1.9.3 Pengujian-Pengujian untuk Penyelesaian</option>
-
-<option value="WBS-2.1.1">2.1.1 Selokan dan Saluran Air</option>
-<option value="WBS-2.1.2">2.1.2 Drainase Pasangan Batu & Mortar</option>
-<option value="WBS-2.1.3">2.1.3 Drainase Beton Precast</option>
-<option value="WBS-2.1.4">2.1.4 Drainase Beton Cast Insitu</option>
-<option value="WBS-2.1.5">2.1.5 Drainase Porous</option>
-
-<option value="WBS-2.2.1">2.2.1 Gorong-gorong Pipa dan Kotak (Box Culvert)</option>
-
-<option value="WBS-3.1.1">3.1.1 Drainase Lantai Jembatan</option>
-
-<option value="WBS-3.2.1">3.2.1 Pembersihan, Pengupasan dan Pemotongan Pohon</option>
-<option value="WBS-3.2.2">3.2.2 Galian Biasa (Common Excavation)</option>
-<option value="WBS-3.2.3">3.2.3 Galian Batu Lunak</option>
-<option value="WBS-3.2.4">3.2.4 Galian Batu</option>
-<option value="WBS-3.2.5">3.2.5 Galian Perkerasan Beraspal</option>
-<option value="WBS-3.2.6">3.2.6 Galian Perkerasan Beton</option>
-
-<option value="WBS-3.3.1">3.3.1 Galian Struktur</option>
-<option value="WBS-3.3.2">3.3.2 Timbunan Kembali</option>
-
-<option value="WBS-3.4.1">3.4.1 Timbunan dari Luar (Borrow Area)</option>
-<option value="WBS-3.4.2">3.4.2 Pekerjaan Geotekstil</option>
-<option value="WBS-3.4.3">3.4.3 Pekerjaan Vacuum Consolidation Method (VCM)</option>
-
-<option value="WBS-4.1.1">4.1.1 Dynamic Compaction (DC)</option>
-<option value="WBS-4.1.2">4.1.2 Pekerjaan Pelebaran Perkerasan Jalan Aspal</option>
-
-<option value="WBS-4.2.1">4.2.1 Pekerjaan Pelebaran Perkerasan Jalan Beton</option>
-
-<option value="WBS-5.1.1">5.1.1 Pekerjaan Pelebaran Bahu Jalan</option>
-<option value="WBS-5.1.2">5.1.2 Lapis Pondasi Agregat</option>
-
-<option value="WBS-5.2.1">5.2.1 Perkerasan Berbutir Tanpa Penutup Aspal</option>
-<option value="WBS-5.2.2">5.2.2 Lapisan Pondasi Semen Tanah</option>
-<option value="WBS-5.2.3">5.2.3 Lapisan Pondasi Agregat Semen (CBT dan CTSB)</option>
-
-<option value="WBS-6.1.1">6.1.1 Perkerasan Beton Semen</option>
-<option value="WBS-6.1.2">6.1.2 Lapisan Aspal Dasar Prime Coat / Tack Coat</option>
-
-<option value="WBS-6.2.1">6.2.1 Lapisan Aspal Atas</option>
-<option value="WBS-6.2.2">6.2.2 Lapisan Penetrasi Macadam</option>
-<option value="WBS-6.2.3">6.2.3 Laburan Aspal Satu Lapis (Burtu)</option>
-
-<option value="WBS-7.1.1">7.1.1 Laburan Aspal Dua Lapis (Burda)</option>
-<option value="WBS-7.1.2">7.1.2 Tiang Pancang Kayu</option>
-<option value="WBS-7.1.3">7.1.3 Tiang Pancang Beton Pracetak</option>
-<option value="WBS-7.1.4">7.1.4 Tiang Pancang Baja Struktur</option>
-<option value="WBS-7.1.5">7.1.5 Tiang Bor Beton Cor Langsung di Tempat</option>
-<option value="WBS-7.1.6">7.1.6 Pondasi Sumuran</option>
-<option value="WBS-7.1.7">7.1.7 Pasangan Batu Kosong dan Bronjong</option>
-
-<option value="WBS-7.2.1">7.2.1 Pekerjaan Pile Cap (Beton Cast Insitu)</option>
-<option value="WBS-7.2.2">7.2.2 Pekerjaan Abutmen / Kolom / Pier Head (Beton Cast Insitu)</option>
-<option value="WBS-7.2.3">7.2.3 Elastomer Bearing Pad</option>
-<option value="WBS-7.2.4">7.2.4 Pekerjaan Girder (Beton Pracetak Pre-Tension)</option>
-<option value="WBS-7.2.5">7.2.5 Pekerjaan Girder (Beton Pracetak Post-Tension)</option>
-<option value="WBS-7.2.6">7.2.6 Pengangkutan dan Penyimpanan Beton Pracetak</option>
-<option value="WBS-7.2.7">7.2.7 Pemasangan (Erection) dengan Metode Double Crane</option>
-<option value="WBS-7.2.8">7.2.8 Pemasangan (Erection) dengan Metode Balance Cantilever</option>
-<option value="WBS-7.2.9">7.2.9 Pemasangan (Erection) dengan Metode Launching Gantry</option>
-<option value="WBS-7.2.10">7.2.10 Pemasangan (Erection) dengan Metode Temporary Tower</option>
-<option value="WBS-7.2.11">7.2.11 Pekerjaan Diafragma</option>
-
-<option value="WBS-7.3.1">7.3.1 Pekerjaan Pelat Lantai</option>
-<option value="WBS-7.3.2">7.3.2 Sandaran (Railing)</option>
-<option value="WBS-7.3.3">7.3.3 Papan Nama Jembatan</option>
-
-<option value="WBS-8.1.1">8.1.1 Pekerjaan Marka dan Lampu</option>
-<option value="WBS-8.1.2">8.1.2 Pembangunan Gerbang Tol</option>
-
-<option value="WBS-8.2.1">8.2.1 Peralatan Gerbang Tol</option>
-<option value="WBS-8.2.2">8.2.2 Pekerjaan Lapangan (Diluar Gedung Kantor)</option>
-
-<option value="WBS-9.1.1">9.1.1 Pembangunan Kantor</option>
-<option value="WBS-9.1.2">9.1.2 Pengembalian Kondisi Perkerasan Lama</option>
-<option value="WBS-9.1.3">9.1.3 Pengembalian Kondisi Bahu Jalan Lama pada Perkerasan Berpenutup Aspal</option>
-<option value="WBS-9.1.4">9.1.4 Pengembalian Kondisi Selokan, Saluran Air, Galian, Timbunan dan Penghijauan</option>
-
-<option value="WBS-9.2.1">9.2.1 Perlengkapan Jalan dan Pengatur Lalu Lintas</option>
-                </select>
-              </div>
-
-              <!-- Pertanyaan 12 -->
-              <div class="form-group">
-                <label>Nama Aktivitas WBS *</label>
-                <input
-                  type="text"
-                  name="activity_name"
-                  placeholder="Auto fill nama aktivitas"
-                  readonly
-                  required
-                />
-              </div>
-
-              <!-- Pertanyaan 13 -->
-              <div class="form-group">
-                <label>Status Jalur Kritis *</label>
-                <div class="checkbox-group">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="critical_path_status"
-                      value="1"
-                      required
-                    />
-                  </label>
-                </div>
-              </div>
-
-              <!-- Relasi BIM -->
-              <div class="form-group">
-                <label>Relasi BIM *</label>
-                <select name="bim_object_id" required>
-                  <option value="">-- Pilih BIM Object --</option>
-                  <option value="BIM-001">BIM Object 001</option>
-                  <option value="BIM-002">BIM Object 002</option>
-                  <option value="BIM-003">BIM Object 003</option>
-                </select>
-              </div>
-
-              <!-- Elemen BIM -->
-              <div class="form-group">
-                <label>Elemen BIM *</label>
-                <input
-                  type="text"
-                  name="bim_element_name"
-                  placeholder="Auto fill elemen BIM"
-                  readonly
-                  required
-                />
-              </div>
-
-              <!-- Lokasi Objek -->
-              <div class="form-group">
-                <label>Lokasi Objek *</label>
-                <select name="object_location" required>
-                  <option value="">-- Pilih Lokasi Objek --</option>
-                  <option value="pier">Pier</option>
-                  <option value="abutment">Abutment</option>
-                  <option value="span">Span</option>
-                  <option value="segment">Segment</option>
-                  <option value="sta">STA</option>
-                </select>
-              </div>
-
-              <!-- Relasi Risiko -->
-              <div class="form-group">
-                <label>Relasi Risiko *</label>
-                <select name="risk_id" required>
-                  <option value="">-- Pilih Risiko --</option>
-                  <option value="RISK-001">RISK-001</option>
-                  <option value="RISK-002">RISK-002</option>
-                  <option value="RISK-003">RISK-003</option>
-                </select>
-              </div>
-
-              <!-- Kategori Risiko Terkait -->
-              <div class="form-group">
-                <label>Kategori Risiko Terkait *</label>
-                <input
-                  type="text"
-                  name="risk_category"
-                  placeholder="Auto fill kategori risiko"
-                  readonly
-                  required
-                />
-              </div>
-
-              <!-- Risk Score Saat CR -->
-              <div class="form-group">
-                <label>Risk Score Saat CR *</label>
-                <input
-                  type="number"
-                  name="risk_score_at_cr"
-                  placeholder="Auto generated risk score"
-                  readonly
-                  required
-                />
-              </div>
-
-              <!-- Dampak Waktu Awal -->
-              <div class="form-group">
-                <label>Dampak Waktu Awal (Hari) *</label>
-                <input
-                  type="number"
-                  name="estimated_time_impact_days"
-                  placeholder="Masukkan estimasi dampak waktu"
-                  required
-                />
-              </div>
-
-              <!-- Dampak Biaya Awal -->
-              <div class="form-group">
-                <label>Dampak Biaya Awal</label>
-                <input
-                  type="number"
-                  name="estimated_cost_impact"
-                  placeholder="Masukkan estimasi biaya"
-                />
-              </div>
-
-              <!-- Dampak Mutu -->
-              <div class="form-group">
-                <label>Dampak Mutu</label>
-                <select name="quality_impact">
-                  <option value="">-- Pilih Dampak Mutu --</option>
-                  <option value="rendah">Rendah</option>
-                  <option value="sedang">Sedang</option>
-                  <option value="tinggi">Tinggi</option>
-                </select>
-              </div>
-              <!-- Dampak Risiko -->
-              <div class="form-group">
-                <label>Dampak Risiko</label>
-                <input
-                  type="number"
-                  name="risk_score_change"
-                  placeholder="Masukkan perubahan risk score"
-                />
-              </div>
-
-              <!-- Dampak Aktivitas Lanjutan -->
-              <div class="form-group">
-                <label>Dampak Aktivitas Lanjutan</label>
-                <select name="affected_successors" multiple>
-                  <option value="activity_1">Aktivitas 1</option>
-                  <option value="activity_2">Aktivitas 2</option>
-                </select>
-              </div>
-
-              <!-- Potensi Rework -->
-              <div class="form-group">
-                <label>Potensi Rework *</label>
-                <select name="rework_potential" required>
-                  <option value="">-- Pilih Potensi Rework --</option>
-                  <option value="low">Rendah</option>
-                  <option value="medium">Sedang</option>
-                  <option value="high">Tinggi</option>
-                </select>
-              </div>
-
-              <!-- Analisis Dampak -->
-              <div class="form-group">
-                <label>Analisis Dampak *</label>
-                <textarea
-                  name="impact_summary"
-                  rows="4"
-                  placeholder="Masukkan analisis dampak"
-                  required
-                ></textarea>
-              </div>
-
-              <!-- Rekomendasi Sistem -->
-              <div class="form-group">
-                <label>Rekomendasi Sistem</label>
-                <input
-                  type="text"
-                  name="system_recommendation"
-                  placeholder="Auto generated recommendation"
-                  readonly
-                />
-              </div>
-
-              <!-- Alternatif Solusi -->
-              <div class="form-group">
-                <label>Alternatif Solusi</label>
-                <textarea
-                  name="alternative_actions"
-                  rows="4"
-                  placeholder="Masukkan alternatif solusi"
-                ></textarea>
-              </div>
-
-              
-              <!-- Prioritas CR
-              <div class="form-group">
-                <label>Prioritas CR *</label>
-                <select name="priority_level" required>
-                  <option value="">-- Pilih Prioritas --</option>
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </div> -->
-
-              <!-- Status CR
-              <div class="form-group">
-                <label>Status CR *</label>
-                <select name="cr_status" required>
-                  <option value="">-- Pilih Status CR --</option>
-                  <option value="draft">Draft</option>
-                  <option value="submitted">Submitted</option>
-                  <option value="under_review">Under Review</option>
-                  <option value="revised">Revised</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                  <option value="implemented">Implemented</option>
-                  <option value="closed">Closed</option>
-                </select>
-              </div> -->
-
-              <!-- Approval Level
-              <div class="form-group">
-                <label>Approval Level *</label>
-                <select name="approval_level" required>
-                  <option value="">-- Pilih Approval Level --</option>
-                  <option value="site_manager">Site Manager</option>
-                  <option value="pm">PM</option>
-                  <option value="owner">Owner</option>
-                  <option value="konsultan">Konsultan</option>
-                  <option value="manajemen">Manajemen</option>
-                </select>
-              </div> -->
-
-              <!-- Keputusan Approval
-              <div class="form-group">
-                <label>Keputusan Approval</label>
-                <select name="approval_decision">
-                  <option value="">-- Pilih Keputusan --</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                  <option value="revised">Revised</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </div> -->
-
-              <!-- Catatan Approval
-              <div class="form-group">
-                <label>Catatan Approval</label>
-                <textarea
-                  name="approval_notes"
-                  rows="4"
-                  placeholder="Masukkan catatan approval"
-                ></textarea>
-              </div> -->
-
-              <!-- Tanggal Approval
-              <div class="form-group">
-                <label>Tanggal Approval</label>
-                <input type="date" name="approval_date" />
-              </div> -->
-
-              <!-- Status Implementasi
-              <div class="form-group">
-                <label>Status Implementasi</label>
-                <select name="implementation_status">
-                  <option value="">-- Pilih Status Implementasi --</option>
-                  <option value="not_started">Not Started</option>
-                  <option value="on_progress">On Progress</option>
-                  <option value="completed">Completed</option>
-                  <option value="delayed">Delayed</option>
-                </select>
-              </div> -->
-
-              <!-- Progress Implementasi
-              <div class="form-group">
-                <label>Progress Implementasi</label>
-                <input
-                  type="number"
-                  name="implementation_progress"
-                  placeholder="Masukkan progress (%)"
-                  min="0"
-                  max="100"
-                />
-              </div> -->
-
-              <!-- Bukti Implementasi
-              <div class="form-group">
-                <label>Bukti Implementasi</label>
-                <input type="file" name="evidence_file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
-              </div> -->
-
-              <!-- Dampak Aktual Waktu
-              <div class="form-group">
-                <label>Dampak Aktual Waktu</label>
-                <input
-                  type="number"
-                  name="actual_time_impact_days"
-                  placeholder="Masukkan dampak aktual waktu"
-                />
-              </div> -->
-
-              <!-- Status Knowledge
-              <div class="form-group">
-                <label>Status Knowledge *</label>
-
-                <div class="checkbox-group">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="convert_to_knowledge"
-                      value="1"
-                      required
-                    />
-                    Jadikan sebagai knowledge project
-                  </label>
-                </div>
-              </div> -->
-          </div>
-          <button type="submit">Submit Change Request</button>
-        </form>
-
-          <!-- Form Risk Register -->
-        <form id="form-risk" class="sub-form" action="save_data_risk.php" method="POST" enctype="multipart/form-data" style="display:none;">
-          <div class="form-card">
-            <h2>Form Risk Register</h2>
-
-            <!-- Identitas Risiko -->
-            <div class="form-group">
-              <label>Identitas Risiko *</label>
-              <input
-                type="text"
-                name="risk_id"
-                value="RISK-001"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Identitas Proyek -->
-            <div class="form-group">
-              <label>Identitas Proyek *</label>
-              <select name="project_id" required>
-                <option value="">-- Pilih Proyek --</option>
-                <option value="PRJ001">Project A</option>
-                <option value="PRJ002">Project B</option>
-              </select>
-            </div>
-
-            <!-- Tanggal Identifikasi -->
-            <div class="form-group">
-              <label>Tanggal Identifikasi *</label>
-              <input type="date" name="risk_identification_date" required />
-            </div>
-
-            <!-- Diidentifikasi Oleh -->
-            <div class="form-group">
-              <label>Diidentifikasi Oleh *</label>
-              <select name="risk_owner_id" required>
-                <option value="">-- Pilih User --</option>
-                <option value="Ahmad">Ahmad</option>
-                <option value="Budi">Budi</option>
-                <option value="Laksono">Laksono</option>
-              </select>
-            </div>
-
-            <!-- Paket Pekerjaan -->
-            <div class="form-group">
-              <label>Paket Pekerjaan *</label>
-              <select name="wbs_code" required>
-                <option value="">-- Pilih WBS --</option>
-                <option value="WBS001">WBS 001</option>
-                <option value="WBS002">WBS 002</option>
-              </select>
-            </div>
-
-            <!-- Nama Aktivitas -->
-            <div class="form-group">
-              <label>Nama Aktivitas *</label>
-              <input
-                type="text"
-                name="activity_name"
-                placeholder="Auto fill aktivitas"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Status Jalur Kritis -->
-            <div class="form-group">
-              <label>Status Jalur Kritis *</label>
-
-              <div class="checkbox-group">
-                <label>
-                  <input
-                    type="checkbox"
-                    name="critical_activity"
-                    value="1"
-                    required
-                  />
-                  Aktivitas Jalur Kritis
-                </label>
-              </div>
-            </div>
-
-            <!-- Relasi BIM -->
-            <div class="form-group">
-              <label>Relasi BIM</label>
-              <select name="bim_object_id">
-                <option value="">-- Pilih BIM Object --</option>
-                <option value="BIM-001">BIM Object 001</option>
-                <option value="BIM-002">BIM Object 002</option>
-                <option value="BIM-003">BIM Object 003</option>
-              </select>
-            </div>
-
-            <!-- Elemen Struktur -->
-            <div class="form-group">
-              <label>Elemen Struktur</label>
-              <input
-                type="text"
-                name="bim_element_name"
-                placeholder="Auto fill elemen struktur"
-                readonly
-              />
-            </div>
-
-            <!-- Lokasi Risiko -->
-            <div class="form-group">
-              <label>Lokasi Risiko *</label>
-              <input
-                type="text"
-                name="risk_location"
-                placeholder="Masukkan lokasi risiko"
-                required
-              />
-            </div>
-
-            <!-- Kategori Risiko -->
-            <div class="form-group">
-              <label>Kategori Risiko *</label>
-              <select name="risk_category" required>
-                <option value="">-- Pilih Kategori Risiko --</option>
-              </select>
-            </div>
-
-            <!-- Subkategori Risiko -->
-            <div class="form-group">
-              <label>Subkategori Risiko</label>
-              <select name="risk_subcategory">
-                <option value="">-- Pilih Subkategori --</option>
-              </select>
-            </div>
-
-            <!-- Peristiwa Risiko -->
-            <div class="form-group">
-              <label>Peristiwa Risiko *</label>
-              <textarea
-                name="risk_event"
-                rows="3"
-                placeholder="Masukkan peristiwa risiko"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Penyebab Risiko -->
-            <div class="form-group">
-              <label>Penyebab Risiko *</label>
-              <textarea
-                name="risk_cause"
-                rows="3"
-                placeholder="Masukkan penyebab risiko"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Dampak Risiko -->
-            <div class="form-group">
-              <label>Dampak Risiko *</label>
-              <textarea
-                name="risk_impact_description"
-                rows="3"
-                placeholder="Masukkan dampak risiko"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Potensi Memicu Perubahan -->
-            <div class="form-group">
-              <label>Potensi Memicu Perubahan *</label>
-              <select name="change_trigger_potential" required>
-                <option value="">-- Pilih Potensi --</option>
-                <option value="yes">Ya</option>
-                <option value="no">Tidak</option>
-              </select>
-            </div>
-
-            <!-- Probabilitas -->
-            <div class="form-group">
-              <label>Probabilitas *</label>
-              <input
-                type="number"
-                name="probability_score"
-                min="1"
-                max="5"
-                placeholder="1 - 5"
-                required
-              />
-            </div>
-
-            <!-- Risk Score -->
-            <div class="form-group">
-              <label>Risk Score *</label>
-              <input
-                type="number"
-                name="risk_score"
-                placeholder="Auto calculate"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Risk Level -->
-            <div class="form-group">
-              <label>Risk Level *</label>
-              <input
-                type="text"
-                name="risk_level"
-                placeholder="Auto generated"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Risk Priority -->
-            <div class="form-group">
-              <label>Risk Priority *</label>
-              <input
-                type="text"
-                name="risk_priority"
-                placeholder="Auto generated"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Status Mitigasi -->
-            <div class="form-group">
-              <label>Status Mitigasi *</label>
-              <select name="mitigation_status" required>
-                <option value="">-- Pilih Status Mitigasi --</option>
-                <option value="not_started">Belum Dimulai</option>
-                <option value="on_progress">On Progress</option>
-                <option value="completed">Selesai</option>
-              </select>
-            </div>
-
-            <!-- Rencana Mitigasi -->
-            <div class="form-group">
-              <label>Rencana Mitigasi *</label>
-              <textarea
-                name="mitigation_plan"
-                rows="3"
-                placeholder="Masukkan rencana mitigasi"
-                required
-              ></textarea>
-            </div>
-
-            <!-- PIC Mitigasi -->
-            <div class="form-group">
-              <label>PIC Mitigasi *</label>
-              <select name="mitigation_owner_id" required>
-                <option value="">-- Pilih PIC --</option>
-              </select>
-            </div>
-
-            <!-- Target Tanggal Mitigasi -->
-            <div class="form-group">
-              <label>Target Tanggal Mitigasi</label>
-              <input type="date" name="mitigation_due_date" />
-            </div>
-
-            <!-- Biaya Mitigasi -->
-            <div class="form-group">
-              <label>Biaya Mitigasi</label>
-              <input
-                type="number"
-                name="mitigation_cost"
-                placeholder="Masukkan biaya mitigasi"
-              />
-            </div>
-
-            <!-- Residual Probability -->
-            <div class="form-group">
-              <label>Residual Probability</label>
-              <input
-                type="number"
-                name="residual_probability"
-                min="1"
-                max="5"
-                placeholder="1 - 5"
-              />
-            </div>
-
-            <!-- Residual Impact -->
-            <div class="form-group">
-              <label>Residual Impact</label>
-              <input
-                type="number"
-                name="residual_impact"
-                min="1"
-                max="5"
-                placeholder="1 - 5"
-              />
-            </div>
-
-            <!-- Residual Risk Score -->
-            <div class="form-group">
-              <label>Residual Risk Score</label>
-              <input
-                type="number"
-                name="residual_risk_score"
-                placeholder="Auto calculate"
-                readonly
-              />
-            </div>
-
-            <!-- Trigger Early Warning -->
-            <div class="form-group">
-              <label>Trigger Early Warning</label>
-              <input
-                type="text"
-                name="early_warning_rule"
-                placeholder="Auto generated"
-                readonly
-              />
-            </div>
-
-            <!-- Status Risiko -->
-            <div class="form-group">
-              <label>Status Risiko *</label>
-              <select name="risk_status" required>
-                <option value="">-- Pilih Status Risiko --</option>
-                <option value="open">Open</option>
-                <option value="monitoring">Monitoring</option>
-                <option value="closed">Closed</option>
-              </select>
-            </div>
-
-            <!-- Apakah Menjadi CR -->
-            <div class="form-group">
-              <label>Apakah Menjadi CR?</label>
-
-              <div class="checkbox-group">
-                <label>
-                  <input type="checkbox" name="generate_cr" value="1" />
-                  Generate Change Request
-                </label>
-              </div>
-            </div>
-
-            <!-- CR ID Terkait -->
-            <div class="form-group">
-              <label>CR ID Terkait</label>
-              <select name="linked_cr_id">
-                <option value="">-- Pilih CR --</option>
-              </select>
-            </div>
-
-            <!-- Knowledge Terkait -->
-            <div class="form-group">
-              <label>Knowledge Terkait</label>
-              <input
-                type="text"
-                name="related_knowledge_id"
-                placeholder="Auto generated"
-                readonly
-              />
-            </div>
-
-            <!-- Rekomendasi Preventif -->
-            <div class="form-group">
-              <label>Rekomendasi Preventif</label>
-              <input
-                type="text"
-                name="preventive_recommendation"
-                placeholder="Masukkan rekomendasi preventif"
-              />
-            </div>
-
-            <!-- Dokumen Pendukung -->
-            <div class="form-group">
-              <label>Dokumen Pendukung</label>
-              <input type="file" name="risk_evidence" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg"/>
-            </div>
-
-            <!-- Catatan Monitoring -->
-            <div class="form-group">
-              <label>Catatan Monitoring</label>
-              <textarea
-                name="monitoring_notes"
-                rows="3"
-                placeholder="Masukkan catatan monitoring"
-              ></textarea>
-            </div>
-          </div>
-          <button type="submit">Submit Risk Register</button>
-        </form>  
-
-        <form id="form-kb" class="sub-form" action="save_data_kb.php" method="POST" enctype="multipart/form-data" style="display:none;">
-          <div class="form-card">
-            <!-- Form Knowledge Base -->
-            <h2>Form Knowledge Base</h2>
-
-            <!-- Identitas Knowledge -->
-            <div class="form-group">
-              <label>Identitas Knowledge *</label>
-              <input
-                type="text"
-                name="knowledge_id"
-                value="KNW-001"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Judul Kasus -->
-            <div class="form-group">
-              <label>Judul Kasus *</label>
-              <input
-                type="text"
-                name="knowledge_title"
-                placeholder="Masukkan judul kasus"
-                required
-              />
-            </div>
-
-            <!-- Project ID -->
-            <div class="form-group">
-              <label>Project ID *</label>
-              <select name="project_id" required>
-                <option value="">-- Pilih Project --</option>
-                <option value="PRJ001">Project A</option>
-                <option value="PRJ002">Project B</option>
-              </select>
-            </div>
-
-            <!-- Nama Proyek -->
-            <div class="form-group">
-              <label>Nama Proyek *</label>
-              <input
-                type="text"
-                name="project_name"
-                placeholder="Auto fill nama proyek"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Sumber Knowledge -->
-            <div class="form-group">
-              <label>Sumber Knowledge *</label>
-              <select name="source_type" required>
-                <option value="">-- Pilih Sumber --</option>
-                <option value="change_request">Change Request</option>
-                <option value="risk_register">Risk Register</option>
-                <option value="manual_input">Manual Input</option>
-              </select>
-            </div>
-
-            <!-- CR ID -->
-            <div class="form-group">
-              <label>CR ID *</label>
-              <select name="cr_id" required>
-                <option value="">-- Pilih CR --</option>
-                <option value="CR-001">CR-001</option>
-                <option value="CR-002">CR-002</option>
-                <option value="CR-003">CR-003</option>
-              </select>
-            </div>
-
-            <!-- Risk ID -->
-            <div class="form-group">
-              <label>Risk ID</label>
-              <select name="risk_id">
-                <option value="">-- Pilih Risk --</option>
-                <option value="RISK-001">RISK-001</option>
-                <option value="RISK-002">RISK-002</option>
-                <option value="RISK-003">RISK-003</option>
-              </select>
-            </div>
-
-            <!-- WBS Code -->
-            <div class="form-group">
-              <label>WBS Code *</label>
-              <select name="wbs_code" required>
-                <option value="">-- Pilih WBS --</option>
-                <option value="WBS-001">WBS-001</option>
-                <option value="WBS-002">WBS-002</option>
-              </select>
-            </div>
-
-            <!-- Nama Aktivitas -->
-            <div class="form-group">
-              <label>Nama Aktivitas *</label>
-              <input
-                type="text"
-                name="activity_name"
-                placeholder="Auto fill aktivitas"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- BIM Object ID -->
-            <div class="form-group">
-              <label>BIM Object ID</label>
-              <select name="bim_object_id">
-                <option value="">-- Pilih BIM Object --</option>
-              </select>
-            </div>
-
-            <!-- Elemen BIM -->
-            <div class="form-group">
-              <label>Elemen BIM</label>
-              <input
-                type="text"
-                name="bim_element"
-                placeholder="Auto fill elemen BIM"
-                readonly
-              />
-            </div>
-
-            <!-- Jenis Perubahan -->
-            <div class="form-group">
-              <label>Jenis Perubahan *</label>
-              <select name="change_category" required>
-                <option value="">-- Pilih Jenis Perubahan --</option>
-                <option value="design_change">Design Change</option>
-                <option value="construction_change">Construction Change</option>
-              </select>
-            </div>
-
-            <!-- Jenis Risiko -->
-            <div class="form-group">
-              <label>Jenis Risiko</label>
-              <select name="risk_category">
-                <option value="">-- Pilih Jenis Risiko --</option>
-                <option value="technical_risk">Technical Risk</option>
-                <option value="financial_risk">Financial Risk</option>
-                <option value="schedule_risk">Schedule Risk</option>
-              </select>
-            </div>
-
-            <!-- Kata Kunci -->
-            <div class="form-group">
-              <label>Kata Kunci *</label>
-              <input
-                type="text"
-                name="keywords"
-                placeholder="Contoh: delay, redesign, struktur"
-                required
-              />
-            </div>
-
-            <!-- Ringkasan Masalah -->
-            <div class="form-group">
-              <label>Ringkasan Masalah *</label>
-              <textarea
-                name="problem_summary"
-                rows="4"
-                placeholder="Masukkan ringkasan masalah"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Penyebab Utama -->
-            <div class="form-group">
-              <label>Penyebab Utama *</label>
-              <textarea
-                name="root_cause"
-                rows="4"
-                placeholder="Masukkan penyebab utama"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Kronologi Kasus -->
-            <div class="form-group">
-              <label>Kronologi Kasus</label>
-              <textarea
-                name="case_chronology"
-                rows="4"
-                placeholder="Masukkan kronologi kasus"
-              ></textarea>
-            </div>
-
-            <!-- Dampak Waktu -->
-            <div class="form-group">
-              <label>Dampak Waktu *</label>
-              <input
-                type="number"
-                name="time_impact"
-                placeholder="Masukkan dampak waktu"
-                required
-              />
-            </div>
-
-            <!-- Dampak Biaya -->
-            <div class="form-group">
-              <label>Dampak Biaya</label>
-              <input
-                type="number"
-                name="cost_impact"
-                placeholder="Masukkan dampak biaya"
-              />
-            </div>
-
-            <!-- Dampak Mutu -->
-            <div class="form-group">
-              <label>Dampak Mutu</label>
-              <input
-                type="text"
-                name="quality_impact"
-                placeholder="Masukkan dampak mutu"
-              />
-            </div>
-
-            <!-- Dampak Risiko -->
-            <div class="form-group">
-              <label>Dampak Risiko</label>
-              <input
-                type="text"
-                name="risk_impact"
-                placeholder="Masukkan dampak risiko"
-              />
-            </div>
-
-            <!-- Critical Path Impact -->
-            <div class="form-group">
-              <label>Critical Path Impact *</label>
-              <select name="critical_path_impact" required>
-                <option value="">-- Pilih Dampak --</option>
-                <option value="yes">Ya</option>
-                <option value="no">Tidak</option>
-              </select>
-            </div>
-
-            <!-- Keputusan yang Diambil -->
-            <div class="form-group">
-              <label>Keputusan yang Diambil *</label>
-              <textarea
-                name="decision_taken"
-                rows="4"
-                placeholder="Masukkan keputusan"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Solusi Teknis -->
-            <div class="form-group">
-              <label>Solusi Teknis *</label>
-              <textarea
-                name="technical_solution"
-                rows="4"
-                placeholder="Masukkan solusi teknis"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Mitigasi -->
-            <div class="form-group">
-              <label>Mitigasi *</label>
-              <textarea
-                name="mitigation_action"
-                rows="4"
-                placeholder="Masukkan mitigasi"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Hasil Implementasi -->
-            <div class="form-group">
-              <label>Hasil Implementasi *</label>
-              <textarea
-                name="implementation_result"
-                rows="4"
-                placeholder="Masukkan hasil implementasi"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Efektivitas Solusi -->
-            <div class="form-group">
-              <label>Efektivitas Solusi</label>
-
-              <div class="input-group">
-                <select name="solution_effectiveness">
-                  <option value="">-- Pilih Score --</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-
-                <input type="text" name="effectiveness_notes" placeholder="Catatan efektivitas" />
-              </div>
-            </div>
-
-            <!-- Lesson Learned -->
-            <div class="form-group">
-              <label>Lesson Learned *</label>
-              <textarea
-                name="lesson_learned"
-                rows="4"
-                placeholder="Masukkan lesson learned"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Rekomendasi Preventif -->
-            <div class="form-group">
-              <label>Rekomendasi Preventif *</label>
-              <textarea
-                name="preventive_recommendation"
-                rows="4"
-                placeholder="Masukkan rekomendasi preventif"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Kondisi Penggunaan Ulang -->
-            <div class="form-group">
-              <label>Kondisi Penggunaan Ulang</label>
-              <textarea
-                name="reuse_condition"
-                rows="4"
-                placeholder="Masukkan kondisi penggunaan ulang"
-              ></textarea>
-            </div>
-
-            <!-- Similarity Criteria -->
-            <div class="form-group">
-              <label>Similarity Criteria *</label>
-              <select name="similarity_criteria" multiple required>
-                <option value="same_risk">Same Risk</option>
-                <option value="same_wbs">Same WBS</option>
-                <option value="same_bim">Same BIM Element</option>
-                <option value="same_change">Same Change Type</option>
-              </select>
-            </div>
-
-            <!-- Jenis Pengetahuan -->
-            <div class="form-group">
-              <label>Jenis Pengetahuan</label>
-              <select name="knowledge_type">
-                <option value="">-- Pilih Jenis Pengetahuan --</option>
-                <option value="explicit">Explicit</option>
-                <option value="tacit">Tacit</option>
-              </select>
-            </div>
-
-            <!-- Proses SECI -->
-            <div class="form-group">
-              <label>Proses SECI *</label>
-              <select name="seci_category" required>
-                <option value="">-- Pilih Proses SECI --</option>
-                <option value="socialization">Socialization</option>
-                <option value="externalization">Externalization</option>
-                <option value="combination">Combination</option>
-                <option value="internalization">Internalization</option>
-              </select>
-            </div>
-
-            <!-- Status Validasi -->
-            <div class="form-group">
-              <label>Status Validasi</label>
-              <select name="validation_status">
-                <option value="">-- Pilih Status Validasi --</option>
-                <option value="draft">Draft</option>
-                <option value="reviewed">Reviewed</option>
-                <option value="validated">Validated</option>
-              </select>
-            </div>
-
-            <!-- Validator -->
-            <div class="form-group">
-              <label>Validator</label>
-              <select name="validator_id">
-                <option value="">-- Pilih Validator --</option>
-              </select>
-            </div>
-
-            <!-- Catatan Validasi -->
-            <div class="form-group">
-              <label>Catatan Validasi</label>
-              <textarea
-                name="validation_notes"
-                rows="4"
-                placeholder="Masukkan catatan validasi"
-              ></textarea>
-            </div>
-
-            <!-- Tanggal Validasi -->
-            <div class="form-group">
-              <label>Tanggal Validasi</label>
-              <input type="date" name="validation_date" />
-            </div>
-
-            <!-- Dokumen Pendukung -->
-            <div class="form-group">
-              <label>Dokumen Pendukung</label>
-
-              <input type="file" name="supporting_document" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg" />
-
-              <input type="url" placeholder="Masukkan link dokumen" />
-            </div>
-
-            <!-- Versi Knowledge -->
-            <div class="form-group">
-              <label>Versi Knowledge *</label>
-              <input
-                type="text"
-                name="version"
-                value="v1.0"
-                readonly
-                required
-              />
-            </div>
-
-            <!-- Frekuensi Digunakan -->
-            <div class="form-group">
-              <label>Frekuensi Digunakan</label>
-              <input type="number" name="retrieval_count" value="0" readonly />
-            </div>
-
-            <!-- Digunakan pada CR -->
-            <div class="form-group">
-              <label>Digunakan pada CR</label>
-              <select name="reused_in_cr_id" multiple>
-                <option value="">-- Pilih CR --</option>
-              </select>
-            </div>
-          </div>
-          <button type="submit">Submit Knowledge Base</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- SUMMARY PAGE -->
-      <div
-        id="summary-page"
-        style="display: none"
-      >
-
-        <div class="summary-card">
-
-          <h2>Ringkasan Change Request</h2>
-
-          <table>
-
-            <thead>
-              <tr>
-                <th>Daftar CR</th>
-                <th>Status</th>
-                <th>Pengaju</th>
-                <th>Tanggal</th>
-                <th>Prioritas</th>
-                <th>Dampak</th>
-              </tr>
-            </thead>
-
-            <tbody>
-
-              <tr>
-                <td>CR-001</td>
-
-                <td>
-                  <span class="badge submitted">
-                    Submitted
-                  </span>
-                </td>
-
-                <td>Ahmad</td>
-
-                <td>2026-05-11</td>
-
-                <td>High</td>
-
-                <td>
-                  Delay pekerjaan pier
-                </td>
-              </tr>
-
-              <tr>
-                <td>CR-002</td>
-
-                <td>
-                  <span class="badge approved">
-                    Approved
-                  </span>
-                </td>
-
-                <td>Budi</td>
-
-                <td>2026-05-10</td>
-
-                <td>Medium</td>
-
-                <td>
-                  Revisi metode kerja
-                </td>
-              </tr>
-
-              <tr>
-                <td>CR-003</td>
-
-                <td>
-                  <span class="badge review">
-                    Under Review
-                  </span>
-                </td>
-
-                <td>Laksono</td>
-
-                <td>2026-05-09</td>
-
-                <td>Urgent</td>
-
-                <td>
-                  Clash BIM area abutment
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
+      <div class="header-dashboard">
+        <div>
+          <div class="subtitle">BIM • WBS • RISK • KNOWLEDGE MANAGEMENT</div>
+
+          <h1>Change Management System</h1>
+
+          <p>
+            Integrasi BIM, WBS, Risk Assessment dan Knowledge Management untuk
+            Pengendalian Perubahan Proyek
+          </p>
         </div>
 
+        <div class="status-badge">SITE ENGINEER</div>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <h3>Total Change</h3>
+          <span id="totalChange">18</span>
+        </div>
+
+        <div class="kpi-card">
+          <h3>Open Change</h3>
+          <span id="openChange">5</span>
+        </div>
+
+        <div class="kpi-card">
+          <h3>High Risk</h3>
+          <span id="highRisk">3</span>
+        </div>
+
+        <div class="kpi-card">
+          <h3>Closed Change</h3>
+          <span id="closedChange">13</span>
+        </div>
+      </div>
+      <div id="identify" class="card">
+        <div class="step-header">
+          <div class="step-number">1</div>
+
+          <h2>Identifikasi Perubahan</h2>
+        </div>
+
+        <div class="form-grid wbs-grid">
+          <div class="form-group">
+            <label>WBS-Paket Pekerjaan</label>
+            <select id="wbsLevel4" required>
+              <option value="">Pilih Paket Pekerjaan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>WBS-Aktivitas</label>
+            <select id="wbsLevel5" required>
+              <option value="">Pilih Aktivitas</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>WBS-Sumber Daya</label>
+            <select id="wbsLevel6" required>
+              <option value="">Pilih Sumber Daya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Kategori Perubahan</label>
+            <select required>
+              <option value="">Pilih Kategori Perubahan</option>
+              <option>Design</option>
+              <option>Method</option>
+              <option>Material</option>
+              <option>Schedule</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Priority
+              <span class="tooltip">
+                <span class="info-btn">ⓘ</span>
+                <span class="tooltip-text">
+                  <b>Skala Priority</b><br /><br />
+                  1 = Sangat Rendah<br />
+                  2 = Rendah<br />
+                  3 = Sedang<br />
+                  4 = Tinggi<br />
+                  5 = Sangat Tinggi
+                </span>
+              </span>
+            </label>
+
+            <input
+              type="number"
+              id="priority"
+              min="1"
+              max="5"
+              step="1"
+              placeholder="1 - 5"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>
+              Risk
+              <span class="tooltip">
+                <span class="info-btn">ⓘ</span>
+                <span class="tooltip-text">
+                  <b>Skala Risk</b><br /><br />
+                  1-2 = Aman<br />
+                  3-4 = Rendah<br />
+                  5-6 = Sedang<br />
+                  7-8 = Tinggi<br />
+                  9-10 = Kritis
+                </span>
+              </span>
+            </label>
+
+            <input
+              type="number"
+              id="risk"
+              min="1"
+              max="10"
+              step="1"
+              placeholder="1 - 10"
+              required
+            />
+          </div>
+        </div>
+        <hr class="section-divider" />
+        <div style="height: 10px"></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Change ID</label>
+            <input value="PROJECT-001" readonly required />
+          </div>
+
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" required />
+          </div>
+
+          <div class="form-group">
+            <label>Submitted By</label>
+            <input id="submittedBy" value="SITE ENGINEER" readonly required />
+          </div>
+
+          <div class="form-group">
+            <label>Project Area</label>
+            <input type="text" placeholder="Masukkan Project Area" required />
+          </div>
+
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" placeholder="Masukkan Lokasi" required />
+          </div>
+
+          <div class="form-group">
+            <label>BIM Object ID</label>
+            <input type="text" placeholder="Contoh : BIM-001" required />
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Kategori Risiko</label>
+            <select id="riskCategory" required>
+              <option value="">Pilih Kategori Risiko</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Variabel Risiko</label>
+            <select id="riskVariable" required>
+              <option value="">Pilih Variabel Risiko</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Risk Status</label>
+            <div id="riskStatus" class="risk-status risk-safe">
+              Belum Dipilih
+            </div>
+          </div>
+        </div>
+
+        <div class="full-width">
+          <label>Deskripsi Risiko</label>
+
+          <textarea id="riskDescription" readonly rows="4"> </textarea>
+        </div>
+
+        <div class="upload-section full-width">
+          <label>Photo Evidence</label>
+
+          <input
+            type="file"
+            id="photo"
+            accept="image/*,.pdf"
+            multiple
+            required
+          />
+
+          <div id="gallery"></div>
+        </div>
+        <div class="image-box">
+          <img id="preview" />
+
+          <div id="placeholder">
+            📷<br />
+            No Image Selected
+          </div>
+        </div>
+        <div id="pdfModal" class="image-modal">
+          <span class="close-image" id="closeImage">&times;</span>
+
+          <iframe
+            id="pdfViewer"
+            style="width: 100%; height: 100%; border: none; background: white"
+          ></iframe>
+        </div>
+        <button type="button" id="previewBtn" style="display: none">
+          🔍 Preview Image
+        </button>
+        <div id="imageModal" class="image-modal">
+          <span class="close-image" id="closeImageModal">&times;</span>
+
+          <div class="image-toolbar">
+            <button id="zoomIn">+</button>
+            <button id="zoomOut">−</button>
+            <button id="resetZoom">Reset</button>
+          </div>
+
+          <img id="modalImage" />
+        </div>
+
+        <div class="full-width">
+          <label>Description</label>
+
+          <textarea
+            rows="5"
+            placeholder="Jelaskan perubahan yang terjadi..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="button-group" style="justify-content: flex-end">
+          <button onclick="nextForm()">Next</button>
+        </div>
+
+        <div id="infoModal" class="modal">
+          <div class="modal-content">
+            <span onclick="closeInfo()">&times;</span>
+            <h3 id="infoTitle"></h3>
+            <p id="infoText"></p>
+          </div>
+        </div>
       </div>
 
+      <div id="register" class="card hidden">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <h2>Register Change Request</h2>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Change Type</label>
+            <select required>
+              <option value="">Pilih Change Type</option>
+              <option>Lingkungan</option>
+              <option>Waktu</option>
+              <option>Tenaga Kerja</option>
+              <option>Material</option>
+              <option>Biaya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Site Condition</label>
+            <select required>
+              <option value="">Pilih Site Condition</option>
+              <option>Normal</option>
+              <option>Terbatas</option>
+              <option>Tidak Siap</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Owner Request</label>
+            <textarea
+              rows="2"
+              placeholder="Tuliskan permintaan owner/konsultan apabila ada..."
+            ></textarea>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Material Change</label>
+            <select required>
+              <option value="">Pilih Material Change</option>
+              <option>Tidak Ada</option>
+              <option>Ada</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Method Change</label>
+            <select required>
+              <option value="">Pilih Method Change</option>
+              <option>Tidak Ada</option>
+              <option>Ada</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Schedule Change</label>
+            <select required>
+              <option value="">Pilih Schedule Change</option>
+              <option>Tidak Ada</option>
+              <option>Ada</option>
+            </select>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Safety Change</label>
+            <select required>
+              <option value="">Pilih Safety Change</option>
+              <option>Tidak Ada</option>
+              <option>Ada</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Impact Area</label>
+            <select required>
+              <option value="">Pilih Impact Area</option>
+              <option>Scope</option>
+              <option>Cost</option>
+              <option>Time</option>
+              <option>Quality</option>
+              <option>Safety</option>
+            </select>
+          </div>
+        </div>
+        <div class="full-width">
+          <label>Description Detail</label>
+
+          <textarea
+            rows="6"
+            required
+            placeholder="Jelaskan detail perubahan yang diajukan..."
+          ></textarea>
+        </div>
+
+        <div
+          class="button-group"
+          style="justify-content: space-between; margin-top: 35px"
+        >
+          <button type="button" class="btn-back" onclick="backForm()">
+            Back
+          </button>
+
+          <button type="button" class="btn-submit" onclick="submitCR()">
+            Submit CR
+          </button>
+        </div>
+      </div>
     </div>
 
     <script>
-  function showSection(sectionId, element) {
+      const wbsData = {
+        // =========================
+        // LEVEL 4 → LEVEL 5 → LEVEL 6
+        // =========================
 
-    const formPage =
-      document.getElementById("form-page");
+        "1.1.1 Program Mobilisasi": {
+          "1.1.1.1 Mobilisasi Material": [
+            "Besi Beton",
+            "Agregat Base A",
+            "Agregat Base B",
+            "Beton Batching Plant",
+          ],
+          "1.1.1.2 Mobilisasi Personil": [
+            "Tenaga Kerja",
+            "Operator",
+            "Staf Proyek",
+          ],
+          "1.1.1.3 Mobilisasi Alat Berat": [
+            "Excavator",
+            "Dump Truck",
+            "Mobile Crane",
+            "Motor Grader",
+            "Vibro Roller",
+            "Water Tank",
+          ],
+        },
 
-    const summaryPage =
-      document.getElementById("summary-page");
+        "1.1.2 Program Demobilisasi": {
+          "1.1.2.1 Demobilisasi Personil": [
+            "Tenaga Kerja",
+            "Operator",
+            "Staf Proyek",
+          ],
+          "1.1.2.2 Demobilisasi Alat Berat": [
+            "Excavator",
+            "Dump Truck",
+            "Mobile Crane",
+            "Motor Grader",
+            "Vibro Roller",
+            "Water Tank",
+          ],
+        },
 
-    formPage.style.display = "none";
-    summaryPage.style.display = "none";
+        "1.2.1 Kantor Penyedia Jasa dan Fasilitasnya": {
+          "1.2.1.1 Pembuatan Kantor Proyek dan Fasilitasnya": [
+            "Kayu",
+            "Triplek",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Pekerja",
+            "Unit Kontainer",
+            "Peralatan Tukang",
+          ],
+          "1.2.1.2 Pembuatan Barak Pekerja": [
+            "Kayu",
+            "Triplek",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+        },
 
-    document.getElementById(sectionId)
-      .style.display = "block";
+        "1.2.2 Bengkel dan Gudang Penyedia Jasa": {
+          "1.2.2.1 Pembuatan Gudang/Bengkel/Lainnya": [
+            "Kayu",
+            "Triplek",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+        },
 
-    document.querySelectorAll(".nav-item")
-      .forEach((item) => {
-        item.classList.remove("active");
+        "1.2.3 Kantor dan Akomodasi untuk Direksi Pekerjaan": {
+          "1.2.3.1 Pembuatan Kantor Direksi Proyek": [
+            "Kayu",
+            "Triplek",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Pekerja",
+            "Unit Kontainer",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "1.3.1 Rencana Manajemen dan Keselamatan Lalu Lintas": {
+          "1.3.1.1 Pembuatan Rute Pengalihan Lalu Lintas": [
+            "Agregat Kelas A",
+            "Jembatan Bailey",
+            "Tenaga Flagman",
+            "Tukang",
+            "Operator",
+            "Motor Grader",
+            "Water Tank",
+          ],
+        },
+
+        "1.3.2 Uraian Perlengkapan Minimal Jalan Sementara": {
+          "1.3.2.1 Pengadaan Perlengkapan Minimal Jalan Sementara": [
+            "Concrete Barrier",
+            "Rambu Panah",
+            "Rambu Suar",
+            "Rambu Informasi Pengalihan",
+            "Rambu Peringatan",
+            "Marka Jalan Sementara",
+            "Alat Komunikasi",
+          ],
+        },
+
+        "1.3.3 Pekerjaan Jalan atau Jembatan Sementara": {
+          "1.3.3.1 Pembuatan Jalan atau Jembatan Sementara": [
+            "Balok Kelapa",
+            "Jembatan Bailey",
+            "Papan",
+            "Kawat",
+            "Paku",
+            "Operator Alat",
+            "Tukang",
+            "Excavator",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "1.3.4 Pemeliharaan untuk Keselamatan Lalu Lintas": {
+          "1.3.4.1 Inspeksi Berkala": [
+            "Rambu K3",
+            "Patroli K3",
+            "Peralatan K3L",
+          ],
+        },
+
+        "1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan": {
+          "1.4.1.1 Survey Ulang Sebelum Pelaksanaan": [
+            "Pilox",
+            "Patok Kayu",
+            "Surveyor",
+            "Asisten Survey",
+            "Total Station",
+          ],
+        },
+
+        "1.4.2 Pekerjaan Survei Pelaksanaan Rutin": {
+          "1.4.2.1 Survey Selama Pelaksanaan": [
+            "Pilox",
+            "Patok Kayu",
+            "Surveyor",
+            "Asisten Survey",
+            "Total Station",
+          ],
+        },
+
+        "1.4.3 Penetapan Titik Pengukuran": {
+          "1.4.3.1 Penetapan Titik Acuan BM": [
+            "Pilox",
+            "Patok Kayu",
+            "Beton BM",
+            "Surveyor",
+            "Asisten Survey",
+            "Total Station",
+          ],
+        },
+
+        "1.4.4 Tenaga Ahli Rekayasa Lapangan": {
+          "1.4.4.1 Pembuatan Site Plan": ["Engineer"],
+        },
+
+        "1.5.1 Upaya Pengelolaan Lingkungan": {
+          "1.5.1.1 Pembuatan Taman Proyek": ["Tukang"],
+          "1.5.1.2 Penerapan Denda Kerusakan Lingkungan": ["Pengawas"],
+        },
+
+        "1.6.1 Pekerjaan Relokasi Utilitas dan Pelayanan yang Ada": {
+          "1.6.1.1 Pemindahan Kabel, Tiang Listrik, Pipa Air": [
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "1.6.1.2 Pemindahan Kuburan": ["Tukang", "Peralatan Tukang"],
+        },
+
+        "1.7.1 Sistem Manajemen K3 Konstruksi": {
+          "1.7.1.1 Pembuatan Rencana Sistem Manajemen K3L Proyek": [
+            "Pengawas Sistem K3L",
+            "Safety Patrol",
+          ],
+        },
+
+        "1.7.2 K3 Kantor Lapangan dan Fasilitasnya": {
+          "1.7.2.1 Pembuatan Kantor K3 dan Fasilitasnya": [
+            "Kayu",
+            "Triplek",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "1.7.3 Manajemen Risiko": {
+          "1.7.3.1 Identifikasi Risiko": [
+            "Engineer/PM",
+            "Pengawas Sistem Mutu dan K3L",
+          ],
+          "1.7.3.2 Penilaian Frekuensi dan Dampak Risiko": [
+            "Engineer/PM",
+            "Pengawas Sistem Mutu dan K3L",
+          ],
+          "1.7.3.3 Mitigasi Risiko": [
+            "Engineer/PM",
+            "Pengawas Sistem Mutu dan K3L",
+          ],
+          "1.7.3.4 Respon Risiko": [
+            "Engineer/PM",
+            "Pengawas Sistem Mutu dan K3L",
+          ],
+          "1.7.3.5 Monitoring Risiko": [
+            "Engineer/PM",
+            "Pengawas Sistem Mutu dan K3L",
+          ],
+        },
+
+        "1.8.1 Uji Karakteristik": {
+          "1.8.1.1 Uji Tanah, Meliputi Pengeboran, SPT, dan Laporan": [
+            "Alat Bor",
+            "Ahli Geoteknik",
+            "Laporan Hasil",
+          ],
+        },
+
+        "1.9.1 Rencana Jaminan dan Pengendalian Mutu Proyek": {
+          "1.9.1.1 Pembuatan Rencana Sistem Mutu Proyek (QC Plan)": [
+            "Quality Control",
+          ],
+          "1.9.1.2 Pembuatan Rencana Jaminan Mutu Proyek": [
+            "Quality Assurance",
+          ],
+        },
+
+        "1.9.2 Pengendalian Mutu Material dan Produk": {
+          "1.9.2.1 Tes Beton": ["Compressive Strength", "Mix Design"],
+          "1.9.2.2 Tes Besi": ["Bend Test", "Tensile Test"],
+        },
+
+        "1.9.3 Pengujian untuk Penyelesaian": {
+          "1.9.3.1 Tes Agregat dan Tanah": [
+            "Compaction Test",
+            "Density",
+            "Konsolidasi",
+            "CBR",
+            "Sand Cone",
+          ],
+          "1.9.3.2 Tes Aspal / Bituminous Test": [
+            "Asphalt Test",
+            "Aggregate Testing",
+          ],
+        },
+
+        "2.1.1 Selokan dan Saluran Air": {
+          "2.1.1.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.1.2 Pembuatan Selokan dan Saluran Air": [
+            "Bata",
+            "Semen",
+            "Pasir",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.1.2 Drainase Pasangan Batu dan Mortar": {
+          "2.1.2.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.2.2 Pemasangan Pasangan Batu dan Mortar": [
+            "Batu Belah",
+            "Semen",
+            "Pasir",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.1.3 Drainase Beton Precast": {
+          "2.1.3.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.3.2 Pemasangan Drainase Precast": [
+            "Drainase Precast",
+            "Semen",
+            "Pasir",
+            "Mandor",
+            "Tukang",
+            "Alat Angkut/Katrol",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.1.4 Drainase Beton Cast Insitu": {
+          "2.1.4.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.4.2 Pekerjaan Bekisting Drainase": [
+            "Triplek",
+            "Kayu",
+            "Paku",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.4.3 Pekerjaan Pembesian Drainase": [
+            "Besi",
+            "Bendrat",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.4.4 Pekerjaan Pengecoran Drainase": [
+            "Beton Readymix",
+            "Mandor",
+            "Tukang",
+            "Concrete Mixer",
+            "Vibrator",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.1.5 Drainase Porous": {
+          "2.1.5.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.5.2 Pemasangan Drainase Porous": [
+            "Pipa PVC",
+            "Lem Plastik",
+            "Gergaji/Pemotong",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.1.6 Gorong-Gorong Pipa dan Box Culvert": {
+          "2.1.6.1 Pekerjaan Lantai Kerja": [
+            "Lean Concrete",
+            "Mandor",
+            "Tukang",
+            "Peralatan Tukang",
+          ],
+          "2.1.6.2 Pemasangan Gorong-Gorong Precast": [
+            "Gorong-Gorong Precast",
+            "Semen",
+            "Pasir",
+            "Mandor",
+            "Tukang",
+            "Alat Angkut/Katrol",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "2.2.1 Drainase Lantai Jembatan": {
+          "2.2.1.1 Pemasangan Drainase Lantai Jembatan": [
+            "Pipa PVC",
+            "Lem Plastik",
+            "Mandor",
+            "Tukang",
+            "Alat Pemotong/Gergaji",
+          ],
+        },
+
+        "3.1.1 Pembersihan, Pengupasan dan Pemotongan Pohon": {
+          "3.1.1.1 Pelaksanaan Pembersihan dan Pemotongan Pohon": [
+            "Mandor",
+            "Pekerja",
+            "Chainsaw",
+            "Cangkul",
+            "Arit/Sabit",
+            "Excavator",
+            "Bulldozer",
+            "Dump Truck",
+          ],
+        },
+
+        "3.2.1 Galian Biasa (Common Excavation)": {
+          "3.2.1.1 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.2.1.2 Galian Konvensional": ["Pekerja", "Mandor", "Alat Gali"],
+          "3.2.1.3 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
+          "3.2.1.4 Pembuangan Tanah": [
+            "Pekerja",
+            "Mandor",
+            "Alat Gali",
+            "Gerobak/Troli",
+          ],
+        },
+
+        "3.2.2 Galian Batu Lunak": {
+          "3.2.2.1 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.2.2.2 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
+          "3.2.2.3 Pembuangan Tanah": ["Operator", "Excavator", "Dump Truck"],
+        },
+
+        "3.2.3 Galian Batu": {
+          "3.2.3.1 Persiapan dan Pemasangan Patok": [
+            "Kayu",
+            "Jaring Pelindung Baja",
+            "Ahli Peledak",
+            "Pekerja",
+            "Alat Bantu",
+          ],
+          "3.2.3.2 Pemasangan Bahan Peledak (Pengeboran)": [
+            "Bahan Peledak",
+            "Ahli Peledak",
+            "Pekerja",
+            "Alat Bor",
+            "Alat Bantu",
+          ],
+          "3.2.3.3 Peledakan Batu": [
+            "Bahan Peledak",
+            "Jaring Pelindung Baja",
+            "Ahli Peledak",
+            "Pekerja",
+            "Alat Bantu",
+          ],
+          "3.2.3.4 Pembuangan Batu": [
+            "Bongkahan Batu",
+            "Operator",
+            "Excavator",
+            "Dump Truck",
+          ],
+        },
+
+        "3.2.4 Galian Perkerasan Beraspal": {
+          "3.2.4.1 Persiapan dan Pemasangan Patok": [
+            "Kayu/Pilox",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.2.4.2 Galian Mekanik": [
+            "Operator",
+            "Power Shovel/Excavator",
+            "Dump Truck",
+          ],
+          "3.2.4.3 Pembuangan Perkerasan Aspal": [
+            "Limbah Aspal",
+            "Operator",
+            "Excavator",
+            "Dump Truck",
+          ],
+        },
+
+        "3.2.5 Galian Perkerasan Beton": {
+          "3.2.5.1 Persiapan dan Pemasangan Patok": [
+            "Kayu/Pilox",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.2.5.2 Galian Mekanik": [
+            "Operator",
+            "Power Shovel/Excavator",
+            "Dump Truck",
+          ],
+          "3.2.5.3 Pembuangan Perkerasan Beton": [
+            "Limbah Beton",
+            "Operator",
+            "Excavator",
+            "Dump Truck",
+          ],
+        },
+
+        "3.2.6 Galian Struktur": {
+          "3.2.6.1 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.2.6.2 Galian Konvensional": ["Pekerja", "Mandor", "Alat Gali"],
+          "3.2.6.3 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
+          "3.2.6.4 Pembuangan Tanah": [
+            "Pekerja",
+            "Mandor",
+            "Alat Gali",
+            "Gerobak/Troli",
+          ],
+        },
+
+        "3.3.1 Timbunan Kembali": {
+          "3.3.1.1 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.3.1.2 Hamparan Tanah": [
+            "Tanah Existing",
+            "Pekerja",
+            "Mandor",
+            "Alat Tukang",
+          ],
+          "3.3.1.3 Pemadatan": ["Pekerja", "Mandor", "Alat Tukang"],
+        },
+
+        "3.3.2 Timbunan dari Luar (Borrow Area)": {
+          "3.3.2.1 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "3.3.2.2 Hamparan Tanah": [
+            "Tanah Baru",
+            "Pekerja",
+            "Mandor",
+            "Bulldozer",
+            "Dump Truck",
+          ],
+          "3.3.2.3 Pemadatan": ["Tanah", "Pekerja", "Mandor", "Vibro Roller"],
+        },
+
+        "3.4.1 Pekerjaan Geotekstil": {
+          "3.4.1.1 Pemasangan Geotekstil": [
+            "Geotekstil",
+            "Mandor",
+            "Tukang",
+            "Mesin Jahit",
+            "Peralatan Tukang",
+          ],
+          "3.4.1.2 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+        },
+
+        "3.4.2 Vacuum Consolidation Method (VCM)": {
+          "3.4.2.1 Pemasangan Perforated Vertical Drain (PVD)": [
+            "Geomembrane",
+            "PVD",
+            "Pipa",
+            "Mandor",
+            "Tukang",
+            "VCM Instrument",
+            "Mesin Jahit",
+            "Peralatan Tukang",
+          ],
+          "3.4.2.2 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+        },
+
+        "3.4.3 Dynamic Compaction (DC)": {
+          "3.4.3.1 Perataan Tanah / Working Platform": [
+            "Tanah",
+            "Operator",
+            "Motor Grader",
+          ],
+          "3.4.3.2 Pemadatan Tanah Dinamis": [
+            "Beban Beton/Baja",
+            "Operator",
+            "Pekerja",
+            "Crane Service",
+            "Sling",
+            "Pressure Meter Tester",
+          ],
+          "3.4.3.3 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+        },
+
+        "4.1.1 Pelebaran Perkerasan Jalan Aspal": {
+          "4.1.1.1 Pelaksanaan Pelebaran Perkerasan Jalan Aspal": [
+            "Agregat Base A",
+            "Agregat Base B",
+            "Agregat Kelas C",
+            "Campuran Hotmix",
+            "Mandor",
+            "Tukang",
+            "Operator",
+            "Wheel Loader",
+            "Dump Truck",
+            "Motor Grader",
+            "Tandem Roller",
+            "Water Tanker",
+          ],
+        },
+
+        "4.1.2 Pelebaran Perkerasan Jalan Beton": {
+          "4.1.2.1 Pelaksanaan Pelebaran Perkerasan Jalan Beton": [
+            "Beton Readymix",
+            "Lean Concrete",
+            "Kayu",
+            "Besi Tulangan",
+            "Bendrat",
+            "Mandor",
+            "Tukang",
+            "Operator",
+            "Truck Mixer",
+            "Concrete Paver",
+          ],
+        },
+
+        "4.2.1 Pelebaran Bahu Jalan": {
+          "4.2.1.1 Pelaksanaan Pelebaran Bahu Jalan": [
+            "Agregat Base A",
+            "Agregat Base B",
+            "Mandor",
+            "Tukang",
+            "Operator",
+            "Wheel Loader",
+            "Dump Truck",
+            "Motor Grader",
+            "Tandem Roller",
+            "Water Tanker",
+          ],
+        },
+
+        "5.1.1 Lapis Pondasi Agregat": {
+          "5.1.1.1 Pengadaan Material": ["Agregat Base A", "Agregat Base B"],
+          "5.1.1.2 Penghamparan dan Pemadatan Lapis Pondasi Agregat": [
+            "Pekerja",
+            "Operator",
+            "Wheel Loader",
+            "Dump Truck",
+            "Motor Grader",
+            "Tandem Roller",
+            "Water Tanker",
+          ],
+        },
+
+        "5.1.2 Perkerasan Berbutir Tanpa Penutup Aspal": {
+          "5.1.2.1 Pengadaan Material": ["Agregat Kelas S"],
+          "5.1.2.2 Penghamparan dan Pemadatan Perkerasan Berbutir": [
+            "Pekerja",
+            "Operator",
+            "Wheel Loader",
+            "Dump Truck",
+            "Motor Grader",
+            "Tandem Roller",
+            "Water Tanker",
+          ],
+        },
+
+        "5.2.1 Lapisan Pondasi Semen Tanah": {
+          "5.2.1.1 Pelaksanaan Lapisan Pondasi Semen Tanah": [
+            "Semen",
+            "Tanah",
+            "Air",
+            "Pekerja",
+            "Mandor",
+            "Concrete Mixer",
+            "Alat Bantu",
+          ],
+        },
+
+        "5.2.2 Lapisan Pondasi Agregat Semen (CBT dan CTSB)": {
+          "5.2.2.1 Pelaksanaan Lapisan Pondasi Agregat Semen": [
+            "Beton Readymix",
+            "Pekerja",
+            "Mandor",
+            "Truck Mixer",
+            "Alat Bantu",
+          ],
+        },
+
+        "5.2.3 Perkerasan Beton Semen": {
+          "5.2.3.1 Pembersihan Area": ["Pekerja", "Air Compressor"],
+          "5.2.3.2 Pemasangan Patok dan Bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat Tukang",
+          ],
+          "5.2.3.3 Lean Concrete": [
+            "Beton B-0",
+            "Pekerja",
+            "Mandor",
+            "Truck Mixer",
+            "Alat Bantu",
+          ],
+          "5.2.3.4 Pemasangan Pembesian": [
+            "Besi Tulangan",
+            "Kawat Bendrat",
+            "Tukang Besi",
+            "Kepala Tukang",
+            "Pekerja",
+            "Mandor",
+            "Bar Bender",
+            "Bar Cutter",
+            "Alat Bantu Tukang",
+          ],
+          "5.2.3.5 Pemasangan Bekisting": [
+            "Kayu",
+            "Paku",
+            "Tukang Kayu",
+            "Pekerja",
+            "Mandor",
+            "Gergaji Kayu",
+            "Alat Bantu Tukang",
+          ],
+          "5.2.3.6 Membran Plastik": ["Pekerja", "Plastik Membran"],
+          "5.2.3.7 Tulangan Dowel": [
+            "Besi Tulangan",
+            "Bendrat",
+            "Tukang Besi",
+            "Alat Tukang",
+          ],
+          "5.2.3.8 Penghamparan Beton": [
+            "Beton Readymix",
+            "Pekerja",
+            "Mandor",
+            "Operator",
+            "Concrete Pump",
+            "Bucket",
+            "Vibrator",
+          ],
+          "5.2.3.9 Perawatan / Curing Beton": [
+            "Curing Compound",
+            "Pekerja",
+            "Mandor",
+            "Fog Spraying",
+            "Concrete Vibrator",
+          ],
+          "5.2.3.10 Joint Sealant": ["Material Sealant", "Pekerja"],
+        },
+        "6.1.1 Prime coat / Tack coat": {
+          "6.1.1.1 Pembersihan area": ["Pekerja", "Air Compressor"],
+          "6.1.1.2 Pembuatan dan Produksi Campuran Aspal": [
+            "Aspal Emulsi",
+            "Kerosene",
+            "Pekerja",
+            "Operator",
+            "Asphalt Mixing Plant",
+          ],
+          "6.1.1.3 Penghamparan Lapisan Pengikat & Perekat": [
+            "Campuran Hotmix (Prime Coat)",
+            "Mandor",
+            "Tukang",
+            "Asphalt Sprayer",
+            "Asphalt Distributor",
+          ],
+        },
+
+        "6.1.2 Lapisan Aspal Atas": {
+          "6.1.2.1 Pembuatan dan Produksi Campuran Aspal": [
+            "Agregat 5-10",
+            "Agregat 10-20",
+            "Aspal Emulsi",
+            "Filler",
+            "Stripping Anti Age",
+            "Mandor",
+            "Tukang",
+            "Asphalt Mixing Plant",
+          ],
+          "6.1.2.2 Penghamparan Campuran Lapisan Atas": [
+            "Aspal Agregat",
+            "Mandor",
+            "Tukang",
+            "Dump Truck",
+            "Asphalt Finisher",
+            "Tandem Roller",
+            "Tyre Roller",
+            "Water Tank",
+          ],
+          "6.1.2.3 Pemeliharaan dan Pembukaan Bagi Lalu Lintas": [
+            "Material Bantu K3",
+            "Pekerja",
+            "Safety Patrol",
+          ],
+          "6.1.2.4 Pengendalian Mutu dan Pemeriksaan di Lapangan": [
+            "Ekstraksi Cone Test",
+            "QC",
+          ],
+        },
+
+        "6.2.1 Lapisan Penetrasi Macadam": {
+          "6.2.1.1 Material": ["Aspal Emulsi"],
+          "6.2.1.2 Peralatan": ["Asphalt Mixing Plant", "Fleet Paver"],
+          "6.2.1.3 Pelaksanaan": [
+            "Aspal Emulsi",
+            "Mandor",
+            "Tukang",
+            "Asphalt Mixing Plant",
+            "Asphalt Sprayer",
+          ],
+          "6.2.1.4 Pengendalian Mutu dan Pengujian di Lapangan": [
+            "Aspal Tester",
+            "QC",
+          ],
+        },
+
+        "6.2.2 Laburan Aspal Satu Lapis (Burtu)": {
+          "6.2.2.1 Material": ["Aspal Emulsi"],
+          "6.2.2.2 Peralatan": ["Asphalt Mixing Plant", "Asphalt Sprayer"],
+          "6.2.2.3 Pelaksanaan Pekerjaan": ["Pekerja"],
+          "6.2.2.4 Pengendalian Mutu dan Pengujian Lapangan": [
+            "Aspal Tester",
+            "QC",
+          ],
+        },
+
+        "6.2.3 Laburan Aspal Dua Lapis (Burda)": {
+          "6.2.3.1 Material": ["Aspal Emulsi"],
+          "6.2.3.2 Peralatan": ["Asphalt Mixing Plant", "Asphalt Sprayer"],
+          "6.2.3.3 Pelaksanaan Pekerjaan": ["Pekerja"],
+          "6.2.3.4 Pengendalian Mutu dan Pengujian Lapangan": [
+            "Aspal Tester",
+            "QC",
+          ],
+        },
+
+        "7.1.1 Tiang Pancang Kayu": {
+          "7.1.1.1 Tiang Pancang Kayu": [
+            "Kayu (Dolken)",
+            "Pekerja",
+            "Mandor",
+            "Palu",
+            "Hammer Jack",
+            "Bandul",
+            "Excavator",
+          ],
+        },
+
+        "7.1.2 Tiang Pancang Beton Pracetak": {
+          "7.1.2.1 Pemancangan": [
+            "Tiang Pancang Beton Precast",
+            "Pekerja",
+            "Mandor",
+            "Jack In Pile",
+            "Drop Hammer",
+            "Diesel Hammer",
+            "Hydraulic Hammer",
+            "Vibratory Pile Driver",
+            "Mobile Crane",
+          ],
+          "7.1.2.2 Penyambungan Tiang": [
+            "Baja Las",
+            "Pekerja",
+            "Mandor",
+            "Alat Las",
+          ],
+          "7.1.2.3 Final Set / Kalendering": ["Pekerja", "Pensil", "Kertas"],
+        },
+
+        "7.1.3 Tiang Pancang Baja Struktur": {
+          "7.1.3.1 Pemancangan Tiang Baja": [
+            "Tiang Pancang Baja",
+            "Pekerja",
+            "Mandor",
+            "Jack In Pile",
+            "Drop Hammer",
+            "Diesel Hammer",
+            "Hydraulic Hammer",
+            "Vibratory Pile Driver",
+            "Mobile Crane",
+          ],
+          "7.1.3.2 Penyambungan Tiang": [
+            "Material Las",
+            "Pekerja",
+            "Mandor",
+            "Alat Las",
+          ],
+          "7.1.3.3 Final Set / Kalendering": ["Pekerja", "Pensil", "Kertas"],
+        },
+
+        "7.1.4 Tiang Bor Beton Cor Langsung di Tempat": {
+          "7.1.4.1 Pembuatan Sumur Test": [
+            "Beton Ready Mix",
+            "Besi",
+            "Pekerja",
+            "Mandor",
+            "Jetting",
+            "Self Jetting",
+            "Hole Puncher",
+            "Pipa Casing",
+            "Pompa Submersible",
+            "Generator",
+          ],
+          "7.1.4.2 Pengeboran (Wash Drilling / Dry Drilling)": [
+            "Air",
+            "Beton Ready Mix",
+            "Besi",
+            "Pekerja",
+            "Mandor",
+            "Mesin Bore Pile",
+          ],
+          "7.1.4.3 Pemasangan Casing": [
+            "Casing Baja",
+            "Pekerja",
+            "Pipa Casing",
+            "Vibro Hammer",
+          ],
+          "7.1.4.4 Pengeboran dengan Cairan Slurry": [
+            "Cairan Bentonite",
+            "Polimer",
+            "Pekerja",
+            "Mandor",
+            "Bentonite Pump",
+          ],
+          "7.1.4.5 Pembersihan Lubang Bor": [
+            "Fluida Pengeboran",
+            "Pekerja",
+            "Cleaning Bucket",
+            "Pompa Submersible",
+            "Excavator",
+            "Dump Truck",
+          ],
+          "7.1.4.6 Fabrikasi Besi Pondasi Tiang": [
+            "Besi Beton",
+            "Bendrat",
+            "Pekerja",
+            "Mandor",
+            "Bar Bender",
+            "Bar Cutter",
+          ],
+          "7.1.4.7 Pemasangan Penulangan Bored Pile": [
+            "Besi Beton",
+            "Pekerja",
+            "Mandor",
+            "Crawler Crane",
+          ],
+          "7.1.4.8 Pembersihan Ulang dengan Alat Penyedot": [
+            "Pekerja",
+            "Cleaning Bucket",
+          ],
+          "7.1.4.9 Pemasangan Pipa Tremie untuk Pengecoran": [
+            "Pekerja",
+            "Mandor",
+            "Pipa Tremie",
+            "Crawler Crane",
+          ],
+          "7.1.4.10 Pengecoran Beton Tiang Bor": [
+            "Beton Ready Mix",
+            "Mandor",
+            "Pekerja",
+            "Concrete Pump",
+            "Truck Mixer",
+          ],
+          "7.1.4.11 Penarikan Casing": ["Pekerja", "Mandor", "Crawler Crane"],
+        },
+
+        "7.1.5 Pondasi Sumuran": {
+          "7.1.5.1 Pengadaan Material": [
+            "Besi Beton",
+            "Batu",
+            "Beton Ready Mix",
+          ],
+          "7.1.5.2 Pelaksanaan": ["Mandor", "Pekerja", "Alat Bantu Tukang"],
+        },
+
+        "7.1.6 Pasangan Batu Kosong dan Bronjong": {
+          "7.1.6.1 Pengadaan Material": ["Batu Belah", "Besi Bronjong"],
+          "7.1.6.2 Pelaksanaan": [
+            "Mandor",
+            "Pekerja",
+            "Alat Bantu Tukang",
+            "Troli",
+          ],
+        },
+
+        "7.1.7 Pek. Pile Cap (Beton Cast Insitu)": {
+          "7.1.7.1 Pek. Baja Tulangan (Pembesian)": [
+            "Besi",
+            "Kawat Beton",
+            "Pekerja",
+            "Tukang Besi",
+            "Kepala Tukang",
+            "Mandor",
+            "Bar Cutter",
+            "Bar Bender",
+          ],
+          "7.1.7.2 Pek. Bekisting": [
+            "Kayu",
+            "Paku",
+            "Besi Rangka Hollow",
+            "Tukang Las",
+            "Pekerja",
+            "Tukang Kayu",
+            "Kepala Tukang",
+            "Mandor",
+            "Gergaji Kayu",
+            "Palu",
+            "Alat Las",
+          ],
+          "7.1.7.3 Beton Campuran Konvensional": [
+            "Semen",
+            "Agregat",
+            "Pasir",
+            "Air",
+            "Mandor",
+            "Tukang",
+            "Timbangan",
+            "Beton Molen",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.1.7.4 Beton Readymix": [
+            "Beton Readymix",
+            "Pekerja",
+            "Mandor",
+            "Operator",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.1.7.5 Pengerjaan Akhir / Curing": [
+            "Curing Compound",
+            "Pekerja",
+            "Fog Spraying Concrete",
+          ],
+          "7.1.7.6 Pengendalian Mutu di Lapangan": [
+            "Beton Campuran",
+            "Tukang",
+            "Abhram Cone",
+            "Cetakan Kubus",
+          ],
+        },
+
+        "7.2.1 Pek. Abutmen / Kolom / Pier Head (Beton Cast Insitu)": {
+          "7.2.1.1 Pek. Baja Tulangan (Pembesian)": [
+            "Besi",
+            "Kawat Beton",
+            "Pekerja",
+            "Tukang Besi",
+            "Kepala Tukang",
+            "Mandor",
+            "Bar Cutter",
+            "Bar Bender",
+          ],
+          "7.2.1.2 Pek. Bekisting": [
+            "Kayu",
+            "Paku",
+            "Besi Rangka Hollow",
+            "Tukang Las",
+            "Pekerja",
+            "Tukang Kayu",
+            "Kepala Tukang",
+            "Mandor",
+            "Gergaji Kayu",
+            "Palu",
+            "Alat Las",
+          ],
+          "7.2.1.3 Beton Campuran Konvensional": [
+            "Semen",
+            "Agregat",
+            "Pasir",
+            "Air",
+            "Mandor",
+            "Tukang",
+            "Timbangan",
+            "Beton Molen",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.2.1.4 Beton Readymix": [
+            "Beton Readymix",
+            "Pekerja",
+            "Mandor",
+            "Operator",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.2.1.5 Pengerjaan Akhir / Curing": [
+            "Curing Compound",
+            "Pekerja",
+            "Fog Spraying Concrete",
+          ],
+          "7.2.1.6 Pengendalian Mutu di Lapangan": [
+            "Beton Campuran",
+            "Tukang",
+            "Abhram Cone",
+            "Cetakan Kubus",
+          ],
+          "7.2.1.7 Sambungan Ekspansi (Expansion Joint)": [
+            "Expansion Joint",
+            "Tukang",
+            "Pekerja",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.2 Elastomer Bearing Pad": {
+          "7.2.2.1 Pengadaan Material": ["Bearing Pad"],
+          "7.2.2.2 Pemasangan Perletakan (Bearing Pad)": [
+            "Mandor",
+            "Tukang",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.3 Pek. Girder (Beton Pracetak Pre-Tension)": {
+          "7.2.3.1 Pengadaan Material": ["Beton Ready Mix", "Mortar Grouting"],
+          "7.2.3.2 Instalasi PC Strand": [
+            "Steel Strand",
+            "Tukang",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.3.3 Stressing Girder": [
+            "Steel Strand",
+            "Tukang",
+            "Jack Stressing",
+          ],
+          "7.2.3.4 Pengecoran Girder": [
+            "Beton Ready Mix",
+            "Pekerja",
+            "Mandor",
+            "Operator Alat Berat",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+        },
+
+        "7.2.4 Pek. Girder (Beton Pracetak Post-Tension)": {
+          "7.2.4.1 Setting Girder": [
+            "Beton Pracetak Girder",
+            "Sleeper",
+            "Operator",
+            "Pekerja",
+            "Truck Tronton",
+            "Crawler Crane",
+          ],
+          "7.2.4.2 Instalasi PC Strand": [
+            "Steel Strand",
+            "Casing",
+            "Tukang",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.4.3 Instalasi Epoxy Bonding di Sambungan Antar Girder": [
+            "Epoxy Bonding",
+            "Tukang",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.4.4 Stressing Girder Jembatan": [
+            "Steel Strand Wedges",
+            "Tukang",
+            "Jack Stressing",
+          ],
+          "7.2.4.5 Pemotongan Kelebihan Strand": [
+            "Tukang",
+            "Pemotong Strand Baja",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.4.6 Grouting Tendon Girder": [
+            "Material Grouting",
+            "Mandor",
+            "Tukang",
+            "Injeksi Grouting",
+            "Stang Grouting",
+            "Grout Mixer",
+          ],
+        },
+
+        "7.2.5 Pengangkutan dan Penyimpanan Beton Pracetak": {
+          "7.2.5.1 Pengangkutan (Delivery) Unit Beton Pracetak": [
+            "Unit Beton Pracetak",
+            "Operator",
+            "Pekerja",
+            "Truck Tronton",
+          ],
+          "7.2.5.2 Penyimpanan Unit Beton Pracetak": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Crane Service",
+            "Sling",
+          ],
+        },
+
+        "7.2.6 Pemasangan (Erection) dengan Metode Double Crane": {
+          "7.2.6.1 Persiapan Material, Tenaga Kerja dan Alat": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.6.2 Penempatan Crane pada Dua Sisi Jembatan": [
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.6.3 Pemasangan (Erection) dengan Metode Double Crane": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.6.4 Penempatan Girder pada Bearing Pad": [
+            "Girder Beton Pracetak",
+            "Bearing Pad",
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.6.5 Pek. Finishing": [
+            "Material Grouting",
+            "Material Pengelasan",
+            "Pekerja",
+            "Alat Las",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.7 Pemasangan (Erection) dengan Metode Balance Cantilever": {
+          "7.2.7.1 Persiapan Material, Tenaga Kerja dan Alat": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Pekerja",
+            "Balance Cantilever (1 Set)",
+          ],
+          "7.2.7.2 Setting Alat Balance Cantilever pada Ujung Perletakan": [
+            "Operator",
+            "Pekerja",
+            "Sling Wire Rope",
+            "Shackle",
+            "Trailler",
+            "Boogie",
+            "Crane",
+          ],
+          "7.2.7.3 Pemasangan (Erection) dengan Metode Balance Cantilever": [
+            "Girder Beton Pracetak",
+            "Link Set Steel Beam",
+            "Counter Weight",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Sling Wire Rope",
+            "Shackle",
+            "Trailler",
+            "Boogie",
+            "Crane",
+          ],
+          "7.2.7.4 Penempatan Girder pada Bearing Pad": [
+            "Girder Beton Pracetak",
+            "Bearing Pad",
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.7.5 Pek. Finishing": [
+            "Material Grouting",
+            "Material Pengelasan",
+            "Pekerja",
+            "Alat Las",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.8 Pemasangan (Erection) dengan Metode Launching Gantry": {
+          "7.2.8.1 Persiapan Material, Tenaga Kerja dan Alat": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Pekerja",
+            "Launching Gantry (1 Set)",
+          ],
+          "7.2.8.2 Setting Alat Launching Gantry pada Ujung Perletakan": [
+            "Operator",
+            "Pekerja",
+            "Trailler",
+            "Boogie",
+            "Crane",
+            "Sling Wire Rope",
+            "Jack Hidrolik",
+            "Chain Block",
+          ],
+          "7.2.8.3 Pemasangan (Erection) dengan Metode Launching Gantry": [
+            "Girder Beton Pracetak",
+            "Beam Peluncur",
+            "Roller",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Trailler",
+            "Boogie",
+            "Crane",
+            "Sling Wire Rope",
+            "Jack Hidrolik",
+            "Chain Block",
+          ],
+          "7.2.8.4 Penempatan Girder pada Bearing Pad": [
+            "Girder Beton Pracetak",
+            "Bearing Pad",
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.8.5 Pek. Finishing": [
+            "Material Grouting",
+            "Material Pengelasan",
+            "Pekerja",
+            "Alat Las",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.9 Pemasangan (Erection) dengan Metode Temporary Tower": {
+          "7.2.9.1 Persiapan Material, Tenaga Kerja dan Alat": [
+            "Girder Beton Pracetak",
+            "Operator",
+            "Pekerja",
+            "Launching Gantry (1 Set)",
+          ],
+          "7.2.9.2 Setting Alat Temporary Tower pada Ujung Perletakan": [
+            "Operator",
+            "Pekerja",
+            "Trailler",
+            "Boogie",
+            "Crane",
+            "Sling Wire Rope",
+            "Hanger",
+            "Chain Block",
+          ],
+          "7.2.9.3 Pemasangan (Erection) dengan Metode Temporary Tower": [
+            "Girder Beton Pracetak",
+            "Temporary Steel Tower",
+            "Steel Girder",
+            "Steel Connection",
+            "Cable Stayed",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Trailler",
+            "Boogie",
+            "Crane",
+            "Sling Wire Rope",
+            "Hanger",
+            "Chain Block",
+          ],
+          "7.2.9.4 Penempatan Girder pada Bearing Pad": [
+            "Girder Beton Pracetak",
+            "Bearing Pad",
+            "Operator",
+            "Crane Service (2 Unit)",
+            "Sling",
+          ],
+          "7.2.9.5 Pek. Finishing": [
+            "Material Grouting",
+            "Material Pengelasan",
+            "Pekerja",
+            "Alat Las",
+            "Alat Bantu",
+          ],
+        },
+
+        "7.2.10 Pekerjaan Diafragma": {
+          "7.2.10.1 Setting Diafragma": [
+            "Beton Pracetak Diafragma",
+            "Sleeper",
+            "Operator",
+            "Pekerja",
+            "Truck Tronton",
+            "Crawler Crane",
+          ],
+          "7.2.10.2 Instalasi PC Strand": [
+            "Steel Strand",
+            "Casing",
+            "Tukang",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.10.3 Instalasi Epoxy Bonding di Sambungan Antar Girder": [
+            "Epoxy Bonding",
+            "Tukang",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.10.4 Stressing Girder Jembatan": [
+            "Steel Strand Wedges",
+            "Tukang",
+            "Jack Stressing",
+          ],
+          "7.2.10.5 Pemotongan Kelebihan Strand": [
+            "Tukang",
+            "Pemotong Strand Baja",
+            "Alat Bantu Tukang",
+          ],
+          "7.2.10.6 Grouting Tendon Girder": [
+            "Material Grouting",
+            "Mandor",
+            "Tukang",
+            "Injeksi Grouting",
+            "Stang Grouting",
+            "Grout Mixer",
+          ],
+          "7.2.10.7 Pelaksanaan Pemasangan Segmental Balok Diafragma": [
+            "Unit Beton Pracetak Diafragma",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Crane Service",
+            "Sling",
+          ],
+        },
+
+        "7.2.11 Pekerjaan Pelat Lantai": {
+          "7.2.11.1 Pelaksanaan Pemasangan Lantai Pracetak": [
+            "Beton Pracetak Lantai",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Crane Service",
+            "Sling",
+          ],
+          "7.2.11.2 Grouting Lantai Pracetak": [
+            "Material Grouting",
+            "Mandor",
+            "Tukang",
+            "Injeksi Grouting",
+            "Stang Grouting",
+            "Grout Mixer",
+          ],
+          "7.2.11.3 Pek. Baja Tulangan (Pembesian) Lantai": [
+            "Besi",
+            "Kawat Beton",
+            "Pekerja",
+            "Tukang Besi",
+            "Kepala Tukang",
+            "Mandor",
+            "Bar Cutter",
+            "Bar Bender",
+          ],
+          "7.2.11.4 Pek. Bekisting Lantai": [
+            "Pelat",
+            "Besi Rangka Hollow",
+            "Tukang Las",
+            "Pekerja",
+            "Mandor",
+            "Alat Las",
+          ],
+          "7.2.11.5 Beton Campuran Konvensional": [
+            "Semen",
+            "Agregat",
+            "Pasir",
+            "Air",
+            "Mandor",
+            "Tukang",
+            "Timbangan",
+            "Beton Molen",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.2.11.6 Beton Readymix": [
+            "Beton Readymix",
+            "Pekerja",
+            "Mandor",
+            "Operator",
+            "Concrete Pump",
+            "Truck Mixer",
+            "Bucket",
+            "Vibrator",
+          ],
+          "7.2.11.7 Pengerjaan Akhir / Curing": [
+            "Curing Compound",
+            "Pekerja",
+            "Fog Spraying Concrete",
+          ],
+          "7.2.11.8 Pengendalian Mutu di Lapangan": [
+            "Beton Campuran",
+            "Tukang",
+            "Abhram Cone",
+            "Cetakan Kubus",
+          ],
+        },
+
+        "7.3.1 Sandaran (Railing)": {
+          "7.3.1.1 Pembuatan Sandaran (Railing)": [
+            "Railing Besi",
+            "Tukang Las",
+            "Kepala Tukang",
+            "Mandor",
+            "Peralatan Las",
+          ],
+          "7.3.1.2 Pengecatan Railing": [
+            "Cat Besi",
+            "Tukang Cat",
+            "Mandor",
+            "Peralatan Bantu",
+          ],
+        },
+
+        "7.3.2 Papan Nama Jembatan": {
+          "7.3.2.1 Pembuatan Papan Nama Jembatan": [
+            "Papan Nama",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "7.3.3 Pek. Marka dan Lampu": {
+          "7.3.3.1 Pembuatan Marka Jalan": [
+            "Cat Marka",
+            "Tukang Cat",
+            "Mandor",
+            "Peralatan Bantu",
+          ],
+          "7.3.3.2 Pembuatan Lampu Jalan": [
+            "Tiang",
+            "Lampu",
+            "Tukang",
+            "Mandor",
+            "Mobile Crane",
+            "Peralatan Bantu",
+          ],
+        },
+
+        "8.1.1 Pembangunan Gerbang Tol": {
+          "8.1.1.1 Lantai Pulau Gerbang Tol": [
+            "Beton Readymix",
+            "Bekisting",
+            "Pembesian",
+            "Lantai Screed Floor Hardener",
+            "Kerb Beton",
+            "Mandor",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.1.1.2 Struktur Gerbang Tol": [
+            "Struktur Baja",
+            "Besi Support",
+            "Mandor",
+            "Pekerja",
+            "Mesin Las",
+            "Peralatan Tukang",
+          ],
+          "8.1.1.3 Dinding Gerbang Tol": [
+            "Aluminium Composite Panel",
+            "Rangka Hollow",
+            "Mandor",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.1.1.4 Kusen, Pintu dan Jendela Gerbang Tol": [
+            "Kusen Pintu Aluminium",
+            "Kusen Jendela Aluminium",
+            "Aksesoris Pintu",
+            "Aksesoris Jendela",
+            "Tukang Aluminium",
+            "Peralatan Tukang",
+          ],
+          "8.1.1.5 Atap dan Langit-Langit Gerbang Tol": [
+            "Rangka Atap",
+            "Atap Genteng Metal",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.1.1.6 Mechanical, Elektrikal & Plumbing Gerbang Tol": [
+            "Generator Set",
+            "Panel Listrik",
+            "Lampu dan Aksesoris",
+            "Kabel Listrik",
+            "Pipa Air Bersih",
+            "Pipa Air Kotor",
+            "AC",
+            "Septictank",
+            "Tukang MEP",
+            "Mandor",
+            "Pekerja",
+            "Peralatan MEP",
+          ],
+        },
+
+        "8.1.2 Peralatan Gerbang Tol": {
+          "8.1.2.1 Portal Pembatas (Barrier Gate)": [
+            "Portal Pembatas Jalan",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.1.2.2 Mesin Transaksi Pembayaran Tol": [
+            "Mesin Transaksi Manual",
+            "Mesin Transaksi Elektronik",
+            "Spesialis",
+            "Peralatan Bantu",
+          ],
+          "8.1.2.3 Speaker / Radio / Telephone": [
+            "Speaker dan Aksesoris",
+            "Radio dan Aksesoris",
+            "Telephone dan Aksesoris",
+            "Spesialis",
+            "Peralatan Bantu",
+          ],
+          "8.1.2.4 CCTV": ["CCTV dan Aksesoris", "Tukang MEP", "Peralatan MEP"],
+          "8.1.2.5 Rambu-Rambu Petunjuk": [
+            "Rambu Nama Gerbang Tol",
+            "Rambu Pengatur Lalu Lintas",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "8.2.1 Pekerjaan Lapangan (Diluar Gedung Kantor)": {
+          "8.2.1.1 Pasangan Batu": [
+            "Semen",
+            "Pasir",
+            "Air",
+            "Batu",
+            "Mandor",
+            "Peralatan Tukang",
+          ],
+        },
+
+        "8.2.2 Pembangunan Kantor": {
+          "8.2.2.1 Lantai Gedung Kantor": [
+            "Beton Readymix",
+            "Bekisting",
+            "Pembesian",
+            "Lantai Screed Floor Hardener",
+            "Kerb Beton",
+            "Mandor",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.2 Struktur Gedung Kantor": [
+            "Struktur Baja",
+            "Besi Support",
+            "Mandor",
+            "Pekerja",
+            "Mesin Las",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.3 Dinding Gedung Kantor": [
+            "Batu Bata",
+            "Bata Ringan",
+            "Semen",
+            "Pasir",
+            "Air",
+            "Keramik",
+            "Mandor",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.4 Dinding Partisi": [
+            "Gypsum",
+            "Aluminium",
+            "Besi",
+            "Mandor",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.5 Kusen, Pintu dan Jendela Gedung Kantor": [
+            "Kusen Pintu Aluminium",
+            "Kusen Jendela Aluminium",
+            "Aksesoris Pintu",
+            "Aksesoris Jendela",
+            "Tukang Aluminium",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.6 Atap dan Langit-Langit Gedung Kantor": [
+            "Rangka Atap",
+            "Atap Genteng Metal",
+            "Pekerja",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.7 Pek. Pengecatan": [
+            "Cat Dinding",
+            "Cat Plafond",
+            "Cat Kusen Kayu",
+            "Cat Rangka Atap",
+            "Tukang Cat",
+            "Peralatan Tukang",
+          ],
+          "8.2.2.8 Mechanical, Elektrikal & Plumbing Gedung Kantor": [
+            "Generator Set",
+            "Panel Listrik",
+            "Lampu dan Aksesoris",
+            "Kabel Listrik",
+            "Pipa Air Bersih",
+            "Pipa Air Kotor",
+            "AC",
+            "Septictank",
+            "Tukang MEP",
+            "Mandor",
+            "Pekerja",
+            "Peralatan MEP",
+          ],
+        },
+
+        "9.1.1 Pengembalian Kondisi Perkerasan Lama": {
+          "9.1.1.1 Inspeksi Rutin Kondisi Perkerasan": [
+            "Petugas K3L",
+            "QC Inspektor",
+            "Alat Tulis",
+            "Dokumentasi",
+          ],
+          "9.1.1.2 Perbaikan Kondisi Perkerasan Lama": [
+            "Aspal Emulsi",
+            "Campuran Aspal Panas",
+            "Pekerja",
+            "Jack Hammer",
+            "Aspal Sprayer",
+          ],
+        },
+
+        "9.1.2 Pengembalian Kondisi Bahu Jalan Lama pada Perkerasan Berpenutup Aspal":
+          {
+            "9.1.2.1 Inspeksi Rutin Kondisi Bahu Jalan": [
+              "Petugas K3L",
+              "QC Inspektor",
+              "Alat Tulis",
+              "Dokumentasi",
+            ],
+            "9.1.2.2 Perbaikan Kondisi Bahu Jalan": [
+              "Agregat",
+              "Aspal",
+              "Mandor",
+              "Pekerja",
+              "Asphalt Mixing Plant",
+              "Wheel Loader",
+              "Dump Truck",
+              "Motor Grader",
+              "Tandem Roller",
+              "Water Tanker",
+            ],
+          },
+
+        "9.1.3 Pengembalian Kondisi Selokan, Saluran Air, Galian, Timbunan dan Penghijauan":
+          {
+            "9.1.3.1 Inspeksi Rutin Kondisi Bahu Jalan": [
+              "Petugas K3L",
+              "QC Inspektor",
+              "Alat Tulis",
+              "Dokumentasi",
+            ],
+            "9.1.3.2 Perbaikan Kondisi Selokan, Drainase, Galian, Timbunan dan Penghijauan":
+              [
+                "Tanah",
+                "Semen",
+                "Pasir",
+                "Batu",
+                "Kayu",
+                "Pohon",
+                "Mandor",
+                "Pekerja",
+                "Alat Bantu Tukang",
+              ],
+          },
+
+        "9.1.4 Perlengkapan Jalan dan Pengatur Lalu Lintas": {
+          "9.1.4.1 Inspeksi Rutin Kondisi Perlengkapan Jalan dan Pengatur Lalu Lintas":
+            ["Petugas K3L", "QC Inspektor", "Alat Tulis", "Dokumentasi"],
+          "9.1.4.2 Perbaikan Perlengkapan Jalan dan Pengatur Lalu Lintas": [
+            "Peralatan K3",
+            "Rambu",
+            "Safety Patrol",
+          ],
+        },
+
+        "9.2.1 Pemeliharaan Rutin Perkerasan, Bahu Jalan, Drainase, Perlengkapan Jalan dan Jembatan":
+          {
+            "9.2.1.1 Pemeliharaan Rutin Jembatan": [
+              "Campuran Aspal",
+              "Beton Ready Mix",
+              "QC Inspektor",
+              "Pekerja",
+              "Mandor",
+              "Alat Bantu Tukang",
+            ],
+          },
+      };
+      const level4 = document.getElementById("wbsLevel4");
+      const level5 = document.getElementById("wbsLevel5");
+      const level6 = document.getElementById("wbsLevel6");
+
+      Object.keys(wbsData).forEach((key) => {
+        const option = document.createElement("option");
+        option.value = key;
+        option.textContent = key;
+        level4.appendChild(option);
       });
 
-    element.classList.add("active");
-  }
+      level4.addEventListener("change", () => {
+        level5.innerHTML = '<option value="">Pilih Aktivitas</option>';
 
-  function switchSubForm(selectedVal) {
-    const forms = document.querySelectorAll('.sub-form');
-    forms.forEach(form => {
-        if (selectedVal === 'all') {
-            form.style.display = 'block';
-        } else {
-            form.style.display = (form.id === selectedVal) ? 'block' : 'none';
+        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
+
+        if (!level4.value) return;
+
+        Object.keys(wbsData[level4.value]).forEach((key) => {
+          const option = document.createElement("option");
+          option.value = key;
+          option.textContent = key;
+          level5.appendChild(option);
+        });
+      });
+
+      level5.addEventListener("change", () => {
+        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
+
+        if (!level5.value) return;
+
+        wbsData[level4.value][level5.value].forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item;
+          option.textContent = item;
+          level6.appendChild(option);
+        });
+      });
+      function closeInfo() {
+        document.getElementById("infoModal").style.display = "none";
+      }
+      const riskData = {
+        "Metode Pelaksanaan": [
+          {
+            code: "R1.1",
+            title: "Perubahan urutan erection girder",
+            desc: "Terjadi perubahan urutan erection girder/segmen precast pada aktivitas jalur kritis.",
+          },
+          {
+            code: "R1.2",
+            title: "Area kerja tidak siap",
+            desc: "Area kerja, akses alat angkut, atau staging berubah/tidak siap sesuai rencana metode kerja.",
+          },
+          {
+            code: "R1.3",
+            title: "Kondisi lapangan berubah",
+            desc: "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
+          },
+          {
+            code: "R1.4",
+            title: "Revisi persetujuan dokumen",
+            desc: "Terjadi revisi atau tambahan proses persetujuan method statement, shop drawing, dan inspeksi awal.",
+          },
+          {
+            code: "R1.5",
+            title: "Perubahan lingkup pekerjaan",
+            desc: "Lingkup pekerjaan atau urutan pekerjaan berubah akibat kebutuhan owner atau kondisi lapangan baru.",
+          },
+          {
+            code: "R1.6",
+            title: "Deviasi aktivitas kritis",
+            desc: "Deviasi pada aktivitas kritis mulai muncul, tetapi sistem identifikasi risiko/KRI belum menyesuaikan.",
+          },
+          {
+            code: "R1.7",
+            title: "Perubahan rencana lifting",
+            desc: "Rencana aktivitas lifting, stressing, atau penggunaan alat khusus berubah dari baseline awal.",
+          },
+        ],
+
+        "Paket Pekerjaan": [
+          {
+            code: "R2.1",
+            title: "Interface pekerjaan tidak sinkron",
+            desc: "Batas pekerjaan, interface, atau koordinasi antarpaket berubah/tidak sinkron.",
+          },
+          {
+            code: "R2.2",
+            title: "Keterlambatan pekerjaan pendahulu",
+            desc: "Paket pekerjaan pendahulu seperti fondasi, pier, pier head, atau bearing seat mengalami keterlambatan.",
+          },
+          {
+            code: "R2.3",
+            title: "Variation order",
+            desc: "Terjadi perubahan kuantitas, desain, kondisi tak terduga, atau variation order.",
+          },
+          {
+            code: "R2.4",
+            title: "Utilitas dan lahan belum siap",
+            desc: "Status utilitas, right-of-way, atau kesiapan lahan berubah dan belum selesai.",
+          },
+          {
+            code: "R2.5",
+            title: "Perubahan perizinan",
+            desc: "Kebutuhan perizinan kerja, pembukaan lahan, traffic management, atau izin lintas seksi berubah.",
+          },
+          {
+            code: "R2.6",
+            title: "Paket girder kritis",
+            desc: "Paket penyediaan dan pemasangan girder menjadi beban kerja besar dan sangat sensitif terhadap keterlambatan.",
+          },
+          {
+            code: "R2.7",
+            title: "Addendum paket pekerjaan",
+            desc: "Terjadi addendum paket pekerjaan, perubahan mobilisasi, manajemen lalu lintas, atau perencanaan komponen precast.",
+          },
+        ],
+
+        "Metode Kerja": [
+          {
+            code: "R3.1",
+            title: "Perubahan kapasitas lifting",
+            desc: "Berat komponen, kapasitas alat, akses, atau konfigurasi lifting/launching berubah dari rencana awal.",
+          },
+          {
+            code: "R3.2",
+            title: "Perubahan temporary works",
+            desc: "Desain temporary works, bracing, lifting point, atau shoring mengalami perubahan/revisi.",
+          },
+          {
+            code: "R3.3",
+            title: "Perubahan metode pelaksanaan",
+            desc: "Metode alignment, leveling, bekisting, transport, lifting, grouting, atau stressing berubah.",
+          },
+          {
+            code: "R3.4",
+            title: "Perubahan metode erection",
+            desc: "Metode lifting, upending, rotasi, atau posisi erection girder berubah dan belum tervalidasi.",
+          },
+          {
+            code: "R3.5",
+            title: "Ketidaksesuaian jadwal produksi",
+            desc: "Jadwal produksi, casting, curing, atau kebutuhan erection berubah sehingga tidak selaras.",
+          },
+          {
+            code: "R3.6",
+            title: "Perubahan mix design",
+            desc: "Mix design, metode batching, pengecoran, atau detail sambungan mengalami perubahan.",
+          },
+          {
+            code: "R3.7",
+            title: "Perubahan handling material",
+            desc: "Lokasi stok, rute handling, alat handling, atau metode penyimpanan material precast berubah.",
+          },
+        ],
+
+        Aktivitas: [
+          {
+            code: "R4.1",
+            title: "Perubahan jadwal fabrikasi",
+            desc: "Jadwal fabrikasi, kapasitas produksi, mould, atau supply girder precast berubah.",
+          },
+          {
+            code: "R4.2",
+            title: "Perubahan transportasi",
+            desc: "Rute pengiriman, akses transportasi, izin angkut, atau kondisi lalu lintas berubah.",
+          },
+          {
+            code: "R4.3",
+            title: "Perubahan urutan erection",
+            desc: "Hold point, urutan erection, koordinasi traffic, atau jadwal inspeksi berubah.",
+          },
+          {
+            code: "R4.4",
+            title: "Kebutuhan rework",
+            desc: "Hasil pekerjaan menunjukkan deviasi mutu sehingga muncul kebutuhan rework.",
+          },
+          {
+            code: "R4.5",
+            title: "Perubahan inspeksi dan approval",
+            desc: "Rencana inspeksi, pengujian, atau approval tiap tahap berubah atau tidak sinkron.",
+          },
+          {
+            code: "R4.6",
+            title: "Perubahan data lapangan",
+            desc: "Data elevasi, benchmark, camber, atau kondisi as-built lapangan berubah atau berbeda dari rencana.",
+          },
+          {
+            code: "R4.7",
+            title: "Perubahan gambar dan material",
+            desc: "Gambar kerja, kebutuhan material, data kuantitas, atau kesiapan item on-site berubah.",
+          },
+        ],
+
+        "Sumber Daya Material": [
+          {
+            code: "R5.1",
+            title: "Perubahan kebutuhan material utama",
+            desc: "Kebutuhan material utama meningkat atau berubah dari rencana awal.",
+          },
+          {
+            code: "R5.2",
+            title: "Material tidak sesuai spesifikasi",
+            desc: "Mutu, dimensi, finishing, atau spesifikasi material berubah atau tidak memenuhi persyaratan.",
+          },
+          {
+            code: "R5.3",
+            title: "Fluktuasi harga material",
+            desc: "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
+          },
+          {
+            code: "R5.4",
+            title: "Perubahan vendor atau submittal",
+            desc: "Spesifikasi material, vendor, submittal, atau sampel material mengalami perubahan atau revisi.",
+          },
+          {
+            code: "R5.5",
+            title: "Perubahan long lead item",
+            desc: "Kebutuhan long lead item seperti expansion joint, bearing, atau aksesori finishing muncul atau berubah.",
+          },
+          {
+            code: "R5.6",
+            title: "Material reject atau fabrikasi ulang",
+            desc: "Hasil produksi material menunjukkan cacat, mismatch, atau ketidaksesuaian sehingga perlu reject atau fabrikasi ulang.",
+          },
+          {
+            code: "R5.7",
+            title: "Double handling material",
+            desc: "Rencana kebutuhan material, lokasi stockyard, atau sequence handling berubah sehingga terjadi double handling atau waste.",
+          },
+        ],
+
+        "Sumber Daya Peralatan": [
+          {
+            code: "R6.1",
+            title: "Breakdown alat",
+            desc: "Kondisi alat berubah dari siap operasi menjadi breakdown atau tidak andal.",
+          },
+          {
+            code: "R6.2",
+            title: "Kapasitas alat tidak sesuai",
+            desc: "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
+          },
+          {
+            code: "R6.3",
+            title: "Keterlambatan mobilisasi alat",
+            desc: "Jadwal mobilisasi atau demobilisasi alat berat maupun alat khusus berubah atau terlambat.",
+          },
+          {
+            code: "R6.4",
+            title: "Produktivitas alat menurun",
+            desc: "Cycle time, akses kerja, antrian alat, atau koordinasi operasi berubah sehingga produktivitas alat turun.",
+          },
+          {
+            code: "R6.5",
+            title: "Keterbatasan sparepart dan operator",
+            desc: "Ketersediaan spare part, operator, maintenance, atau backup equipment berubah atau tidak mencukupi.",
+          },
+          {
+            code: "R6.6",
+            title: "Perubahan layout area kerja",
+            desc: "Layout kerja, ruang manuver, atau kondisi area alat berat berubah menjadi lebih sempit atau berisiko.",
+          },
+          {
+            code: "R6.7",
+            title: "Gangguan lingkungan akibat alat",
+            desc: "Terjadi perubahan kondisi operasi alat yang memicu tumpahan limbah B3 atau gangguan lingkungan.",
+          },
+        ],
+        "Sumber Daya Tenaga Kerja": [
+          {
+            code: "R7.1",
+            title: "Ketersediaan tenaga kerja berkurang",
+            desc: "Ketersediaan tenaga kerja terampil berubah atau berkurang.",
+          },
+          {
+            code: "R7.2",
+            title: "Produktivitas tenaga kerja menurun",
+            desc: "Produktivitas tenaga kerja berubah atau menurun pada aktivitas jalur kritis.",
+          },
+          {
+            code: "R7.3",
+            title: "Perubahan kompetensi personel",
+            desc: "Komposisi tim, personel kunci, atau kompetensi kontraktor berubah atau tidak sesuai kebutuhan.",
+          },
+          {
+            code: "R7.4",
+            title: "Peningkatan lembur dan fatigue",
+            desc: "Target waktu berubah menjadi lebih ketat sehingga jam lembur meningkat dan memicu fatigue.",
+          },
+          {
+            code: "R7.5",
+            title: "Koordinasi stakeholder tidak efektif",
+            desc: "Struktur komunikasi, koordinasi stakeholder, atau alur informasi proyek berubah atau tidak efektif.",
+          },
+          {
+            code: "R7.6",
+            title: "Perubahan sistem pengelolaan risiko",
+            desc: "Sistem pengelolaan risiko produksi atau finishing berubah atau tidak menyesuaikan kondisi aktual.",
+          },
+          {
+            code: "R7.7",
+            title: "Pengawasan pekerjaan melemah",
+            desc: "Pengawasan, penerapan prosedur, atau kontrol kesesuaian shop drawing berubah atau melemah.",
+          },
+        ],
+
+        Lingkungan: [
+          {
+            code: "R8.1",
+            title: "Cuaca ekstrem",
+            desc: "Kondisi cuaca berubah menjadi ekstrem, hujan lebat, panas, atau angin kencang.",
+          },
+          {
+            code: "R8.2",
+            title: "Perubahan kondisi hidrologi",
+            desc: "Muka air sungai, pasang-surut, banjir, atau kondisi hidrologi berubah.",
+          },
+          {
+            code: "R8.3",
+            title: "Perubahan akses dan ruang kerja",
+            desc: "Ruang kerja, akses logistik, kepadatan lalu lintas, atau kondisi area urban berubah.",
+          },
+          {
+            code: "R8.4",
+            title: "Perubahan regulasi lingkungan",
+            desc: "Aturan lingkungan, izin, kepatuhan kerja, atau kawasan sensitif mengalami perubahan atau pembatasan.",
+          },
+          {
+            code: "R8.5",
+            title: "Gangguan sosial masyarakat",
+            desc: "Kondisi sosial masyarakat, lalu lintas, akses warga, atau utilitas publik berubah dan menimbulkan gangguan.",
+          },
+          {
+            code: "R8.6",
+            title: "Perubahan kondisi tanah",
+            desc: "Curah hujan tinggi mengubah kondisi tanah, infiltrasi air, kuat geser, atau kestabilan lereng.",
+          },
+          {
+            code: "R8.7",
+            title: "Gangguan drainase",
+            desc: "Kondisi drainase berubah, tersumbat, atau tidak mampu menampung aliran air.",
+          },
+          {
+            code: "R8.8",
+            title: "Gangguan akses material",
+            desc: "Akses quarry, rute angkutan material, kondisi jalan, debu, atau akses warga berubah sehingga memicu keluhan.",
+          },
+        ],
+      };
+      document
+        .getElementById("priority")
+        .addEventListener("input", function () {
+          if (this.value > 5) {
+            this.value = 5;
+          }
+
+          if (this.value < 1 && this.value !== "") {
+            this.value = 1;
+          }
+        });
+      document.getElementById("risk").addEventListener("input", function () {
+        if (this.value > 10) {
+          this.value = 10;
         }
-    });
-  }
 
-  window.onload = function() {
-    const selector = document.getElementById('form-selector');
-    if(selector) switchSubForm(selector.value);
-  };
-</script>
+        if (this.value < 1 && this.value !== "") {
+          this.value = 1;
+        }
+      });
+      document.getElementById("priority").onkeydown = (e) => {
+        if (["e", "E", "+", "-", "."].includes(e.key)) {
+          e.preventDefault();
+        }
+      };
+
+      document.getElementById("risk").onkeydown = (e) => {
+        if (["e", "E", "+", "-", "."].includes(e.key)) {
+          e.preventDefault();
+        }
+      };
+      const riskCategory = document.getElementById("riskCategory");
+
+      const riskVariable = document.getElementById("riskVariable");
+
+      const riskDescription = document.getElementById("riskDescription");
+      riskVariable.disabled = true;
+
+      riskDescription.value = "Pilih kategori risiko terlebih dahulu.";
+
+      Object.keys(riskData).forEach((cat) => {
+        riskCategory.add(new Option(cat, cat));
+      });
+
+      function loadRisk() {
+        riskVariable.disabled = false;
+
+        riskVariable.innerHTML = "";
+
+        riskVariable.add(new Option("Pilih Variabel Risiko", ""));
+
+        riskData[riskCategory.value].forEach((r) => {
+          riskVariable.add(new Option(`${r.code} - ${r.title}`, r.code));
+        });
+
+        riskDescription.value = "";
+      }
+
+      function updateRisk() {
+        const item = riskData[riskCategory.value].find(
+          (r) => r.code === riskVariable.value,
+        );
+
+        riskDescription.value = item ? item.desc : "";
+      }
+
+      riskCategory.onchange = loadRisk;
+      riskVariable.onchange = updateRisk;
+      document.getElementById("risk").addEventListener("input", function () {
+        const value = parseInt(this.value);
+        const riskStatus = document.getElementById("riskStatus");
+
+        riskStatus.className = "risk-status";
+
+        if (value <= 2) {
+          riskStatus.innerHTML = "Aman";
+          riskStatus.classList.add("risk-safe");
+        } else if (value <= 4) {
+          riskStatus.innerHTML = "Rendah";
+          riskStatus.classList.add("risk-low");
+        } else if (value <= 6) {
+          riskStatus.innerHTML = "Sedang";
+          riskStatus.classList.add("risk-medium");
+        } else if (value <= 8) {
+          riskStatus.innerHTML = "Tinggi";
+          riskStatus.classList.add("risk-high");
+        } else {
+          riskStatus.innerHTML = "Kritis";
+          riskStatus.classList.add("risk-critical");
+        }
+      });
+
+      window.onclick = function (event) {
+        const modal = document.getElementById("infoModal");
+
+        if (event.target === modal) {
+          closeInfo();
+        }
+      };
+
+      const data = {
+        "1.1.1 Program Mobilisasi": {
+          activities: ["Mobilisasi Material", "Mobilisasi Alat"],
+          resources: ["Beton", "Semen", "Crane"],
+        },
+        "2.1.1 Selokan dan Saluran Air": {
+          activities: ["Galian Drainase", "Pemasangan U-Ditch"],
+          resources: ["U-Ditch", "Excavator"],
+        },
+        "3.2.2 Galian Biasa": {
+          activities: ["Penggalian Tanah"],
+          resources: ["Excavator", "Dump Truck"],
+        },
+        "3.4.1 Timbunan dari Luar": {
+          activities: ["Penghamparan Timbunan"],
+          resources: ["Motor Grader"],
+        },
+        "5.1.2 Lapis Pondasi Agregat": {
+          activities: ["Penyebaran Agregat"],
+          resources: ["Agregat"],
+        },
+        "6.1.1 Perkerasan Beton Semen": {
+          activities: ["Pengecoran Beton"],
+          resources: ["Ready Mix"],
+        },
+        "7.1.3 Tiang Pancang Beton Pracetak": {
+          activities: ["Pemancangan"],
+          resources: ["Hammer"],
+        },
+        "7.2.4 Girder Beton Pracetak": {
+          activities: ["Produksi Girder", "Erection Girder"],
+          resources: ["Girder", "Wire Strand"],
+        },
+        "7.2.11 Pekerjaan Diafragma": {
+          activities: ["Pengecoran Diafragma"],
+          resources: ["Bekisting"],
+        },
+        "7.3.1 Pekerjaan Pelat Lantai": {
+          activities: ["Pengecoran Deck Slab"],
+          resources: ["Tulangan"],
+        },
+      };
+
+      function backForm() {
+        document.getElementById("register").style.display = "none";
+
+        document.getElementById("identify").style.display = "block";
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
+      const preview = document.getElementById("preview");
+      const modalImage = document.getElementById("modalImage");
+      document.getElementById("photo").addEventListener("change", function () {
+        const files = this.files;
+        const gallery = document.getElementById("gallery");
+
+        gallery.innerHTML = "";
+
+        if (!files.length) return;
+
+        document.getElementById("placeholder").style.display = "none";
+        document.getElementById("previewBtn").style.display = "inline-block";
+
+        Array.from(files).forEach((file, index) => {
+          if (file.type === "application/pdf") {
+            const pdfCard = document.createElement("div");
+
+            pdfCard.className = "pdf-card";
+            pdfCard.innerHTML = `📄<br>${file.name}`;
+
+            gallery.appendChild(pdfCard);
+
+            pdfCard.addEventListener("click", () => {
+              const pdfURL = URL.createObjectURL(file);
+
+              document.getElementById("pdfViewer").src = pdfURL;
+              document.getElementById("pdfModal").style.display = "block";
+            });
+
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            const img = document.createElement("img");
+
+            img.src = e.target.result;
+            img.className = "gallery-image";
+
+            gallery.appendChild(img);
+
+            if (index === 0) {
+              preview.src = e.target.result;
+              preview.style.display = "block";
+
+              modalImage.src = e.target.result;
+            }
+
+            img.addEventListener("click", () => {
+              preview.src = e.target.result;
+              modalImage.src = e.target.result;
+
+              scale = 1;
+              posX = 0;
+              posY = 0;
+
+              updateImage();
+            });
+          };
+
+          reader.readAsDataURL(file);
+        });
+      });
+      let scale = 1;
+      let posX = 0;
+      let posY = 0;
+
+      let isDragging = false;
+      let startX;
+      let startY;
+      const modal = document.getElementById("imageModal");
+      const modalImg = document.getElementById("modalImage");
+      const pdfModal = document.getElementById("pdfModal");
+      const pdfViewer = document.getElementById("pdfViewer");
+      const previewBtn = document.getElementById("previewBtn");
+      document.getElementById("closeImage").addEventListener("click", () => {
+        pdfModal.style.display = "none";
+        pdfViewer.src = "";
+      });
+      document
+        .getElementById("closeImageModal")
+        .addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+
+      previewBtn.addEventListener("click", () => {
+        modal.style.display = "block";
+      });
+
+      document.getElementById("zoomIn").addEventListener("click", () => {
+        scale += 0.25;
+        updateImage();
+      });
+
+      document.getElementById("zoomOut").addEventListener("click", () => {
+        scale = Math.max(0.25, scale - 0.25);
+        updateImage();
+      });
+
+      document.getElementById("resetZoom").addEventListener("click", () => {
+        scale = 1;
+        posX = 0;
+        posY = 0;
+        updateImage();
+      });
+
+      modalImg.addEventListener("mousedown", (e) => {
+        isDragging = true;
+
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+
+        modalImg.style.cursor = "grabbing";
+      });
+
+      document.addEventListener("mousemove", (e) => {
+        if (!isDragging) return;
+
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+
+        updateImage();
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+        modalImg.style.cursor = "grab";
+      });
+      function updateImage() {
+        modalImg.style.transform = `translate(calc(-50% + ${posX}px), calc(-50% + ${posY}px)) scale(${scale})`;
+      }
+      function nextForm() {
+        const requiredFields = document.querySelectorAll(
+          "#identify input[required], #identify select[required], #identify textarea[required]",
+        );
+
+        for (let field of requiredFields) {
+          if (field.type === "file") continue;
+
+          if (!field.value || field.value.trim() === "") {
+            alert("Semua field wajib diisi.");
+            field.focus();
+            return;
+          }
+        }
+
+        const photo = document.getElementById("photo");
+
+        if (!photo.files || photo.files.length === 0) {
+          alert("Photo Evidence wajib diupload.");
+          photo.focus();
+          return;
+        }
+
+        document.getElementById("identify").style.display = "none";
+        document.getElementById("register").style.display = "block";
+      }
+      document.getElementById("submittedBy").value = document
+        .getElementById("submittedBy")
+        .value.toUpperCase();
+      function submitCR() {
+        const fields = document.querySelectorAll(
+          "#register input[required], #register select[required], #register textarea[required]",
+        );
+
+        for (let field of fields) {
+          if (!field.value.trim()) {
+            alert("Semua field pada Change Request wajib diisi.");
+
+            field.focus();
+
+            return;
+          }
+        }
+
+        saveChange();
+      }
+
+      function saveChange() {
+        let total = parseInt(document.getElementById("totalChange").innerText);
+
+        let open = parseInt(document.getElementById("openChange").innerText);
+
+        let high = parseInt(document.getElementById("highRisk").innerText);
+
+        total++;
+        open++;
+
+        document.getElementById("totalChange").innerText = total;
+        document.getElementById("openChange").innerText = open;
+
+        const riskValue = Number(document.getElementById("risk").value);
+
+        if (riskValue >= 7) {
+          document.getElementById("highRisk").innerText =
+            Number(document.getElementById("highRisk").innerText) + 1;
+        }
+
+        alert("Change Request berhasil disubmit.");
+
+        // =====================
+        // RESET FORM STEP 1
+        // =====================
+
+        document
+          .querySelectorAll("#identify input, #identify textarea")
+          .forEach((el) => {
+            if (el.type !== "file" && !el.hasAttribute("readonly")) {
+              el.value = "";
+            }
+          });
+
+        document.querySelectorAll("#identify select").forEach((el) => {
+          el.selectedIndex = 0;
+        });
+
+        // =====================
+        // RESET FORM STEP 2
+        // =====================
+
+        document.querySelectorAll("#register textarea").forEach((el) => {
+          el.value = "";
+        });
+
+        document.querySelectorAll("#register select").forEach((el) => {
+          el.selectedIndex = 0;
+        });
+
+        // =====================
+        // RESET PHOTO
+        // =====================
+
+        document.getElementById("photo").value = "";
+
+        document.getElementById("gallery").innerHTML = "";
+
+        document.getElementById("preview").style.display = "none";
+
+        document.getElementById("placeholder").style.display = "block";
+
+        document.getElementById("previewBtn").style.display = "none";
+
+        // =====================
+        // RESET RISK STATUS
+        // =====================
+
+        document.getElementById("riskStatus").className =
+          "risk-status risk-safe";
+
+        document.getElementById("riskStatus").innerHTML = "Belum Dipilih";
+
+        document.getElementById("riskDescription").value = "";
+
+        // =====================
+        // GENERATE CHANGE ID BARU
+        // =====================
+
+        const newID =
+          "CR-" + String(Math.floor(Math.random() * 9999)).padStart(4, "0");
+
+        document.querySelector("#identify input[readonly]").value = newID;
+
+        // =====================
+        // KEMBALI KE STEP 1
+        // =====================
+
+        document.getElementById("register").style.display = "none";
+
+        document.getElementById("identify").style.display = "block";
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+        level5.innerHTML = '<option value="">Select WBS Level 5</option>';
+
+        level6.innerHTML = '<option value="">Select WBS Level 6</option>';
+      }
+    </script>
   </body>
 </html>
