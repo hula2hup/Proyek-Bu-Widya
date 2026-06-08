@@ -190,20 +190,76 @@
 
       .kpi-card {
         background: white;
-
-        padding: 25px;
-
+        padding: 24px;
         border-radius: 18px;
-
         border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+        transition: all 0.25s ease;
 
-        transition: 0.2s;
+        position: relative;
+
+        overflow: hidden;
+      }
+
+      .total-card,
+      .open-card,
+      .risk-card,
+      .closed-card {
+        background: white;
+        color: inherit;
+      }
+
+      .total-card h3,
+      .open-card h3,
+      .risk-card h3,
+      .closed-card h3 {
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .total-card span,
+      .open-card span,
+      .risk-card span,
+      .closed-card span {
+        color: white;
+      }
+
+      .total-card {
+        border-left: 6px solid #2563eb;
+      }
+
+      .open-card {
+        border-left: 6px solid #f59e0b;
+      }
+
+      .risk-card {
+        border-left: 6px solid #ef4444;
+      }
+
+      .closed-card {
+        border-left: 6px solid #10b981;
+      }
+
+      .total-card span {
+        color: #2563eb;
+      }
+
+      .open-card span {
+        color: #f59e0b;
+      }
+
+      .risk-card span {
+        color: #ef4444;
+      }
+
+      .closed-card span {
+        color: #10b981;
       }
 
       .kpi-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-5px);
+
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
       }
 
       .kpi-card h3 {
@@ -213,9 +269,24 @@
       }
 
       .kpi-card span {
-        font-size: 32px;
-        font-weight: bold;
-        color: #0f2d52;
+        display: block;
+
+        font-size: 48px;
+
+        font-weight: 800;
+
+        margin-top: 8px;
+
+        line-height: 1;
+      }
+      .kpi-card p {
+        margin-top: 10px;
+
+        font-size: 13px;
+
+        color: #64748b;
+
+        line-height: 1.4;
       }
       body {
         font-family:
@@ -223,6 +294,23 @@
           sans-serif;
         background: #eef3f9;
         padding: 30px;
+      }
+      .kpi-update {
+        animation: pulseKPI 0.8s ease;
+      }
+
+      @keyframes pulseKPI {
+        0% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.08);
+        }
+
+        100% {
+          transform: scale(1);
+        }
       }
       .container {
         max-width: 1500px;
@@ -698,24 +786,28 @@
         <div class="status-badge">SITE ENGINEER</div>
       </div>
       <div class="kpi-grid">
-        <div class="kpi-card">
+        <div class="kpi-card total-card">
           <h3>Total Change</h3>
           <span id="totalChange">18</span>
+          <p>Total perubahan yang tercatat</p>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card open-card">
           <h3>Open Change</h3>
           <span id="openChange">5</span>
+          <p>Menunggu tindak lanjut</p>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card risk-card">
           <h3>High Risk</h3>
           <span id="highRisk">3</span>
+          <p>Perlu perhatian segera</p>
         </div>
 
-        <div class="kpi-card">
+        <div class="kpi-card closed-card">
           <h3>Closed Change</h3>
           <span id="closedChange">13</span>
+          <p>Perubahan telah diselesaikan</p>
         </div>
       </div>
       <div id="identify" class="card">
@@ -3537,11 +3629,25 @@
         document.getElementById("totalChange").innerText = total;
         document.getElementById("openChange").innerText = open;
 
+        highlightKPI("totalChange");
+        highlightKPI("openChange");
+
         const riskValue = Number(document.getElementById("risk").value);
 
         if (riskValue >= 7) {
           document.getElementById("highRisk").innerText =
             Number(document.getElementById("highRisk").innerText) + 1;
+
+          highlightKPI("highRisk");
+        }
+        function highlightKPI(id) {
+          const el = document.getElementById(id);
+
+          el.parentElement.classList.add("kpi-update");
+
+          setTimeout(() => {
+            el.parentElement.classList.remove("kpi-update");
+          }, 800);
         }
 
         alert("Change Request berhasil disubmit.");
