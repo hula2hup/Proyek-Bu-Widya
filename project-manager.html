@@ -1,560 +1,302 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Manager Workspace - BIM WBS System</title>
-  <!-- Menambahkan library Chart.js untuk Kurva S -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    :root {
-      --bg: #f4f7fb;
-      --card: #ffffff;
-      --primary: #1d4ed8;
-      --primary-dark: #1e40af;
-      --accent: #14b8a6;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --success: #22c55e;
-      --text: #0f172a;
-      --muted: #64748b;
-      --line: #e2e8f0;
-      --soft: #eff6ff;
-    }
-    * { box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Manager Dashboard Interaktif</title>
+
+<style>
     body {
-      margin: 0;
-      font-family: Inter, "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-    .app {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: 100vh;
-    }
-    
-    /* SIDEBAR STYLE */
-    aside {
-      background: #0f172a;
-      color: white;
-      padding: 24px 18px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 28px; }
-    .logo {
-      width: 44px; height: 44px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--warning), var(--danger));
-      display: grid; place-items: center; font-weight: 800; font-size: 18px;
-    }
-    .brand h1 { font-size: 16px; margin: 0; line-height: 1.2; }
-    .brand span { font-size: 11px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 1px; }
-    
-    nav { flex: 1; }
-    nav button {
-      width: 100%; border: 0; background: transparent; color: #cbd5e1;
-      padding: 13px 14px; text-align: left; border-radius: 12px;
-      margin: 4px 0; cursor: pointer; font-weight: 600; transition: 0.2s;
-    }
-    nav button.active, nav button:hover { background: #1e293b; color: white; border-left: 4px solid var(--accent); }
-    .aside-footer { margin-top: auto; }
-    .btn-print {
-      width: 100%; border: 0; border-radius: 12px; padding: 12px;
-      background: var(--warning); color: #0f172a; font-weight: 700; cursor: pointer;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f4f8ff;
     }
 
-    /* MAIN CONTENT STYLE */
-    main { padding: 26px 30px 60px; }
-    .topbar {
-      display: flex; justify-content: space-between; align-items: center;
-      gap: 20px; margin-bottom: 22px;
-      background: var(--card); padding: 20px 24px; border-radius: 22px;
-      box-shadow: 0 10px 25px rgba(15,23,42,.03); border-top: 4px solid var(--accent);
+    .container {
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
     }
-    .topbar h2 { margin: 0; font-size: 24px; color: #0f172a; }
-    .topbar p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-    
-    .btn {
-      border: 0; border-radius: 10px; padding: 10px 16px; font-size: 13px;
-      background: var(--primary); color: white; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(29,78,216,.2); transition: 0.2s;
-    }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn.success { background: var(--success); box-shadow: 0 4px 12px rgba(34,197,94,.2); }
-    .btn.danger { background: var(--danger); box-shadow: 0 4px 12px rgba(239,68,68,.2); }
-    .btn.secondary { background: #e2e8f0; color: #0f172a; box-shadow: none; }
-
-    .grid { display: grid; gap: 18px; }
-    .cols-4 { grid-template-columns: repeat(4, 1fr); }
-    .cols-3 { grid-template-columns: repeat(3, 1fr); }
-    .cols-2 { grid-template-columns: 1.1fr 0.9fr; }
 
     .card {
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: 20px; padding: 20px;
-      box-shadow: 0 10px 25px rgba(15,23,42,.03);
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
     }
-    .card h3 { margin: 0 0 16px; font-size: 16px; color: #0f172a; }
 
-    .metric { border-left: 4px solid var(--primary); }
-    .metric h3 { font-size: 13px; color: var(--muted); margin: 0 0 8px; font-weight: 600; }
-    .metric .num { font-size: 32px; font-weight: 800; color: #0f172a; }
-    .metric small { color: var(--muted); font-size: 12px; }
-
-    .section { display: none; animation: fadeIn 0.3s ease; }
-    .section.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* TABLE STYLES */
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th, td { padding: 16px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    th { color: #475569; background: #f8fafc; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
-    tr:last-child td { border-bottom: 0; }
-
-    /* BADGE STYLES */
-    .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; border: 1px solid transparent; }
-    .badge.high { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
-    .badge.medium { background: #fef3c7; color: #b45309; border-color: #fde68a; }
-    .badge.low { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
-    .badge.info { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
-
-    /* TIMELINE STYLES (Sesuai Referensi Gambar) */
-    .timeline { position: relative; margin-top: 8px; padding-left: 10px; }
-    .timeline-item { 
-      display: grid; grid-template-columns: 110px 1fr; gap: 14px; 
-      border-left: 2px solid var(--line); padding: 0 0 28px 24px; 
-      margin-left: 8px; position: relative; 
+    h1 {
+        color: #1565c0;
+        margin-bottom: 30px;
     }
-    .timeline-item:last-child { border-left-color: transparent; padding-bottom: 0; }
-    .timeline-item::before { 
-      content: ""; width: 14px; height: 14px; border-radius: 50%; 
-      background: var(--primary); position: absolute; left: -8px; top: 2px; 
-      border: 3px solid white; box-shadow: 0 0 0 1px var(--primary); 
+
+    h2 {
+        color: #333;
+        border-bottom: 2px solid #f4f8ff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        margin-top: 0;
     }
-    .timeline-date { font-weight: 700; color: #0f172a; font-size: 14px; }
-    .timeline-item strong { display: block; margin-bottom: 6px; color: #0f172a; font-size: 14px; }
-    .timeline-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-    /* CHART CONTAINER */
-    .chart-container { position: relative; height: 280px; width: 100%; }
-
-    /* AI Highlight & Forms */
-    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
-    label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 6px; }
-    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font-family: inherit; background: #f8fafc; font-size: 13px; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
-    textarea { min-height: 80px; resize: vertical; }
-    .full { grid-column: 1 / -1; }
-    .ai-box { background: linear-gradient(to right, #eff6ff, #faf5ff); border: 1px solid #c084fc; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-    .ai-box h4 { margin: 0 0 8px; font-size: 13px; color: #6b21a8; display: flex; align-items: center; gap: 6px; }
-
-    @media print {
-      aside { display: none !important; }
-      .app { grid-template-columns: 1fr; }
-      .no-print { display: none !important; }
+    /* --- SUMMARY & DONUT CHART --- */
+    .summary-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 10px 0;
     }
-  </style>
+
+    .stat-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .stat-box p {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #555;
+        font-size: 16px;
+    }
+
+    .donut-chart {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f0f0f0; 
+        transition: background 0.5s ease;
+    }
+
+    .donut-inner {
+        width: 75px;
+        height: 75px;
+        background-color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* --- APPROVAL BOX --- */
+    .approval-box {
+        border: 1px solid #e0e0e0;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background-color: #fafafa;
+        transition: all 0.3s ease;
+    }
+
+    .approval-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+    .approval-header span {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .sql-query {
+        background-color: #282c34;
+        color: #abb2bf;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
+        overflow-x: auto;
+        margin-bottom: 20px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    /* Pesan konfirmasi yang muncul setelah klik */
+    .status-message {
+        display: none;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 25px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-accept { background-color: #4CAF50; color: white; }
+    .btn-accept:hover { background-color: #45a049; }
+
+    .btn-reject { background-color: #f44336; color: white; }
+    .btn-reject:hover { background-color: #e53935; }
+
+</style>
+
 </head>
 <body>
-  <div class="app">
-    <!-- SIDEBAR -->
-    <aside>
-      <div class="brand">
-        <div class="logo">PM</div>
-        <div>
-          <h1>Project Manager</h1>
-          <span>Change Control Board</span>
-        </div>
-      </div>
-      <nav>
-        <button class="active" onclick="showSection('dashboard', this)">📊 01. Dashboard Monitoring</button>
-        <button onclick="showSection('approval', this)">⚖️ 02. Review & Approval</button>
-        <button onclick="showSection('laporan', this)">📑 03. Laporan Akhir Proyek</button>
-        <button onclick="showSection('bim', this)">🏢 04. BIM & WBS Viewer</button>
-      </nav>
-      <div class="aside-footer no-print">
-        <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
-      </div>
-    </aside>
 
-    <main>
-      <!-- SECTION 01: DASHBOARD MONITORING -->
-      <section id="dashboard" class="section active">
-        <div class="topbar">
-          <div>
-            <h2>Dashboard Monitoring Kinerja Proyek</h2>
-            <p>Memantau percepatan waktu perubahan, Kurva S, histori aktivitas, dan status persetujuan.</p>
-          </div>
-        </div>
+<div class="container">
 
-        <div class="grid cols-4" style="margin-bottom: 20px;">
-          <div class="card metric" style="border-color: var(--warning)">
-            <h3>Pending Approval</h3><div class="num">3</div><small>Butuh keputusan PM</small>
-          </div>
-          <div class="card metric" style="border-color: var(--danger)">
-            <h3>High Risk Exposure</h3><div class="num">2</div><small>Membutuhkan mitigasi segera</small>
-          </div>
-          <div class="card metric" style="border-color: var(--primary)">
-            <h3>SPI (Schedule Perf.)</h3><div class="num">0.94</div><small>Indikasi sedikit keterlambatan</small>
-          </div>
-          <div class="card metric" style="border-color: var(--success)">
-            <h3>Progress Fisik</h3><div class="num">68.5%</div><small>Berdasarkan Laporan Terakhir</small>
-          </div>
-        </div>
+    <h1>Project Manager Dashboard</h1>
 
-        <!-- KURVA S (CHART) -->
-        <div class="card" style="margin-bottom: 20px;">
-          <h3>Kurva S - Kinerja Waktu & Progres Terintegrasi</h3>
-          <div class="chart-container">
-            <canvas id="sCurveChart"></canvas>
-          </div>
-        </div>
-
-        <!-- TIMELINE & DECISION SUMMARY -->
-        <div class="grid cols-2">
-          <!-- Recent Change Activities -->
-          <div class="card">
-            <h3>Recent Change Activities</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-date">Today</div>
-                <div>
-                  <strong>CR-007 Pipe Support Relocation</strong>
-                  <p>BIM object PS-04 linked to WBS 3.2.1. Potential delay: 3 days.</p>
+    <div class="card">
+        <h2>Dashboard Summary</h2>
+        <div class="summary-container">
+            
+            <div class="stat-box">
+                <div id="chart-pending" class="donut-chart">
+                    <div class="donut-inner" id="count-pending">0</div>
                 </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-date">Yesterday</div>
-                <div>
-                  <strong>CR-006 Slab Opening Revision</strong>
-                  <p>Risk R-014 added. Mitigation assigned to site engineering team.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-date">2 days ago</div>
-                <div>
-                  <strong>CR-005 MEP Clash Change</strong>
-                  <p>Approved and BIM model version updated to V2.4.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Decision Summary -->
-          <div class="card">
-            <h3>Decision Summary</h3>
-            <table>
-              <tr><th>Status</th><th>Total</th><th>Action</th></tr>
-              <tr>
-                <td><span class="badge info">Under Review</span></td>
-                <td><strong>2</strong></td>
-                <td>Need impact analysis</td>
-              </tr>
-              <tr>
-                <td><span class="badge medium">Need Mitigation</span></td>
-                <td><strong>3</strong></td>
-                <td>Assign risk owner</td>
-              </tr>
-              <tr>
-                <td><span class="badge low">Approved</span></td>
-                <td><strong>2</strong></td>
-                <td>Update BIM & schedule</td>
-              </tr>
-              <tr>
-                <td><span class="badge high">Rejected</span></td>
-                <td><strong>0</strong></td>
-                <td>Archive with reason</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 02: REVIEW & APPROVAL -->
-      <section id="approval" class="section">
-        <div class="topbar">
-          <div>
-            <h2>Review & Approval Workspace</h2>
-            <p>Tinjau antrean pengajuan perubahan (CR) dan berikan keputusan strategis.</p>
-          </div>
-        </div>
-
-        <div id="approvalInbox" class="card" style="margin-bottom: 24px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin:0;">📥 Antrean Pengajuan (Pending Review)</h3>
-            <div class="no-print">
-              <input type="text" placeholder="Cari CR ID atau Pengaju..." style="width: 250px; padding: 8px 12px; font-size: 12px;">
-            </div>
-          </div>
-          
-          <table id="inboxTable">
-            <thead>
-              <tr>
-                <th>CR ID</th>
-                <th>Deskripsi Perubahan</th>
-                <th>Diajukan Oleh</th>
-                <th>Waktu Masuk</th>
-                <th>Skala Risiko</th>
-                <th style="text-align: center;">Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="hover-row">
-                <td><b>CR-008</b></td>
-                <td>Relokasi Jalur Pipa Utama (Plumbing)</td>
-                <td>
-                  <div style="font-weight: 700;">Budi Santoso</div>
-                  <div style="font-size: 11px; color: var(--muted);">Site Engineer</div>
-                </td>
-                <td>07 Jun 2026, 09:15</td>
-                <td><span class="badge high">Tinggi (78)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-008')">Tinjau Detail</button>
-                </td>
-              </tr>
-              <tr class="hover-row">
-                <td><b>CR-009</b></td>
-                <td>Revisi Material Finishing Facade</td>
-                <td>
-                  <div style="font-weight: 700;">Ani Wijaya</div>
-                  <div style="font-size: 11px; color: var(--muted);">Arsitek Senior</div>
-                </td>
-                <td>06 Jun 2026, 14:20</td>
-                <td><span class="badge medium">Sedang (52)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-009')">Tinjau Detail</button>
-                </td>
-              </tr>
-              <tr class="hover-row">
-                <td><b>CR-010</b></td>
-                <td>Penambahan Titik Lampu Taman</td>
-                <td>
-                  <div style="font-weight: 700;">Dedi Kurnia</div>
-                  <div style="font-size: 11px; color: var(--muted);">MEP Coordinator</div>
-                </td>
-                <td>05 Jun 2026, 10:05</td>
-                <td><span class="badge low">Rendah (24)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-010')">Tinjau Detail</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div id="approvalDetailView" style="display: none; animation: fadeIn 0.4s ease;">
-          <button class="btn secondary" onclick="closeCrDetail()" style="margin-bottom: 15px;">⬅️ Kembali ke Antrean</button>
-          
-          <div class="grid cols-2">
-            <div class="card">
-              <h3 id="detailTitle">Detail Pengajuan: CR-008</h3>
-              <table style="margin-bottom: 16px;">
-                <tr><td width="35%"><b>Status Pengaju</b></td><td><span id="detailSender">Budi Santoso (Site Engineer)</span></td></tr>
-                <tr><td><b>Timestamp</b></td><td><span id="detailTime">07 Jun 2026, 09:15</span></td></tr>
-                <tr><td><b>BIM Object ID</b></td><td>BIM-GUID-PIPE-010</td></tr>
-                <tr><td><b>WBS Mapping</b></td><td>WBS 3.2.1 - Pekerjaan Plumbing</td></tr>
-                <tr><td><b>Impact Analysis</b></td><td>Biaya: +Rp 85 Jt | Waktu: <span style="color:var(--danger);font-weight:bold;">+3 Hari</span></td></tr>
-                <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Tinggi</span></td></tr>
-              </table>
-
-              <div class="ai-box">
-                <h4>✨ AI Recommendation Engine</h4>
-                <p style="font-size: 12px; margin: 0; color: #4c1d95;">
-                  Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Pengalihan pipa di zona ini sering menyebabkan benturan dengan kabel tray. Disarankan cek koordinasi MEP kembali.
-                </p>
-              </div>
+                <p>Pending</p>
             </div>
 
-            <div class="card border-l-4" style="border-left-color: var(--primary)">
-              <h3>Form Approval Decision (Project Manager)</h3>
-              <div class="form-grid">
-                <div><label>Review ID</label><input value="REV-PM-01" readonly></div>
-                <div><label>Tanggal Keputusan</label><input type="date" value="2026-06-07"></div>
-                <div class="full">
-                  <label>Keputusan (Approval Decision)</label>
-                  <select id="decisionSelect" style="font-weight: bold;">
-                    <option value="">-- Pilih Keputusan --</option>
-                    <option value="approve">🟢 Approved (Setuju)</option>
-                    <option value="cond">🟡 Approved with Condition (Setuju Bersyarat)</option>
-                    <option value="revise">🟠 Revise & Resubmit (Revisi)</option>
-                    <option value="reject">🔴 Rejected (Tolak)</option>
-                  </select>
+            <div class="stat-box">
+                <div id="chart-approved" class="donut-chart">
+                    <div class="donut-inner" id="count-approved">0</div>
                 </div>
-                <div class="full"><label>Approval Notes / Instruksi PM</label><textarea placeholder="Berikan arahan untuk mitigasi risiko atau alasan keputusan..."></textarea></div>
-                <div class="full no-print"><button class="btn success" style="width: 100%; padding: 12px;">Sahkan Keputusan Perubahan</button></div>
-              </div>
+                <p>Approved</p>
             </div>
-          </div>
+
+            <div class="stat-box">
+                <div id="chart-rejected" class="donut-chart">
+                    <div class="donut-inner" id="count-rejected">0</div>
+                </div>
+                <p>Rejected</p>
+            </div>
+
         </div>
-      </section>
+    </div>
 
-      <style>
-        .hover-row:hover { background-color: #f8fafc; cursor: pointer; transition: 0.2s; }
-        #inboxTable th { position: sticky; top: 0; z-index: 10; }
-        #inboxTable tr td { vertical-align: middle; }
-      </style>
+    <div class="card">
+        <h2>Ongoing Approval</h2>
 
-      <script>
-        function openCrDetail(id) {
-          // Simulasi mapping data sederhana
-          const data = {
-            'CR-008': { sender: 'Budi Santoso (Site Engineer)', time: '07 Jun 2026, 09:15', risk: 'high', riskText: 'Tinggi' },
-            'CR-009': { sender: 'Ani Wijaya (Arsitek Senior)', time: '06 Jun 2026, 14:20', risk: 'medium', riskText: 'Sedang' },
-            'CR-010': { sender: 'Dedi Kurnia (MEP Coordinator)', time: '05 Jun 2026, 10:05', risk: 'low', riskText: 'Rendah' }
-          };
+        <div class="approval-box" id="req-1024">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1024</span>
+                <span>Diminta oleh: Kanz Dzaki PR (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
 
-          const selected = data[id];
-          
-          // Isi data ke detail view
-          document.getElementById('detailTitle').innerText = 'Detail Pengajuan: ' + id;
-          document.getElementById('detailSender').innerText = selected.sender;
-          document.getElementById('detailTime').innerText = selected.time;
-          document.getElementById('detailRiskBadge').innerText = selected.riskText;
-          document.getElementById('detailRiskBadge').className = 'badge ' + selected.risk;
+            <div class="action-buttons">
+                <button class="btn btn-accept" onclick="processApproval('1024', 'accept')">Accept</button>
+                <button class="btn btn-reject" onclick="processApproval('1024', 'reject')">Reject</button>
+            </div>
+            <div class="status-message" id="msg-1024"></div>
+        </div>
 
-          // Sembunyikan Inbox, Tampilkan Detail
-          document.getElementById('approvalInbox').style.display = 'none';
-          document.getElementById('approvalDetailView').style.display = 'block';
-        }
+        <div class="approval-box" id="req-1025">
+            <div class="approval-header">
+                <span>Request ID: #REQ-1025</span>
+                <span>Diminta oleh: Brian Nugraha P (Site Engineer)</span>
+            </div>
+            
+            <p><strong>Deskripsi:</strong> Permintaan untuk memperbarui status proyek ke "Selesai" pada database utama.</p>
+            
+            <div class="sql-query">
+UPDATE projects 
+SET status = 'Selesai', updated_at = NOW() 
+WHERE project_id = 'PRJ-998';
+            </div>
 
-        function closeCrDetail() {
-          document.getElementById('approvalInbox').style.display = 'block';
-          document.getElementById('approvalDetailView').style.display = 'none';
-        }
-      </script>
-
-      <!-- SECTION 03: LAPORAN AKHIR -->
-      <section id="laporan" class="section">
-        <div class="topbar">
-          <div>
-            <h2>Kompilasi Laporan Akhir & Lesson Learned</h2>
-            <p>Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.</p>
-          </div>
+            <div class="action-buttons">
+                <button class="btn btn-accept" onclick="processApproval('1025', 'accept')">Accept</button>
+                <button class="btn btn-reject" onclick="processApproval('1025', 'reject')">Reject</button>
+            </div>
+            <div class="status-message" id="msg-1025"></div>
         </div>
         
-        <div class="card" style="margin-bottom: 20px;">
-          <h3 style="display:flex; justify-content:space-between;">
-            Draft Laporan Akhir Proyek
-            <button class="btn secondary no-print">Generate Ringkasan Otomatis</button>
-          </h3>
-          <div style="background: #f8fafc; border: 1px solid var(--line); border-radius: 12px; padding: 20px; font-size: 13px; line-height: 1.6;">
-            <p><b>Executive Summary:</b><br>Proyek Pembangunan Gedung (Tahap 1) telah mencapai progres aktual sebesar <strong>68.5%</strong>. Terdapat total 8 Change Request selama masa konstruksi yang didominasi oleh kondisi lapangan (clash MEP).</p>
-            <p><b>Kinerja Waktu & Biaya (Walkthrough Review):</b><br>SPI rata-rata: 0.94. Percepatan waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil memotong waktu siklus persetujuan dokumen dari rata-rata 7 hari menjadi 2 hari.</p>
-            <p><b>Lesson Learned Terverifikasi:</b><br>Clash detection wajib disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing. Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.</p>
-          </div>
-        </div>
 
-        <div class="card">
-          <h3>RACI & Pengesahan Laporan Dokumen</h3>
-          <table>
-            <tr style="background:#f1f5f9;">
-              <th style="text-align:center;">Disusun Oleh (Site Engineer)</th>
-              <th style="text-align:center;">Diperiksa Oleh (Admin/MK)</th>
-              <th style="text-align:center;">Disetujui Oleh (Project Manager)</th>
-            </tr>
-            <tr>
-              <td style="height: 100px; text-align:center; vertical-align: bottom;">( Tanda Tangan & Nama )</td>
-              <td style="height: 100px; text-align:center; vertical-align: bottom;">( Tanda Tangan & Nama )</td>
-              <td style="height: 100px; text-align:center; vertical-align: bottom; font-weight: bold; color: var(--primary)">( Tanda Tangan PM Secara Digital )</td>
-            </tr>
-          </table>
-        </div>
-      </section>
+    </div>
 
-      <!-- SECTION 04: BIM VIEWER -->
-      <section id="bim" class="section">
-        <div class="topbar">
-          <div>
-            <h2>BIM & WBS Viewer (Read-Only)</h2>
-            <p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p>
-          </div>
-        </div>
-        <div class="card" style="background: #1e293b; color: white; text-align: center; padding: 60px 20px; border-radius: 20px;">
-          <div style="font-size: 48px; margin-bottom: 16px;">🏗️ 🔍</div>
-          <h3 style="color: white; margin-bottom: 8px;">Interactive 3D Model Review</h3>
-          <p style="color: #cbd5e1; font-size: 14px; max-width: 500px; margin: 0 auto;">
-            Menampilkan Model BIM terintegrasi dengan WBS. PM dapat melakukan rotasi, zoom, dan melihat benturan (clash) MEP secara langsung melalui integrasi modul Three.js / IFC.js.
-          </p>
-          <div style="margin-top: 24px; display:inline-block; background: rgba(255,255,255,0.1); padding: 10px 20px; border-radius: 999px; font-size: 12px;">
-            Target Object: <b>BIM-GUID-PIPE-010</b> (Menunggu Approval)
-          </div>
-        </div>
-      </section>
+</div>
 
-    </main>
-  </div>
+<script>
+    // Data Default
+    let stats = {
+        pending: 2, // Set 1 karena ada satu contoh data di bawah
+        approved: 0,
+        rejected: 0
+    };
 
-  <script>
-    // FUNGSI NAVIGASI TAB
-    function showSection(id, btn) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      
-      if(btn) {
-        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Fungsi untuk memperbarui tampilan angka dan chart
+    function updateDashboardUI() {
+        const total = stats.pending + stats.approved + stats.rejected;
+        
+        // Update Angka
+        document.getElementById('count-pending').innerText = stats.pending;
+        document.getElementById('count-approved').innerText = stats.approved;
+        document.getElementById('count-rejected').innerText = stats.rejected;
+
+        // Update Donut Chart Visual (conic-gradient)
+        // Jika total 0, maka chart abu-abu semua. Jika ada data, hitung persentase.
+        const pPerc = total > 0 ? (stats.pending / total) * 100 : 0;
+        const aPerc = total > 0 ? (stats.approved / total) * 100 : 0;
+        const rPerc = total > 0 ? (stats.rejected / total) * 100 : 0;
+
+        document.getElementById('chart-pending').style.background = `conic-gradient(#ff9800 ${pPerc}%, #f0f0f0 0)`;
+        document.getElementById('chart-approved').style.background = `conic-gradient(#4CAF50 ${aPerc}%, #f0f0f0 0)`;
+        document.getElementById('chart-rejected').style.background = `conic-gradient(#f44336 ${rPerc}%, #f0f0f0 0)`;
     }
 
-    // INISIALISASI KURVA S (CHART.JS)
-    document.addEventListener("DOMContentLoaded", function() {
-      const ctx = document.getElementById('sCurveChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: ['Mg 1', 'Mg 2', 'Mg 3', 'Mg 4', 'Mg 5', 'Mg 6', 'Mg 7', 'Mg 8', 'Mg 9', 'Mg 10', 'Mg 11', 'Mg 12'],
-          datasets: [
-            { 
-              label: 'Rencana (Plan %)', 
-              data: [2, 8, 15, 24, 35, 48, 60, 72, 83, 91, 96, 100], 
-              borderColor: '#64748b', // Muted Color
-              borderWidth: 3,
-              borderDash: [5, 5],
-              tension: 0.4,
-              pointBackgroundColor: '#64748b'
-            },
-            { 
-              label: 'Realisasi Aktual (Actual %)', 
-              data: [2, 7.5, 14, 22, 33, 45, 55, 68.5], // Data berhenti di minggu berjalan
-              borderColor: '#1d4ed8', // Primary Blue
-              backgroundColor: 'rgba(29, 78, 216, 0.1)',
-              borderWidth: 4, 
-              tension: 0.4,
-              fill: true,
-              pointBackgroundColor: '#1d4ed8',
-              pointRadius: 5,
-              pointHoverRadius: 7
-            }
-          ]
-        },
-        options: { 
-          responsive: true, 
-          maintainAspectRatio: false,
-          plugins: { 
-            legend: { position: 'bottom', labels: { font: { family: 'Inter', weight: 'bold' } } },
-            tooltip: { mode: 'index', intersect: false }
-          }, 
-          scales: { 
-            y: { 
-              beginAtZero: true, 
-              max: 100,
-              title: { display: true, text: 'Progress Fisik (%)', font: { weight: 'bold' } },
-              grid: { color: '#e2e8f0' }
-            },
-            x: {
-              grid: { display: false }
-            }
-          },
-          interaction: { mode: 'nearest', axis: 'x', intersect: false }
+    // Fungsi saat tombol ditekan
+    function processApproval(id, action) {
+        // 1. Update data internal
+        stats.pending--;
+        if (action === 'accept') {
+            stats.approved++;
+        } else {
+            stats.rejected++;
         }
-      });
-    });
-  </script>
+
+        // 2. Update UI Dashboard
+        updateDashboardUI();
+
+        // 3. Sembunyikan tombol dan tampilkan pesan
+        const box = document.getElementById('req-' + id);
+        const btnContainer = box.querySelector('.action-buttons');
+        const msgElement = document.getElementById('msg-' + id);
+
+        btnContainer.style.display = 'none'; // Tombol Vanish
+        
+        msgElement.style.display = 'block';
+        if (action === 'accept') {
+            msgElement.innerText = "✓ Request Approved Successfully";
+            msgElement.style.color = "#4CAF50";
+            box.style.borderLeft = "10px solid #4CAF50";
+        } else {
+            msgElement.innerText = "✕ Request Rejected";
+            msgElement.style.color = "#f44336";
+            box.style.borderLeft = "10px solid #f44336";
+        }
+    }
+
+    // Jalankan update saat halaman pertama kali dimuat
+    window.onload = updateDashboardUI;
+</script>
+
 </body>
 </html>
