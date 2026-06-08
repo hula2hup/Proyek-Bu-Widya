@@ -299,7 +299,41 @@
                 <th>Deskripsi Perubahan</th>
                 <th>Diajukan Oleh</th>
                 <th>Waktu Masuk</th>
-                <th>Skala Risiko</th>
+                <th>
+                  <style>
+                    .tt-wrapper { position: relative; display: inline-block; cursor: help; }
+                    .tt-box { 
+                    visibility: hidden; opacity: 0; position: absolute; 
+                    top: 100%; left: -20px; width: 170px; 
+                    background: white; border: 1px solid #cbd5e1; 
+                    padding: 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+                    font-size: 12px; line-height: 1.6; color: #0f172a; 
+                    text-transform: none; letter-spacing: normal; font-weight: 500; 
+                    z-index: 9999; transition: all 0.2s ease; margin-top: 5px;
+                  }
+                    .tt-wrapper:hover .tt-box { visibility: visible; opacity: 1; margin-top: 10px; }
+                    .tt-icon { 
+                      display: inline-flex; align-items: center; justify-content: center; 
+                      background: #2563eb; color: white; width: 16px; height: 16px; 
+                      border-radius: 50%; font-size: 11px; margin-left: 6px; 
+                    }
+                    .tt-wrapper:hover .tt-icon { background: #1e40af; transform: scale(1.1); }
+                  </style>
+
+                  <div style="display: flex; align-items: center;">
+                    Skala Risiko
+                    <div class="tt-wrapper">
+                      <span class="tt-icon">ⓘ</span>
+                      <div class="tt-box">
+                        <b style="color:#1d4ed8;">Skala Risiko</b><br><br>
+                        1 - 20 = Rendah<br>
+                        21 - 50 = Sedang<br>
+                        51 - 75 = Tinggi<br>
+                        76 - 100 = Sangat Tinggi
+                      </div>
+                    </div>
+                  </div>
+                </th>
                 <th style="text-align: center;">Aksi</th>
               </tr>
             </thead>
@@ -312,7 +346,7 @@
                   <div style="font-size: 11px; color: var(--muted);">Site Engineer</div>
                 </td>
                 <td>07 Jun 2026, 09:15</td>
-                <td><span class="badge high">Tinggi (78)</span></td>
+                <td><span class="badge high">Tinggi (72)</span></td>
                 <td style="text-align: center;">
                   <button class="btn" onclick="openCrDetail('CR-008')">Tinjau Detail</button>
                 </td>
@@ -325,7 +359,7 @@
                   <div style="font-size: 11px; color: var(--muted);">Arsitek Senior</div>
                 </td>
                 <td>06 Jun 2026, 14:20</td>
-                <td><span class="badge medium">Sedang (52)</span></td>
+                <td><span class="badge medium">Sedang (45)</span></td>
                 <td style="text-align: center;">
                   <button class="btn" onclick="openCrDetail('CR-009')">Tinjau Detail</button>
                 </td>
