@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manager Workspace - BIM WBS System</title>
-  <!-- Menambahkan library Chart.js untuk Kurva S -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -34,7 +33,6 @@
       min-height: 100vh;
     }
     
-    /* SIDEBAR STYLE */
     aside {
       background: #0f172a;
       color: white;
@@ -67,7 +65,6 @@
       background: var(--warning); color: #0f172a; font-weight: 700; cursor: pointer;
     }
 
-    /* MAIN CONTENT STYLE */
     main { padding: 26px 30px 60px; }
     .topbar {
       display: flex; justify-content: space-between; align-items: center;
@@ -109,20 +106,17 @@
     .section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* TABLE STYLES */
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { padding: 16px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
     th { color: #475569; background: #f8fafc; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
     tr:last-child td { border-bottom: 0; }
 
-    /* BADGE STYLES */
     .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; border: 1px solid transparent; }
     .badge.high { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
     .badge.medium { background: #fef3c7; color: #b45309; border-color: #fde68a; }
     .badge.low { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
     .badge.info { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
 
-    /* TIMELINE STYLES (Sesuai Referensi Gambar) */
     .timeline { position: relative; margin-top: 8px; padding-left: 10px; }
     .timeline-item { 
       display: grid; grid-template-columns: 110px 1fr; gap: 14px; 
@@ -139,10 +133,8 @@
     .timeline-item strong { display: block; margin-bottom: 6px; color: #0f172a; font-size: 14px; }
     .timeline-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
 
-    /* CHART CONTAINER */
     .chart-container { position: relative; height: 280px; width: 100%; }
 
-    /* AI Highlight & Forms */
     .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 6px; }
     input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font-family: inherit; background: #f8fafc; font-size: 13px; }
@@ -158,7 +150,6 @@
       .no-print { display: none !important; }
     }
     
-    /* ICON BUTTON & MODAL STYLES */
     .icon-btn {
       background: #f1f5f9; border: none; border-radius: 8px; width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
@@ -194,11 +185,52 @@
     .btn-close:hover { color: var(--danger); }
     
     .modal-body { padding: 24px; max-height: 60vh; overflow-y: auto; }
+
+    .hover-row:hover { background-color: #f8fafc; cursor: pointer; transition: 0.2s; }
+    #inboxTable th { position: sticky; top: 0; z-index: 10; }
+    #inboxTable tr td { vertical-align: middle; }
+
+    /* ── SORT BUTTON STYLES ── */
+    .sort-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 4px;
+      margin-left: 4px;
+      border-radius: 4px;
+      color: #94a3b8;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    .sort-btn:hover { background: #e2e8f0; color: #1d4ed8; }
+    .sort-btn.asc, .sort-btn.desc { color: #1d4ed8; background: #eff6ff; }
+
+    .sort-btn svg { display: block; }
+
+    /* ── TH flex row ── */
+    .th-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      white-space: nowrap;
+    }
+
+    /* ── NO RESULTS ROW ── */
+    .no-results-row td {
+      text-align: center;
+      color: var(--muted);
+      padding: 32px 12px;
+      font-size: 13px;
+    }
   </style>
 </head>
 <body>
   <div class="app">
-    <!-- SIDEBAR -->
     <aside>
       <div class="brand">
         <div class="logo">PM</div>
@@ -219,7 +251,7 @@
     </aside>
 
     <main>
-      <!-- SECTION 01: DASHBOARD MONITORING -->
+      <!-- SECTION 01: DASHBOARD -->
       <section id="dashboard" class="section active">
         <div class="topbar">
           <div>
@@ -237,7 +269,6 @@
               <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">🡪</button>
             </div>
           </div>
-
           <div class="card metric" style="border-color: var(--danger)">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
@@ -246,7 +277,6 @@
               <button class="icon-btn" onclick="openModal('modalRisk')" title="Lihat Daftar Risiko Tinggi">🡪</button>
             </div>
           </div>
-
           <div class="card metric" style="border-color: var(--primary)">
             <h3>SPI (Schedule Perf.)</h3><div class="num">0.94</div><small>Indikasi sedikit keterlambatan</small>
           </div>
@@ -255,7 +285,6 @@
           </div>
         </div>
 
-        <!-- KURVA S (CHART) -->
         <div class="card" style="margin-bottom: 20px;">
           <h3>Kurva S - Kinerja Waktu & Progres Terintegrasi</h3>
           <div class="chart-container">
@@ -263,9 +292,7 @@
           </div>
         </div>
 
-        <!-- TIMELINE & DECISION SUMMARY -->
         <div class="grid cols-2">
-          <!-- Recent Change Activities -->
           <div class="card">
             <h3>Recent Change Activities</h3>
             <div class="timeline">
@@ -292,8 +319,6 @@
               </div>
             </div>
           </div>
-          
-          <!-- Decision Summary -->
           <div class="card">
             <h3>Decision Summary</h3>
             <table>
@@ -336,73 +361,59 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h3 style="margin:0;">📥 Antrean Pengajuan (Pending Review)</h3>
             <div class="no-print">
-              <input type="text" placeholder="Cari CR ID atau Pengaju..." style="width: 250px; padding: 8px 12px; font-size: 12px;">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Cari CR ID atau Pengaju..."
+                style="width: 250px; padding: 8px 12px; font-size: 12px;"
+                oninput="applySearchAndSort()"
+              >
             </div>
           </div>
           
           <table id="inboxTable">
             <thead>
               <tr>
-                <th>CR ID</th>
+                <th>
+                  <span class="th-inner">
+                    CR ID
+                    <button class="sort-btn" id="sortBtn-crid" onclick="toggleSort('crid')" title="Urutkan CR ID">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-crid"/>
+                        <path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-crid"/>
+                      </svg>
+                    </button>
+                  </span>
+                </th>
                 <th>Deskripsi Perubahan</th>
                 <th>Diajukan Oleh</th>
-                <th>Waktu Masuk</th>
-                <th>Skala Risiko</th>
+                <th>
+                  <span class="th-inner">
+                    Waktu Masuk
+                    <button class="sort-btn" id="sortBtn-waktu" onclick="toggleSort('waktu')" title="Urutkan Waktu Masuk">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-waktu"/>
+                        <path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-waktu"/>
+                      </svg>
+                    </button>
+                  </span>
+                </th>
+                <th>
+                  <span class="th-inner">
+                    Skala Risiko
+                    <button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko')" title="Urutkan Skala Risiko">
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                        <path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/>
+                        <path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/>
+                      </svg>
+                    </button>
+                  </span>
+                </th>
                 <th style="text-align: center;">Aksi</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="hover-row">
-                <td><b>CR-008</b></td>
-                <td>Relokasi Jalur Pipa Utama (Plumbing)</td>
-                <td>
-                  <div style="font-weight: 700;">Budi Santoso</div>
-                  <div style="font-size: 11px; color: var(--muted);">Site Engineer</div>
-                </td>
-                <td>07 Jun 2026, 09:15</td>
-                <td><span class="badge high">Tinggi (78)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-008')">Tinjau Detail</button>
-                </td>
-              </tr>
-              <tr class="hover-row">
-                <td><b>CR-009</b></td>
-                <td>Revisi Material Finishing Facade</td>
-                <td>
-                  <div style="font-weight: 700;">Ani Wijaya</div>
-                  <div style="font-size: 11px; color: var(--muted);">Arsitek Senior</div>
-                </td>
-                <td>06 Jun 2026, 14:20</td>
-                <td><span class="badge medium">Sedang (52)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-009')">Tinjau Detail</button>
-                </td>
-              </tr>
-              <tr class="hover-row">
-                <td><b>CR-010</b></td>
-                <td>Penambahan Titik Lampu Taman</td>
-                <td>
-                  <div style="font-weight: 700;">Dedi Kurnia</div>
-                  <div style="font-size: 11px; color: var(--muted);">MEP Coordinator</div>
-                </td>
-                <td>05 Jun 2026, 10:05</td>
-                <td><span class="badge low">Rendah (24)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-010')">Tinjau Detail</button>
-                </td>
-              </tr>
-              <tr class="hover-row" style="background-color: #fff1f2;"> <td><b>CR-004</b></td>
-                <td>Perubahan Spesifikasi Material (Potensi Cost Overrun)</td>
-                <td>
-                  <div style="font-weight: 700;">Lia Susanti</div>
-                  <div style="font-size: 11px; color: var(--muted);">Quantity Surveyor</div>
-                </td>
-                <td>01 Jun 2026, 11:30</td>
-                <td><span class="badge high">Tinggi (85)</span></td>
-                <td style="text-align: center;">
-                  <button class="btn" onclick="openCrDetail('CR-004')">Tinjau Detail</button>
-                </td>
-              </tr>
+            <tbody id="inboxTbody">
+              <!-- Rows rendered by JS -->
             </tbody>
           </table>
         </div>
@@ -421,7 +432,6 @@
                 <tr><td><b>Impact Analysis</b></td><td>Biaya: +Rp 85 Jt | Waktu: <span style="color:var(--danger);font-weight:bold;">+3 Hari</span></td></tr>
                 <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Tinggi</span></td></tr>
               </table>
-
               <div class="ai-box">
                 <h4>✨ AI Recommendation Engine</h4>
                 <p style="font-size: 12px; margin: 0; color: #4c1d95;">
@@ -429,7 +439,6 @@
                 </p>
               </div>
             </div>
-
             <div class="card border-l-4" style="border-left-color: var(--primary)">
               <h3>Form Approval Decision (Project Manager)</h3>
               <div class="form-grid">
@@ -453,44 +462,6 @@
         </div>
       </section>
 
-      <style>
-        .hover-row:hover { background-color: #f8fafc; cursor: pointer; transition: 0.2s; }
-        #inboxTable th { position: sticky; top: 0; z-index: 10; }
-        #inboxTable tr td { vertical-align: middle; }
-      </style>
-
-      <script>
-        function openCrDetail(id) {
-          // Mapping data simulasi, sekarang termasuk CR-004
-          const data = {
-            'CR-008': { sender: 'Budi Santoso (Site Engineer)', time: '07 Jun 2026, 09:15', risk: 'high', riskText: 'Tinggi' },
-            'CR-009': { sender: 'Ani Wijaya (Arsitek Senior)', time: '06 Jun 2026, 14:20', risk: 'medium', riskText: 'Sedang' },
-            'CR-010': { sender: 'Dedi Kurnia (MEP Coordinator)', time: '05 Jun 2026, 10:05', risk: 'low', riskText: 'Rendah' },
-            'CR-004': { sender: 'Lia Susanti (Quantity Surveyor)', time: '01 Jun 2026, 11:30', risk: 'high', riskText: 'Tinggi' }
-          };
-
-          const selected = data[id];
-          
-          if(selected) {
-            // Isi data ke detail view
-            document.getElementById('detailTitle').innerText = 'Detail Pengajuan: ' + id;
-            document.getElementById('detailSender').innerText = selected.sender;
-            document.getElementById('detailTime').innerText = selected.time;
-            document.getElementById('detailRiskBadge').innerText = selected.riskText;
-            document.getElementById('detailRiskBadge').className = 'badge ' + selected.risk;
-
-            // Sembunyikan Inbox, Tampilkan Detail
-            document.getElementById('approvalInbox').style.display = 'none';
-            document.getElementById('approvalDetailView').style.display = 'block';
-          }
-        }
-
-        function closeCrDetail() {
-          document.getElementById('approvalInbox').style.display = 'block';
-          document.getElementById('approvalDetailView').style.display = 'none';
-        }
-      </script>
-
       <!-- SECTION 03: LAPORAN AKHIR -->
       <section id="laporan" class="section">
         <div class="topbar">
@@ -499,7 +470,6 @@
             <p>Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.</p>
           </div>
         </div>
-        
         <div class="card" style="margin-bottom: 20px;">
           <h3 style="display:flex; justify-content:space-between;">
             Draft Laporan Akhir Proyek
@@ -511,7 +481,6 @@
             <p><b>Lesson Learned Terverifikasi:</b><br>Clash detection wajib disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing. Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.</p>
           </div>
         </div>
-
         <div class="card">
           <h3>RACI & Pengesahan Laporan Dokumen</h3>
           <table>
@@ -549,6 +518,7 @@
         </div>
       </section>
 
+      <!-- MODAL: PENDING -->
       <div id="modalPending" class="modal-overlay" onclick="closeModalOutside(event, 'modalPending')">
         <div class="modal-content">
           <div class="modal-header">
@@ -556,7 +526,7 @@
             <button class="btn-close" onclick="closeModal('modalPending')">✖</button>
           </div>
           <div class="modal-body">
-            <table id="inboxTable">
+            <table>
               <thead>
                 <tr><th>CR ID</th><th>Diajukan Oleh</th><th>Waktu Masuk</th><th>Skala Risiko</th><th>Aksi</th></tr>
               </thead>
@@ -588,6 +558,7 @@
         </div>
       </div>
 
+      <!-- MODAL: RISK -->
       <div id="modalRisk" class="modal-overlay" onclick="closeModalOutside(event, 'modalRisk')">
         <div class="modal-content">
           <div class="modal-header">
@@ -595,7 +566,7 @@
             <button class="btn-close" onclick="closeModal('modalRisk')">✖</button>
           </div>
           <div class="modal-body">
-            <table id="inboxTable">
+            <table>
               <thead>
                 <tr><th>CR ID</th><th>Diajukan Oleh</th><th>Waktu Masuk</th><th>Skala Risiko</th><th>Aksi</th></tr>
               </thead>
@@ -623,104 +594,298 @@
   </div>
 
   <script>
-    // FUNGSI NAVIGASI TAB
+    // ══════════════════════════════════════════════════════
+    // DATA SOURCE — single source of truth for the inbox
+    // ══════════════════════════════════════════════════════
+    const crData = [
+      {
+        id: 'CR-008',
+        desc: 'Relokasi Jalur Pipa Utama (Plumbing)',
+        sender: 'Budi Santoso',
+        role: 'Site Engineer',
+        waktu: '07 Jun 2026, 09:15',
+        waktuTs: new Date('2026-06-07T09:15:00').getTime(),
+        risikoLabel: 'Tinggi',
+        risikoClass: 'high',
+        risikoScore: 78,
+        highlight: false
+      },
+      {
+        id: 'CR-009',
+        desc: 'Revisi Material Finishing Facade',
+        sender: 'Ani Wijaya',
+        role: 'Arsitek Senior',
+        waktu: '06 Jun 2026, 14:20',
+        waktuTs: new Date('2026-06-06T14:20:00').getTime(),
+        risikoLabel: 'Sedang',
+        risikoClass: 'medium',
+        risikoScore: 52,
+        highlight: false
+      },
+      {
+        id: 'CR-010',
+        desc: 'Penambahan Titik Lampu Taman',
+        sender: 'Dedi Kurnia',
+        role: 'MEP Coordinator',
+        waktu: '05 Jun 2026, 10:05',
+        waktuTs: new Date('2026-06-05T10:05:00').getTime(),
+        risikoLabel: 'Rendah',
+        risikoClass: 'low',
+        risikoScore: 24,
+        highlight: false
+      },
+      {
+        id: 'CR-004',
+        desc: 'Perubahan Spesifikasi Material (Potensi Cost Overrun)',
+        sender: 'Lia Susanti',
+        role: 'Quantity Surveyor',
+        waktu: '01 Jun 2026, 11:30',
+        waktuTs: new Date('2026-06-01T11:30:00').getTime(),
+        risikoLabel: 'Tinggi',
+        risikoClass: 'high',
+        risikoScore: 85,
+        highlight: true
+      }
+    ];
+
+    // ── Sort state ──
+    // key: 'crid' | 'waktu' | 'risiko' | null
+    // dir: 'asc' | 'desc'
+    let sortState = { key: null, dir: 'asc' };
+
+    // ── Numeric ID extractor for CR ID sort (e.g. 'CR-008' → 8) ──
+    function crIdNum(id) {
+      return parseInt(id.replace(/\D/g, ''), 10);
+    }
+
+    // ── Risk order map: lower number = lower risk ──
+    const risikoOrder = { low: 1, medium: 2, high: 3 };
+
+    // ══════════════════════════════════════════════════════
+    // TOGGLE SORT
+    // ══════════════════════════════════════════════════════
+    function toggleSort(key) {
+      if (sortState.key === key) {
+        // Same column — flip direction
+        sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        // New column — reset to asc
+        sortState.key = key;
+        sortState.dir = 'asc';
+      }
+      updateSortArrows();
+      applySearchAndSort();
+    }
+
+    function updateSortArrows() {
+      const cols = ['crid', 'waktu', 'risiko'];
+      cols.forEach(col => {
+        const btn = document.getElementById('sortBtn-' + col);
+        const upArrow = document.getElementById('arrow-up-' + col);
+        const downArrow = document.getElementById('arrow-down-' + col);
+        if (!btn) return;
+
+        btn.classList.remove('asc', 'desc');
+        upArrow.style.opacity = '0.25';
+        downArrow.style.opacity = '0.25';
+
+        if (sortState.key === col) {
+          btn.classList.add(sortState.dir);
+          if (sortState.dir === 'asc') {
+            upArrow.style.opacity = '1';
+            downArrow.style.opacity = '0.25';
+          } else {
+            upArrow.style.opacity = '0.25';
+            downArrow.style.opacity = '1';
+          }
+        }
+      });
+    }
+
+    // ══════════════════════════════════════════════════════
+    // APPLY SEARCH + SORT → RENDER
+    // ══════════════════════════════════════════════════════
+    function applySearchAndSort() {
+      const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+      // 1. Filter
+      let rows = crData.filter(r => {
+        if (!query) return true;
+        return (
+          r.id.toLowerCase().includes(query) ||
+          r.sender.toLowerCase().includes(query) ||
+          r.role.toLowerCase().includes(query) ||
+          r.desc.toLowerCase().includes(query)
+        );
+      });
+
+      // 2. Sort
+      if (sortState.key) {
+        rows = [...rows].sort((a, b) => {
+          let va, vb;
+          if (sortState.key === 'crid') {
+            va = crIdNum(a.id);
+            vb = crIdNum(b.id);
+          } else if (sortState.key === 'waktu') {
+            va = a.waktuTs;
+            vb = b.waktuTs;
+          } else if (sortState.key === 'risiko') {
+            va = a.risikoScore;
+            vb = b.risikoScore;
+          }
+          return sortState.dir === 'asc' ? va - vb : vb - va;
+        });
+      }
+
+      // 3. Render
+      renderInbox(rows);
+    }
+
+    // ══════════════════════════════════════════════════════
+    // RENDER INBOX TABLE BODY
+    // ══════════════════════════════════════════════════════
+    function renderInbox(rows) {
+      const tbody = document.getElementById('inboxTbody');
+      if (!tbody) return;
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `
+          <tr class="no-results-row">
+            <td colspan="6">
+              <div style="font-size:24px;margin-bottom:8px;">🔍</div>
+              Tidak ada hasil yang cocok
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = rows.map(r => `
+        <tr class="hover-row" style="${r.highlight ? 'background-color: #fff1f2;' : ''}">
+          <td><b>${r.id}</b></td>
+          <td>${r.desc}</td>
+          <td>
+            <div style="font-weight: 700;">${r.sender}</div>
+            <div style="font-size: 11px; color: var(--muted);">${r.role}</div>
+          </td>
+          <td>${r.waktu}</td>
+          <td>
+            <span class="badge ${r.risikoClass}">
+              ${r.risikoLabel} (${r.risikoScore})
+            </span>
+          </td>
+          <td style="text-align: center;">
+            <button class="btn" onclick="openCrDetail('${r.id}')">Tinjau Detail</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ══════════════════════════════════════════════════════
+    // CR DETAIL VIEW
+    // ══════════════════════════════════════════════════════
+    const crDetailMap = {
+      'CR-008': { sender: 'Budi Santoso (Site Engineer)', time: '07 Jun 2026, 09:15', risk: 'high', riskText: 'Tinggi' },
+      'CR-009': { sender: 'Ani Wijaya (Arsitek Senior)', time: '06 Jun 2026, 14:20', risk: 'medium', riskText: 'Sedang' },
+      'CR-010': { sender: 'Dedi Kurnia (MEP Coordinator)', time: '05 Jun 2026, 10:05', risk: 'low', riskText: 'Rendah' },
+      'CR-004': { sender: 'Lia Susanti (Quantity Surveyor)', time: '01 Jun 2026, 11:30', risk: 'high', riskText: 'Tinggi' }
+    };
+
+    function openCrDetail(id) {
+      const selected = crDetailMap[id];
+      if (!selected) return;
+      document.getElementById('detailTitle').innerText = 'Detail Pengajuan: ' + id;
+      document.getElementById('detailSender').innerText = selected.sender;
+      document.getElementById('detailTime').innerText = selected.time;
+      document.getElementById('detailRiskBadge').innerText = selected.riskText;
+      document.getElementById('detailRiskBadge').className = 'badge ' + selected.risk;
+      document.getElementById('approvalInbox').style.display = 'none';
+      document.getElementById('approvalDetailView').style.display = 'block';
+    }
+
+    function closeCrDetail() {
+      document.getElementById('approvalInbox').style.display = 'block';
+      document.getElementById('approvalDetailView').style.display = 'none';
+    }
+
+    // ══════════════════════════════════════════════════════
+    // NAVIGATION
+    // ══════════════════════════════════════════════════════
     function showSection(id, btn) {
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      
-      if(btn) {
+      if (btn) {
         document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // INISIALISASI KURVA S (CHART.JS)
-    document.addEventListener("DOMContentLoaded", function() {
+    // ══════════════════════════════════════════════════════
+    // MODAL
+    // ══════════════════════════════════════════════════════
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+    function closeModalOutside(event, modalId) {
+      if (event.target.id === modalId) closeModal(modalId);
+    }
+    function reviewFromModal(modalId, crId) {
+      closeModal(modalId);
+      const approvalNavBtn = document.querySelectorAll('nav button')[1];
+      showSection('approval', approvalNavBtn);
+      setTimeout(() => openCrDetail(crId), 300);
+    }
+
+    // ══════════════════════════════════════════════════════
+    // INIT
+    // ══════════════════════════════════════════════════════
+    document.addEventListener("DOMContentLoaded", function () {
+      // Render initial table
+      renderInbox(crData);
+
+      // Kurva S
       const ctx = document.getElementById('sCurveChart').getContext('2d');
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Mg 1', 'Mg 2', 'Mg 3', 'Mg 4', 'Mg 5', 'Mg 6', 'Mg 7', 'Mg 8', 'Mg 9', 'Mg 10', 'Mg 11', 'Mg 12'],
+          labels: ['Mg 1','Mg 2','Mg 3','Mg 4','Mg 5','Mg 6','Mg 7','Mg 8','Mg 9','Mg 10','Mg 11','Mg 12'],
           datasets: [
-            { 
-              label: 'Rencana (Plan %)', 
-              data: [2, 8, 15, 24, 35, 48, 60, 72, 83, 91, 96, 100], 
-              borderColor: '#64748b', // Muted Color
-              borderWidth: 3,
-              borderDash: [5, 5],
-              tension: 0.4,
-              pointBackgroundColor: '#64748b'
+            {
+              label: 'Rencana (Plan %)',
+              data: [2,8,15,24,35,48,60,72,83,91,96,100],
+              borderColor: '#64748b', borderWidth: 3, borderDash: [5,5],
+              tension: 0.4, pointBackgroundColor: '#64748b'
             },
-            { 
-              label: 'Realisasi Aktual (Actual %)', 
-              data: [2, 7.5, 14, 22, 33, 45, 55, 68.5], // Data berhenti di minggu berjalan
-              borderColor: '#1d4ed8', // Primary Blue
-              backgroundColor: 'rgba(29, 78, 216, 0.1)',
-              borderWidth: 4, 
-              tension: 0.4,
-              fill: true,
-              pointBackgroundColor: '#1d4ed8',
-              pointRadius: 5,
-              pointHoverRadius: 7
+            {
+              label: 'Realisasi Aktual (Actual %)',
+              data: [2,7.5,14,22,33,45,55,68.5],
+              borderColor: '#1d4ed8', backgroundColor: 'rgba(29,78,216,0.1)',
+              borderWidth: 4, tension: 0.4, fill: true,
+              pointBackgroundColor: '#1d4ed8', pointRadius: 5, pointHoverRadius: 7
             }
           ]
         },
-        options: { 
-          responsive: true, 
-          maintainAspectRatio: false,
-          plugins: { 
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: {
             legend: { position: 'bottom', labels: { font: { family: 'Inter', weight: 'bold' } } },
             tooltip: { mode: 'index', intersect: false }
-          }, 
-          scales: { 
-            y: { 
-              beginAtZero: true, 
-              max: 100,
+          },
+          scales: {
+            y: {
+              beginAtZero: true, max: 100,
               title: { display: true, text: 'Progress Fisik (%)', font: { weight: 'bold' } },
               grid: { color: '#e2e8f0' }
             },
-            x: {
-              grid: { display: false }
-            }
+            x: { grid: { display: false } }
           },
           interaction: { mode: 'nearest', axis: 'x', intersect: false }
         }
       });
     });
-
-    // FUNGSI KONTROL MODAL
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add('active');
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
-    }
-
-    function closeModalOutside(event, modalId) {
-      // Tutup modal jika user mengklik area abu-abu di luar kotak konten
-      if (event.target.id === modalId) {
-        closeModal(modalId);
-      }
-    }
-
-    // FUNGSI LOMPAT DARI MODAL KE TAB REVIEW
-    function reviewFromModal(modalId, crId) {
-      closeModal(modalId); // Tutup modal terlebih dahulu
-      
-      // Pindah ke Tab Review & Approval (navigasi ke-2)
-      const approvalNavBtn = document.querySelectorAll('nav button')[1];
-      showSection('approval', approvalNavBtn);
-
-      // Pastikan fungsi openCrDetail (dari update sebelumnya) berjalan
-      if (typeof openCrDetail === "function") {
-        // Delay sedikit agar transisi tab terlihat mulus sebelum membuka detail
-        setTimeout(() => {
-          openCrDetail(crId);
-        }, 300);
-      }
-    }
   </script>
 </body>
 </html>
