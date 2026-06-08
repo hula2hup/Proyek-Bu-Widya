@@ -1519,6 +1519,13 @@
           </table>
         </div>
       </div>
+      <div id="editChangePage" class="page">
+        <div class="content-page">
+          <h2>Edit Change Request</h2>
+
+          <div id="editFormContainer"></div>
+        </div>
+      </div>
 
       <div id="historyPage" class="page">
         <div class="content-page">
@@ -1552,7 +1559,7 @@
           submittedBy: "SITE ENGINEER",
           category: "Material",
           risk: 8,
-          status: "OPEN",
+          status: "APPROVED",
           detail: "Perubahan spesifikasi beton pile cap",
         },
 
@@ -1562,7 +1569,7 @@
           submittedBy: "SITE ENGINEER",
           category: "Schedule",
           risk: 4,
-          status: "CLOSED",
+          status: "REJECTED",
           detail: "Perubahan jadwal erection girder",
         },
 
@@ -1572,10 +1579,66 @@
           submittedBy: "SITE ENGINEER",
           category: "Method",
           risk: 6,
-          status: "OPEN",
+          status: "APPROVED",
           detail: "Perubahan metode lifting precast",
         },
       ];
+      let selectedChange = null;
+
+      function editChange(id) {
+        selectedChange = changeRequests.find((x) => x.id === id);
+
+        document.getElementById("editFormContainer").innerHTML = `
+
+    <label>Change ID</label>
+    <input
+      id="editId"
+      value="${selectedChange.id}"
+      readonly
+    >
+
+    <label>Category</label>
+    <input
+      id="editCategory"
+      value="${selectedChange.category}"
+    >
+
+    <label>Risk</label>
+    <input
+      id="editRisk"
+      value="${selectedChange.risk}"
+    >
+
+    <label>Detail</label>
+    <textarea id="editDetail">
+${selectedChange.detail}
+    </textarea>
+
+    <div style="margin-top:20px">
+
+      <button onclick="saveDraft()">
+        Save Draft
+      </button>
+
+      <button onclick="submitRevision()">
+        Submit Revision
+      </button>
+
+    </div>
+  `;
+
+        showPage("editChangePage");
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+
+        document.getElementById("editChangePage").classList.add("active");
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
       const wbsData = {
         // =========================
         // LEVEL 4 → LEVEL 5 → LEVEL 6
@@ -3774,6 +3837,8 @@
 
         riskDescription.innerHTML = item ? item.desc : "";
       }
+      document.getElementById("riskCategory").selectedIndex = 0;
+      document.getElementById("riskVariable").selectedIndex = 0;
 
       riskCategory.onchange = loadRisk;
       riskVariable.onchange = updateRisk;
@@ -4020,10 +4085,15 @@
 
         document.getElementById("identify").style.display = "none";
         document.getElementById("register").style.display = "block";
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
       }
       document.getElementById("submittedBy").value = document
         .getElementById("submittedBy")
         .value.toUpperCase();
+
       function submitCR() {
         const fields = document.querySelectorAll(
           "#register input[required], #register select[required], #register textarea[required]",
@@ -4032,38 +4102,56 @@
         for (let field of fields) {
           if (!field.value.trim()) {
             alert("Semua field pada Change Request wajib diisi.");
-
             field.focus();
-
             return;
           }
         }
 
         saveChange();
-        document.getElementById("identify").style.display = "none";
-        document.getElementById("register").style.display = "block";
-
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
       }
-
       function saveChange() {
+        const newID =
+          "CR-" + String(changeRequests.length + 1).padStart(4, "0");
+
         const newRequest = {
-          id: document.querySelector("#identify input[readonly]").value,
+          id: newID,
 
           date: document.querySelector('input[type="date"]').value,
 
           submittedBy: document.getElementById("submittedBy").value,
 
-          category: document.querySelector("#identify select").value,
+          wbsLevel4: document.getElementById("wbsLevel4").value,
+
+          wbsLevel5: document.getElementById("wbsLevel5").value,
+
+          wbsLevel6: document.getElementById("wbsLevel6").value,
+
+          category: document.querySelector(
+            "#identify select:not(#wbsLevel4):not(#wbsLevel5):not(#wbsLevel6)",
+          ).value,
+
+          priority: document.getElementById("priority").value,
 
           risk: Number(document.getElementById("risk").value),
 
-          status: "OPEN",
+          riskCategory: document.getElementById("riskCategory").value,
 
-          detail: document.querySelector("#identify textarea").value,
+          riskVariable: document.getElementById("riskVariable").value,
+
+          projectArea: document.querySelectorAll(
+            '#identify input[type="text"]',
+          )[0].value,
+
+          location: document.querySelectorAll('#identify input[type="text"]')[1]
+            .value,
+
+          bimObject: document.querySelectorAll(
+            '#identify input[type="text"]',
+          )[2].value,
+
+          description: document.querySelector("#identify textarea").value,
+
+          status: "PENDING",
         };
 
         changeRequests.push(newRequest);
@@ -4073,103 +4161,63 @@
 
         alert("Change Request berhasil disubmit.");
 
-        const riskValue = Number(document.getElementById("risk").value);
-
-        if (riskValue >= 7) {
-          document.getElementById("highRisk").innerText =
-            Number(document.getElementById("highRisk").innerText) + 1;
-
-          highlightKPI("highRisk");
-        }
-        function highlightKPI(id) {
-          const el = document.getElementById(id);
-
-          el.parentElement.classList.add("kpi-update");
-
-          setTimeout(() => {
-            el.parentElement.classList.remove("kpi-update");
-          }, 800);
-        }
-
-        alert("Change Request berhasil disubmit.");
-
-        // =====================
-        // RESET FORM STEP 1
-        // =====================
-
         document
-          .querySelectorAll("#identify input, #identify textarea")
+          .querySelectorAll("#identify input:not([readonly])")
           .forEach((el) => {
-            if (el.type !== "file" && !el.hasAttribute("readonly")) {
+            if (el.type !== "file") {
               el.value = "";
             }
           });
 
-        document.querySelectorAll("#identify select").forEach((el) => {
-          el.selectedIndex = 0;
-        });
+        document
+          .querySelectorAll("#identify textarea")
+          .forEach((el) => (el.value = ""));
 
-        // =====================
-        // RESET FORM STEP 2
-        // =====================
+        document
+          .querySelectorAll("#identify select")
+          .forEach((el) => (el.selectedIndex = 0));
 
-        document.querySelectorAll("#register textarea").forEach((el) => {
-          el.value = "";
-        });
+        // reset form step 2
+        document
+          .querySelectorAll("#register textarea")
+          .forEach((el) => (el.value = ""));
 
-        document.querySelectorAll("#register select").forEach((el) => {
-          el.selectedIndex = 0;
-        });
+        document
+          .querySelectorAll("#register select")
+          .forEach((el) => (el.selectedIndex = 0));
 
-        // =====================
-        // RESET PHOTO
-        // =====================
-
+        // reset upload
         document.getElementById("photo").value = "";
-
         document.getElementById("gallery").innerHTML = "";
 
+        document.getElementById("preview").src = "";
         document.getElementById("preview").style.display = "none";
 
         document.getElementById("placeholder").style.display = "block";
-
         document.getElementById("previewBtn").style.display = "none";
 
-        // =====================
-        // RESET RISK STATUS
-        // =====================
-
+        // reset risk
         document.getElementById("riskStatus").className =
           "risk-status risk-safe";
 
         document.getElementById("riskStatus").innerHTML = "Belum Dipilih";
 
-        document.getElementById("riskDescription").value = "";
+        document.getElementById("riskDescription").innerHTML =
+          "Pilih kategori risiko terlebih dahulu.";
 
-        // =====================
-        // GENERATE CHANGE ID BARU
-        // =====================
+        document.getElementById("riskVariable").innerHTML =
+          '<option value="">Pilih Variabel Risiko</option>';
 
-        const newID =
-          "CR-" + String(Math.floor(Math.random() * 9999)).padStart(4, "0");
-
-        document.querySelector("#identify input[readonly]").value = newID;
-
-        // =====================
-        // KEMBALI KE STEP 1
-        // =====================
-
+        // kembali ke step 1
         document.getElementById("register").style.display = "none";
-
         document.getElementById("identify").style.display = "block";
 
         window.scrollTo({
           top: 0,
           behavior: "smooth",
         });
-        level5.innerHTML = '<option value="">Select WBS Level 5</option>';
-
-        level6.innerHTML = '<option value="">Select WBS Level 6</option>';
+        document.getElementById("register").style.display = "none";
+        document.getElementById("identify").style.display = "block";
       }
       function toggleMenu() {
         const submenu = document.getElementById("changeSubmenu");
@@ -4265,7 +4313,7 @@
         changeRequests.forEach((item) => {
           // OPEN CHANGE
 
-          if (item.status === "OPEN") {
+          if (item.status === "APPROVED") {
             openBody.innerHTML += `
         <tr>
           <td>${item.id}</td>
@@ -4279,7 +4327,7 @@
 
           // CLOSED CHANGE
 
-          if (item.status === "CLOSED") {
+          if (item.status === "REJECTED") {
             closedBody.innerHTML += `
         <tr>
           <td>${item.id}</td>
@@ -4288,9 +4336,9 @@
           <td>${item.category}</td>
           <td>${item.status}</td>
           <td>
-            <button onclick="reopenChange('${item.id}')">
-              Reopen
-            </button>
+            <button onclick="editChange('${item.id}')">
+  Edit
+</button>
           </td>
         </tr>
       `;
@@ -4315,7 +4363,7 @@
         const item = changeRequests.find((x) => x.id === id);
 
         if (item) {
-          item.status = "OPEN";
+          item.status = "APPROVED";
 
           renderTables();
 
@@ -4325,10 +4373,12 @@
       function updateDashboard() {
         const total = changeRequests.length;
 
-        const open = changeRequests.filter((x) => x.status === "OPEN").length;
+        const open = changeRequests.filter(
+          (x) => x.status === "APPROVED",
+        ).length;
 
         const closed = changeRequests.filter(
-          (x) => x.status === "CLOSED",
+          (x) => x.status === "REJECTED",
         ).length;
 
         const highRisk = changeRequests.filter((x) => x.risk >= 7).length;
@@ -4341,6 +4391,56 @@
 
         document.getElementById("highRisk").innerText = highRisk;
       }
+      function updateDashboard() {
+        document.getElementById("totalChange").innerText =
+          changeRequests.length;
+
+        document.getElementById("openChange").innerText = changeRequests.filter(
+          (x) => x.status === "APPROVED",
+        ).length;
+
+        document.getElementById("closedChange").innerText =
+          changeRequests.filter((x) => x.status === "REJECTED").length;
+
+        document.getElementById("highRisk").innerText = changeRequests.filter(
+          (x) => Number(x.risk) >= 7,
+        ).length;
+      }
+      function saveDraft() {
+        selectedChange.category = document.getElementById("editCategory").value;
+
+        selectedChange.risk = document.getElementById("editRisk").value;
+
+        selectedChange.detail = document.getElementById("editDetail").value;
+
+        alert("Draft berhasil disimpan.");
+
+        renderTables();
+        updateDashboard();
+      }
+      function submitRevision() {
+        selectedChange.category = document.getElementById("editCategory").value;
+
+        selectedChange.risk = document.getElementById("editRisk").value;
+
+        selectedChange.detail = document.getElementById("editDetail").value;
+
+        selectedChange.status = "PENDING";
+
+        renderTables();
+        updateDashboard();
+
+        alert("Revision berhasil dikirim ulang.");
+
+        showPage("historyPage");
+      }
+      window.onload = () => {
+        renderTables();
+        updateDashboard();
+      };
+      document.querySelector('input[type="date"]').value = new Date()
+        .toISOString()
+        .split("T")[0];
     </script>
   </body>
 </html>
