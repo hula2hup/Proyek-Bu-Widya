@@ -112,9 +112,11 @@
     tr:last-child td { border-bottom: 0; }
 
     .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; border: 1px solid transparent; }
+    .badge.very-high {  background: #450a0a; /* Merah sangat tua */ color: #fca5a5; border-color: #7f1d1d; }
     .badge.high { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
     .badge.medium { background: #fef3c7; color: #b45309; border-color: #fde68a; }
     .badge.low { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+    .badge.risk-very-low {background: #f0fdf4; /* Warna hijau sangat muda */color: #166534;}
     .badge.info { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
 
     .timeline { position: relative; margin-top: 8px; padding-left: 10px; }
@@ -227,6 +229,20 @@
       padding: 32px 12px;
       font-size: 13px;
     }
+
+        /* Tooltip Khusus Tabel */
+    .tt-wrapper { position: relative; display: inline-block; cursor: help; margin-left: 5px; }
+    .tt-box { 
+      visibility: hidden; opacity: 0; position: absolute; 
+      top: 100%; left: 0; width: 180px; 
+      background: white; border: 1px solid #cbd5e1; 
+      padding: 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+      font-size: 12px; line-height: 1.5; color: #0f172a; 
+      text-transform: none; font-weight: 500; z-index: 9999; 
+      transition: all 0.2s ease; margin-top: 8px;
+    }
+    .tt-wrapper:hover .tt-box { visibility: visible; opacity: 1; }
+    .tt-icon { color: #2563eb; font-weight: bold; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -264,7 +280,7 @@
           <div class="card metric" style="border-color: var(--warning)">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
               <div>
-                <h3>Pending Approval</h3><div class="num">3</div><small>Butuh keputusan PM</small>
+                <h3>Pending Approval</h3><div class="num">4</div><small>Butuh keputusan PM</small>
               </div>
               <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">🡪</button>
             </div>
@@ -401,6 +417,17 @@
                 <th>
                   <span class="th-inner">
                     Skala Risiko
+                    <div class="tt-wrapper">
+                      <span class="tt-icon">ⓘ</span>
+                      <div class="tt-box">
+                        <b style="color:#1d4ed8;">Skala Risiko</b><br><br>
+                        1 - 20 = Sangat Rendah<br>
+                        21 - 40 = Rendah<br>
+                        41 - 60 = Sedang<br>
+                        61 - 80 = Tinggi<br>
+                        81 - 100 = Sangat Tinggi
+                      </div>
+                    </div>
                     <button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko')" title="Urutkan Skala Risiko">
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                         <path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/>
@@ -526,33 +553,18 @@
             <button class="btn-close" onclick="closeModal('modalPending')">✖</button>
           </div>
           <div class="modal-body">
-            <table>
+            <table id="pendingTable">
               <thead>
-                <tr><th>CR ID</th><th>Diajukan Oleh</th><th>Waktu Masuk</th><th>Skala Risiko</th><th>Aksi</th></tr>
+                <tr>
+                  <th>CR ID <button class="sort-btn" onclick="toggleSort('crid', 'pending')">↕</button></th>
+                  <th>Diajukan Oleh</th>
+                  <th>Waktu Masuk <button class="sort-btn" onclick="toggleSort('waktu', 'pending')">↕</button></th>
+                  <th>Skala Risiko <button class="sort-btn" onclick="toggleSort('risiko', 'pending')">↕</button></th>
+                  <th>Aksi</th>
+                </tr>
               </thead>
-              <tbody>
-                <tr class="hover-row">
-                  <td><b>CR-008</b></td>
-                  <td><b>Budi Santoso</b><br><span style="font-size:11px;color:var(--muted)">Site Engineer</span></td>
-                  <td>07 Jun 2026, 09:15</td>
-                  <td><span class="badge high">Tinggi (78)</span></td>
-                  <td><button class="btn secondary" onclick="reviewFromModal('modalPending', 'CR-008')">Tinjau</button></td>
-                </tr>
-                <tr class="hover-row">
-                  <td><b>CR-009</b></td>
-                  <td><b>Ani Wijaya</b><br><span style="font-size:11px;color:var(--muted)">Arsitek Senior</span></td>
-                  <td>06 Jun 2026, 14:20</td>
-                  <td><span class="badge medium">Sedang (52)</span></td>
-                  <td><button class="btn secondary" onclick="reviewFromModal('modalPending', 'CR-009')">Tinjau</button></td>
-                </tr>
-                <tr class="hover-row">
-                  <td><b>CR-010</b></td>
-                  <td><b>Dedi Kurnia</b><br><span style="font-size:11px;color:var(--muted)">MEP Coordinator</span></td>
-                  <td>05 Jun 2026, 10:05</td>
-                  <td><span class="badge low">Rendah (24)</span></td>
-                  <td><button class="btn secondary" onclick="reviewFromModal('modalPending', 'CR-010')">Tinjau</button></td>
-                </tr>
-              </tbody>
+              <tbody id="pendingTbody">
+                </tbody>
             </table>
           </div>
         </div>
@@ -582,7 +594,7 @@
                   <td><b>CR-004</b><br><span style="font-size:11px;color:var(--danger)">Potensi Cost Overrun</span></td>
                   <td><b>Lia Susanti</b><br><span style="font-size:11px;color:var(--muted)">Quantity Surveyor</span></td>
                   <td>01 Jun 2026, 11:30</td>
-                  <td><span class="badge high">Tinggi (85)</span></td>
+                  <td><span class="badge very-high">Sangat Tinggi (85)</span></td>
                   <td><button class="btn danger" onclick="reviewFromModal('modalRisk', 'CR-004')">Mitigasi</button></td>
                 </tr>
               </tbody>
@@ -641,8 +653,8 @@
         role: 'Quantity Surveyor',
         waktu: '01 Jun 2026, 11:30',
         waktuTs: new Date('2026-06-01T11:30:00').getTime(),
-        risikoLabel: 'Tinggi',
-        risikoClass: 'high',
+        risikoLabel: 'Sangat Tinggi',
+        risikoClass: 'very-high',
         risikoScore: 85,
         highlight: true
       }
@@ -664,17 +676,30 @@
     // ══════════════════════════════════════════════════════
     // TOGGLE SORT
     // ══════════════════════════════════════════════════════
-    function toggleSort(key) {
+    function toggleSort(key, scope = 'main') {
+      // 1. Logika Sort (Sama seperti sebelumnya)
       if (sortState.key === key) {
-        // Same column — flip direction
         sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
       } else {
-        // New column — reset to asc
         sortState.key = key;
         sortState.dir = 'asc';
       }
-      updateSortArrows();
-      applySearchAndSort();
+
+      // 2. Lakukan pengurutan data
+      let sortedData = [...crData].sort((a, b) => {
+        let va, vb;
+        if (key === 'crid') { va = crIdNum(a.id); vb = crIdNum(b.id); }
+        else if (key === 'waktu') { va = a.waktuTs; vb = b.waktuTs; }
+        else if (key === 'risiko') { va = a.risikoScore; vb = b.risikoScore; }
+        return sortState.dir === 'asc' ? va - vb : vb - va;
+      });
+
+      // 3. Render ke tabel yang tepat
+      if (scope === 'pending') {
+        renderPendingModal(sortedData); // Pakai fungsi baru ini
+      } else {
+        renderInbox(sortedData);        // Pakai fungsi lama (tabel utama)
+      }
     }
 
     function updateSortArrows() {
@@ -700,6 +725,25 @@
           }
         }
       });
+    }
+
+    // ══════════════════════════════════════════════════════
+    // SORT PENDING MODAL
+    // ══════════════════════════════════════════════════════    
+        // Fungsi untuk menggambar ulang tabel di dalam Modal
+    function renderPendingModal(rows) {
+      const tbody = document.getElementById('pendingTbody');
+      if (!tbody) return;
+
+      tbody.innerHTML = rows.map(r => `
+        <tr class="hover-row">
+          <td><b>${r.id}</b></td>
+          <td><b>${r.sender}</b><br><span style="font-size:11px;color:var(--muted)">${r.role}</span></td>
+          <td>${r.waktu}</td>
+          <td><span class="badge ${r.risikoClass}">${r.risikoLabel} (${r.risikoScore})</span></td>
+          <td><button class="btn secondary" onclick="reviewFromModal('modalPending', '${r.id}')">Tinjau</button></td>
+        </tr>
+      `).join('');
     }
 
     // ══════════════════════════════════════════════════════
@@ -787,7 +831,7 @@
       'CR-008': { sender: 'Budi Santoso (Site Engineer)', time: '07 Jun 2026, 09:15', risk: 'high', riskText: 'Tinggi' },
       'CR-009': { sender: 'Ani Wijaya (Arsitek Senior)', time: '06 Jun 2026, 14:20', risk: 'medium', riskText: 'Sedang' },
       'CR-010': { sender: 'Dedi Kurnia (MEP Coordinator)', time: '05 Jun 2026, 10:05', risk: 'low', riskText: 'Rendah' },
-      'CR-004': { sender: 'Lia Susanti (Quantity Surveyor)', time: '01 Jun 2026, 11:30', risk: 'high', riskText: 'Tinggi' }
+      'CR-004': { sender: 'Lia Susanti (Quantity Surveyor)', time: '01 Jun 2026, 11:30', risk: 'very-high', riskText: 'Sangat Tinggi' }
     };
 
     function openCrDetail(id) {
