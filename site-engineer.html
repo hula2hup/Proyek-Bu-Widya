@@ -979,27 +979,109 @@
       .btn-submit {
         background: #1e3a5f;
       }
-      .change-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
+          /* --- Wadah Tabel agar ujungnya membulat (Rounded) --- */
+    .table-container {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden; 
+      margin-top: 25px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
 
-      .change-table th,
-      .change-table td {
-        border: 1px solid #e2e8f0;
-        padding: 12px;
-      }
+    /* --- Desain Tabel --- */
+    .change-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .change-table th,
+    .change-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #475569;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    .change-table th {
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .change-table tr:last-child td {
+      border-bottom: none;
+    }
+    .change-table tbody tr {
+      transition: background-color 0.2s ease;
+    }
+    .change-table tbody tr:hover {
+      background-color: #f1f5f9; /* Efek hover baris abu-abu muda */
+    }
 
-      .change-table th {
-        background: #f8fafc;
-        color: #0f2d52;
-        font-weight: 600;
-      }
+    /* --- Badge Status (Pill) --- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .badge-approved { background: #dcfce7; color: #166534; }
+    .badge-rejected { background: #fee2e2; color: #991b1b; }
+    .badge-pending { background: #fef3c7; color: #92400e; }
 
-      .change-table tr:hover {
-        background: #f8fafc;
-      }
+    /* --- Visualisasi Risiko (Bar & Warna) --- */
+    .risk-visual {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .risk-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .risk-bar-container {
+      flex-grow: 1;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+      min-width: 60px;
+      max-width: 100px;
+    }
+    .risk-bar {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    /* --- Tombol Aksi dalam Tabel --- */
+    .btn-edit-table {
+      background: white;
+      color: #0f2d52;
+      border: 1px solid #cbd5e1;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin: 0;
+    }
+    .btn-edit-table:hover {
+      background: #f8fafc;
+      border-color: #94a3b8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
       .content-page {
         background: white;
         padding: 35px;
@@ -1531,20 +1613,21 @@
             Daftar perubahan yang telah disetujui oleh Project Manager dan dapat
             dilanjutkan ke tahap implementasi proyek.
           </p>
+          <div class="table-container">
+            <table class="change-table">
+              <thead>
+                <tr>
+                  <th>Change ID</th>
+                  <th>Submitted By</th>
+                  <th>Date</th>
+                  <th>Kategori</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
 
-          <table class="change-table">
-            <thead>
-              <tr>
-                <th>Change ID</th>
-                <th>Submitted By</th>
-                <th>Date</th>
-                <th>Kategori</th>
-                <th>Detail</th>
-              </tr>
-            </thead>
-
-            <tbody id="openChangeBody"></tbody>
-          </table>
+              <tbody id="openChangeBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -1556,21 +1639,21 @@
             Daftar perubahan yang ditolak oleh Project Manager dan memerlukan
             revisi.
           </p>
-
-          <table class="change-table">
-            <thead>
-              <tr>
-                <th>Change ID</th>
-                <th>Submitted By</th>
-                <th>Date</th>
-                <th>Kategori</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-
-            <tbody id="closedChangeBody"></tbody>
-          </table>
+          <div class="table-container">
+            <table class="change-table">
+              <thead>
+                <tr>
+                  <th>Change ID</th>
+                  <th>Submitted By</th>
+                  <th>Date</th>
+                  <th>Kategori</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="closedChangeBody"></tbody>
+            </table>
+          </div> 
         </div>
       </div>
       <div id="editChangePage" class="page">
@@ -1586,22 +1669,22 @@
           <h2>Change History</h2>
 
           <p>Riwayat seluruh perubahan yang pernah diajukan pada proyek.</p>
-
-          <table class="change-table">
-            <thead>
-              <tr>
-                <th>Change ID</th>
-                <th>Date</th>
-                <th>Submitted By</th>
-                <th>Kategori</th>
-                <th>Risk</th>
-                <th>Status</th>
-                <th>Detail</th>
-              </tr>
-            </thead>
-
-            <tbody id="historyBody"></tbody>
-          </table>
+          <div class="table-container">
+            <table class="change-table">
+              <thead>
+                <tr>
+                  <th>Change ID</th>
+                  <th>Date</th>
+                  <th>Submitted By</th>
+                  <th>Kategori</th>
+                  <th>Risk</th>
+                  <th>Status</th>
+                  <th>Detail</th>
+                </tr>
+              </thead>
+              <tbody id="historyBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -4358,11 +4441,35 @@ ${selectedChange.detail}
           changeMenu.classList.add("active");
         }
       }
+            /* Helpers UI untuk Tabel */
+      function getRiskColor(risk) {
+        if(risk <= 3) return '#10b981'; // Aman (Hijau)
+        if(risk <= 6) return '#f59e0b'; // Sedang (Kuning/Orange)
+        if(risk <= 8) return '#f97316'; // Tinggi (Orange Tua)
+        return '#ef4444'; // Kritis (Merah)
+      }
+
+      function getRiskHTML(risk) {
+        const color = getRiskColor(risk);
+        const percentage = (risk / 10) * 100; // Kalkulasi panjang bar
+        return `
+          <div class="risk-visual">
+            <div class="risk-dot" style="background-color: ${color};"></div>
+            <div class="risk-bar-container">
+              <div class="risk-bar" style="width: ${percentage}%; background-color: ${color};"></div>
+            </div>
+            <span style="font-weight: 600; font-size: 13px; color: #475569;">${risk}</span>
+          </div>
+        `;
+      }
+
+      function getStatusHTML(status) {
+        return `<span class="badge badge-${status.toLowerCase()}">${status}</span>`;
+      }
+      
       function renderTables() {
         const openBody = document.getElementById("openChangeBody");
-
         const closedBody = document.getElementById("closedChangeBody");
-
         const historyBody = document.getElementById("historyBody");
 
         openBody.innerHTML = "";
@@ -4375,7 +4482,7 @@ ${selectedChange.detail}
           if (item.status === "APPROVED") {
             openBody.innerHTML += `
         <tr>
-          <td>${item.id}</td>
+          <td style="font-weight:600; color:#0f2d52;">${item.id}</td>
           <td>${item.submittedBy}</td>
           <td>${item.date}</td>
           <td>${item.category}</td>
@@ -4389,15 +4496,15 @@ ${selectedChange.detail}
           if (item.status === "REJECTED") {
             closedBody.innerHTML += `
         <tr>
-          <td>${item.id}</td>
+          <td style="font-weight:600; color:#0f2d52;">${item.id}</td>
           <td>${item.submittedBy}</td>
           <td>${item.date}</td>
           <td>${item.category}</td>
-          <td>${item.status}</td>
+          <td>${getStatusHTML(item.status)}</td>
           <td>
-            <button onclick="editChange('${item.id}')">
-  Edit
-</button>
+            <button class="btn-edit-table" onclick="editChange('${item.id}')">
+              ✏️ Edit
+            </button>
           </td>
         </tr>
       `;
@@ -4407,12 +4514,12 @@ ${selectedChange.detail}
 
           historyBody.innerHTML += `
       <tr>
-        <td>${item.id}</td>
+        <td style="font-weight:600; color:#0f2d52;">${item.id}</td>
         <td>${item.date}</td>
         <td>${item.submittedBy}</td>
         <td>${item.category}</td>
-        <td>${item.risk}</td>
-        <td>${item.status}</td>
+        <td>${getRiskHTML(item.risk)}</td>
+        <td>${getStatusHTML(item.status)}</td>
         <td>${item.detail}</td>
       </tr>
     `;
