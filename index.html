@@ -46,8 +46,8 @@
         top: 0;
         z-index: 1000;
 
-        background: white;
-        border-bottom: 1px solid #eee;
+        background: #023047;
+        border-bottom: none;
       }
       .nav-links a {
         position: relative;
@@ -99,7 +99,7 @@
 
         text-align: center;
 
-        background: rgba(0, 0, 0, 0.35);
+        background: rgba(2, 48, 71, 0.55);
 
         color: white;
       }
@@ -130,6 +130,7 @@
       .logo {
         font-size: 28px;
         font-weight: 700;
+        color: white;
       }
       .login-btn {
         background: transparent;
@@ -206,8 +207,15 @@
 
       .nav-links a {
         text-decoration: none;
-        color: #333;
         font-weight: 500;
+        color: white;
+      }
+      .nav-links a:hover {
+        color: #ffb703;
+      }
+
+      .nav-links a::after {
+        background: #fb8500;
       }
 
       .nav-btn {
@@ -260,7 +268,7 @@
       }
 
       .btn-primary {
-        background: #ff6200;
+        background: #fb8500;
         color: #fff;
         padding: 16px 30px;
         border-radius: 10px;
@@ -283,13 +291,13 @@
 
       .btn-primary:hover {
         transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(255, 98, 0, 0.25);
+        box-shadow: 0 15px 30px rgba(251, 133, 0, 0.3);
       }
 
       .btn-secondary:hover {
         transform: translateY(-5px);
-        border-color: #ff6200;
-        color: #ff6200;
+        border-color: #219ebc;
+        color: #219ebc;
       }
 
       .hero-image {
@@ -415,25 +423,25 @@
         background: #ffffff;
       }
       .strength-section {
-        background: #fff8f4;
+        background: #f4fbfd;
       }
       .feature-section {
-        background: #f8fafc;
+        background: #f7fafc;
       }
       .workflow-section {
         background: #ffffff;
       }
       .stats-section {
-        background: #f5f7fb;
+        background: #edf7fb;
       }
       .footer {
-        background: #111827;
+        background: #023047;
         color: white;
         border: none;
       }
       .footer p,
       .footer span {
-        color: #cbd5e1;
+        color: #8ecae6;
       }
       section {
         position: relative;
@@ -474,6 +482,7 @@
       .wyl-card h3 {
         font-size: 56px;
         margin-bottom: 10px;
+        color: #023047;
       }
 
       .wyl-card span {
@@ -481,7 +490,7 @@
         color: #64748b;
       }
       .wyl-card:hover {
-        border-color: #ff6200;
+        border-color: #219ebc;
         transform: translateY(-10px);
 
         box-shadow: 0 20px 40px rgba(255, 98, 0, 0.12);
@@ -577,6 +586,11 @@
         overflow: hidden;
         margin-bottom: 15px;
       }
+      .accordion-item.active .accordion-header {
+        background: #eaf7fb;
+        border-left: 4px solid #219ebc;
+        color: #023047;
+      }
 
       .accordion-header {
         width: 100%;
@@ -649,9 +663,8 @@
       .feature-card:hover {
         transform: translateY(-6px);
 
-        border-color: #ff6200;
-
-        box-shadow: 0 15px 30px rgba(255, 98, 0, 0.12);
+        border-color: #219ebc;
+        box-shadow: 0 15px 30px rgba(33, 158, 188, 0.18);
       }
 
       .workflow {
@@ -663,8 +676,8 @@
       }
 
       .step {
-        background: white;
-        color: #111;
+        background: #023047;
+        color: white;
 
         border: 2px solid #ff6200;
 
@@ -683,7 +696,7 @@
         border-radius: 40px;
       }
       .step:hover {
-        background: #ff6200;
+        background: #219ebc;
         color: white;
         transform: scale(1.05);
       }
@@ -697,7 +710,7 @@
         width: 25px;
         font-size: 18px;
         text-align: center;
-        color: #ff6200;
+        color: #fb8500;
 
         animation: moveArrow 1.5s infinite;
       }
@@ -767,7 +780,7 @@
       .stat-card:hover {
         transform: translateY(-6px);
 
-        border-color: #ff6200;
+        border-color: #219ebc;
 
         box-shadow: 0 15px 30px rgba(255, 98, 0, 0.12);
       }
@@ -782,7 +795,7 @@
 
       .stat-card h2 {
         font-size: 42px;
-        color: #ff6200;
+        color: #023047;
       }
 
       .footer {
