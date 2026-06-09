@@ -1008,6 +1008,57 @@
         border: 1px solid #e2e8f0;
         margin-top: 25px;
       }
+            /* --- Tambahan CSS untuk Stepper --- */
+      .stepper-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 35px;
+        padding-bottom: 20px;
+        border-bottom: 2px dashed #e2e8f0;
+      }
+
+      .step-indicator {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        opacity: 0.4; /* Redup saat tidak aktif */
+        transition: all 0.3s ease;
+      }
+
+      .step-indicator.active {
+        opacity: 1; /* Terang saat aktif */
+      }
+
+      .step-indicator h2 {
+        margin: 0;
+        font-size: 20px;
+        white-space: nowrap;
+      }
+
+      .step-indicator .step-number {
+        width: 38px;
+        height: 38px;
+        background: #94a3b8; /* Warna abu-abu saat tidak aktif */
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+
+      .step-indicator.active .step-number {
+        background: #0f2d52; /* Warna biru gelap saat aktif */
+        box-shadow: 0 0 0 4px rgba(15, 45, 82, 0.15);
+      }
+
+      .stepper-line {
+        flex-grow: 1;
+        height: 2px;
+        background: #e2e8f0;
+        margin: 0 20px;
+      }
     </style>
   </head>
   <body>
@@ -1113,13 +1164,21 @@
 
       <div id="newChangePage" class="page">
         <div class="content-page">
-          <div id="identify" class="form-card">
-            <div class="step-header">
+          
+          <div class="stepper-container">
+            <div class="step-indicator active" id="step1-indicator">
               <div class="step-number">1</div>
-
               <h2>Identifikasi Perubahan</h2>
             </div>
-
+            
+            <div class="stepper-line"></div>
+            
+            <div class="step-indicator" id="step2-indicator">
+              <div class="step-number">2</div>
+              <h2>Register Change Request</h2>
+            </div>
+          </div>
+          <div id="identify" class="form-card">
             <div class="form-grid wbs-grid">
               <div class="form-group">
                 <label>WBS-Paket Pekerjaan</label>
@@ -1353,11 +1412,6 @@
           </div>
 
           <div id="register" class="form-card hidden">
-            <div class="step-header">
-              <div class="step-number">2</div>
-              <h2>Register Change Request</h2>
-            </div>
-
             <div class="form-grid">
               <div class="form-group">
                 <label>Change Type</label>
@@ -3919,8 +3973,9 @@ ${selectedChange.detail}
 
       function backForm() {
         document.getElementById("register").style.display = "none";
-
         document.getElementById("identify").style.display = "block";
+        document.getElementById("step2-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("active");
 
         window.scrollTo({
           top: 0,
@@ -4085,6 +4140,8 @@ ${selectedChange.detail}
 
         document.getElementById("identify").style.display = "none";
         document.getElementById("register").style.display = "block";
+        document.getElementById("step1-indicator").classList.remove("active");
+        document.getElementById("step2-indicator").classList.add("active");
         window.scrollTo({
           top: 0,
           behavior: "smooth",
@@ -4211,6 +4268,8 @@ ${selectedChange.detail}
         // kembali ke step 1
         document.getElementById("register").style.display = "none";
         document.getElementById("identify").style.display = "block";
+        document.getElementById("step2-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("active");
 
         window.scrollTo({
           top: 0,
