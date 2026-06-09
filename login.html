@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Project Monitoring</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+  <div class="login-box">
+
+    <h1>Monitoring</h1>
+
+    <p class="desc">
+      Silakan login menggunakan akun masing-masing.
+    </p>
+
+    <input type="text" id="username" placeholder="Username">
+
+    <!-- MODIFIED: Wrapped the password input in the div and added the button -->
+    <div class="password-field">
+        <input type="password" id="password" placeholder="Password">
+        <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+    </div>
+
+    <button onclick="login()">
+      Login
+    </button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

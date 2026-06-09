@@ -1,39 +1,983 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Project Monitoring</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Construction Management Platform</title>
 
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="container">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <div class="login-box">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
 
-    <h1>Monitoring</h1>
+      body {
+        background: #fff;
+        color: #111;
+      }
 
-    <p class="desc">
-      Silakan login menggunakan akun masing-masing.
-    </p>
+      .container {
+        width: 90%;
+        max-width: 1300px;
+        margin: auto;
+      }
 
-    <input type="text" id="username" placeholder="Username">
+      /* NAVBAR */
 
-    <!-- MODIFIED: Wrapped the password input in the div and added the button -->
-    <div class="password-field">
-        <input type="password" id="password" placeholder="Password">
-        <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+      .navbar {
+        max-width: 1300px;
+        margin: auto;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        background: white;
+        border-bottom: 1px solid #eee;
+      }
+      .nav-links a {
+        position: relative;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #ff6200;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -6px;
+        width: 0%;
+        height: 2px;
+        background: #ff6200;
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 700;
+      }
+      .login-btn {
+        background: transparent;
+        color: #ff6200;
+        border: 2px solid #ff6200;
+        padding: 12px 28px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s;
+        margin-right: 15px;
+      }
+
+      .login-btn:hover {
+        background: #ff6200;
+        color: white;
+        transform: translateY(-2px);
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: 1s;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .navbar {
+        height: 85px;
+        padding: 0 60px;
+      }
+
+      .logo {
+        min-width: 180px;
+      }
+
+      .nav-links {
+        flex: 1;
+        justify-content: center;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 35px;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+      }
+
+      .nav-btn {
+        background: #ff6200;
+        color: #fff;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      /* HERO */
+
+      .hero {
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+      }
+      .hero-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+      }
+      .hero-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .hero-text h1 {
+        font-size: 64px;
+        line-height: 1.1;
+        font-weight: 800;
+        margin-bottom: 25px;
+      }
+
+      .hero-text p {
+        font-size: 18px;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 35px;
+        max-width: 600px;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+      }
+
+      .btn-primary {
+        background: #ff6200;
+        color: #fff;
+        padding: 16px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .btn-secondary {
+        border: 2px solid #ddd;
+        color: #111;
+        padding: 16px 30px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .btn-primary,
+      .btn-secondary {
+        transition: 0.35s;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(255, 98, 0, 0.25);
+      }
+
+      .btn-secondary:hover {
+        transform: translateY(-5px);
+        border-color: #ff6200;
+        color: #ff6200;
+      }
+
+      .hero-image {
+        position: relative;
+      }
+
+      .hero-image img {
+        width: 100%;
+        border-radius: 20px;
+        object-fit: cover;
+      }
+      .hero-badge {
+        display: inline-block;
+        background: #fff4ed;
+        color: #ff6200;
+        padding: 10px 18px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+      }
+
+      .floating-card {
+        position: absolute;
+        bottom: 25px;
+        left: -30px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      .floating-card h4 {
+        font-size: 14px;
+        color: #777;
+      }
+
+      .floating-card span {
+        font-size: 26px;
+        font-weight: 700;
+        color: #111;
+      }
+      .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-tag {
+        color: #ff6200;
+        font-weight: 600;
+        letter-spacing: 2px;
+        font-size: 12px;
+      }
+
+      .section-title h2 {
+        font-size: 42px;
+        margin: 12px 0;
+      }
+      .about-section {
+        background: #ffffff;
+      }
+      .strength-section {
+        background: #fff8f4;
+      }
+      .feature-section {
+        background: #f8fafc;
+      }
+      .workflow-section {
+        background: #ffffff;
+      }
+      .stats-section {
+        background: #f5f7fb;
+      }
+      .footer {
+        background: #111827;
+        color: white;
+        border: none;
+      }
+      .footer p,
+      .footer span {
+        color: #cbd5e1;
+      }
+      section {
+        position: relative;
+      }
+
+      section::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 1px;
+        background: #e5e7eb;
+      }
+      .section-title h1 {
+        font-size: 60px;
+        margin: 20px 0;
+        line-height: 1.1;
+      }
+      .section-title p {
+        max-width: 850px;
+        margin: auto;
+        color: #64748b;
+        line-height: 1.8;
+      }
+      .wyl-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+
+        text-align: center;
+
+        padding: 35px 25px;
+
+        transition: 0.4s;
+      }
+      .wyl-card h3 {
+        font-size: 56px;
+        margin-bottom: 10px;
+      }
+
+      .wyl-card span {
+        font-size: 15px;
+        color: #64748b;
+      }
+      .wyl-card:hover {
+        border-color: #ff6200;
+        transform: translateY(-10px);
+
+        box-shadow: 0 20px 40px rgba(255, 98, 0, 0.12);
+      }
+      .about-section,
+      .strength-section,
+      .feature-section,
+      .workflow-section,
+      .stats-section {
+        padding: 80px 0;
+      }
+
+      .wylcore-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+      }
+
+      .wyl-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        padding: 35px;
+        transition: 0.4s;
+        opacity: 0;
+        transform: translateY(40px);
+        transition: 0.8s;
+      }
+
+      .wyl-card.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .wyl-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      }
+
+      .wyl-card h3 {
+        color: #ff6200;
+        font-size: 42px;
+      }
+      .accordion {
+        max-width: 1000px;
+        margin: auto;
+      }
+      .accordion-item.active {
+        box-shadow: 0 15px 40px rgba(255, 98, 0, 0.12);
+      }
+      .accordion-item {
+        border: 1px solid #ececec;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 15px;
+      }
+
+      .accordion-header {
+        width: 100%;
+        border: none;
+        background: white;
+        padding: 25px;
+        text-align: left;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: 0.4s;
+        padding: 0 25px;
+        color: #666;
+      }
+
+      .accordion-item.active .accordion-content {
+        max-height: 250px;
+        padding: 0 25px 25px;
+      }
+      .accordion-header {
+        transition: 0.3s;
+        border-left: 4px solid transparent;
+      }
+
+      .accordion-header:hover {
+        background: #fff4ed;
+        color: #ff6200;
+      }
+
+      .accordion-item.active .accordion-header {
+        background: #fff4ed;
+        border-left: 4px solid #ff6200;
+        color: #ff6200;
+      }
+      .accordion-item {
+        transition: 0.3s;
+      }
+
+      .accordion-item:hover {
+        transform: translateX(8px);
+
+        box-shadow: 0 10px 30px rgba(255, 98, 0, 0.1);
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 25px;
+      }
+
+      .feature-card {
+        min-height: 220px;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .workflow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0;
+      }
+
+      .step {
+        background: white;
+
+        color: #111;
+
+        border: 2px solid #ff6200;
+
+        min-width: 170px;
+
+        padding: 20px;
+
+        border-radius: 15px;
+
+        transition: 0.4s;
+      }
+      .step:hover {
+        background: #ff6200;
+        color: white;
+        transform: scale(1.05);
+      }
+
+      .arrow {
+        width: 60px;
+        text-align: center;
+        color: #ff6200;
+
+        animation: moveArrow 1.5s infinite;
+      }
+
+      @keyframes moveArrow {
+        50% {
+          transform: translateX(8px);
+        }
+      }
+      .dashboard-preview {
+        background: #f8f9fb;
+        border-radius: 25px;
+        padding: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+      }
+
+      .dashboard-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+      }
+      .wyl-card:nth-child(1) {
+        transition-delay: 0.1s;
+      }
+      .wyl-card:nth-child(2) {
+        transition-delay: 0.2s;
+      }
+      .wyl-card:nth-child(3) {
+        transition-delay: 0.3s;
+      }
+      .wyl-card:nth-child(4) {
+        transition-delay: 0.4s;
+      }
+      .wyl-card:nth-child(5) {
+        transition-delay: 0.5s;
+      }
+      .wyl-card:nth-child(6) {
+        transition-delay: 0.6s;
+      }
+      .wyl-card:nth-child(7) {
+        transition-delay: 0.7s;
+      }
+
+      .step {
+        background: #ff6200;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 50px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 20px;
+      }
+      .stat-card {
+        padding: 25px;
+      }
+
+      .stat-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 20px;
+        text-align: center;
+        padding: 40px;
+      }
+
+      .stat-card h2 {
+        font-size: 42px;
+        color: #ff6200;
+      }
+
+      .footer {
+        padding: 60px 0;
+        text-align: center;
+        border-top: 1px solid #eee;
+      }
+      .typing {
+        display: inline-block;
+        overflow: hidden;
+        white-space: nowrap;
+        border-right: 2px solid #ff6200;
+        animation:
+          typing 3s steps(30, end),
+          blink 0.7s infinite;
+      }
+      .gradient-title {
+        background: linear-gradient(90deg, #ff6200, #ff9f43, #ff6200);
+
+        background-size: 200% auto;
+
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        animation: shine 4s linear infinite;
+      }
+
+      @keyframes shine {
+        to {
+          background-position: 200% center;
+        }
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink {
+        50% {
+          border-color: transparent;
+        }
+      }
+      @media (max-width: 992px) {
+        .hero-wrapper {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-text h1 {
+          font-size: 46px;
+        }
+
+        .hero {
+          padding: 50px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">WYLCORE</div>
+
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="#about">About</a>
+        <a href="#strength">Why</a>
+        <a href="#features">Core Features</a>
+        <a href="#workflow">Workflow</a>
+      </div>
+
+      <a href="login.html" class="login-btn"> Login </a>
+    </nav>
+    <div class="container">
+      <!-- =========================
+     ABOUT WYLCORE
+========================= -->
+      <section class="about-section" id="about">
+        <div class="container">
+          <div class="section-title reveal">
+            <span class="section-tag">ABOUT WYLCORE</span>
+            <h2>Integrated Change Control Information System</h2>
+            <p>Integrated Knowledge for Better Change Control</p>
+
+            <p>
+              Sistem informasi pengendalian perubahan pada proyek jembatan beton
+              pracetak yang mengintegrasikan manajemen pengetahuan, WBS, BIM,
+              dan risiko untuk meningkatkan ketertelusuran, koordinasi, dan
+              pengambilan keputusan proyek.
+            </p>
+
+            <div class="hero-buttons">
+              <a href="#about" class="btn-primary"> Explore System </a>
+
+              <a href="#strength" class="btn-secondary"> Learn More </a>
+            </div>
+          </div>
+
+          <div class="wylcore-grid">
+            <div class="wyl-card" data-aos="zoom-in">
+              <h3>W</h3>
+              <span class="typing"> Work Breakdown Structure </span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="100">
+              <h3>Y</h3>
+              <span>Your Knowledge</span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="200">
+              <h3>L</h3>
+              <span>Linked BIM-Risk</span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="300">
+              <h3>C</h3>
+              <span>Change Control</span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="400">
+              <h3>O</h3>
+              <span>Organize</span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="500">
+              <h3>R</h3>
+              <span>Record</span>
+            </div>
+
+            <div class="wyl-card" data-aos="zoom-in" data-aos-delay="600">
+              <h3>E</h3>
+              <span>Evaluate</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     WHY WYLCORE
+========================= -->
+      <section class="strength-section" id="strength">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <span class="section-tag">WHY WYLCORE</span>
+            <h2>Kekuatan Sistem Informasi</h2>
+            <p>Klik setiap poin untuk melihat penjelasan lengkap.</p>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-item">
+              <button class="accordion-header">
+                01 Integrasi Informasi Risiko dan Perubahan Proyek
+              </button>
+              <div class="accordion-content">
+                Website ini menjadi wadah terpadu untuk mencatat, menyimpan, dan
+                memantau informasi risiko serta perubahan proyek seperti
+                perubahan desain, waktu, biaya, metode kerja, dan dampaknya
+                terhadap proyek.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                02 Mendukung Pengambilan Keputusan yang Lebih Cepat
+              </button>
+              <div class="accordion-content">
+                Membantu pengguna melihat status risiko, perubahan, pihak
+                terkait, dan dampaknya terhadap biaya, mutu, waktu, dan lingkup
+                pekerjaan.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                03 Meningkatkan Ketertelusuran Informasi
+              </button>
+              <div class="accordion-content">
+                Seluruh riwayat perubahan dapat ditelusuri mulai dari
+                identifikasi, penyebab, penanganan hingga penyelesaian akhir.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                04 Menghubungkan Informasi dengan WBS dan BIM
+              </button>
+              <div class="accordion-content">
+                Setiap perubahan dapat dikaitkan dengan elemen pekerjaan,
+                komponen BIM, dan struktur WBS sehingga lebih mudah dipahami.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                05 Memperkuat Manajemen Pengetahuan Proyek
+              </button>
+              <div class="accordion-content">
+                Menyimpan lessons learned, penyebab, dampak, dan solusi sebagai
+                basis pengetahuan proyek.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                06 Mempermudah Kolaborasi Antar Pemangku Kepentingan
+              </button>
+              <div class="accordion-content">
+                Mendukung koordinasi owner, kontraktor, konsultan, dan manajemen
+                proyek dalam satu platform.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                07 Meningkatkan Efisiensi Pengelolaan Data
+              </button>
+              <div class="accordion-content">
+                Data dapat dicari, difilter, diperbarui, dan ditampilkan secara
+                digital dengan cepat.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                08 Menjadi Prototipe Sistem Informasi Konstruksi
+              </button>
+              <div class="accordion-content">
+                Menjadi implementasi nyata integrasi manajemen perubahan, BIM,
+                WBS, risiko, dan knowledge management.
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-header">
+                09 Mendukung Dokumentasi dan Pembelajaran Proyek
+              </button>
+              <div class="accordion-content">
+                Menyimpan data historis perubahan sebagai lessons learned untuk
+                proyek berikutnya.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     FEATURES
+========================= -->
+      <section class="feature-section">
+        <div class="container">
+          <div class="section-title" data-aos="fade-up">
+            <span class="section-tag">CORE FEATURES</span>
+            <h2>Integrated Project Intelligence</h2>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feature-card">
+              <h3>Knowledge Management</h3>
+              <p>Menyimpan seluruh pengalaman dan pembelajaran proyek.</p>
+            </div>
+
+            <div class="feature-card">
+              <h3>WBS Integration</h3>
+              <p>Menghubungkan perubahan dengan struktur pekerjaan proyek.</p>
+            </div>
+
+            <div class="feature-card">
+              <h3>BIM Integration</h3>
+              <p>Menghubungkan perubahan dengan model dan komponen proyek.</p>
+            </div>
+
+            <div class="feature-card">
+              <h3>Risk Management</h3>
+              <p>Analisis risiko dan dampak perubahan secara terintegrasi.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     WORKFLOW
+========================= -->
+      <section class="workflow-section">
+        <div class="container">
+          <div class="section-title">
+            <span class="section-tag">WORKFLOW</span>
+            <h2>Change Control Process</h2>
+          </div>
+
+          <div class="workflow">
+            <div class="step">Risk</div>
+            <div class="arrow">→</div>
+
+            <div class="step">Impact</div>
+            <div class="arrow">→</div>
+
+            <div class="step">Request</div>
+            <div class="arrow">→</div>
+
+            <div class="step">Evaluation</div>
+            <div class="arrow">→</div>
+
+            <div class="step">Approval</div>
+            <div class="arrow">→</div>
+
+            <div class="step">Documentation</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================
+     STATS
+========================= -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <h2 class="counter" data-target="500">0</h2>
+              <p>Risk Records</p>
+            </div>
+
+            <div class="stat-card">
+              <h2 class="counter" data-target="120">0</h2>
+              <p>Change Requests</p>
+            </div>
+
+            <div class="stat-card">
+              <h2 class="counter" data-target="95">0</h2>
+              <p>Traceability (%)</p>
+            </div>
+
+            <div class="stat-card">
+              <h2 class="counter" data-target="100">0</h2>
+              <p>Knowledge Retention (%)</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
 
-    <button onclick="login()">
-      Login
-    </button>
-  </div>
+    <!-- =========================
+     FOOTER
+========================= -->
+    <footer class="footer">
+      <div class="container">
+        <h2>WYLCORE</h2>
 
-</div>
+        <p>Integrated Change Control Information System</p>
 
-<script src="script.js"></script>
+        <span> © 2026 WYLCORE </span>
+      </div>
+    </footer>
 
-</body>
+    <script>
+      const cards = document.querySelectorAll(".wyl-card");
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+          } else {
+            entry.target.classList.remove("show");
+          }
+        });
+      });
+
+      cards.forEach((card) => {
+        observer.observe(card);
+      });
+      const reveals = document.querySelectorAll(".reveal");
+
+      window.addEventListener("scroll", () => {
+        reveals.forEach((item) => {
+          const top = item.getBoundingClientRect().top;
+
+          if (top < window.innerHeight - 100) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      });
+      document.querySelectorAll(".accordion-header").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".accordion-item").forEach((item) => {
+            if (item !== btn.parentElement) {
+              item.classList.remove("active");
+            }
+          });
+
+          btn.parentElement.classList.toggle("active");
+        });
+      });
+
+      const counters = document.querySelectorAll(".counter");
+
+      counters.forEach((counter) => {
+        const update = () => {
+          const target = +counter.dataset.target;
+          const count = +counter.innerText;
+
+          const speed = 50;
+
+          const inc = target / speed;
+
+          if (count < target) {
+            counter.innerText = Math.ceil(count + inc);
+            setTimeout(update, 30);
+          } else {
+            counter.innerText = target;
+          }
+        };
+
+        update();
+      });
+    </script>
+  </body>
 </html>
