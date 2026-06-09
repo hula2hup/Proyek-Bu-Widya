@@ -11,6 +11,9 @@
     />
 
     <style>
+      html {
+        scroll-behavior: smooth;
+      }
       * {
         margin: 0;
         padding: 0;
@@ -50,6 +53,13 @@
         position: relative;
         transition: 0.3s;
       }
+      .nav-links a.active {
+        color: #ff6200;
+      }
+
+      .nav-links a.active::after {
+        width: 100%;
+      }
 
       .nav-links a:hover {
         color: #ff6200;
@@ -68,6 +78,53 @@
 
       .nav-links a:hover::after {
         width: 100%;
+      }
+      .hero-video {
+        padding: 20px 0 30px;
+      }
+      .video-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+      }
+
+      .video-content {
+        position: absolute;
+        inset: 0;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        text-align: center;
+
+        background: rgba(0, 0, 0, 0.35);
+
+        color: white;
+      }
+
+      .video-content h1 {
+        font-size: 72px;
+        font-weight: 800;
+      }
+
+      .video-content p {
+        font-size: 20px;
+      }
+      .video-wrapper {
+        width: 100%;
+        border-radius: 24px;
+        overflow: hidden;
+
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+      }
+
+      .video-wrapper video {
+        width: 100%;
+        height: 500px;
+
+        object-fit: cover;
       }
 
       .logo {
@@ -91,10 +148,37 @@
         color: white;
         transform: translateY(-2px);
       }
+      .reveal-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: 0.6s;
+      }
+
+      .reveal-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: 0.6s;
+      }
+
+      .reveal-left.active,
+      .reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
       .reveal {
         opacity: 0;
         transform: translateY(50px);
         transition: 1s;
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: 0.6s ease;
       }
 
       .reveal.active {
@@ -345,7 +429,13 @@
       .feature-section,
       .workflow-section,
       .stats-section {
-        padding: 80px 0;
+        padding: 40px 0;
+      }
+      #about,
+      #strength,
+      #features,
+      #workflow {
+        scroll-margin-top: 100px;
       }
 
       .wylcore-grid {
@@ -355,14 +445,47 @@
       }
 
       .wyl-card {
-        background: #fff;
-        border: 1px solid #eee;
-        border-radius: 20px;
-        padding: 35px;
-        transition: 0.4s;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+
+        padding: 30px 20px;
+
+        text-align: center;
+
         opacity: 0;
-        transform: translateY(40px);
-        transition: 0.8s;
+        transform: translateY(25px);
+
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .wyl-card.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .wyl-card h3 {
+        font-size: 52px;
+        color: #ff6200;
+        margin-bottom: 12px;
+      }
+
+      .wyl-card span {
+        display: block;
+        font-size: 14px;
+        color: #64748b;
+        font-weight: 500;
+      }
+
+      .wyl-card:hover {
+        transform: translateY(-5px);
+
+        border-color: #ff6200;
+
+        box-shadow: 0 12px 30px rgba(255, 98, 0, 0.12);
       }
 
       .wyl-card.show {
@@ -371,7 +494,7 @@
       }
 
       .wyl-card:hover {
-        transform: translateY(-8px);
+        transform: translateY(-6px);
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
       }
 
@@ -443,49 +566,74 @@
 
       .feature-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
       }
 
       .feature-card {
-        min-height: 220px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+
+        padding: 25px;
+
+        text-align: center;
+
+        min-height: 180px;
+
+        transition: 0.25s;
       }
 
       .feature-card:hover {
-        transform: translateY(-10px);
+        transform: translateY(-6px);
+
+        border-color: #ff6200;
+
+        box-shadow: 0 15px 30px rgba(255, 98, 0, 0.12);
       }
 
       .workflow {
         display: flex;
-        align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 0;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
       }
 
       .step {
         background: white;
-
         color: #111;
 
         border: 2px solid #ff6200;
 
-        min-width: 170px;
+        min-width: 140px;
 
-        padding: 20px;
+        padding: 18px;
 
-        border-radius: 15px;
+        border-radius: 14px;
 
-        transition: 0.4s;
+        font-weight: 600;
+
+        text-align: center;
+        min-width: 110px;
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 40px;
       }
       .step:hover {
         background: #ff6200;
         color: white;
         transform: scale(1.05);
       }
-
+      .step span {
+        display: block;
+        font-size: 11px;
+        opacity: 0.7;
+        margin-bottom: 4px;
+      }
       .arrow {
-        width: 60px;
+        width: 25px;
+        font-size: 18px;
         text-align: center;
         color: #ff6200;
 
@@ -546,7 +694,32 @@
         gap: 20px;
       }
       .stat-card {
+        transition: 0.3s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-8px);
+
+        border-color: #ff6200;
+
+        box-shadow: 0 20px 40px rgba(255, 98, 0, 0.15);
+      }
+
+      .counter {
+        transition: 0.3s;
+      }
+      .stat-card {
         padding: 25px;
+      }
+      .stat-card {
+        transition: 0.25s;
+      }
+      .stat-card:hover {
+        transform: translateY(-6px);
+
+        border-color: #ff6200;
+
+        box-shadow: 0 15px 30px rgba(255, 98, 0, 0.12);
       }
 
       .stat-card {
@@ -567,15 +740,7 @@
         text-align: center;
         border-top: 1px solid #eee;
       }
-      .typing {
-        display: inline-block;
-        overflow: hidden;
-        white-space: nowrap;
-        border-right: 2px solid #ff6200;
-        animation:
-          typing 3s steps(30, end),
-          blink 0.7s infinite;
-      }
+
       .gradient-title {
         background: linear-gradient(90deg, #ff6200, #ff9f43, #ff6200);
 
@@ -593,20 +758,6 @@
         }
       }
 
-      @keyframes typing {
-        from {
-          width: 0;
-        }
-        to {
-          width: 100%;
-        }
-      }
-
-      @keyframes blink {
-        50% {
-          border-color: transparent;
-        }
-      }
       @media (max-width: 992px) {
         .hero-wrapper {
           grid-template-columns: 1fr;
@@ -620,6 +771,21 @@
           padding: 50px 0;
         }
       }
+      .section-flash {
+        animation: flashSection 0.6s ease;
+      }
+
+      @keyframes flashSection {
+        0% {
+          opacity: 0.3;
+          transform: translateY(20px);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     </style>
   </head>
   <body>
@@ -627,7 +793,7 @@
       <div class="logo">WYLCORE</div>
 
       <div class="nav-links">
-        <a href="/">Home</a>
+        <a href="#">Home</a>
         <a href="#about">About</a>
         <a href="#strength">Why</a>
         <a href="#features">Core Features</a>
@@ -636,6 +802,20 @@
 
       <a href="login.html" class="login-btn"> Login </a>
     </nav>
+    <section class="hero-video">
+      <div class="container">
+        <div class="video-wrapper">
+          <video autoplay muted loop playsinline>
+            <source src="Video Home Page.mp4" type="video/mp4" />
+          </video>
+
+          <div class="video-content">
+            <h1>WYLCORE</h1>
+            <p>Integrated Change Control Information System</p>
+          </div>
+        </div>
+      </div>
+    </section>
     <div class="container">
       <!-- =========================
      ABOUT WYLCORE
@@ -664,7 +844,7 @@
           <div class="wylcore-grid">
             <div class="wyl-card" data-aos="zoom-in">
               <h3>W</h3>
-              <span class="typing"> Work Breakdown Structure </span>
+              <span> Work Breakdown Structure </span>
             </div>
 
             <div class="wyl-card" data-aos="zoom-in" data-aos-delay="100">
@@ -811,7 +991,7 @@
       <!-- =========================
      FEATURES
 ========================= -->
-      <section class="feature-section">
+      <section class="feature-section" id="features">
         <div class="container">
           <div class="section-title" data-aos="fade-up">
             <span class="section-tag">CORE FEATURES</span>
@@ -845,7 +1025,7 @@
       <!-- =========================
      WORKFLOW
 ========================= -->
-      <section class="workflow-section">
+      <section class="workflow-section" id="workflow">
         <div class="container">
           <div class="section-title">
             <span class="section-tag">WORKFLOW</span>
@@ -853,22 +1033,45 @@
           </div>
 
           <div class="workflow">
-            <div class="step">Risk</div>
-            <div class="arrow">→</div>
+            <div class="step">
+              <span>01</span>
+              Risk
+            </div>
 
-            <div class="step">Impact</div>
-            <div class="arrow">→</div>
+            <div class="arrow">➜</div>
 
-            <div class="step">Request</div>
-            <div class="arrow">→</div>
+            <div class="step">
+              <span>02</span>
+              Impact
+            </div>
 
-            <div class="step">Evaluation</div>
-            <div class="arrow">→</div>
+            <div class="arrow">➜</div>
 
-            <div class="step">Approval</div>
-            <div class="arrow">→</div>
+            <div class="step">
+              <span>03</span>
+              Request
+            </div>
 
-            <div class="step">Documentation</div>
+            <div class="arrow">➜</div>
+
+            <div class="step">
+              <span>04</span>
+              Evaluation
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="step">
+              <span>05</span>
+              Approval
+            </div>
+
+            <div class="arrow">➜</div>
+
+            <div class="step">
+              <span>06</span>
+              Documentation
+            </div>
           </div>
         </div>
       </section>
@@ -880,23 +1083,23 @@
         <div class="container">
           <div class="stats-grid">
             <div class="stat-card">
-              <h2 class="counter" data-target="500">0</h2>
-              <p>Risk Records</p>
+              <h2 class="counter" data-target="128">15</h2>
+              <p>Active Risks</p>
             </div>
 
             <div class="stat-card">
-              <h2 class="counter" data-target="120">0</h2>
+              <h2 class="counter" data-target="42">5</h2>
               <p>Change Requests</p>
             </div>
 
             <div class="stat-card">
-              <h2 class="counter" data-target="95">0</h2>
+              <h2 class="counter" data-target="94">20</h2>
               <p>Traceability (%)</p>
             </div>
 
             <div class="stat-card">
-              <h2 class="counter" data-target="100">0</h2>
-              <p>Knowledge Retention (%)</p>
+              <h2 class="counter" data-target="87">10</h2>
+              <p>Knowledge Records</p>
             </div>
           </div>
         </div>
@@ -934,14 +1137,35 @@
       });
       const reveals = document.querySelectorAll(".reveal");
 
-      window.addEventListener("scroll", () => {
+      function revealOnScroll() {
         reveals.forEach((item) => {
           const top = item.getBoundingClientRect().top;
+          const visible = window.innerHeight - 100;
 
-          if (top < window.innerHeight - 100) {
+          if (top < visible) {
             item.classList.add("active");
           } else {
             item.classList.remove("active");
+          }
+        });
+      }
+
+      window.addEventListener("scroll", revealOnScroll);
+      revealOnScroll();
+
+      window.addEventListener("scroll", revealOnScroll);
+
+      revealOnScroll();
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", function () {
+          const target = document.querySelector(this.getAttribute("href"));
+
+          if (target) {
+            target.classList.remove("active");
+
+            setTimeout(() => {
+              target.classList.add("active");
+            }, 100);
           }
         });
       });
@@ -957,26 +1181,60 @@
         });
       });
 
-      const counters = document.querySelectorAll(".counter");
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", function () {
+          const id = this.getAttribute("href");
 
-      counters.forEach((counter) => {
+          const section = document.querySelector(id);
+
+          if (section) {
+            section.classList.remove("section-flash");
+
+            void section.offsetWidth;
+
+            section.classList.add("section-flash");
+          }
+        });
+      });
+      function startCounter(counter) {
+        const target = +counter.dataset.target;
+
+        let count = 0;
+
+        const increment = target / 80;
+
         const update = () => {
-          const target = +counter.dataset.target;
-          const count = +counter.innerText;
-
-          const speed = 50;
-
-          const inc = target / speed;
+          count += increment;
 
           if (count < target) {
-            counter.innerText = Math.ceil(count + inc);
-            setTimeout(update, 30);
+            counter.innerText = Math.ceil(count);
+            requestAnimationFrame(update);
           } else {
             counter.innerText = target;
           }
         };
 
         update();
+      }
+
+      const statsObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (
+              entry.isIntersecting &&
+              !entry.target.classList.contains("counted")
+            ) {
+              entry.target.classList.add("counted");
+
+              startCounter(entry.target);
+            }
+          });
+        },
+        { threshold: 0.5 },
+      );
+
+      document.querySelectorAll(".counter").forEach((counter) => {
+        statsObserver.observe(counter);
       });
     </script>
   </body>
