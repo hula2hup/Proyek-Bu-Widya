@@ -83,6 +83,7 @@
         text-decoration: none;
         font-weight: 600;
         transition: 0.3s;
+        margin-right: 15px;
       }
 
       .login-btn:hover {
@@ -99,6 +100,19 @@
       .reveal.active {
         opacity: 1;
         transform: translateY(0);
+      }
+      .navbar {
+        height: 85px;
+        padding: 0 60px;
+      }
+
+      .logo {
+        min-width: 180px;
+      }
+
+      .nav-links {
+        flex: 1;
+        justify-content: center;
       }
 
       .nav-links {
@@ -300,32 +314,31 @@
         color: #64748b;
         line-height: 1.8;
       }
-      .wyl-card:nth-child(1) {
-        background: #fff7ed;
+      .wyl-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+
+        text-align: center;
+
+        padding: 35px 25px;
+
+        transition: 0.4s;
+      }
+      .wyl-card h3 {
+        font-size: 56px;
+        margin-bottom: 10px;
       }
 
-      .wyl-card:nth-child(2) {
-        background: #fefce8;
+      .wyl-card span {
+        font-size: 15px;
+        color: #64748b;
       }
+      .wyl-card:hover {
+        border-color: #ff6200;
+        transform: translateY(-10px);
 
-      .wyl-card:nth-child(3) {
-        background: #eff6ff;
-      }
-
-      .wyl-card:nth-child(4) {
-        background: #f5f3ff;
-      }
-
-      .wyl-card:nth-child(5) {
-        background: #ecfdf5;
-      }
-
-      .wyl-card:nth-child(6) {
-        background: #fdf2f8;
-      }
-
-      .wyl-card:nth-child(7) {
-        background: #f8fafc;
+        box-shadow: 0 20px 40px rgba(255, 98, 0, 0.12);
       }
       .about-section,
       .strength-section,
@@ -435,10 +448,7 @@
       }
 
       .feature-card {
-        padding: 35px;
-        border-radius: 20px;
-        background: #fafafa;
-        transition: 0.4s;
+        min-height: 220px;
       }
 
       .feature-card:hover {
@@ -447,19 +457,45 @@
 
       .workflow {
         display: flex;
-        justify-content: center;
         align-items: center;
-        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0;
       }
 
       .step {
-        min-width: 150px;
-        text-align: center;
+        background: white;
+
+        color: #111;
+
+        border: 2px solid #ff6200;
+
+        min-width: 170px;
+
+        padding: 20px;
+
+        border-radius: 15px;
+
+        transition: 0.4s;
+      }
+      .step:hover {
+        background: #ff6200;
+        color: white;
+        transform: scale(1.05);
       }
 
       .arrow {
-        font-size: 24px;
+        width: 60px;
+        text-align: center;
         color: #ff6200;
+
+        animation: moveArrow 1.5s infinite;
+      }
+
+      @keyframes moveArrow {
+        50% {
+          transform: translateX(8px);
+        }
       }
       .dashboard-preview {
         background: #f8f9fb;
@@ -503,6 +539,12 @@
         border-radius: 50px;
       }
 
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+
+        gap: 20px;
+      }
       .stat-card {
         padding: 25px;
       }
@@ -516,7 +558,7 @@
       }
 
       .stat-card h2 {
-        font-size: 48px;
+        font-size: 42px;
         color: #ff6200;
       }
 
@@ -586,6 +628,10 @@
 
       <div class="nav-links">
         <a href="/">Home</a>
+        <a href="#about">About</a>
+        <a href="#strength">Why</a>
+        <a href="#features">Core Features</a>
+        <a href="#workflow">Workflow</a>
       </div>
 
       <a href="login.html" class="login-btn"> Login </a>
@@ -598,10 +644,8 @@
         <div class="container">
           <div class="section-title reveal">
             <span class="section-tag">ABOUT WYLCORE</span>
-            <h2>What is WYLCORE?</h2>
-            <h1 class="gradient-title">
-              Integrated Knowledge for Better Change Control
-            </h1>
+            <h2>Integrated Change Control Information System</h2>
+            <p>Integrated Knowledge for Better Change Control</p>
 
             <p>
               Sistem informasi pengendalian perubahan pada proyek jembatan beton
@@ -896,6 +940,8 @@
 
           if (top < window.innerHeight - 100) {
             item.classList.add("active");
+          } else {
+            item.classList.remove("active");
           }
         });
       });
