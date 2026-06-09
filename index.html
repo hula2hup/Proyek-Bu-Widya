@@ -336,18 +336,80 @@
       .section-title {
         text-align: center;
         margin-bottom: 60px;
+
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .section-title.show-title {
+        opacity: 1;
+        transform: translateY(0);
       }
 
       .section-tag {
+        display: block;
         color: #ff6200;
         font-weight: 600;
         letter-spacing: 2px;
         font-size: 12px;
+        margin-bottom: 12px;
       }
 
       .section-title h2 {
+        position: relative;
+        display: block; /* ganti dari inline-block */
         font-size: 42px;
-        margin: 12px 0;
+        margin: 12px 0 28px;
+      }
+
+      .section-title h2::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -14px;
+        transform: translateX(-50%);
+        width: 0;
+        height: 4px;
+        background: #ff6200;
+        border-radius: 50px;
+        transition: 0.6s;
+      }
+
+      .section-title.show-title h2::after {
+        width: 90px;
+      }
+      .section-title {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .section-title.show-title {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* efek khusus saat klik navbar */
+      .section-title.flash-title {
+        animation: titlePop 0.8s ease;
+      }
+
+      @keyframes titlePop {
+        0% {
+          opacity: 0;
+          transform: translateY(25px) scale(0.95);
+        }
+
+        60% {
+          opacity: 1;
+          transform: translateY(-5px) scale(1.02);
+        }
+
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
       }
       .about-section {
         background: #ffffff;
@@ -1108,6 +1170,24 @@
     </footer>
 
     <script>
+      const titles = document.querySelectorAll(".section-title");
+
+      const titleObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show-title");
+            } else {
+              entry.target.classList.remove("show-title");
+            }
+          });
+        },
+        { threshold: 0.2 },
+      );
+
+      titles.forEach((title) => {
+        titleObserver.observe(title);
+      });
       const cards = document.querySelectorAll(".wyl-card");
 
       const observer = new IntersectionObserver((entries) => {
@@ -1182,6 +1262,17 @@
             void section.offsetWidth;
 
             section.classList.add("section-flash");
+            section.classList.add("section-flash");
+
+            const title = section.querySelector(".section-title");
+
+            if (title) {
+              title.classList.remove("flash-title");
+
+              void title.offsetWidth;
+
+              title.classList.add("flash-title");
+            }
           }
         });
       });
