@@ -172,11 +172,18 @@
 
   <div class="toast" id="toast"></div>
 
-  <script>
+<script>
     const accounts = {
       'engineer': 'engineer123',
       'admin':    'admin123',
       'manager':  'manager123'
+    };
+
+    // 1. Tambahkan pemetaan halaman redirect untuk masing-masing role
+    const redirectPages = {
+      'engineer': 'site-engineer.html',
+      'admin':    'admin.html',
+      'manager':  'project-manager.html'
     };
 
     const toggleBtn = document.getElementById('togglePassword');
@@ -217,6 +224,7 @@
       if (!username && !password) {
         showToast('⚠  Please fill in your username and password.', 'error');
         setFieldError('username');
+        setFieldError('password');
         return;
       }
       if (!username) {
@@ -254,7 +262,8 @@
 
         showToast('✓  Login successful! Redirecting...', 'success');
         setTimeout(() => {
-          window.location.href = 'dashboard.html';
+          // 2. Ubah pengalihan halaman berdasarkan objek redirectPages
+          window.location.href = redirectPages[username];
         }, 1400);
       }, 900);
     }
