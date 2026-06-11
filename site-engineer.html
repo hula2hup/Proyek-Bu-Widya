@@ -3293,10 +3293,297 @@
             title: "Area kerja tidak siap",
             desc: "Area kerja, akses alat angkut, atau staging berubah/tidak siap sesuai rencana metode kerja.",
           },
+          {
+            code: "R1.3",
+            title: "Kondisi lapangan berubah",
+            desc: "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
+          },
+          {
+            code: "R1.4",
+            title: "Revisi persetujuan dokumen",
+            desc: "Terjadi revisi atau tambahan proses persetujuan method statement, shop drawing, dan inspeksi awal.",
+          },
+          {
+            code: "R1.5",
+            title: "Perubahan lingkup pekerjaan",
+            desc: "Lingkup pekerjaan atau urutan pekerjaan berubah akibat kebutuhan owner atau kondisi lapangan baru.",
+          },
+          {
+            code: "R1.6",
+            title: "Deviasi aktivitas kritis",
+            desc: "Deviasi pada aktivitas kritis mulai muncul, tetapi sistem identifikasi risiko/KRI belum menyesuaikan.",
+          },
+          {
+            code: "R1.7",
+            title: "Perubahan rencana lifting",
+            desc: "Rencana aktivitas lifting, stressing, atau penggunaan alat khusus berubah dari baseline awal.",
+          },
         ],
-        // ... (data JSON panjang untuk riskData tetap ada dalam logic yang sama)
+        "Paket Pekerjaan": [
+          {
+            code: "R2.1",
+            title: "Interface pekerjaan tidak sinkron",
+            desc: "Batas pekerjaan, interface, atau koordinasi antarpaket berubah/tidak sinkron.",
+          },
+          {
+            code: "R2.2",
+            title: "Keterlambatan pekerjaan pendahulu",
+            desc: "Paket pekerjaan pendahulu seperti fondasi, pier, pier head, atau bearing seat mengalami keterlambatan.",
+          },
+          {
+            code: "R2.3",
+            title: "Variation order",
+            desc: "Terjadi perubahan kuantitas, desain, kondisi tak terduga, atau variation order.",
+          },
+          {
+            code: "R2.4",
+            title: "Utilitas dan lahan belum siap",
+            desc: "Status utilitas, right-of-way, atau kesiapan lahan berubah dan belum selesai.",
+          },
+          {
+            code: "R2.5",
+            title: "Perubahan perizinan",
+            desc: "Kebutuhan perizinan kerja, pembukaan lahan, traffic management, atau izin lintas seksi berubah.",
+          },
+          {
+            code: "R2.6",
+            title: "Paket girder kritis",
+            desc: "Paket penyediaan dan pemasangan girder menjadi beban kerja besar dan sangat sensitif terhadap keterlambatan.",
+          },
+          {
+            code: "R2.7",
+            title: "Addendum paket pekerjaan",
+            desc: "Terjadi addendum paket pekerjaan, perubahan mobilisasi, manajemen lalu lintas, atau perencanaan komponen precast.",
+          },
+        ],
+        "Metode Kerja": [
+          {
+            code: "R3.1",
+            title: "Perubahan kapasitas lifting",
+            desc: "Berat komponen, kapasitas alat, akses, atau konfigurasi lifting/launching berubah dari rencana awal.",
+          },
+          {
+            code: "R3.2",
+            title: "Perubahan temporary works",
+            desc: "Desain temporary works, bracing, lifting point, atau shoring mengalami perubahan/revisi.",
+          },
+          {
+            code: "R3.3",
+            title: "Perubahan metode pelaksanaan",
+            desc: "Metode alignment, leveling, bekisting, transport, lifting, grouting, atau stressing berubah.",
+          },
+          {
+            code: "R3.4",
+            title: "Perubahan metode erection",
+            desc: "Metode lifting, upending, rotasi, atau posisi erection girder berubah dan belum tervalidasi.",
+          },
+          {
+            code: "R3.5",
+            title: "Ketidaksesuaian jadwal produksi",
+            desc: "Jadwal produksi, casting, curing, atau kebutuhan erection berubah sehingga tidak selaras.",
+          },
+          {
+            code: "R3.6",
+            title: "Perubahan mix design",
+            desc: "Mix design, metode batching, pengecoran, atau detail sambungan mengalami perubahan.",
+          },
+          {
+            code: "R3.7",
+            title: "Perubahan handling material",
+            desc: "Lokasi stok, rute handling, alat handling, atau metode penyimpanan material precast berubah.",
+          },
+        ],
+        Aktivitas: [
+          {
+            code: "R4.1",
+            title: "Perubahan jadwal fabrikasi",
+            desc: "Jadwal fabrikasi, kapasitas produksi, mould, atau supply girder precast berubah.",
+          },
+          {
+            code: "R4.2",
+            title: "Perubahan transportasi",
+            desc: "Rute pengiriman, akses transportasi, izin angkut, atau kondisi lalu lintas berubah.",
+          },
+          {
+            code: "R4.3",
+            title: "Perubahan urutan erection",
+            desc: "Hold point, urutan erection, koordinasi traffic, atau jadwal inspeksi berubah.",
+          },
+          {
+            code: "R4.4",
+            title: "Kebutuhan rework",
+            desc: "Hasil pekerjaan menunjukkan deviasi mutu sehingga muncul kebutuhan rework.",
+          },
+          {
+            code: "R4.5",
+            title: "Perubahan inspeksi dan approval",
+            desc: "Rencana inspeksi, pengujian, atau approval tiap tahap berubah atau tidak sinkron.",
+          },
+          {
+            code: "R4.6",
+            title: "Perubahan data lapangan",
+            desc: "Data elevasi, benchmark, camber, atau kondisi as-built lapangan berubah atau berbeda dari rencana.",
+          },
+          {
+            code: "R4.7",
+            title: "Perubahan gambar dan material",
+            desc: "Gambar kerja, kebutuhan material, data kuantitas, atau kesiapan item on-site berubah.",
+          },
+        ],
+        "Sumber Daya Material": [
+          {
+            code: "R5.1",
+            title: "Perubahan kebutuhan material utama",
+            desc: "Kebutuhan material utama meningkat atau berubah dari rencana awal.",
+          },
+          {
+            code: "R5.2",
+            title: "Material tidak sesuai spesifikasi",
+            desc: "Mutu, dimensi, finishing, atau spesifikasi material berubah atau tidak memenuhi persyaratan.",
+          },
+          {
+            code: "R5.3",
+            title: "Fluktuasi harga material",
+            desc: "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
+          },
+          {
+            code: "R5.4",
+            title: "Perubahan vendor atau submittal",
+            desc: "Spesifikasi material, vendor, submittal, atau sampel material mengalami perubahan atau revisi.",
+          },
+          {
+            code: "R5.5",
+            title: "Perubahan long lead item",
+            desc: "Kebutuhan long lead item seperti expansion joint, bearing, atau aksesori finishing muncul atau berubah.",
+          },
+          {
+            code: "R5.6",
+            title: "Material reject atau fabrikasi ulang",
+            desc: "Hasil produksi material menunjukkan cacat, mismatch, atau ketidaksesuaian sehingga perlu reject atau fabrikasi ulang.",
+          },
+          {
+            code: "R5.7",
+            title: "Double handling material",
+            desc: "Rencana kebutuhan material, lokasi stockyard, atau sequence handling berubah sehingga terjadi double handling atau waste.",
+          },
+        ],
+        "Sumber Daya Peralatan": [
+          {
+            code: "R6.1",
+            title: "Breakdown alat",
+            desc: "Kondisi alat berubah dari siap operasi menjadi breakdown atau tidak andal.",
+          },
+          {
+            code: "R6.2",
+            title: "Kapasitas alat tidak sesuai",
+            desc: "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
+          },
+          {
+            code: "R6.3",
+            title: "Keterlambatan mobilisasi alat",
+            desc: "Jadwal mobilisasi atau demobilisasi alat berat maupun alat khusus berubah atau terlambat.",
+          },
+          {
+            code: "R6.4",
+            title: "Produktivitas alat menurun",
+            desc: "Cycle time, akses kerja, antrian alat, atau koordinasi operasi berubah sehingga produktivitas alat turun.",
+          },
+          {
+            code: "R6.5",
+            title: "Keterbatasan sparepart dan operator",
+            desc: "Ketersediaan spare part, operator, maintenance, atau backup equipment berubah atau tidak mencukupi.",
+          },
+          {
+            code: "R6.6",
+            title: "Perubahan layout area kerja",
+            desc: "Layout kerja, ruang manuver, atau kondisi area alat berat berubah menjadi lebih sempit atau berisiko.",
+          },
+          {
+            code: "R6.7",
+            title: "Gangguan lingkungan akibat alat",
+            desc: "Terjadi perubahan kondisi operasi alat yang memicu tumpahan limbah B3 atau gangguan lingkungan.",
+          },
+        ],
+        "Sumber Daya Tenaga Kerja": [
+          {
+            code: "R7.1",
+            title: "Ketersediaan tenaga kerja berkurang",
+            desc: "Ketersediaan tenaga kerja terampil berubah atau berkurang.",
+          },
+          {
+            code: "R7.2",
+            title: "Produktivitas tenaga kerja menurun",
+            desc: "Produktivitas tenaga kerja berubah atau menurun pada aktivitas jalur kritis.",
+          },
+          {
+            code: "R7.3",
+            title: "Perubahan kompetensi personel",
+            desc: "Komposisi tim, personel kunci, atau kompetensi kontraktor berubah atau tidak sesuai kebutuhan.",
+          },
+          {
+            code: "R7.4",
+            title: "Peningkatan lembur dan fatigue",
+            desc: "Target waktu berubah menjadi lebih ketat sehingga jam lembur meningkat dan memicu fatigue.",
+          },
+          {
+            code: "R7.5",
+            title: "Koordinasi stakeholder tidak efektif",
+            desc: "Struktur komunikasi, koordinasi stakeholder, atau alur informasi proyek berubah atau tidak efektif.",
+          },
+          {
+            code: "R7.6",
+            title: "Perubahan sistem pengelolaan risiko",
+            desc: "Sistem pengelolaan risiko produksi atau finishing berubah atau tidak menyesuaikan kondisi aktual.",
+          },
+          {
+            code: "R7.7",
+            title: "Pengawasan pekerjaan melemah",
+            desc: "Pengawasan, penerapan prosedur, atau kontrol kesesuaian shop drawing berubah atau melemah.",
+          },
+        ],
+        Lingkungan: [
+          {
+            code: "R8.1",
+            title: "Cuaca ekstrem",
+            desc: "Kondisi cuaca berubah menjadi ekstrem, hujan lebat, panas, atau angin kencang.",
+          },
+          {
+            code: "R8.2",
+            title: "Perubahan kondisi hidrologi",
+            desc: "Muka air sungai, pasang-surut, banjir, atau kondisi hidrologi berubah.",
+          },
+          {
+            code: "R8.3",
+            title: "Perubahan akses dan ruang kerja",
+            desc: "Ruang kerja, akses logistik, kepadatan lalu lintas, atau kondisi area urban berubah.",
+          },
+          {
+            code: "R8.4",
+            title: "Perubahan regulasi lingkungan",
+            desc: "Aturan lingkungan, izin, kepatuhan kerja, atau kawasan sensitif mengalami perubahan atau pembatasan.",
+          },
+          {
+            code: "R8.5",
+            title: "Gangguan sosial masyarakat",
+            desc: "Kondisi sosial masyarakat, lalu lintas, akses warga, atau utilitas publik berubah dan menimbulkan gangguan.",
+          },
+          {
+            code: "R8.6",
+            title: "Perubahan kondisi tanah",
+            desc: "Curah hujan tinggi mengubah kondisi tanah, infiltrasi air, kuat geser, atau kestabilan lereng.",
+          },
+          {
+            code: "R8.7",
+            title: "Gangguan drainase",
+            desc: "Kondisi drainase berubah, tersumbat, atau tidak mampu menampung aliran air.",
+          },
+          {
+            code: "R8.8",
+            title: "Gangguan akses material",
+            desc: "Akses quarry, rute angkutan material, kondisi jalan, debu, atau akses warga berubah sehingga memicu keluhan.",
+          },
+        ],
       };
-
       document
         .getElementById("priority")
         .addEventListener("input", function () {
