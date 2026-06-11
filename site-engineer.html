@@ -692,7 +692,27 @@
 
         border-radius: 8px;
       }
+      .gallery-image,
+      .pdf-card {
+        transition: all 0.25s ease;
+      }
 
+      .gallery-image.active-preview,
+      .pdf-card.active-preview {
+        border: 3px solid #2563eb;
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+        transform: scale(1.05);
+      }
+      .gallery-image:hover,
+      .pdf-card:hover {
+        transform: translateY(-4px);
+        border-color: #2563eb;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+      }
+
+      .gallery-image:hover::after {
+        content: "Preview";
+      }
       .image-modal {
         display: none;
 
@@ -705,7 +725,20 @@
 
         overflow: hidden;
       }
+      .pdf-name {
+        width: 100%;
 
+        font-size: 12px;
+        line-height: 1.3;
+
+        overflow: hidden;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+
+        word-break: break-word;
+      }
       #modalImage {
         position: absolute;
 
@@ -932,18 +965,21 @@
         border-radius: 8px;
 
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        flex-direction: column;
+        padding: 10px;
 
         text-align: center;
 
         background: white;
 
-        font-size: 13px;
+        font-size: 12px;
 
         cursor: pointer;
+
+        overflow: hidden;
       }
       .info-btn {
         display: inline-flex;
@@ -979,108 +1015,117 @@
       .btn-submit {
         background: #1e3a5f;
       }
-          /* --- Wadah Tabel agar ujungnya membulat (Rounded) --- */
-    .table-container {
-      background: white;
-      border-radius: 16px;
-      border: 1px solid #e2e8f0;
-      overflow: hidden; 
-      margin-top: 25px;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-    }
+      /* --- Wadah Tabel agar ujungnya membulat (Rounded) --- */
+      .table-container {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        margin-top: 25px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
 
-    /* --- Desain Tabel --- */
-    .change-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-    }
-    .change-table th,
-    .change-table td {
-      padding: 16px 20px;
-      border-bottom: 1px solid #f1f5f9;
-      color: #475569;
-      font-size: 14px;
-      vertical-align: middle;
-    }
-    .change-table th {
-      background: #f8fafc;
-      color: #64748b;
-      font-weight: 600;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 2px solid #e2e8f0;
-    }
-    .change-table tr:last-child td {
-      border-bottom: none;
-    }
-    .change-table tbody tr {
-      transition: background-color 0.2s ease;
-    }
-    .change-table tbody tr:hover {
-      background-color: #f1f5f9; /* Efek hover baris abu-abu muda */
-    }
+      /* --- Desain Tabel --- */
+      .change-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+      .change-table th,
+      .change-table td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #475569;
+        font-size: 14px;
+        vertical-align: middle;
+      }
+      .change-table th {
+        background: #f8fafc;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      .change-table tr:last-child td {
+        border-bottom: none;
+      }
+      .change-table tbody tr {
+        transition: background-color 0.2s ease;
+      }
+      .change-table tbody tr:hover {
+        background-color: #f1f5f9; /* Efek hover baris abu-abu muda */
+      }
 
-    /* --- Badge Status (Pill) --- */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .badge-approved { background: #dcfce7; color: #166534; }
-    .badge-rejected { background: #fee2e2; color: #991b1b; }
-    .badge-pending { background: #fef3c7; color: #92400e; }
+      /* --- Badge Status (Pill) --- */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .badge-approved {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .badge-rejected {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-pending {
+        background: #fef3c7;
+        color: #92400e;
+      }
 
-    /* --- Visualisasi Risiko (Bar & Warna) --- */
-    .risk-visual {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .risk-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .risk-bar-container {
-      flex-grow: 1;
-      height: 6px;
-      background: #e2e8f0;
-      border-radius: 4px;
-      overflow: hidden;
-      min-width: 60px;
-      max-width: 100px;
-    }
-    .risk-bar {
-      height: 100%;
-      border-radius: 4px;
-    }
+      /* --- Visualisasi Risiko (Bar & Warna) --- */
+      .risk-visual {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .risk-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .risk-bar-container {
+        flex-grow: 1;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 4px;
+        overflow: hidden;
+        min-width: 60px;
+        max-width: 100px;
+      }
+      .risk-bar {
+        height: 100%;
+        border-radius: 4px;
+      }
 
-    /* --- Tombol Aksi dalam Tabel --- */
-    .btn-edit-table {
-      background: white;
-      color: #0f2d52;
-      border: 1px solid #cbd5e1;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      margin: 0;
-    }
-    .btn-edit-table:hover {
-      background: #f8fafc;
-      border-color: #94a3b8;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
+      /* --- Tombol Aksi dalam Tabel --- */
+      .btn-edit-table {
+        background: white;
+        color: #0f2d52;
+        border: 1px solid #cbd5e1;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin: 0;
+      }
+      .btn-edit-table:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
 
       .content-page {
         background: white;
@@ -1090,7 +1135,7 @@
         border: 1px solid #e2e8f0;
         margin-top: 25px;
       }
-            /* --- Tambahan CSS untuk Stepper --- */
+      /* --- Tambahan CSS untuk Stepper --- */
       .stepper-container {
         display: flex;
         align-items: center;
@@ -1246,15 +1291,14 @@
 
       <div id="newChangePage" class="page">
         <div class="content-page">
-          
           <div class="stepper-container">
             <div class="step-indicator active" id="step1-indicator">
               <div class="step-number">1</div>
               <h2>Identifikasi Perubahan</h2>
             </div>
-            
+
             <div class="stepper-line"></div>
-            
+
             <div class="step-indicator" id="step2-indicator">
               <div class="step-number">2</div>
               <h2>Register Change Request</h2>
@@ -1653,7 +1697,7 @@
               </thead>
               <tbody id="closedChangeBody"></tbody>
             </table>
-          </div> 
+          </div>
         </div>
       </div>
       <div id="editChangePage" class="page">
@@ -4084,7 +4128,10 @@ ${selectedChange.detail}
             const pdfCard = document.createElement("div");
 
             pdfCard.className = "pdf-card";
-            pdfCard.innerHTML = `📄<br>${file.name}`;
+            pdfCard.innerHTML = `
+  <div style="font-size:24px;">📄</div>
+  <div class="pdf-name">${file.name}</div>
+`;
 
             gallery.appendChild(pdfCard);
 
@@ -4113,10 +4160,22 @@ ${selectedChange.detail}
               preview.style.display = "block";
 
               modalImage.src = e.target.result;
+
+              setTimeout(() => {
+                img.classList.add("active-preview");
+              }, 0);
             }
 
             img.addEventListener("click", () => {
+              document
+                .querySelectorAll(".gallery-image")
+                .forEach((el) => el.classList.remove("active-preview"));
+
+              img.classList.add("active-preview");
+
               preview.src = e.target.result;
+              preview.style.display = "block";
+
               modalImage.src = e.target.result;
 
               scale = 1;
@@ -4441,12 +4500,12 @@ ${selectedChange.detail}
           changeMenu.classList.add("active");
         }
       }
-            /* Helpers UI untuk Tabel */
+      /* Helpers UI untuk Tabel */
       function getRiskColor(risk) {
-        if(risk <= 3) return '#10b981'; // Aman (Hijau)
-        if(risk <= 6) return '#f59e0b'; // Sedang (Kuning/Orange)
-        if(risk <= 8) return '#f97316'; // Tinggi (Orange Tua)
-        return '#ef4444'; // Kritis (Merah)
+        if (risk <= 3) return "#10b981"; // Aman (Hijau)
+        if (risk <= 6) return "#f59e0b"; // Sedang (Kuning/Orange)
+        if (risk <= 8) return "#f97316"; // Tinggi (Orange Tua)
+        return "#ef4444"; // Kritis (Merah)
       }
 
       function getRiskHTML(risk) {
@@ -4466,7 +4525,7 @@ ${selectedChange.detail}
       function getStatusHTML(status) {
         return `<span class="badge badge-${status.toLowerCase()}">${status}</span>`;
       }
-      
+
       function renderTables() {
         const openBody = document.getElementById("openChangeBody");
         const closedBody = document.getElementById("closedChangeBody");
