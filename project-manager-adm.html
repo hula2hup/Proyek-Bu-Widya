@@ -207,6 +207,11 @@
         justify-content: center;
         position: relative;
         box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        /* Efek pop-up animasi */
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .donut-chart.pop {
+        transform: scale(1.15);
       }
       .donut-center {
         width: 75px;
@@ -233,7 +238,7 @@
         border-radius: 18px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
         border: 1px solid #e2e8f0;
-        border-left: 6px solid #2563eb; /* Biru default */
+        border-left: 6px solid #2563eb; 
         transition: all 0.3s ease;
       }
       .request-header {
@@ -425,42 +430,84 @@
     </div>
 
     <script>
-      // 1. Database internal sementara untuk status manajemen
+      // 1. Database internal 
       let stats = {
         pending: 2,
         approved: 0,
         rejected: 0,
       };
 
-      // Jalankan fungsi update pertama kali halaman dibuka
-      updateDashboardUI();
+      // State sebelumnya (untuk kalkulasi asal animasi persentase)
+      let prevPerc = {
+        pending: 100, // Karena awal pending = 2, total = 2 (100%)
+        approved: 0,
+        rejected: 0
+      };
 
-      // Fungsi kalkulasi grafik donut dan teks statistik
-      function updateDashboardUI() {
+      // Set awal tanpa animasi
+      document.getElementById("chart-pending").style.background = `conic-gradient(#2563eb 100%, #f1f5f9 0)`;
+      document.getElementById("text-pending").innerText = stats.pending;
+
+      // 2. Fungsi Animasi Angka dan Lingkaran Menggunakan JS
+      function animateDonut(id, color, oldPerc, newPerc) {
+        const el = document.getElementById(id);
+        const duration = 800; // 0.8 detik durasi animasi
+        let startTime = null;
+
+        // Berikan efek pop (membesar sedikit)
+        el.classList.add("pop");
+        setTimeout(() => el.classList.remove("pop"), 300);
+
+        function step(timestamp) {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          
+          // Easing easeOutCubic agar animasi melambat di akhir
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          
+          const currentPerc = oldPerc + (newPerc - oldPerc) * easeProgress;
+          
+          el.style.background = `conic-gradient(${color} ${currentPerc}%, #f1f5f9 0)`;
+
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          }
+        }
+        requestAnimationFrame(step);
+      }
+
+      // 3. Update UI
+      function updateDashboardUI(actionType) {
         const total = stats.pending + stats.approved + stats.rejected;
 
-        // Set teks di tengah lingkaran angka mutlak
         document.getElementById("text-pending").innerText = stats.pending;
         document.getElementById("text-approved").innerText = stats.approved;
         document.getElementById("text-rejected").innerText = stats.rejected;
 
-        // Hitung persentase porsi warna chart jika total > 0
-        const pPerc = total > 0 ? (stats.pending / total) * 100 : 0;
-        const aPerc = total > 0 ? (stats.approved / total) * 100 : 0;
-        const rPerc = total > 0 ? (stats.rejected / total) * 100 : 0;
+        const newPercP = total > 0 ? (stats.pending / total) * 100 : 0;
+        const newPercA = total > 0 ? (stats.approved / total) * 100 : 0;
+        const newPercR = total > 0 ? (stats.rejected / total) * 100 : 0;
 
-        // Manipulasi visual background CSS conic-gradient (Mengikuti warna palet baru)
-        document.getElementById("chart-pending").style.background =
-          `conic-gradient(#2563eb ${pPerc}%, #f1f5f9 0)`;
-        document.getElementById("chart-approved").style.background =
-          `conic-gradient(#10b981 ${aPerc}%, #f1f5f9 0)`;
-        document.getElementById("chart-rejected").style.background =
-          `conic-gradient(#ef4444 ${rPerc}%, #f1f5f9 0)`;
+        // Animasikan lingkaran yang mengalami perubahan
+        animateDonut("chart-pending", "#2563eb", prevPerc.pending, newPercP);
+
+        if (actionType === "accept") {
+          animateDonut("chart-approved", "#10b981", prevPerc.approved, newPercA);
+        } else if (actionType === "reject") {
+          animateDonut("chart-rejected", "#ef4444", prevPerc.rejected, newPercR);
+        }
+
+        // Simpan nilai state baru
+        prevPerc = {
+          pending: newPercP,
+          approved: newPercA,
+          rejected: newPercR
+        };
       }
 
-      // Fungsi saat tombol ditekan
+      // 4. Proses Tombol
       function processApproval(id, action) {
-        // 1. Update data internal
+        // Update data
         stats.pending--;
         if (action === "accept") {
           stats.approved++;
@@ -468,28 +515,29 @@
           stats.rejected++;
         }
 
-        // 2. Update UI Dashboard
-        updateDashboardUI();
+        // Jalankan transisi
+        updateDashboardUI(action);
 
-        // 3. Sembunyikan tombol dan tampilkan pesan
+        // Manipulasi UI Box CR
         const box = document.getElementById("req-" + id);
         const btnContainer = box.querySelector(".action-buttons");
         const msgElement = document.getElementById("msg-" + id);
 
-        btnContainer.style.display = "none"; // Tombol Vanish
+        btnContainer.style.display = "none"; 
         msgElement.style.display = "block";
 
         if (action === "accept") {
           msgElement.innerText = "✓ Request Approved Successfully";
           msgElement.className = "status-message status-success";
-          box.style.borderLeft = "6px solid #10b981"; // Hijau
+          box.style.borderLeft = "6px solid #10b981"; 
         } else {
           msgElement.innerText = "✕ Request Rejected";
           msgElement.className = "status-message status-error";
-          box.style.borderLeft = "6px solid #ef4444"; // Merah
+          box.style.borderLeft = "6px solid #ef4444"; 
         }
       }
 
+      // Logout
       function logout() {
         const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Admin?");
         if (confirmLogout) {
