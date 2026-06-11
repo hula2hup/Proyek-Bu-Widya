@@ -3,227 +3,312 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Site Engineer Dashboard</title>
-
+    <title>Site Engineer Logs - Admin Workspace</title>
     <style>
-      * {
+      /* =========================
+         GLOBAL STYLES
+      ========================= */
+      body {
         margin: 0;
-        padding: 0;
+        font-family: "Segoe UI", Inter, sans-serif;
+        background: #eef3f9;
+        display: flex;
+        color: #0f172a;
+      }
+      * {
         box-sizing: border-box;
       }
-
-      :root {
-        --primary: #1e3a5f;
-        --primary-light: #2d5b8f;
-        --secondary: #f8fafc;
-        --border: #d6dee8;
-        --text: #1f2937;
-        --white: #ffffff;
+      a {
+        text-decoration: none;
       }
 
-      body {
-        font-family: "Segoe UI", sans-serif;
-        background: #eef3f9;
-        color: var(--text);
-        display: flex;
-        min-height: 100vh;
-      }
-
-      /* SIDEBAR */
+      /* =========================
+         SIDEBAR (STANDAR ADMIN)
+      ========================= */
       .sidebar {
-        width: 260px;
-        background: linear-gradient(180deg, #1565c0, #0d47a1);
-        color: white;
-        padding: 30px 20px;
-        position: fixed;
-        top: 0;
-        left: 0;
+        width: 280px;
         height: 100vh;
-      }
-
-      .logo {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 40px;
-      }
-
-      .sidebar-menu {
+        background: #0f2d52;
+        position: fixed;
+        left: 0;
+        top: 0;
+        color: white;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+        z-index: 999;
       }
-
-      /* menu-item diubah menjadi block agar area klik penuh */
+      .sidebar-header {
+        padding: 30px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar-header h2 {
+        color: white;
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: 1px;
+      }
+      .sidebar-menu {
+        padding: 20px 0;
+        flex: 1;
+      }
       .menu-item {
-        display: block;
-        padding: 14px 18px;
-        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 25px;
         cursor: pointer;
-        transition: 0.3s;
+        transition: 0.25s;
+        color: rgba(255, 255, 255, 0.8);
         font-weight: 500;
-        text-decoration: none;
-        color: white;
       }
-
       .menu-item:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.08);
         color: white;
       }
-
-      .active {
-        background: white;
-        color: #1565c0 !important;
+      .menu-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        border-left: 4px solid #2563eb;
+        color: white;
+        font-weight: 600;
+      }
+      .sidebar-footer {
+        padding: 20px 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2563eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
+      }
+      .user-info span {
+        display: block;
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .user-info strong {
+        font-size: 14px;
+      }
+      .logout-btn {
+        background: transparent;
+        color: #ef4444;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease;
+      }
+      .logout-btn:hover {
+        background: rgba(239, 68, 68, 0.15);
       }
 
-      /* MAIN */
-      .main {
-        margin-left: 260px;
-        width: calc(100% - 260px);
-        padding: 40px;
-      }
-
+      /* =========================
+         MAIN CONTENT
+      ========================= */
       .container {
-        max-width: 1250px;
-        margin: auto;
+        margin-left: 280px;
+        width: calc(100% - 280px);
+        max-width: 1600px;
+        padding: 30px;
       }
 
-      /* PAGE TITLE */
-      .page-title {
-        font-size: 38px;
-        font-weight: 800;
-        color: #1e3a5f;
-        padding: 24px 32px;
-        margin-bottom: 25px;
-        background: linear-gradient(135deg, #ffffff, #f1f5f9);
-        border-left: 8px solid #3a5cf3;
+      /* Header Dashboard */
+      .header-dashboard {
+        background: #0f2d52;
+        color: white;
+        padding: 30px;
         border-radius: 18px;
-        box-shadow:
-          0 10px 25px rgba(15, 23, 42, 0.08),
-          0 2px 6px rgba(15, 23, 42, 0.04);
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .header-dashboard .subtitle {
+        font-size: 12px;
+        letter-spacing: 2px;
+        opacity: 0.8;
+        text-transform: uppercase;
+      }
+      .header-dashboard h1 {
+        color: white;
+        margin: 10px 0;
+        font-size: 28px;
+      }
+      .header-dashboard p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+      }
+      .status-badge-header {
+        display: inline-block;
+        background: #fbbf24;
+        color: #111827;
+        padding: 10px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 13px;
       }
 
-      /* CARD */
-      .summary-card {
+      /* Table Section */
+      .table-section {
         background: white;
-        padding: 35px;
         border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        padding: 30px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e2e8f0;
+      }
+      .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+      .table-header h2 {
+        margin: 0;
+        color: #1e3a5f;
+        font-size: 22px;
       }
 
-      h2 {
-        font-size: 24px;
-        color: var(--primary);
-        margin-bottom: 30px;
+      /* Table Styling */
+      .table-container {
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
       }
-
-      /* TABLE */
       table {
         width: 100%;
         border-collapse: collapse;
-      }
-
-      th {
-        background: #f1f5f9;
-        padding: 16px;
         text-align: left;
       }
-
-      td {
-        padding: 16px;
-        border-bottom: 1px solid #e2e8f0;
+      th, td {
+        padding: 16px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 14px;
+        vertical-align: middle;
       }
-
-      tr:hover {
+      th {
         background: #f8fafc;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tbody tr {
+        transition: background-color 0.2s ease;
+      }
+      tbody tr:hover {
+        background-color: #f8fafc;
       }
 
-      /* BADGE */
+      /* Badges */
       .badge {
-        padding: 6px 12px;
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 14px;
         border-radius: 999px;
         font-size: 12px;
         font-weight: 700;
+        letter-spacing: 0.5px;
       }
+      .badge-submitted { background: #dbeafe; color: #1e40af; }
+      .badge-approved { background: #dcfce7; color: #166534; }
+      .badge-review { background: #fef3c7; color: #92400e; }
 
-      .submitted {
-        background: #dbeafe;
-        color: #1d4ed8;
-      }
-
-      .approved {
-        background: #dcfce7;
-        color: #15803d;
-      }
-
-      .review {
-        background: #fef3c7;
-        color: #b45309;
-      }
-
-      /* ACTION BUTTONS (Sama persis dengan Admin) */
+      /* Action Buttons */
       .action-btn {
-        border: none;
-        padding: 8px 14px;
+        background: white;
+        border: 1px solid #cbd5e1;
+        padding: 6px 12px;
         border-radius: 8px;
-        cursor: pointer;
+        font-size: 12px;
         font-weight: 600;
-        margin-right: 8px;
-        transition: 0.3s;
-        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-right: 6px;
       }
-
-      .edit {
-        background: #1565c0;
-        color: white;
-      }
-
-      .delete {
-        background: #dc3545;
-        color: white;
-      }
-
+      .action-btn.edit { color: #2563eb; }
+      .action-btn.delete { color: #ef4444; }
       .action-btn:hover {
-        opacity: 0.85;
-      }
-
-      /* MOBILE */
-      @media (max-width: 768px) {
-        .sidebar {
-          display: none;
-        }
-        .main {
-          margin-left: 0;
-          padding: 20px;
-          width: 100%;
-        }
-        .page-title {
-          font-size: 28px;
-        }
-        .summary-card {
-          padding: 20px;
-        }
+        background: #f1f5f9;
+        border-color: #94a3b8;
+        transform: translateY(-1px);
       }
     </style>
   </head>
 
   <body>
     <div class="sidebar">
-      <div class="logo">Project</div>
+      <div class="sidebar-header">
+        <h2>
+          ADMIN<br />
+          WORKSPACE
+        </h2>
+      </div>
+
       <div class="sidebar-menu">
-        <a href="admin.html" class="menu-item">Dashboard</a>
-        <a href="project-manager-adm.html" class="menu-item">Project Management</a>
-        <div class="menu-item active">Site Engineer</div>
-        <a href="WBS-adm.html" class="menu-item">WBS</a>
-        <div class="menu-item">Reports</div>
+        <a href="admin.html" class="menu-item">📊 Dashboard</a>
+        <a href="project-manager-adm.html" class="menu-item">💼 Project Management</a>
+        <div class="menu-item active">👷 Site Engineer</div>
+        <a href="WBS-adm.html" class="menu-item">📑 WBS Mapping</a>
+        <div class="menu-item">📈 Reports</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <strong>Administrator</strong>
+            <span>System Control</span>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
       </div>
     </div>
 
-    <div class="main">
-      <div class="container">
-        <div class="page-title">Summary Site Engineer</div>
+    <div class="container">
+      <div class="header-dashboard">
+        <div>
+          <div class="subtitle">FIELD OPERATIONS • CHANGE LOGS</div>
+          <h1>Site Engineer Data</h1>
+          <p>Pantau seluruh daftar Change Request yang diajukan oleh Tim Site Engineer di lapangan.</p>
+        </div>
+        <div class="status-badge-header">MASTER ADMIN</div>
+      </div>
 
-        <div class="summary-card">
-          <h2>Ringkasan Change Request</h2>
+      <div class="table-section">
+        <div class="table-header">
+          <h2>Ringkasan Change Request (CR)</h2>
+        </div>
+
+        <div class="table-container">
           <table>
             <thead>
               <tr>
@@ -239,39 +324,39 @@
 
             <tbody id="crTable">
               <tr>
-                <td>CR-001</td>
-                <td><span class="badge submitted"> Submitted </span></td>
+                <td style="font-weight: 600; color: #0f2d52;">CR-001</td>
+                <td><span class="badge badge-submitted">Submitted</span></td>
                 <td>Ahmad</td>
                 <td>2026-05-11</td>
-                <td>High</td>
+                <td><strong>High</strong></td>
                 <td>Delay pekerjaan pier</td>
                 <td>
-                  <button class="action-btn edit">Edit</button>
-                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                  <button class="action-btn edit">✏️ Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
                 </td>
               </tr>
               <tr>
-                <td>CR-002</td>
-                <td><span class="badge approved"> Approved </span></td>
+                <td style="font-weight: 600; color: #0f2d52;">CR-002</td>
+                <td><span class="badge badge-approved">Approved</span></td>
                 <td>Budi</td>
                 <td>2026-05-10</td>
-                <td>Medium</td>
+                <td><strong>Medium</strong></td>
                 <td>Revisi metode kerja</td>
                 <td>
-                  <button class="action-btn edit">Edit</button>
-                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                  <button class="action-btn edit">✏️ Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
                 </td>
               </tr>
               <tr>
-                <td>CR-003</td>
-                <td><span class="badge review"> Under Review </span></td>
+                <td style="font-weight: 600; color: #0f2d52;">CR-003</td>
+                <td><span class="badge badge-review">Under Review</span></td>
                 <td>Laksono</td>
                 <td>2026-05-09</td>
-                <td>Urgent</td>
+                <td><strong style="color: #ef4444;">Urgent</strong></td>
                 <td>Clash BIM area abutment</td>
                 <td>
-                  <button class="action-btn edit">Edit</button>
-                  <button class="action-btn delete" onclick="deleteRow(this)">Delete</button>
+                  <button class="action-btn edit">✏️ Edit</button>
+                  <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
                 </td>
               </tr>
             </tbody>
@@ -282,7 +367,17 @@
 
     <script>
       function deleteRow(button) {
-        button.parentElement.parentElement.remove();
+        const confirmDelete = confirm("Hapus log pengajuan CR ini?");
+        if (confirmDelete) {
+          button.parentElement.parentElement.remove();
+        }
+      }
+
+      function logout() {
+        const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Admin?");
+        if (confirmLogout) {
+          window.location.href = "login.html";
+        }
       }
     </script>
   </body>

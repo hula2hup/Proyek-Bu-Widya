@@ -196,6 +196,23 @@
     }
     .tt-wrapper:hover .tt-box { visibility: visible; opacity: 1; }
     .tt-icon { color: #2563eb; font-weight: bold; font-size: 13px; }
+
+    /* ── LOGOUT BUTTON ── */
+    .logout-btn {
+      background: transparent;
+      color: var(--danger);
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+    }
   </style>
 </head>
 <body>
@@ -214,8 +231,26 @@
       <button onclick="showSection('laporan', this)">📑 03. Laporan Akhir Proyek</button>
       <button onclick="showSection('bim', this)">🏢 04. BIM & WBS Viewer</button>
     </nav>
-    <div class="aside-footer no-print">
-      <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+   <div class="aside-footer no-print">
+      <button class="btn-print" onclick="window.print()" style="margin-bottom: 20px;">🖨️ Cetak / Simpan PDF</button>
+      
+      <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">PM</div>
+          <div class="user-info" style="line-height: 1.2;">
+            <strong style="display: block; font-size: 13px;">Budi Santoso</strong>
+            <span style="font-size: 11px; color: #cbd5e1;">Project Manager</span>
+          </div>
+        </div>
+        
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
     </div>
   </aside>
 
@@ -633,6 +668,16 @@
     setTimeout(() => openCrDetail(crId), 300);
   }
 
+  // ══════════════════════════════════════════
+  // LOGOUT
+  // ══════════════════════════════════════════
+  function logout() {
+    const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Workspace PM?");
+    if (confirmLogout) {
+      window.location.href = "login.html";
+    }
+  }
+  
   // ══════════════════════════════════════════
   // INIT
   // ══════════════════════════════════════════

@@ -3,272 +3,358 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WBS Construction Management</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
+    <title>WBS Mapping - Admin Workspace</title>
     <style>
+      /* =========================
+         GLOBAL STYLES
+      ========================= */
       body {
-        background: #f4f7fe;
-        display: flex;
-        min-height: 100vh;
-      }
-
-      a {
-        text-decoration: none;
-        color: white;
-      }
-      * {
         margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        background: #f1f5f9;
+        font-family: "Segoe UI", Inter, sans-serif;
+        background: #eef3f9;
+        display: flex;
         color: #0f172a;
       }
+      * {
+        box-sizing: border-box;
+      }
+      a {
+        text-decoration: none;
+      }
 
-      .navbar {
-        height: 72px;
-        background: #0f172a;
+      /* =========================
+         SIDEBAR (STANDAR ADMIN)
+      ========================= */
+      .sidebar {
+        width: 280px;
+        height: 100vh;
+        background: #0f2d52;
+        position: fixed;
+        left: 0;
+        top: 0;
         color: white;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
+        z-index: 999;
+      }
+      .sidebar-header {
+        padding: 30px 25px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .sidebar-header h2 {
+        color: white;
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.4;
+        letter-spacing: 1px;
+      }
+      .sidebar-menu {
+        padding: 20px 0;
+        flex: 1;
+      }
+      .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 25px;
+        cursor: pointer;
+        transition: 0.25s;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+      }
+      .menu-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+      }
+      .menu-item.active {
+        background: rgba(255, 255, 255, 0.12);
+        border-left: 4px solid #2563eb;
+        color: white;
+        font-weight: 600;
+      }
+      .sidebar-footer {
+        padding: 20px 25px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 32px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
       }
-
-      .navbar h1 {
-        font-size: 22px;
-      }
-
-      /* SIDEBAR galuh */
-
-      .sidebar {
-        width: 260px;
-        background: linear-gradient(180deg, #1565c0, #0d47a1);
-        color: white;
-        padding: 30px 20px;
-        position: fixed;
-        height: 100%;
-      }
-
-      .logo {
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 40px;
-      }
-
-      .sidebar-menu {
+      .user-profile {
         display: flex;
-        flex-direction: column;
-        gap: 15px;
+        align-items: center;
+        gap: 10px;
       }
-
-      .menu-item {
-        padding: 14px 18px;
-        border-radius: 12px;
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2563eb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
+      }
+      .user-info span {
+        display: block;
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .user-info strong {
+        font-size: 14px;
+      }
+      .logout-btn {
+        background: transparent;
+        color: #ef4444;
+        border: none;
+        padding: 10px;
+        border-radius: 8px;
         cursor: pointer;
-        transition: 0.3s;
-        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease;
+      }
+      .logout-btn:hover {
+        background: rgba(239, 68, 68, 0.15);
       }
 
-      .menu-item:hover {
-        background: rgba(255, 255, 255, 0.15);
-      }
-
-      .active {
-        background: white;
-        color: #1565c0;
-      }
-
+      /* =========================
+         MAIN CONTENT
+      ========================= */
       .container {
-        padding: 40px;
-        max-width: 800px;
-        margin: 0 auto;
+        margin-left: 280px;
+        width: calc(100% - 280px);
+        max-width: 1600px;
+        padding: 30px;
       }
 
+      /* Header Dashboard */
+      .header-dashboard {
+        background: #0f2d52;
+        color: white;
+        padding: 30px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .header-dashboard .subtitle {
+        font-size: 12px;
+        letter-spacing: 2px;
+        opacity: 0.8;
+        text-transform: uppercase;
+      }
+      .header-dashboard h1 {
+        color: white;
+        margin: 10px 0;
+        font-size: 28px;
+      }
+      .header-dashboard p {
+        margin: 0;
+        opacity: 0.9;
+        font-size: 14px;
+      }
+      .status-badge-header {
+        display: inline-block;
+        background: #fbbf24;
+        color: #111827;
+        padding: 10px 20px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      /* Content Card */
       .card {
         background: white;
         border-radius: 20px;
         padding: 35px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+        border: 1px solid #e2e8f0;
       }
-
       .title {
         margin-bottom: 30px;
+        border-bottom: 2px dashed #e2e8f0;
+        padding-bottom: 20px;
       }
-
       .title h2 {
-        margin-bottom: 8px;
-        font-size: 28px;
+        margin: 0 0 8px 0;
+        font-size: 22px;
+        color: #1e3a5f;
       }
-
       .title p {
         color: #64748b;
+        margin: 0;
+        font-size: 14px;
       }
 
-      .grid {
+      /* Form Grid */
+      .form-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 24px;
       }
-
       .form-group {
         display: flex;
         flex-direction: column;
       }
-
-      label {
-        margin-bottom: 10px;
+      .form-group label {
+        margin-bottom: 8px;
         font-weight: 600;
+        color: #0f2d52;
+        font-size: 14px;
       }
-
-      select {
-        padding: 14px;
+      .form-group select {
+        width: 100%;
+        padding: 16px 18px;
         border-radius: 12px;
         border: 1px solid #cbd5e1;
         outline: none;
-        transition: 0.3s;
+        transition: 0.2s;
         font-size: 14px;
-        max-height: 300px;
+        background: #f8fafc;
+        color: #334155;
+        font-family: inherit;
       }
-
-      select:focus {
+      .form-group select:focus {
         border-color: #2563eb;
+        background: white;
         box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
       }
 
+      /* Result Box */
       .result {
-        margin-top: 30px;
-        background: #eff6ff;
+        margin-top: 35px;
+        background: #f8fafc;
         padding: 25px;
         border-radius: 16px;
-        border-left: 5px solid #2563eb;
+        border-left: 6px solid #2563eb;
+        border-top: 1px solid #e2e8f0;
+        border-right: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
       }
-
       .result h3 {
-        margin-bottom: 15px;
-        color: #1d4ed8;
+        margin: 0 0 15px 0;
+        color: #1e3a5f;
+        font-size: 18px;
       }
-
-      .badge {
+      #detailResult {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #475569;
+      }
+      #detailResult strong {
+        color: #0f172a;
+      }
+      .badge-system {
         display: inline-block;
-        margin-top: 18px;
+        margin-top: 20px;
         background: #dbeafe;
-        color: #1d4ed8;
-        padding: 8px 14px;
+        color: #1e40af;
+        padding: 8px 16px;
         border-radius: 999px;
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 700;
+        letter-spacing: 0.5px;
       }
 
-      /* MAIN */
-
-      .main {
-        margin-left: 260px;
-        width: 100%;
-        padding: 35px;
-      }
-
-      @media (max-width: 768px) {
-        .container {
-          padding: 20px;
-        }
-
-        .navbar {
-          padding: 0 20px;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .sidebar {
-          display: none;
-        }
-
-        .main {
-          margin-left: 0;
-          padding: 20px;
-        }
-
-        table {
-          font-size: 13px;
+      @media (max-width: 900px) {
+        .form-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
-    <!-- SIDEBAR -->
-
     <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>
+          ADMIN<br />
+          WORKSPACE
+        </h2>
+      </div>
+
       <div class="sidebar-menu">
-        <div class="menu-item">
-          <a href="admin.html">Dashboard</a>
+        <a href="admin.html" class="menu-item">📊 Dashboard</a>
+        <a href="project-manager-adm.html" class="menu-item">💼 Project Management</a>
+        <a href="site-engineer-adm.html" class="menu-item">👷 Site Engineer</a>
+        <div class="menu-item active">📑 WBS Mapping</div>
+        <div class="menu-item">📈 Reports</div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">AD</div>
+          <div class="user-info">
+            <strong>Administrator</strong>
+            <span>System Control</span>
+          </div>
         </div>
-        <div class="menu-item">
-          <a href="project-manager-adm.html">Project Management</a>
-        </div>
-        <div class="menu-item">
-          <a href="site-engineer-adm.html">Site Engineer</a>
-        </div>
-        <div class="menu-item active">WBS</div>
-        <div class="menu-item">Reports</div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
       </div>
     </div>
 
     <div class="container">
+      <div class="header-dashboard">
+        <div>
+          <div class="subtitle">STANDARDIZATION • DICTIONARY</div>
+          <h1>Work Breakdown Structure (WBS)</h1>
+          <p>Eksplorasi hierarki aktivitas proyek dan pemetaan sumber daya.</p>
+        </div>
+        <div class="status-badge-header">MASTER ADMIN</div>
+      </div>
+
       <div class="card">
         <div class="title">
-          <h2>Dropdown WBS Bertingkat</h2>
+          <h2>Navigasi WBS Bertingkat</h2>
           <p>Pilih Paket Pekerjaan → Aktivitas → Sumber Daya</p>
         </div>
 
-        <div class="grid">
+        <div class="form-grid">
           <div class="form-group">
             <label>Level 4 - Paket Pekerjaan</label>
             <select id="level4">
-              <option value="">Pilih Paket Pekerjaan</option>
+              <option value="">-- Pilih Paket Pekerjaan --</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>Level 5 - Aktivitas</label>
             <select id="level5">
-              <option value="">Pilih Aktivitas</option>
+              <option value="">-- Pilih Aktivitas --</option>
             </select>
           </div>
 
           <div class="form-group">
             <label>Level 6 - Sumber Daya</label>
             <select id="level6">
-              <option value="">Pilih Sumber Daya</option>
+              <option value="">-- Pilih Sumber Daya --</option>
             </select>
           </div>
         </div>
 
         <div class="result">
-          <h3>Detail WBS</h3>
-
-          <div id="detailResult">Belum ada data dipilih.</div>
-
-          <div class="badge">Enterprise Construction Management System</div>
+          <h3>Detail Pemetaan WBS</h3>
+          <div id="detailResult">Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.</div>
+          <div class="badge-system">Enterprise Construction Management System</div>
         </div>
       </div>
     </div>
 
     <script>
+      // ==========================================
+      // WBS DATA SOURCE
+      // ==========================================
       const wbsData = {
-        // =========================
-        // LEVEL 4 → LEVEL 5 → LEVEL 6
-        // =========================
-
         "1.1.1 Program Mobilisasi": {
           "1.1.1.1 Mobilisasi Material": [
             "Besi Beton",
@@ -2055,65 +2141,60 @@
       const detailResult = document.getElementById("detailResult");
 
       Object.keys(wbsData).forEach((item) => {
-        level4.innerHTML += `
-                                              <option value="${item}">
-                                                ${item}
-                                              </option>
-                                            `;
+        level4.innerHTML += `<option value="${item}">${item}</option>`;
       });
 
       level4.addEventListener("change", function () {
-        level5.innerHTML = '<option value="">Pilih Aktivitas</option>';
-        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
+        level5.innerHTML = '<option value="">-- Pilih Aktivitas --</option>';
+        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
+        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
 
         const selected = this.value;
 
         if (selected) {
           Object.keys(wbsData[selected]).forEach((item) => {
-            level5.innerHTML += `
-                                                  <option value="${item}">
-                                                    ${item}
-                                                  </option>
-                                                `;
+            level5.innerHTML += `<option value="${item}">${item}</option>`;
           });
         }
       });
 
       level5.addEventListener("change", function () {
-        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
+        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
+        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
 
         const selectedL4 = level4.value;
         const selectedL5 = this.value;
 
         if (selectedL5) {
           wbsData[selectedL4][selectedL5].forEach((item) => {
-            level6.innerHTML += `
-                                                  <option value="${item}">
-                                                    ${item}
-                                                  </option>
-                                                `;
+            level6.innerHTML += `<option value="${item}">${item}</option>`;
           });
         }
       });
 
       level6.addEventListener("change", function () {
+        if (!this.value) {
+          detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
+          return;
+        }
         detailResult.innerHTML = `
-
-                                              <strong>Level 4:</strong><br>
-                                              ${level4.value}
-
-                                              <br><br>
-
-                                              <strong>Level 5:</strong><br>
-                                              ${level5.value}
-
-                                              <br><br>
-
-                                              <strong>Level 6:</strong><br>
-                                              ${this.value}
-
-                                            `;
+          <strong>Level 4 (Paket Pekerjaan):</strong><br>
+          ${level4.value}
+          <br><br>
+          <strong>Level 5 (Aktivitas):</strong><br>
+          ${level5.value}
+          <br><br>
+          <strong>Level 6 (Sumber Daya):</strong><br>
+          ${this.value}
+        `;
       });
+
+      function logout() {
+        const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Admin?");
+        if (confirmLogout) {
+          window.location.href = "login.html";
+        }
+      }
     </script>
   </body>
 </html>
