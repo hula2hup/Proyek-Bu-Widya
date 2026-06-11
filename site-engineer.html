@@ -1361,24 +1361,51 @@
           detail: "Perubahan metode lifting precast",
         },
       ];
+      let isEditMode = false;
+      let editingId = null;
       let selectedChange = null;
 
       function editChange(id) {
         selectedChange = changeRequests.find((x) => x.id === id);
         document.getElementById("editFormContainer").innerHTML = `
-          <label>Change ID</label>
-          <input id="editId" value="${selectedChange.id}" readonly>
-          <label>Category</label>
-          <input id="editCategory" value="${selectedChange.category}">
-          <label>Risk</label>
-          <input id="editRisk" value="${selectedChange.risk}">
-          <label>Detail</label>
-          <textarea id="editDetail">${selectedChange.detail}</textarea>
-          <div style="margin-top:20px">
-            <button onclick="saveDraft()">Save Draft</button>
-            <button onclick="submitRevision()">Submit Revision</button>
-          </div>
-        `;
+
+    <label>Change ID</label>
+    <input
+      id="editId"
+      value="${selectedChange.id}"
+      readonly
+    >
+
+    <label>Category</label>
+    <input
+      id="editCategory"
+      value="${selectedChange.category}"
+    >
+
+    <label>Risk</label>
+    <input
+      id="editRisk"
+      value="${selectedChange.risk}"
+    >
+
+    <label>Detail</label>
+    <textarea id="editDetail">
+${selectedChange.detail}
+    </textarea>
+
+    <div style="margin-top:20px">
+
+      <button onclick="saveDraft()">
+        Save Draft
+      </button>
+
+      <button onclick="submitRevision()">
+        Submit Revision
+      </button>
+
+    </div>
+  `;
+
         showPage("editChangePage");
       }
 
