@@ -1764,6 +1764,8 @@
           detail: "Perubahan metode lifting precast",
         },
       ];
+      let isEditMode = false;
+      let editingId = null;
       let selectedChange = null;
 
       function editChange(id) {
@@ -1797,9 +1799,9 @@ ${selectedChange.detail}
 
     <div style="margin-top:20px">
 
-      <button onclick="saveDraft()">
-        Save Draft
-      </button>
+      <button class="btn-back" onclick="cancelEdit()">
+  Cancel
+</button>
 
       <button onclick="submitRevision()">
         Submit Revision
@@ -1807,6 +1809,16 @@ ${selectedChange.detail}
 
     </div>
   `;
+        function cancelEdit() {
+          selectedChange = null;
+
+          showPage("closedChangePage");
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
 
         showPage("editChangePage");
         document
