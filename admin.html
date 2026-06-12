@@ -995,6 +995,16 @@
     </div>
 
     <script>
+      // SAFETY CHECK: Pastikan user sudah login sebelum bisa akses ke page ini
+      (function () {
+        // Cek apakah ada tanda login di localStorage/sessionStorage
+        // (Pastikan saat user sukses login di login.html, Anda sudah set: localStorage.setItem("isLoggedIn", "true"))
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+          // Jika tidak terdeteksi login, tendang langsung ke login.html
+          window.location.replace("login.html");
+        }
+      })();
+      
       function switchMenu(sectionId, clickedElement) {
         // Sembunyikan semua section
         const sections = document.querySelectorAll('.content-section');
@@ -3061,7 +3071,13 @@
       function logout() {
         const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Admin?");
         if (confirmLogout) {
-          window.location.href = "login.html";
+          // 1. Hapus session atau tanda login (jika menggunakan localStorage/sessionStorage)
+          localStorage.removeItem("isLoggedIn"); 
+          sessionStorage.removeItem("isLoggedIn");
+
+          // 2. Gunakan location.replace alih-alih window.location.href
+          // Ini akan menimpa histori halaman admin dengan halaman login
+          window.location.replace("login.html");
         }
       }
     </script>

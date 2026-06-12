@@ -667,8 +667,13 @@
 
           showToast("✓  Login successful! Redirecting...", "success");
           setTimeout(() => {
-            // 2. Ubah pengalihan halaman berdasarkan objek redirectPages
-            window.location.href = redirectPages[username];
+            
+            // 1. TAMBAHKAN BARIS INI (Wajib sebelum redirect)
+            localStorage.setItem("isLoggedIn", "true"); 
+
+            // 2. UBAH .href MENJADI .replace AGAR HISTORY BERSIH
+            window.location.replace(redirectPages[username]);
+            
           }, 1400);
         }, 900);
       }
@@ -676,6 +681,18 @@
       document.addEventListener("keydown", (e) => {
         if (e.key === "Enter") login();
       });
+
+      (function () {
+        // Menambahkan state fiktif ke history browser
+        window.history.pushState(null, "", window.location.href);
+        
+        // Menangkap event ketika user menekan tombol 'Back'
+        window.onpopstate = function () {
+          // Paksa browser untuk maju kembali ke halaman login saat ini
+          window.history.pushState(null, "", window.location.href);
+          alert("Sesi Anda telah berakhir. Silakan login kembali."); // Opsional
+        };
+      })();
     </script>
   </body>
 </html>

@@ -1395,6 +1395,15 @@
     </div>
 
     <script>
+      // SAFETY CHECK: Pastikan user sudah login sebelum bisa akses ke page ini
+      (function () {
+        // Cek apakah ada tanda login di localStorage/sessionStorage
+        // (Pastikan saat user sukses login di login.html, Anda sudah set: localStorage.setItem("isLoggedIn", "true"))
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+          // Jika tidak terdeteksi login, tendang langsung ke login.html
+          window.location.replace("login.html");
+        }
+      })();
       let changeRequests = [
         {
           id: "CR-0001",
