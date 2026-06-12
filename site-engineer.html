@@ -4,6 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form Site Engineer</title>
+    <script>
+    // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
+    document.documentElement.style.display = 'none';
+
+    // 2. Fungsi utama untuk memvalidasi sesi login
+    function enforceSecurity() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      
+      if (isLoggedIn !== "true") {
+        // Jika tidak ada tanda login, ganti URL tanpa meninggalkan jejak history
+        window.location.replace("login.html");
+      } else {
+        // Jika valid, munculkan kembali halamannya
+        document.documentElement.style.display = 'block';
+      }
+    }
+
+    // 3. Jalankan pengecekan pertama kali saat skrip terbaca
+    enforceSecurity();
+
+    // 4. Deteksi BFCache (Mencegah loophole dari long-click / history jump)
+    window.addEventListener('pageshow', function (event) {
+      // event.persisted bernilai 'true' jika halaman dimuat dari cache browser
+      if (event.persisted) {
+        enforceSecurity();
+      }
+    });
+    </script>
     <style>
       .risk-status {
         display: inline-flex;

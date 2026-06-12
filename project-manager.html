@@ -5,6 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manager Workspace - BIM WBS System</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
+    document.documentElement.style.display = 'none';
+
+    // 2. Fungsi utama untuk memvalidasi sesi login
+    function enforceSecurity() {
+      const isLoggedIn = localStorage.getItem("isLoggedIn");
+      
+      if (isLoggedIn !== "true") {
+        // Jika tidak ada tanda login, ganti URL tanpa meninggalkan jejak history
+        window.location.replace("login.html");
+      } else {
+        // Jika valid, munculkan kembali halamannya
+        document.documentElement.style.display = 'block';
+      }
+    }
+
+    // 3. Jalankan pengecekan pertama kali saat skrip terbaca
+    enforceSecurity();
+
+    // 4. Deteksi BFCache (Mencegah loophole dari long-click / history jump)
+    window.addEventListener('pageshow', function (event) {
+      // event.persisted bernilai 'true' jika halaman dimuat dari cache browser
+      if (event.persisted) {
+        enforceSecurity();
+      }
+    });
+  </script>
   <style>
     :root {
       --bg: #f4f7fb;
