@@ -670,6 +670,7 @@
             
             // 1. TAMBAHKAN BARIS INI (Wajib sebelum redirect)
             localStorage.setItem("isLoggedIn", "true"); 
+            localStorage.setItem("username", "Budi Setiawan"); // Simpan nama user yang login, bisa diganti sesuai kebutuhan
 
             // 2. UBAH .href MENJADI .replace AGAR HISTORY BERSIH
             window.location.replace(redirectPages[username]);

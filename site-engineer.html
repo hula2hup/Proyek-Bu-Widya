@@ -919,10 +919,10 @@
 
       <div class="sidebar-footer">
         <div style="display: flex; align-items: center; gap: 10px">
-          <div class="user-avatar">SE</div>
+          <div class="user-avatar" id="userAvatar">SE</div>
           <div class="user-info">
-            <strong>Site Engineer</strong>
-            <span>Project User</span>
+            <strong id="sidebarUserName">Site Engineer</strong>
+            <span>Site Engineer</span>
           </div>
         </div>
 
@@ -962,22 +962,22 @@
         <div class="kpi-grid">
           <div class="kpi-card total-card">
             <h3>Total Change</h3>
-            <span id="totalChange">18</span>
+            <span id="totalChange">0</span>
             <p>Total perubahan yang tercatat</p>
           </div>
           <div class="kpi-card open-card">
             <h3>Open Change</h3>
-            <span id="openChange">5</span>
+            <span id="openChange">0</span>
             <p>Menunggu tindak lanjut</p>
           </div>
           <div class="kpi-card risk-card">
             <h3>High Risk</h3>
-            <span id="highRisk">3</span>
+            <span id="highRisk">0</span>
             <p>Perlu perhatian segera</p>
           </div>
           <div class="kpi-card closed-card">
             <h3>Closed Change</h3>
-            <span id="closedChange">13</span>
+            <span id="closedChange">0</span>
             <p>Perubahan telah diselesaikan</p>
           </div>
         </div>
@@ -1024,7 +1024,7 @@
 
               <div class="form-group">
                 <label>Kategori Perubahan</label>
-                <select required>
+                <select id="changeCategory" required>
                   <option value="">Pilih Kategori Perubahan</option>
                   <option>Design</option>
                   <option>Method</option>
@@ -1092,19 +1092,19 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>Change ID</label>
-                <input value="PROJECT-001" readonly required />
+                <input value="Loading..." id="changeId" readonly required />
               </div>
 
               <div class="form-group">
                 <label>Date</label>
-                <input type="date" required />
+                <input type="date" id="changeDate" required />
               </div>
 
               <div class="form-group">
                 <label>Submitted By</label>
                 <input
                   id="submittedBy"
-                  value="SITE ENGINEER"
+                  value=""
                   readonly
                   required
                 />
@@ -1115,18 +1115,19 @@
                 <input
                   type="text"
                   placeholder="Masukkan Project Area"
+                  id="projectArea"
                   required
                 />
               </div>
 
               <div class="form-group">
                 <label>Location</label>
-                <input type="text" placeholder="Masukkan Lokasi" required />
+                <input type="text" placeholder="Masukkan Lokasi" id="location" required />
               </div>
 
               <div class="form-group">
                 <label>BIM Object ID</label>
-                <input type="text" placeholder="Contoh : BIM-001" required />
+                <input type="text" placeholder="Contoh : BIM-001" id="bimObjectId" required />
               </div>
             </div>
 
@@ -1212,6 +1213,7 @@
               <textarea
                 rows="5"
                 placeholder="Jelaskan perubahan yang terjadi..."
+                id="description"
                 required
               ></textarea>
             </div>
@@ -1233,7 +1235,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>Change Type</label>
-                <select required>
+                <select id="changeType" required>
                   <option value="">Pilih Change Type</option>
                   <option>Lingkungan</option>
                   <option>Waktu</option>
@@ -1245,7 +1247,7 @@
 
               <div class="form-group">
                 <label>Site Condition</label>
-                <select required>
+                <select id="siteCondition" required>
                   <option value="">Pilih Site Condition</option>
                   <option>Normal</option>
                   <option>Terbatas</option>
@@ -1258,6 +1260,7 @@
                 <textarea
                   rows="2"
                   placeholder="Tuliskan permintaan owner/konsultan apabila ada..."
+                  id="ownerRequest"
                 ></textarea>
               </div>
             </div>
@@ -1267,7 +1270,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>Material Change</label>
-                <select required>
+                <select id="materialChange" required>
                   <option value="">Pilih Material Change</option>
                   <option>Tidak Ada</option>
                   <option>Ada</option>
@@ -1276,7 +1279,7 @@
 
               <div class="form-group">
                 <label>Method Change</label>
-                <select required>
+                <select id="methodChange" required>
                   <option value="">Pilih Method Change</option>
                   <option>Tidak Ada</option>
                   <option>Ada</option>
@@ -1285,7 +1288,7 @@
 
               <div class="form-group">
                 <label>Schedule Change</label>
-                <select required>
+                <select id="scheduleChange" required>
                   <option value="">Pilih Schedule Change</option>
                   <option>Tidak Ada</option>
                   <option>Ada</option>
@@ -1298,7 +1301,7 @@
             <div class="form-grid">
               <div class="form-group">
                 <label>Safety Change</label>
-                <select required>
+                <select id="safetyChange" required>
                   <option value="">Pilih Safety Change</option>
                   <option>Tidak Ada</option>
                   <option>Ada</option>
@@ -1307,7 +1310,7 @@
 
               <div class="form-group">
                 <label>Impact Area</label>
-                <select required>
+                <select id="impactArea" required>
                   <option value="">Pilih Impact Area</option>
                   <option>Scope</option>
                   <option>Cost</option>
@@ -1323,6 +1326,7 @@
               <textarea
                 rows="6"
                 required
+                id="descriptionDetail"
                 placeholder="Jelaskan detail perubahan yang diajukan..."
               ></textarea>
             </div>
@@ -1334,7 +1338,7 @@
               <button type="button" class="btn-back" onclick="backForm()">
                 Back
               </button>
-              <button type="button" class="btn-submit" onclick="submitCR()">
+              <button type="button" class="btn-submit" onclick="submitCR(event)">
                 Submit CR
               </button>
             </div>
@@ -1346,21 +1350,22 @@
         <div class="content-page">
           <h2>Open Change</h2>
           <p>
-            Daftar perubahan yang telah disetujui oleh Project Manager dan dapat
-            dilanjutkan ke tahap implementasi proyek.
+            Daftar perubahan yang sedang aktif diajukan dan menunggu persetujuan oleh Project Manager.
           </p>
           <div class="table-container">
             <table class="change-table">
               <thead>
                 <tr>
                   <th>Change ID</th>
-                  <th>Submitted By</th>
                   <th>Date</th>
+                  <th>Submitted By</th>
                   <th>Kategori</th>
+                  <th>Risk</th>
+                  <th>Status</th>
                   <th>Detail</th>
                 </tr>
               </thead>
-              <tbody id="openChangeBody"></tbody>
+              <tbody id="openChangeTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -1370,22 +1375,22 @@
         <div class="content-page">
           <h2>Closed Change</h2>
           <p>
-            Daftar perubahan yang ditolak oleh Project Manager dan memerlukan
-            revisi.
+            Daftar perubahan yang diterima oleh Project Manager untuk diimplementasikan dan yang ditolak sehingga memerlukan perbaikan.
           </p>
           <div class="table-container">
             <table class="change-table">
               <thead>
                 <tr>
                   <th>Change ID</th>
-                  <th>Submitted By</th>
                   <th>Date</th>
+                  <th>Submitted By</th>
                   <th>Kategori</th>
+                  <th>Risk</th>
                   <th>Status</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
-              <tbody id="closedChangeBody"></tbody>
+              <tbody id="closedChangeTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -1415,7 +1420,7 @@
                   <th>Detail</th>
                 </tr>
               </thead>
-              <tbody id="historyBody"></tbody>
+              <tbody id="historyTableBody"></tbody>
             </table>
           </div>
         </div>
@@ -1432,38 +1437,45 @@
           window.location.replace("login.html");
         }
       })();
-      let changeRequests = [
-        {
-          id: "CR-0001",
-          date: "2026-06-01",
-          submittedBy: "SITE ENGINEER",
-          category: "Material",
-          risk: 8,
-          status: "APPROVED",
-          detail: "Perubahan spesifikasi beton pile cap",
-        },
-        {
-          id: "CR-0002",
-          date: "2026-06-03",
-          submittedBy: "SITE ENGINEER",
-          category: "Schedule",
-          risk: 4,
-          status: "REJECTED",
-          detail: "Perubahan jadwal erection girder",
-        },
-        {
-          id: "CR-0003",
-          date: "2026-06-05",
-          submittedBy: "SITE ENGINEER",
-          category: "Method",
-          risk: 6,
-          status: "APPROVED",
-          detail: "Perubahan metode lifting precast",
-        },
-      ];
+      let changeRequests = []; // Array untuk menyimpan data change request
       let isEditMode = false;
       let editingId = null;
       let selectedChange = null;
+
+      // Fungsi untuk memasukkan nama user yang login ke dalam input form
+      function setLoggedUserToForm() {
+          // Ambil nama dari localStorage, jika kosong default-nya adalah "SITE ENGINEER"
+          const currentUser = localStorage.getItem("username") || "SITE ENGINEER"; 
+          
+          const submittedByInput = document.getElementById("submittedBy");
+          if (submittedByInput) {
+              submittedByInput.value = currentUser; // Otomatis mengisi input form
+          }
+      }
+
+      // Fungsi untuk memunculkan nama & inisial user di sidebar profil secara otomatis
+      function updateSidebarUserProfile() {
+          // Ambil nama dari localStorage, default jika kosong adalah "Site Engineer"
+          const currentUser = localStorage.getItem("username") || "Site Engineer";
+          
+          // 1. Update Teks Nama Pemilik Akun
+          const userNameEl = document.getElementById("sidebarUserName");
+          if (userNameEl) {
+              userNameEl.innerText = currentUser;
+          }
+          
+          // 2. Bonus: Otomatis bikin inisial avatar (Contoh: Budi Setiawan -> BS)
+          const avatarEl = document.getElementById("userAvatar");
+          if (avatarEl && currentUser !== "Site Engineer") {
+              const initials = currentUser
+                  .split(" ")                  // Memecah nama berdasarkan spasi
+                  .map(word => word[0])        // Mengambil huruf pertama tiap kata
+                  .join("")                    // Menggabungkan kembali hurufnya
+                  .toUpperCase();              // Dipaksa jadi huruf kapital
+                  
+              avatarEl.innerText = initials.substring(0, 2); // Ambil maksimal 2 huruf terdepan
+          }
+      }
 
       function editChange(id) {
         selectedChange = changeRequests.find((x) => x.id === id);
@@ -3867,7 +3879,79 @@
         .getElementById("submittedBy")
         .value.toUpperCase();
 
-      function submitCR() {
+      function submitCR(event) {
+        // 1. Mencegah form melakukan refresh otomatis (Ini sangat penting!)
+        if (event) {
+            event.preventDefault(); 
+        }
+        
+        // 1. Inisialisasi FormData (mendukung pengiriman teks & upload file sekaligus)
+        const formData = new FormData();
+
+        // 2. Ambil data dari elemen Tahap 1 (Identify)
+        formData.append('wbsLevel4', document.getElementById('wbsLevel4').value);
+        formData.append('wbsLevel5', document.getElementById('wbsLevel5').value);
+        formData.append('wbsLevel6', document.getElementById('wbsLevel6').value);
+        formData.append('changeCategory', document.getElementById('changeCategory').value);
+        formData.append('priority', document.getElementById('priority').value);
+        formData.append('risk', document.getElementById('risk').value);
+        formData.append('changeId', document.getElementById('changeId').value);
+        formData.append('changeDate', document.getElementById('changeDate').value);
+        formData.append('submittedBy', document.getElementById('submittedBy').value);
+        formData.append('projectArea', document.getElementById('projectArea').value);
+        formData.append('location', document.getElementById('location').value);
+        formData.append('bimObjectId', document.getElementById('bimObjectId').value);
+        formData.append('riskCategory', document.getElementById('riskCategory').value);
+        formData.append('riskVariable', document.getElementById('riskVariable').value);
+        formData.append('description', document.getElementById('description').value);
+
+        // 3. Ambil data dari elemen Tahap 2 (Register)
+        formData.append('changeType', document.getElementById('changeType').value);
+        formData.append('siteCondition', document.getElementById('siteCondition').value);
+        formData.append('ownerRequest', document.getElementById('ownerRequest').value);
+        formData.append('materialChange', document.getElementById('materialChange').value);
+        formData.append('methodChange', document.getElementById('methodChange').value);
+        formData.append('scheduleChange', document.getElementById('scheduleChange').value);
+        formData.append('safetyChange', document.getElementById('safetyChange').value);
+        formData.append('impactArea', document.getElementById('impactArea').value);
+        formData.append('descriptionDetail', document.getElementById('descriptionDetail').value);
+
+        // 4. Ambil file Foto / PDF (Mendukung multiple files)
+        const fileInput = document.getElementById('photo');
+        if (fileInput.files.length > 0) {
+          for (let i = 0; i < fileInput.files.length; i++) {
+            formData.append('photos[]', fileInput.files[i]);
+          }
+        }
+
+        // 5. Eksekusi pengiriman ke script PHP secara asynchronous
+        fetch('save_data.php', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json()) // Mengharapkan respon dalam format JSON balik dari PHP
+        .then(data => {
+          if (data.status === 'success') {
+            alert("Change Request berhasil disimpan ke database!");
+            
+            // 6. Setelah sukses, Anda bisa melakukan tindakan tambahan seperti mereset form, memperbarui tampilan, atau mengambil data terbaru untuk dashboard.
+            fetchDashboardData();
+            generateAutoChangeId(); // <--- TAMBAHKAN INI agar ID langsung berubah jadi nomor baru (misal CR-002 ke CR-003)
+            document.getElementById('crForm').reset();
+            // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
+            showPage('historyPage'); 
+            
+            // Anda juga bisa memanggil fungsi renderTables() atau updateDashboard() 
+            // untuk memperbarui tampilan dashboard jika datanya di-load dinamis.
+          } else {
+            alert("Gagal menyimpan data ke database: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("Terjadi kesalahan sistem saat mengirim data.");
+        });
+        
         const fields = document.querySelectorAll(
           "#register input[required], #register select[required], #register textarea[required]",
         );
@@ -4113,8 +4197,8 @@
         selectedChange.risk = document.getElementById("editRisk").value;
         selectedChange.detail = document.getElementById("editDetail").value;
         alert("Draft berhasil disimpan.");
-        renderTables();
-        updateDashboard();
+        renderTablesWithRealData();
+        updateDashboardWithRealData();
       }
 
       function submitRevision() {
@@ -4122,8 +4206,8 @@
         selectedChange.risk = document.getElementById("editRisk").value;
         selectedChange.detail = document.getElementById("editDetail").value;
         selectedChange.status = "PENDING";
-        renderTables();
-        updateDashboard();
+        renderTablesWithRealData();
+        updateDashboardWithRealData();
         alert("Revision berhasil dikirim ulang.");
         showPage("historyPage");
       }
@@ -4137,14 +4221,190 @@
         }
       }
 
+      // GANTI MENJADI INI:
       window.onload = () => {
-        renderTables();
-        updateDashboard();
+        fetchDashboardData(); // Memanggil data asli dari database Laragon
+        generateAutoChangeId(); // Mendapatkan nomor Change ID otomatis dari database
+        setLoggedUserToForm(); // Memasukkan nama user yang login ke dalam input form
+        updateSidebarUserProfile(); // Memperbarui nama user di sidebar
       };
 
       document.querySelector('input[type="date"]').value = new Date()
         .toISOString()
         .split("T")[0];
+    
+      // 1. Variabel global untuk menyimpan data dari database
+      let changeRequestsFromDB = [];
+
+      // 2. Fungsi utama Fetch Data dari Database
+      async function fetchDashboardData() {
+          try {
+              // 1. Ambil nama user yang sedang login dari localStorage
+              // Catatan: Sesuaikan 'username' dengan key yang Anda gunakan saat login sukses
+              const currentUser = localStorage.getItem("username") || "SITE ENGINEER"; 
+
+              // 2. Kirim nama user tersebut sebagai query parameter ke PHP
+              const response = await fetch(`get_data.php?user=${encodeURIComponent(currentUser)}`);
+              const result = await response.json();
+              
+              if (result.status === 'success') {
+                  // Simpan data dari database ke variabel global
+                  changeRequestsFromDB = result.data;
+                  
+                  // Panggil fungsi pembantu untuk update UI dashboard dan Tabel
+                  updateDashboardWithRealData();
+                  renderTablesWithRealData();
+              } else {
+                  console.error("Gagal memuat data dari database:", result.message);
+              }
+          } catch (error) {
+              console.error("Terjadi kesalahan sistem saat fetch data:", error);
+          }
+      }
+
+      // Fungsi untuk mengambil nomor Change ID otomatis dari database
+      async function generateAutoChangeId() {
+          try {
+              const response = await fetch('get_next_id.php');
+              const result = await response.json();
+              
+              if (result.status === 'success') {
+                  // 1. Masukkan ID otomatis ke elemen input HTML
+                  const changeIdInput = document.getElementById('changeId');
+                  if (changeIdInput) {
+                      changeIdInput.value = result.next_id;
+                  }
+
+                  // 2. UPDATE KOTAK TOTAL CHANGE DI DASHBOARD
+                  const totalChangeEl = document.getElementById('totalChange');
+                  if (totalChangeEl) {
+                      totalChangeEl.innerText = result.total_all; // Mengisi dengan angka total seluruh database
+                  }
+              } else {
+                  console.error("Gagal generate ID:", result.message);
+              }
+          } catch (error) {
+              console.error("Terjadi kesalahan sistem saat mengambil ID baru:", error);
+          }
+      }
+
+      // 3. Fungsi untuk Update Angka di Bagian Dashboard (Open, Closed, High Risk)
+      function updateDashboardWithRealData() {
+          let openCount = 0;
+          let closedCount = 0;
+          let highRiskCount = 0;
+
+          changeRequestsFromDB.forEach(item => {
+              // 1. Hitung Closed Change (Status: APPROVED atau REJECTED)
+              if (item.status === 'APPROVED' || item.status === 'REJECTED') {
+                  closedCount++;
+              } 
+              // 2. Hitung Open Change (Status: PENDING atau OPEN)
+              else if (item.status === 'PENDING' || item.status === 'OPEN') {
+                  openCount++;
+              }
+              
+              // 3. Hitung High Risk (Nilai angka risk >= 7)
+              // Kita gunakan parseFloat agar string dari database dikonversi menjadi angka tulen
+              const riskValue = parseFloat(item.risk) || 0; 
+              if (riskValue >= 7) {
+                  highRiskCount++;
+              }
+          });
+
+          // Masukkan nilainya ke dalam elemen HTML bawaan Anda
+          if (document.getElementById("openChange")) {
+              document.getElementById("openChange").innerText = openCount;
+          }
+          if (document.getElementById("closedChange")) {
+              document.getElementById("closedChange").innerText = closedCount;
+          }
+          if (document.getElementById("highRisk")) {
+              document.getElementById("highRisk").innerText = highRiskCount;
+          }
+      }
+
+      // 4. Fungsi untuk merender data baris ke dalam Tabel History Anda
+      function renderTablesWithRealData() {
+        // 1. Sesuaikan ID ini dengan id <tbody> di HTML Anda
+        const openBody = document.getElementById("openChangeTableBody");
+        const closedBody = document.getElementById("closedChangeTableBody");
+        const historyBody = document.getElementById("historyTableBody");
+
+        // Kosongkan isi tabel sebelum diisi ulang
+        if (openBody) openBody.innerHTML = "";
+        if (closedBody) closedBody.innerHTML = "";
+        if (historyBody) historyBody.innerHTML = "";
+
+        // Lakukan perulangan untuk setiap data dari Database
+        changeRequestsFromDB.forEach((item) => {
+            
+            // --- MAPPING VARIABEL DATABASE ---
+            // Karena nama kolom di database berbeda dengan data dummy lama Anda, 
+            // kita mapping nilainya di sini agar rapi.
+            const id = item.changeId || item.change_id || "-";
+            const submittedBy = item.submittedBy || "-";
+            const date = item.changeDate || item.change_date || "-";
+            const category = item.changeCategory || "-";
+            const detail = item.description || "-";
+            const risk = item.risk || "-";
+            const status = (item.status || "PENDING").toUpperCase();
+
+            // 2. BAGIAN OPEN CHANGE (Status: PENDING atau OPEN)
+            if (openBody && (status === "PENDING")) {
+                openBody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:600; color:#0f2d52;">${id}</td>
+                        <td>${submittedBy}</td>
+                        <td>${date}</td>
+                        <td>${category}</td>
+                        <td>${getRiskHTML(risk)}</td>
+                        <td>${getStatusHTML(status)}</td>
+                        <td>
+                          <button class="btn-edit-table" onclick="editChange('${id}')">
+                            👁️ Lihat
+                          </button>
+                        </td>
+                    </tr>`;
+            }
+
+            // 3. BAGIAN CLOSED CHANGE (Status: APPROVED atau REJECTED)
+            if (closedBody && (status === "APPROVED" || status === "REJECTED")) {
+                closedBody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:600; color:#0f2d52;">${id}</td>
+                        <td>${submittedBy}</td>
+                        <td>${date}</td>
+                        <td>${category}</td>
+                        <td>${getRiskHTML(risk)}</td>
+                        <td>${getStatusHTML(status)}</td>
+                        <td>
+                            <button class="btn-edit-table" onclick="editChange('${id}')">
+                                👁️ Lihat
+                            </button>
+                        </td>
+                    </tr>`;
+            }
+
+            // 4. BAGIAN HISTORY CHANGE (Semua Status Masuk ke Sini)
+            if (historyBody) {
+                historyBody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:600; color:#0f2d52;">${id}</td>
+                        <td>${date}</td>
+                        <td>${submittedBy}</td>
+                        <td>${category}</td>
+                        <td>${getRiskHTML(risk)}</td>
+                        <td>${getStatusHTML(status)}</td>
+                        <td>
+                          <button class="btn-edit-table" onclick="editChange('${id}')">
+                                👁️ Lihat
+                          </button>
+                        </td>
+                    </tr>`;
+            }
+        });
+      }
     </script>
   </body>
 </html>
