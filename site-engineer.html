@@ -1478,48 +1478,304 @@
       }
 
       function editChange(id) {
-        selectedChange = changeRequests.find((x) => x.id === id);
+        // 1. Cari data di dalam array database lokal Anda
+        selectedChange = changeRequestsFromDB.find((x) => (x.change_id || x.changeId) === id);
+        
+        if (!selectedChange) {
+            alert("Data Change Request tidak ditemukan!");
+            return;
+        }
+
+        const status = (selectedChange.status || "PENDING").toUpperCase();
+        const isReadOnly = (status === "APPROVED");
+        const disabledAttr = isReadOnly ? "disabled" : "";
+        const readonlyAttr = isReadOnly ? "readonly" : "";
+
+        // 2. Siapkan Pratinjau Dokumen & Gambar Bukti (Photo Evidence)
+        let evidenceHTML = '';
+        if (selectedChange.photoEvidence && selectedChange.photoEvidence.trim() !== "") {
+            const fileList = selectedChange.photoEvidence.split(',');
+            fileList.forEach(file => {
+                const fileTrimmed = file.trim();
+                if (fileTrimmed.toLowerCase().endsWith('.pdf')) {
+                    evidenceHTML += `
+                        <div style="margin: 5px 0;">
+                            <a href="uploads/${fileTrimmed}" target="_blank" style="color:#0f2d52; font-weight:600; text-decoration:underline;">
+                                📄 Buka Dokumen PDF (${fileTrimmed})
+                            </a>
+                        </div>`;
+                } else {
+                    evidenceHTML += `
+                        <div style="margin:5px; display:inline-block; border:1px solid #ddd; padding:5px; background:#fff; border-radius:4px;">
+                            <img src="uploads/${fileTrimmed}" style="max-width:120px; max-height:120px; display:block; border-radius:2px;">
+                            <a href="uploads/${fileTrimmed}" target="_blank" style="font-size:11px; text-align:center; display:block; margin-top:4px; color:#0f2d52;">Perbesar</a>
+                        </div>`;
+                }
+            });
+        } else {
+            evidenceHTML = '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
+        }
+
+        // 3. Render HTML Menggunakan Struktur Kelas CSS Asli Anda (form-card, form-grid, form-group)
         document.getElementById("editFormContainer").innerHTML = `
+            ${isReadOnly ? `
+                <div style="background:#e2f0d9; color:#385723; padding:15px; margin-bottom:20px; border-left:5px solid #385723; font-weight:600; border-radius:4px;">
+                    🔒 STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.
+                </div>
+            ` : `
+                <div style="background:#fff3cd; color:#856404; padding:15px; margin-bottom:20px; border-left:5px solid #856404; font-weight:600; border-radius:4px;">
+                    ✏️ MODE EDITING (Status: ${status}): Anda diizinkan untuk melakukan modifikasi data dan mengunggah ulang dokumen bukti jika diperlukan.
+                </div>
+            `}
+            
+            <form id="updateCrForm">
+                <div class="form-card">
+                    <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 1: Identifikasi Perubahan</h3>
+                    
+                    <div class="form-grid wbs-grid">
+                        <div class="form-group">
+                            <label>WBS-Paket Pekerjaan</label>
+                            <input type="text" id="editWbs4" value="${selectedChange.wbsLevel4 || ""}" ${readonlyAttr} placeholder="Masukkan Paket Pekerjaan">
+                        </div>
+                        <div class="form-group">
+                            <label>WBS-Aktivitas</label>
+                            <input type="text" id="editWbs5" value="${selectedChange.wbsLevel5 || ""}" ${readonlyAttr} placeholder="Masukkan Aktivitas">
+                        </div>
+                        <div class="form-group">
+                            <label>WBS-Sumber Daya</label>
+                            <input type="text" id="editWbs6" value="${selectedChange.wbsLevel6 || ""}" ${readonlyAttr} placeholder="Masukkan Sumber Daya">
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori Perubahan</label>
+                            <select id="editCategory" ${disabledAttr}>
+                                <option value="Design" ${selectedChange.changeCategory === 'Design' ? 'selected' : ''}>Design</option>
+                                <option value="Method" ${selectedChange.changeCategory === 'Method' ? 'selected' : ''}>Method</option>
+                                <option value="Material" ${selectedChange.changeCategory === 'Material' ? 'selected' : ''}>Material</option>
+                                <option value="Schedule" ${selectedChange.changeCategory === 'Schedule' ? 'selected' : ''}>Schedule</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Priority (1 - 5)</label>
+                            <input type="number" id="editPriority" min="1" max="5" value="${selectedChange.priority || ""}" ${readonlyAttr}>
+                        </div>
+                        <div class="form-group">
+                            <label>Risk (1 - 10)</label>
+                            <input type="number" id="editRisk" min="1" max="10" value="${selectedChange.risk || ""}" ${readonlyAttr}>
+                        </div>
+                    </div>
 
-          <label>Change ID</label>
-          <input
-            id="editId"
-            value="${selectedChange.id}"
-            readonly
-          >
+                    <hr class="section-divider" style="margin:20px 0;" />
 
-          <label>Category</label>
-          <input
-            id="editCategory"
-            value="${selectedChange.category}"
-          >
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Change ID</label>
+                            <input id="editChangeId" value="${selectedChange.change_id || selectedChange.changeId || ""}" readonly style="background:#e9ecef; font-weight:bold;">
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}>
+                        </div>
+                        <div class="form-group">
+                            <label>Submitted By</label>
+                            <input id="editSubmittedBy" value="${selectedChange.submittedBy || "SITE ENGINEER"}" readonly style="background:#e9ecef;">
+                        </div>
+                        <div class="form-group">
+                            <label>Project Area</label>
+                            <input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" ${readonlyAttr}>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}>
+                        </div>
+                        <div class="form-group">
+                            <label>BIM Object ID</label>
+                            <input type="text" id="editBimObjectId" value="${selectedChange.bimObjectId || ""}" ${readonlyAttr}>
+                        </div>
+                    </div>
 
-          <label>Risk</label>
-          <input
-            id="editRisk"
-            value="${selectedChange.risk}"
-          >
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Kategori Risiko</label>
+                            <input type="text" id="editRiskCategory" value="${selectedChange.riskCategory || ""}" ${readonlyAttr}>
+                        </div>
+                        <div class="form-group">
+                            <label>Variabel Risiko</label>
+                            <input type="text" id="editRiskVariable" value="${selectedChange.riskVariable || ""}" ${readonlyAttr}>
+                        </div>
+                    </div>
 
-          <label>Detail</label>
-          <textarea id="editDetail">
-      ${selectedChange.detail}
-          </textarea>
+                    <div class="full-width" style="margin-top:10px;">
+                        <label>Description (Brief Object)</label>
+                        <textarea rows="3" id="editDescription" ${readonlyAttr}>${selectedChange.description || ""}</textarea>
+                    </div>
 
-          <div style="margin-top:20px">
+                    <div class="upload-section full-width" style="margin-top:15px;">
+                        <label style="font-weight:bold; color:#0f2d52;">Lampiran Bukti Saat Ini:</label>
+                        <div style="margin: 10px 0; background:#f8f9fa; padding:10px; border:1px solid #ddd; border-radius:4px;">
+                            ${evidenceHTML}
+                        </div>
+                        ${!isReadOnly ? `
+                            <label>Unggah Bukti Baru (Pilihan, melampirkan berkas tambahan)</label>
+                            <input type="file" id="editPhoto" accept="image/*,.pdf" multiple>
+                        ` : ''}
+                    </div>
+                </div>
 
-            <button onclick="saveDraft()">
-              Save Draft
-            </button>
+                <div class="form-card" style="margin-top:20px;">
+                    <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 2: Register Change Request</h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Change Type</label>
+                            <select id="editChangeType" ${disabledAttr}>
+                                <option value="">Pilih Change Type</option>
+                                <option value="Lingkungan" ${selectedChange.changeType === 'Lingkungan' ? 'selected' : ''}>Lingkungan</option>
+                                <option value="Waktu" ${selectedChange.changeType === 'Waktu' ? 'selected' : ''}>Waktu</option>
+                                <option value="Tenaga Kerja" ${selectedChange.changeType === 'Tenaga Kerja' ? 'selected' : ''}>Tenaga Kerja</option>
+                                <option value="Material" ${selectedChange.changeType === 'Material' ? 'selected' : ''}>Material</option>
+                                <option value="Biaya" ${selectedChange.changeType === 'Biaya' ? 'selected' : ''}>Biaya</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Condition</label>
+                            <select id="editSiteCondition" ${disabledAttr}>
+                                <option value="">Pilih Site Condition</option>
+                                <option value="Normal" ${selectedChange.siteCondition === 'Normal' ? 'selected' : ''}>Normal</option>
+                                <option value="Terbatas" ${selectedChange.siteCondition === 'Terbatas' ? 'selected' : ''}>Terbatas</option>
+                                <option value="Tidak Siap" ${selectedChange.siteCondition === 'Tidak Siap' ? 'selected' : ''}>Tidak Siap</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Owner Request</label>
+                            <textarea rows="2" id="editOwnerRequest" ${readonlyAttr}>${selectedChange.ownerRequest || ""}</textarea>
+                        </div>
+                    </div>
 
-            <button onclick="submitRevision()">
-              Submit Revision
-            </button>
+                    <hr class="section-divider" style="margin:20px 0;" />
 
-          </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Material Change</label>
+                            <select id="editMaterialChange" ${disabledAttr}>
+                                <option value="Tidak Ada" ${selectedChange.materialChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
+                                <option value="Ada" ${selectedChange.materialChange === 'Ada' ? 'selected' : ''}>Ada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Method Change</label>
+                            <select id="editMethodChange" ${disabledAttr}>
+                                <option value="Tidak Ada" ${selectedChange.methodChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
+                                <option value="Ada" ${selectedChange.methodChange === 'Ada' ? 'selected' : ''}>Ada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Schedule Change</label>
+                            <select id="editScheduleChange" ${disabledAttr}>
+                                <option value="Tidak Ada" ${selectedChange.scheduleChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
+                                <option value="Ada" ${selectedChange.scheduleChange === 'Ada' ? 'selected' : ''}>Ada</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr class="section-divider" style="margin:20px 0;" />
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Safety Change</label>
+                            <select id="editSafetyChange" ${disabledAttr}>
+                                <option value="Tidak Ada" ${selectedChange.safetyChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
+                                <option value="Ada" ${selectedChange.safetyChange === 'Ada' ? 'selected' : ''}>Ada</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Impact Area</label>
+                            <select id="editImpactArea" ${disabledAttr}>
+                                <option value="Scope" ${selectedChange.impactArea === 'Scope' ? 'selected' : ''}>Scope</option>
+                                <option value="Cost" ${selectedChange.impactArea === 'Cost' ? 'selected' : ''}>Cost</option>
+                                <option value="Time" ${selectedChange.impactArea === 'Time' ? 'selected' : ''}>Time</option>
+                                <option value="Quality" ${selectedChange.impactArea === 'Quality' ? 'selected' : ''}>Quality</option>
+                                <option value="Safety" ${selectedChange.impactArea === 'Safety' ? 'selected' : ''}>Safety</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="full-width" style="margin-top:10px;">
+                        <label>Description Detail</label>
+                        <textarea rows="5" id="editDescriptionDetail" ${readonlyAttr}>${selectedChange.descriptionDetail || ""}</textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top:25px; text-align:right;">
+                    <button type="button" class="btn-back" onclick="showPage('historyPage')" style="margin-right:10px;">Kembali</button>
+                    ${!isReadOnly ? `
+                        <button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">
+                            💾 Simpan Perubahan Data
+                        </button>
+                    ` : ''}
+                </div>
+            </form>
         `;
 
         showPage("editChangePage");
+    }
+
+    function executeDatabaseUpdate() {
+      const formData = new FormData();
+
+      // Mapping seluruh form data lengkap ke server PHP
+      formData.append('changeId', document.getElementById('editChangeId').value);
+      formData.append('changeDate', document.getElementById('editChangeDate').value);
+      formData.append('wbsLevel4', document.getElementById('editWbs4').value);
+      formData.append('wbsLevel5', document.getElementById('editWbs5').value);
+      formData.append('wbsLevel6', document.getElementById('editWbs6').value);
+      formData.append('changeCategory', document.getElementById('editCategory').value);
+      formData.append('priority', document.getElementById('editPriority').value);
+      formData.append('risk', document.getElementById('editRisk').value);
+      formData.append('projectArea', document.getElementById('editProjectArea').value);
+      formData.append('location', document.getElementById('editLocation').value);
+      formData.append('bimObjectId', document.getElementById('editBimObjectId').value);
+      formData.append('riskCategory', document.getElementById('editRiskCategory').value);
+      formData.append('riskVariable', document.getElementById('editRiskVariable').value);
+      formData.append('description', document.getElementById('editDescription').value);
+      
+      // Form bagian langkah 2
+      formData.append('changeType', document.getElementById('editChangeType').value);
+      formData.append('siteCondition', document.getElementById('editSiteCondition').value);
+      formData.append('ownerRequest', document.getElementById('editOwnerRequest').value);
+      formData.append('materialChange', document.getElementById('editMaterialChange').value);
+      formData.append('methodChange', document.getElementById('editMethodChange').value);
+      formData.append('scheduleChange', document.getElementById('editScheduleChange').value);
+      formData.append('safetyChange', document.getElementById('editSafetyChange').value);
+      formData.append('impactArea', document.getElementById('editImpactArea').value);
+      formData.append('descriptionDetail', document.getElementById('editDescriptionDetail').value);
+
+      // Ambil file bukti baru jika ditambahkan oleh user
+      const fileInput = document.getElementById('editPhoto');
+      if (fileInput && fileInput.files.length > 0) {
+          for (let i = 0; i < fileInput.files.length; i++) {
+              formData.append('photo[]', fileInput.files[i]); // Sesuai bug sebelumnya, gunakan photo[]
+          }
       }
+
+      fetch('update_data.php', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === 'success') {
+              alert("Perubahan Berhasil Disimpan!");
+              fetchDashboardData(); // Update refresh data
+              showPage('historyPage');
+          } else {
+              alert("Error: " + data.message);
+          }
+      })
+      .catch(err => {
+          console.error(err);
+          alert("Terjadi masalah pada koneksi server.");
+      });
+  }
 
       const wbsData = {
         "1.1.1 Program Mobilisasi": {
@@ -3920,7 +4176,7 @@
         const fileInput = document.getElementById('photo');
         if (fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
-            formData.append('photos[]', fileInput.files[i]);
+            formData.append('photo[]', fileInput.files[i]);
           }
         }
 
