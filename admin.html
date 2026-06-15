@@ -6,31 +6,21 @@
     <title>Admin Dashboard - Project Monitoring</title>
 
     <script>
-    // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
     document.documentElement.style.display = 'none';
 
-    // 2. Fungsi utama untuk memvalidasi sesi login
     function enforceSecurity() {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
-      
       if (isLoggedIn !== "true") {
-        // Jika tidak ada tanda login, ganti URL tanpa meninggalkan jejak history
         window.location.replace("login.html");
       } else {
-        // Jika valid, munculkan kembali halamannya
         document.documentElement.style.display = 'block';
       }
     }
 
-    // 3. Jalankan pengecekan pertama kali saat skrip terbaca
     enforceSecurity();
 
-    // 4. Deteksi BFCache (Mencegah loophole dari long-click / history jump)
     window.addEventListener('pageshow', function (event) {
-      // event.persisted bernilai 'true' jika halaman dimuat dari cache browser
-      if (event.persisted) {
-        enforceSecurity();
-      }
+      if (event.persisted) enforceSecurity();
     });
     </script>
     
@@ -38,532 +28,155 @@
       /* =========================
          GLOBAL STYLES
       ========================= */
-      body {
-        margin: 0;
-        font-family: "Segoe UI", Inter, sans-serif;
-        background: #eef3f9;
-        display: flex;
-        color: #0f172a;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      a {
-        text-decoration: none;
-      }
+      body { margin: 0; font-family: "Segoe UI", Inter, sans-serif; background: #eef3f9; display: flex; color: #0f172a; }
+      * { box-sizing: border-box; }
+      a { text-decoration: none; }
 
       /* =========================
          SIDEBAR
       ========================= */
       .sidebar {
-        width: 280px;
-        height: 100vh;
-        background: #0f2d52;
-        position: fixed;
-        left: 0;
-        top: 0;
-        color: white;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
-        z-index: 999;
+        width: 280px; height: 100vh; background: #0f2d52; position: fixed; left: 0; top: 0;
+        color: white; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08); z-index: 999;
       }
-      .sidebar-header {
-        padding: 30px 25px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .sidebar-header h2 {
-        color: white;
-        margin: 0;
-        font-size: 20px;
-        line-height: 1.4;
-        letter-spacing: 1px;
-      }
-      .sidebar-menu {
-        padding: 20px 0;
-        flex: 1;
-      }
+      .sidebar-header { padding: 30px 25px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+      .sidebar-header h2 { color: white; margin: 0; font-size: 20px; line-height: 1.4; letter-spacing: 1px; }
+      .sidebar-menu { padding: 20px 0; flex: 1; }
       .menu-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 14px 25px;
-        cursor: pointer;
-        transition: 0.25s;
-        color: rgba(255, 255, 255, 0.8);
-        font-weight: 500;
+        display: flex; align-items: center; gap: 12px; padding: 14px 25px; cursor: pointer;
+        transition: 0.25s; color: rgba(255, 255, 255, 0.8); font-weight: 500;
       }
-      .menu-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-        color: white;
-      }
-      .menu-item.active {
-        background: rgba(255, 255, 255, 0.12);
-        border-left: 4px solid #2563eb;
-        color: white;
-        font-weight: 600;
-      }
-      .sidebar-footer {
-        padding: 20px 25px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .user-profile {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: #2563eb;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        color: white;
-      }
-      .user-info span {
-        display: block;
-        font-size: 13px;
-        opacity: 0.8;
-      }
-      .user-info strong {
-        font-size: 14px;
-      }
-      .logout-btn {
-        background: transparent;
-        color: #ef4444;
-        border: none;
-        padding: 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.2s ease;
-      }
-      .logout-btn:hover {
-        background: rgba(239, 68, 68, 0.15);
-      }
+      .menu-item:hover { background: rgba(255, 255, 255, 0.08); color: white; }
+      .menu-item.active { background: rgba(255, 255, 255, 0.12); border-left: 4px solid #2563eb; color: white; font-weight: 600; }
+      .sidebar-footer { padding: 20px 25px; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: space-between; }
+      .user-profile { display: flex; align-items: center; gap: 10px; }
+      .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #2563eb; display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; }
+      .user-info span { display: block; font-size: 13px; opacity: 0.8; }
+      .user-info strong { font-size: 14px; }
+      .logout-btn { background: transparent; color: #ef4444; border: none; padding: 10px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s ease; }
+      .logout-btn:hover { background: rgba(239, 68, 68, 0.15); }
 
       /* =========================
          MAIN CONTENT
       ========================= */
-      .container {
-        margin-left: 280px;
-        width: calc(100% - 280px);
-        max-width: 1600px;
-        padding: 30px;
-      }
+      .container { margin-left: 280px; width: calc(100% - 280px); max-width: 1600px; padding: 30px; }
 
-      /* Header Dashboard */
       .header-dashboard {
-        background: #0f2d52;
-        color: white;
-        padding: 30px;
-        border-radius: 18px;
-        margin-bottom: 25px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        background: #0f2d52; color: white; padding: 30px; border-radius: 18px; margin-bottom: 25px;
+        display: flex; justify-content: space-between; align-items: flex-start;
       }
-      .header-dashboard .subtitle {
-        font-size: 12px;
-        letter-spacing: 2px;
-        opacity: 0.8;
-        text-transform: uppercase;
-      }
-      .header-dashboard h1 {
-        color: white;
-        margin: 10px 0;
-        font-size: 28px;
-      }
-      .header-dashboard p {
-        margin: 0;
-        opacity: 0.9;
-        font-size: 14px;
-      }
-      .status-badge-header {
-        display: inline-block;
-        background: #fbbf24;
-        color: #111827;
-        padding: 10px 20px;
-        border-radius: 999px;
-        font-weight: 700;
-        font-size: 13px;
-      }
+      .header-dashboard .subtitle { font-size: 12px; letter-spacing: 2px; opacity: 0.8; text-transform: uppercase; }
+      .header-dashboard h1 { color: white; margin: 10px 0; font-size: 28px; }
+      .header-dashboard p { margin: 0; opacity: 0.9; font-size: 14px; }
+      .status-badge-header { display: inline-block; background: #fbbf24; color: #111827; padding: 10px 20px; border-radius: 999px; font-weight: 700; font-size: 13px; }
 
-      /* KPI Cards */
-      .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-      }
+      .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 30px; }
       .kpi-card {
-        background: white;
-        padding: 24px;
-        border-radius: 18px;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-        transition: all 0.25s ease;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        background: white; padding: 24px; border-radius: 18px; border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03); transition: all 0.25s ease; text-align: center;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
       }
-      .kpi-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-      }
-      .kpi-card h3 {
-        margin: 0;
-        font-size: 14px;
-        color: #64748b;
-      }
-      .kpi-card span {
-        display: block;
-        font-size: 42px;
-        font-weight: 800;
-        margin-top: 8px;
-        line-height: 1;
-        color: #0f172a;
-      }
-      .border-blue { border-left: 6px solid #2563eb; }
-      .border-green { border-left: 6px solid #10b981; }
-      .border-yellow { border-left: 6px solid #f59e0b; }
-      .border-red { border-left: 6px solid #ef4444; }
+      .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); }
+      .kpi-card h3 { margin: 0; font-size: 14px; color: #64748b; }
+      .kpi-card span { display: block; font-size: 42px; font-weight: 800; margin-top: 8px; line-height: 1; color: #0f172a; }
+      .border-blue { border-left: 6px solid #2563eb; } .border-green { border-left: 6px solid #10b981; }
+      .border-yellow { border-left: 6px solid #f59e0b; } .border-red { border-left: 6px solid #ef4444; }
 
-      /* Table Section */
-      .table-section {
-        background: white;
-        border-radius: 20px;
-        padding: 30px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-        border: 1px solid #e2e8f0;
-      }
-      .table-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-      }
-      .table-header h2 {
-        margin: 0;
-        color: #1e3a5f;
-        font-size: 22px;
-      }
-      .btn-primary {
-        background: #1e3a5f;
-        color: white;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .btn-primary:hover {
-        background: #294c75;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      }
+      .table-section { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03); border: 1px solid #e2e8f0; }
+      .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+      .table-header h2 { margin: 0; color: #1e3a5f; font-size: 22px; }
+      .btn-primary { background: #1e3a5f; color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 8px; }
+      .btn-primary:hover { background: #294c75; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); }
+      .btn-secondary { background: #f1f5f9; color: #475569; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; }
+      .btn-secondary:hover { background: #e2e8f0; color: #0f172a; }
 
-      /* Table Styling */
-      .table-container {
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        overflow: hidden;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-      }
-      th, td {
-        padding: 16px 20px;
-        border-bottom: 1px solid #f1f5f9;
-        font-size: 14px;
-        vertical-align: middle;
-      }
-      th {
-        background: #f8fafc;
-        color: #64748b;
-        font-weight: 600;
-        font-size: 13px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      tr:last-child td {
-        border-bottom: none;
-      }
-      tbody tr {
-        transition: background-color 0.2s ease;
-      }
-      tbody tr:hover {
-        background-color: #f8fafc;
-      }
+      .table-container { border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+      table { width: 100%; border-collapse: collapse; text-align: left; }
+      th, td { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; font-size: 14px; vertical-align: middle; }
+      th { background: #f8fafc; color: #64748b; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+      tr:last-child td { border-bottom: none; }
+      tbody tr { transition: background-color 0.2s ease; }
+      tbody tr:hover { background-color: #f8fafc; }
 
-      /* Badges */
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 14px;
-        border-radius: 9999px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        border: 1px solid transparent;
-      }
+      .badge { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; border: 1px solid transparent; }
       .badge-completed { background: #dcfce7; color: #166534; }
       .badge-progress { background: #dbeafe; color: #1e40af; }
       .badge-pending { background: #fef3c7; color: #92400e; }
-      
-      /* Badges tambahan dari PM */
       .badge.very-high { background: #450a0a; color: #fca5a5; border-color: #7f1d1d; }
       .badge.high { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
       .badge.medium { background: #fef3c7; color: #b45309; border-color: #fde68a; }
       .badge.low { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
 
-      /* Action Buttons */
-      .action-btn {
-        background: white;
-        border: 1px solid #cbd5e1;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        margin-right: 6px;
-      }
-      .action-btn.edit { color: #2563eb; }
-      .action-btn.delete { color: #ef4444; }
-      .action-btn:hover {
-        background: #f1f5f9;
-        border-color: #94a3b8;
-        transform: translateY(-1px);
-      }
+      .action-btn { background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-right: 6px; }
+      .action-btn.edit { color: #2563eb; } .action-btn.delete { color: #ef4444; }
+      .action-btn:hover { background: #f1f5f9; border-color: #94a3b8; transform: translateY(-1px); }
 
       /* =========================
-         MODAL
+         KARTU MENU PROJECT (NEW)
       ========================= */
-      .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(4px);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+      .project-selection-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 30px;
+        animation: fadeIn 0.4s ease;
       }
-      .modal.show {
-        display: flex;
-        opacity: 1;
+      .proj-card {
+        background: white; border-radius: 18px; padding: 35px 24px; border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.25s ease;
+        display: flex; flex-direction: column; align-items: center; text-align: center;
+        position: relative; overflow: hidden;
       }
-      .modal-content {
-        background: white;
-        width: 90%;
-        max-width: 480px;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        transform: scale(0.95);
-        transition: transform 0.3s ease;
+      .proj-card::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+        background: #2563eb; transform: scaleX(0); transition: transform 0.3s ease;
       }
-      .modal.show .modal-content {
-        transform: scale(1);
+      .proj-card:hover {
+        transform: translateY(-5px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.15); border-color: #bfdbfe;
       }
-      .modal-content h2 {
-        margin: 0 0 20px 0;
-        color: #1e3a5f;
-        font-size: 20px;
-        border-bottom: 2px dashed #e2e8f0;
-        padding-bottom: 15px;
+      .proj-card:hover::before { transform: scaleX(1); }
+      .proj-card-icon {
+        width: 70px; height: 70px; background: #eff6ff; color: #2563eb; border-radius: 50%;
+        display: flex; justify-content: center; align-items: center; font-size: 32px; margin-bottom: 20px;
       }
-      .input-group {
-        margin-bottom: 16px;
-      }
-      .input-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #475569;
-        font-size: 13px;
-      }
-      .input-group input,
-      .input-group select {
-        width: 100%;
-        padding: 12px 16px;
-        border: 1px solid #cbd5e1;
-        border-radius: 12px;
-        outline: none;
-        font-family: inherit;
-        font-size: 14px;
-        transition: all 0.2s;
-        background: #f8fafc;
-      }
-      .input-group input:focus,
-      .input-group select:focus {
-        border-color: #2563eb;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-      }
-      .modal-buttons {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 25px;
-      }
-      .btn-secondary {
-        background: #f1f5f9;
-        color: #475569;
-        border: none;
-        padding: 12px 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.2s;
-      }
-      .btn-secondary:hover {
-        background: #e2e8f0;
-        color: #0f172a;
+      .proj-card h3 { margin: 0 0 8px 0; color: #0f2d52; font-size: 20px; font-weight: 700; }
+      .proj-card p { margin: 0; color: #64748b; font-size: 14px; line-height: 1.5; }
+      .badge-count {
+        margin-top: 20px; background: #fee2e2; color: #b91c1c; padding: 6px 16px;
+        border-radius: 999px; font-weight: 700; font-size: 13px; display: inline-flex; gap: 6px; align-items: center;
       }
 
-      /* Content Card */
-      .card {
-        background: white;
-        border-radius: 20px;
-        padding: 35px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
-        border: 1px solid #e2e8f0;
-      }
-      .title {
-        margin-bottom: 30px;
-        border-bottom: 2px dashed #e2e8f0;
-        padding-bottom: 20px;
-      }
-      .title h2 {
-        margin: 0 0 8px 0;
-        font-size: 22px;
-        color: #1e3a5f;
-      }
-      .title p {
-        color: #64748b;
-        margin: 0;
-        font-size: 14px;
-      }
-
-      /* Form Grid */
-      .form-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
-      }
-      .form-group {
-        display: flex;
-        flex-direction: column;
-      }
-      .form-group label {
-        margin-bottom: 8px;
-        font-weight: 600;
-        color: #0f2d52;
-        font-size: 14px;
-      }
-      .form-group select {
-        width: 100%;
-        padding: 16px 18px;
-        border-radius: 12px;
-        border: 1px solid #cbd5e1;
-        outline: none;
-        transition: 0.2s;
-        font-size: 14px;
-        background: #f8fafc;
-        color: #334155;
-        font-family: inherit;
-      }
-      .form-group select:focus {
-        border-color: #2563eb;
-        background: white;
-        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-      }
-
-      /* Result Box */
-      .result {
-        margin-top: 35px;
-        background: #f8fafc;
-        padding: 25px;
-        border-radius: 16px;
-        border-left: 6px solid #2563eb;
-        border-top: 1px solid #e2e8f0;
-        border-right: 1px solid #e2e8f0;
-        border-bottom: 1px solid #e2e8f0;
-      }
-      .result h3 {
-        margin: 0 0 15px 0;
-        color: #1e3a5f;
-        font-size: 18px;
-      }
-      #detailResult {
-        font-size: 15px;
-        line-height: 1.6;
-        color: #475569;
-      }
-      #detailResult strong {
-        color: #0f172a;
-      }
-      .badge-system {
-        display: inline-block;
-        margin-top: 20px;
-        background: #dbeafe;
-        color: #1e40af;
-        padding: 8px 16px;
-        border-radius: 999px;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-      }
-
-      @media (max-width: 900px) {
-        .form-grid {
-          grid-template-columns: 1fr;
-        }
-      }
+      /* Modal */
+      .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; }
+      .modal.show { display: flex; opacity: 1; }
+      .modal-content { background: white; width: 90%; max-width: 480px; padding: 30px; border-radius: 20px; transform: scale(0.95); transition: transform 0.3s ease; }
+      .modal.show .modal-content { transform: scale(1); }
+      .modal-content h2 { margin: 0 0 20px 0; color: #1e3a5f; font-size: 20px; border-bottom: 2px dashed #e2e8f0; padding-bottom: 15px; }
       
-      .content-section {
-        display: none;
-        animation: fadeIn 0.3s ease-in-out;
-      }
-      .content-section.active-section {
-        display: block;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
+      .input-group { margin-bottom: 16px; }
+      .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; font-size: 13px; }
+      .input-group input, .input-group select { width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 12px; outline: none; font-family: inherit; font-size: 14px; background: #f8fafc; }
+      .input-group input:focus, .input-group select:focus { border-color: #2563eb; background: white; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+      .modal-buttons { display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px; }
 
-      /* ── TAMBAHAN CSS UNTUK PROJECT MANAGER REVIEW & APPROVAL ── */
-      .sort-btn {
-        background: none; border: none; cursor: pointer;
-        padding: 2px 4px; margin-left: 4px; border-radius: 4px;
-        color: #94a3b8; font-size: 11px; display: inline-flex;
-        align-items: center; justify-content: center; vertical-align: middle;
-        transition: background 0.15s, color 0.15s; line-height: 1;
-      }
+      .card { background: white; border-radius: 20px; padding: 35px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03); border: 1px solid #e2e8f0; }
+      .title { margin-bottom: 30px; border-bottom: 2px dashed #e2e8f0; padding-bottom: 20px; }
+      .title h2 { margin: 0 0 8px 0; font-size: 22px; color: #1e3a5f; }
+      .title p { color: #64748b; margin: 0; font-size: 14px; }
+      .form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .form-group { display: flex; flex-direction: column; }
+      .form-group label { margin-bottom: 8px; font-weight: 600; color: #0f2d52; font-size: 14px; }
+      .form-group select { width: 100%; padding: 16px 18px; border-radius: 12px; border: 1px solid #cbd5e1; outline: none; font-size: 14px; background: #f8fafc; color: #334155; font-family: inherit; }
+      .form-group select:focus { border-color: #2563eb; background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+      .result { margin-top: 35px; background: #f8fafc; padding: 25px; border-radius: 16px; border-left: 6px solid #2563eb; border: 1px solid #e2e8f0; border-left-width: 6px; }
+      .result h3 { margin: 0 0 15px 0; color: #1e3a5f; font-size: 18px; }
+      #detailResult { font-size: 15px; line-height: 1.6; color: #475569; }
+      .badge-system { display: inline-block; margin-top: 20px; background: #dbeafe; color: #1e40af; padding: 8px 16px; border-radius: 999px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; }
+
+      .content-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+      .content-section.active-section { display: block; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      /* SORTING & TOOLTIP */
+      .sort-btn { background: none; border: none; cursor: pointer; padding: 2px 4px; margin-left: 4px; border-radius: 4px; color: #94a3b8; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
       .sort-btn:hover { background: #e2e8f0; color: #1e3a5f; }
       .sort-btn.asc, .sort-btn.desc { color: #2563eb; background: #eff6ff; }
       .sort-btn svg { display: block; }
@@ -571,31 +184,16 @@
       .no-results-row td { text-align: center; color: #64748b; padding: 32px 12px; font-size: 14px; }
 
       .tt-wrapper { position: relative; display: inline-block; cursor: help; margin-left: 5px; }
-      .tt-box {
-        visibility: hidden; opacity: 0; position: absolute;
-        top: 100%; left: 0; width: 180px;
-        background: white; border: 1px solid #cbd5e1;
-        padding: 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        font-size: 12px; line-height: 1.5; color: #0f172a;
-        text-transform: none; font-weight: 500; z-index: 9999;
-        transition: all 0.2s ease; margin-top: 8px;
-      }
+      .tt-box { visibility: hidden; opacity: 0; position: absolute; top: 100%; left: 0; width: 180px; background: white; border: 1px solid #cbd5e1; padding: 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); font-size: 12px; line-height: 1.5; color: #0f172a; text-transform: none; font-weight: 500; z-index: 9999; margin-top: 8px; }
       .tt-wrapper:hover .tt-box { visibility: visible; opacity: 1; }
       .tt-icon { color: #2563eb; font-weight: bold; font-size: 13px; }
-      
       .hover-row:hover { background-color: #f8fafc; cursor: pointer; transition: 0.2s; }
     </style>
   </head>
 
   <body>
     <div class="sidebar">
-      <div class="sidebar-header">
-        <h2>
-          ADMIN<br />
-          WORKSPACE
-        </h2>
-      </div>
-
+      <div class="sidebar-header"><h2>ADMIN<br />WORKSPACE</h2></div>
       <div class="sidebar-menu">
         <div class="menu-item active" onclick="switchMenu('dashboard', this)">📊 Dashboard</div>
         <div class="menu-item" onclick="switchMenu('project-manager', this)">💼 Project Management</div>
@@ -603,107 +201,34 @@
         <div class="menu-item" onclick="switchMenu('wbs-mapping', this)">📑 WBS Mapping</div>
         <div class="menu-item">📈 Reports</div>
       </div>
-
       <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="user-avatar">AD</div>
-          <div class="user-info">
-            <strong>Administrator</strong>
-            <span>System Control</span>
-          </div>
-        </div>
-        <button class="logout-btn" onclick="logout()" title="Logout">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-          </svg>
-        </button>
+        <div class="user-profile"><div class="user-avatar">AD</div><div class="user-info"><strong>Administrator</strong><span>System Control</span></div></div>
+        <button class="logout-btn" onclick="logout()" title="Logout"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
       </div>
     </div>
 
     <div class="container">
+      <!-- DASHBOARD TAB -->
       <div id="dashboard" class="content-section active-section">
         <div class="header-dashboard">
-          <div>
-            <div class="subtitle">SYSTEM OVERSIGHT • DATA MANAGEMENT</div>
-            <h1>Admin Dashboard</h1>
-            <p>Kelola seluruh data proyek, engineer yang bertugas, serta pantau status keseluruhan sistem.</p>
-          </div>
+          <div><div class="subtitle">SYSTEM OVERSIGHT • DATA MANAGEMENT</div><h1>Admin Dashboard</h1><p>Kelola seluruh data proyek, engineer yang bertugas, serta pantau status keseluruhan sistem.</p></div>
           <div class="status-badge-header">MASTER ADMIN</div>
         </div>
-
         <div class="kpi-grid">
-          <div class="kpi-card border-blue">
-            <h3>Total Projects</h3>
-            <span id="totalProjects">3</span>
-          </div>
-          <div class="kpi-card border-green">
-            <h3>Completed</h3>
-            <span id="completedProjects">1</span>
-          </div>
-          <div class="kpi-card border-yellow">
-            <h3>In Progress</h3>
-            <span id="progressProjects">1</span>
-          </div>
-          <div class="kpi-card border-red">
-            <h3>Pending</h3>
-            <span id="pendingProjects">1</span>
-          </div>
+          <div class="kpi-card border-blue"><h3>Total Projects</h3><span id="totalProjects">3</span></div>
+          <div class="kpi-card border-green"><h3>Completed</h3><span id="completedProjects">1</span></div>
+          <div class="kpi-card border-yellow"><h3>In Progress</h3><span id="progressProjects">1</span></div>
+          <div class="kpi-card border-red"><h3>Pending</h3><span id="pendingProjects">1</span></div>
         </div>
-
         <div class="table-section">
-          <div class="table-header">
-            <h2>Project Data Registry</h2>
-            <button class="btn-primary" onclick="openModal()">➕ Add Project</button>
-          </div>
-
+          <div class="table-header"><h2>Project Data Registry</h2><button class="btn-primary" onclick="openModal()">➕ Add Project</button></div>
           <div class="table-container">
             <table>
-              <thead>
-                <tr>
-                  <th>Project ID</th>
-                  <th>Project Name</th>
-                  <th>Site Engineer</th>
-                  <th>Status</th>
-                  <th>Progress</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
+              <thead><tr><th>Project ID</th><th>Project Name</th><th>Site Engineer</th><th>Status</th><th>Progress</th><th>Action</th></tr></thead>
               <tbody id="projectTable">
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">PRJ-001</td>
-                  <td>Gedung Sekolah Tahap 1</td>
-                  <td>Kanz Dzaki</td>
-                  <td><span class="badge badge-completed">Completed</span></td>
-                  <td><strong>100%</strong></td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">PRJ-002</td>
-                  <td>Renovasi Jalan Protokol</td>
-                  <td>Brian Nugraha</td>
-                  <td><span class="badge badge-progress">In Progress</span></td>
-                  <td><strong>70%</strong></td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">PRJ-003</td>
-                  <td>Pembangunan Jembatan</td>
-                  <td>Galuh Rizkiya</td>
-                  <td><span class="badge badge-pending">Pending</span></td>
-                  <td><strong>20%</strong></td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
+                <tr><td style="font-weight: 600; color: #0f2d52;">PRJ-001</td><td>Gedung Sekolah Tahap 1</td><td>Kanz Dzaki</td><td><span class="badge badge-completed">Completed</span></td><td><strong>100%</strong></td><td><button class="action-btn edit">✏️ Edit</button> <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button></td></tr>
+                <tr><td style="font-weight: 600; color: #0f2d52;">PRJ-002</td><td>Renovasi Jalan Protokol</td><td>Brian Nugraha</td><td><span class="badge badge-progress">In Progress</span></td><td><strong>70%</strong></td><td><button class="action-btn edit">✏️ Edit</button> <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button></td></tr>
+                <tr><td style="font-weight: 600; color: #0f2d52;">PRJ-003</td><td>Pembangunan Jembatan</td><td>Galuh Rizkiya</td><td><span class="badge badge-pending">Pending</span></td><td><strong>20%</strong></td><td><button class="action-btn edit">✏️ Edit</button> <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -712,113 +237,121 @@
         <div class="modal" id="projectModal">
           <div class="modal-content">
             <h2>Tambah Data Proyek</h2>
-            <div class="input-group">
-              <label>Project ID</label>
-              <input type="text" id="projectId" placeholder="Contoh: PRJ-004" />
-            </div>
-            <div class="input-group">
-              <label>Project Name</label>
-              <input type="text" id="projectName" placeholder="Nama Proyek..." />
-            </div>
-            <div class="input-group">
-              <label>Site Engineer</label>
-              <input type="text" id="engineerName" placeholder="Nama Engineer..." />
-            </div>
-            <div class="input-group">
-              <label>Status</label>
-              <select id="projectStatus">
-                <option value="Completed">Completed</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Pending">Pending</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label>Progress (%)</label>
-              <input type="number" id="projectProgress" min="0" max="100" placeholder="0 - 100" />
-            </div>
-            <div class="modal-buttons">
-              <button class="btn-secondary" onclick="closeModal()">Batal</button>
-              <button class="btn-primary" onclick="addProject()">Simpan Data</button>
-            </div>
+            <div class="input-group"><label>Project ID</label><input type="text" id="projectId" placeholder="Contoh: PRJ-004" /></div>
+            <div class="input-group"><label>Project Name</label><input type="text" id="projectName" placeholder="Nama Proyek..." /></div>
+            <div class="input-group"><label>Site Engineer</label><input type="text" id="engineerName" placeholder="Nama Engineer..." /></div>
+            <div class="input-group"><label>Status</label><select id="projectStatus"><option>Completed</option><option>In Progress</option><option>Pending</option></select></div>
+            <div class="input-group"><label>Progress (%)</label><input type="number" id="projectProgress" min="0" max="100" placeholder="0 - 100" /></div>
+            <div class="modal-buttons"><button class="btn-secondary" onclick="closeModal()">Batal</button><button class="btn-primary" onclick="addProject()">Simpan Data</button></div>
           </div>
         </div>
       </div>
 
+      <!-- PROJECT MANAGER TAB -->
       <div id="project-manager" class="content-section">
         <div class="header-dashboard">
           <div>
             <div class="subtitle">CHANGE REQUEST APPROVAL</div>
             <h1>Project Management</h1>
-            <p>Kelola persetujuan perubahan proyek dan pantau status pengajuan secara real-time.</p>
+            <p>Pilih project untuk melihat dan menyetujui pengajuan Change Request.</p>
           </div>
           <div class="status-badge-header">MASTER ADMIN</div>
         </div>
 
-        <div id="approvalInbox" class="table-section" style="margin-bottom: 24px;">
-          <div class="table-header">
-            <h2 style="margin:0;">📥 Antrean Pengajuan (Pending Review)</h2>
-            <div class="no-print">
-              <input type="text" id="searchInput" placeholder="Cari CR ID atau Pengaju..."
-                style="width: 250px; padding: 10px 14px; font-size: 13px; border-radius: 8px; border: 1px solid #cbd5e1;"
-                oninput="applySearchAndSort()">
+        <!-- 1. KARTU MENU PEMILIHAN PROJECT (NEW) -->
+        <div id="projectSelectionView">
+          <h2 style="font-size: 18px; color: #475569; margin-bottom: 20px;">Pilih Project untuk Di-review:</h2>
+          <div class="project-selection-grid">
+            <div class="proj-card" onclick="selectProjectForReview('ALL', 'Semua Project')">
+              <div class="proj-card-icon">📁</div>
+              <h3>Semua Project</h3>
+              <p>Tinjau seluruh pengajuan CR dari semua proyek yang berjalan saat ini.</p>
+              <div class="badge-count"><span id="count-all">0</span> Pending CR</div>
             </div>
-          </div>
-
-          <div class="table-container">
-            <table id="inboxTable">
-              <thead>
-                <tr>
-                  <th><span class="th-inner">CR ID<button class="sort-btn" id="sortBtn-crid" onclick="toggleSort('crid','main')" title="Urutkan CR ID"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-crid"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-crid"/></svg></button></span></th>
-                  <th>Deskripsi Perubahan</th>
-                  <th>Diajukan Oleh</th>
-                  <th><span class="th-inner">Waktu Masuk<button class="sort-btn" id="sortBtn-waktu" onclick="toggleSort('waktu','main')" title="Urutkan Waktu Masuk"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-waktu"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-waktu"/></svg></button></span></th>
-                  <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">ⓘ</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1–20 = Sangat Rendah<br>21–40 = Rendah<br>41–60 = Sedang<br>61–80 = Tinggi<br>81–100 = Sangat Tinggi</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')" title="Urutkan Skala Risiko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
-                  <th style="text-align:center;">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="inboxTbody"></tbody>
-            </table>
+            <div class="proj-card" onclick="selectProjectForReview('PRJ-001', 'PRJ-001 - Gedung Sekolah Tahap 1')">
+              <div class="proj-card-icon">🏫</div>
+              <h3>PRJ-001</h3>
+              <p>Gedung Sekolah Tahap 1</p>
+              <div class="badge-count"><span id="count-prj001">0</span> Pending CR</div>
+            </div>
+            <div class="proj-card" onclick="selectProjectForReview('PRJ-002', 'PRJ-002 - Renovasi Jalan Protokol')">
+              <div class="proj-card-icon">🛣️</div>
+              <h3>PRJ-002</h3>
+              <p>Renovasi Jalan Protokol</p>
+              <div class="badge-count"><span id="count-prj002">0</span> Pending CR</div>
+            </div>
+            <div class="proj-card" onclick="selectProjectForReview('PRJ-003', 'PRJ-003 - Pembangunan Jembatan')">
+              <div class="proj-card-icon">🌉</div>
+              <h3>PRJ-003</h3>
+              <p>Pembangunan Jembatan</p>
+              <div class="badge-count"><span id="count-prj003">0</span> Pending CR</div>
+            </div>
           </div>
         </div>
 
+        <!-- 2. TABEL INBOX REVIEW (Awalnya Disembunyikan) -->
+        <div id="approvalInbox" style="display:none; animation: fadeIn 0.4s ease;">
+          <button class="btn-secondary" onclick="showProjectSelection()" style="margin-bottom: 20px;">🡨 Kembali ke Pilihan Project</button>
+          
+          <div class="table-section" style="margin-bottom: 24px;">
+            <div class="table-header">
+              <h2 style="margin:0;">📥 Antrean CR: <span id="activeProjectLabel" style="color: #2563eb;">Semua Project</span></h2>
+              <div class="no-print">
+                <input type="text" id="searchInput" placeholder="Cari CR ID, Nama, Deskripsi..."
+                  style="width: 250px; padding: 10px 14px; font-size: 13px; border-radius: 8px; border: 1px solid #cbd5e1;"
+                  oninput="applySearchAndSort()">
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table id="inboxTable">
+                <thead>
+                  <tr>
+                    <th><span class="th-inner">CR ID<button class="sort-btn" id="sortBtn-crid" onclick="toggleSort('crid','main')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-crid"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-crid"/></svg></button></span></th>
+                    <th>Deskripsi Perubahan</th>
+                    <th>Diajukan Oleh</th>
+                    <th><span class="th-inner">Waktu Masuk<button class="sort-btn" id="sortBtn-waktu" onclick="toggleSort('waktu','main')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-waktu"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-waktu"/></svg></button></span></th>
+                    <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">ⓘ</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1–20 = Sangat Rendah<br>21–40 = Rendah<br>41–60 = Sedang<br>61–80 = Tinggi<br>81–100 = Sangat Tinggi</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
+                    <th style="text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="inboxTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. DETAIL VIEW MODAL (Awalnya Disembunyikan) -->
         <div id="approvalDetailView" style="display:none; animation: fadeIn 0.4s ease;">
-          <button class="btn-secondary" onclick="closeCrDetail()" style="margin-bottom: 20px;">🡨 Kembali</button>
+          <button class="btn-secondary" onclick="closeCrDetail()" style="margin-bottom: 20px;">🡨 Kembali ke Daftar Tabel</button>
           
           <div class="form-grid" style="grid-template-columns: 1.1fr 0.9fr; gap: 24px;">
             <div class="card" style="padding: 30px;">
               <h3 id="detailTitle" style="margin-top: 0; margin-bottom: 20px; font-size: 18px; color: #1e3a5f;">Detail Pengajuan: CR-008</h3>
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: none;">
-                <tr><td width="35%" style="border:none; padding: 10px 0;"><b>Status Pengaju</b></td><td style="border:none; padding: 10px 0;"><span id="detailSender">Budi Santoso (Site Engineer)</span></td></tr>
+                <tr><td width="35%" style="border:none; padding: 10px 0;"><b>Project ID</b></td><td style="border:none; padding: 10px 0;"><span id="detailProject" style="font-weight:600; color:#2563eb;">PRJ-001</span></td></tr>
+                <tr><td style="border:none; padding: 10px 0;"><b>Status Pengaju</b></td><td style="border:none; padding: 10px 0;"><span id="detailSender">Budi Santoso (Site Engineer)</span></td></tr>
                 <tr><td style="border:none; padding: 10px 0;"><b>Timestamp</b></td><td style="border:none; padding: 10px 0;"><span id="detailTime">07 Jun 2026, 09:15</span></td></tr>
                 <tr><td style="border:none; padding: 10px 0;"><b>BIM Object ID</b></td><td style="border:none; padding: 10px 0;">BIM-GUID-PIPE-010</td></tr>
-                <tr><td style="border:none; padding: 10px 0;"><b>WBS Mapping</b></td><td style="border:none; padding: 10px 0;">WBS 3.2.1 - Pekerjaan Plumbing</td></tr>
                 <tr><td style="border:none; padding: 10px 0;"><b>Impact Analysis</b></td><td style="border:none; padding: 10px 0;">Biaya: +Rp 85 Jt | Waktu: <span style="color:#ef4444;font-weight:bold;">+3 Hari</span></td></tr>
                 <tr><td style="border:none; padding: 10px 0;"><b>Risk Assessment</b></td><td style="border:none; padding: 10px 0;"><span class="badge high" id="detailRiskBadge">Tinggi</span></td></tr>
               </table>
               <div class="ai-box" style="background: linear-gradient(to right, #eff6ff, #faf5ff); border: 1px solid #c084fc; border-radius: 12px; padding: 16px;">
                 <h4 style="margin: 0 0 8px; font-size: 14px; color: #6b21a8; display: flex; align-items: center; gap: 6px;">✨ AI Recommendation Engine</h4>
-                <p style="font-size:13px; margin:0; color:#4c1d95; line-height: 1.5;">Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Pengalihan pipa di zona ini sering menyebabkan benturan dengan kabel tray. Disarankan cek koordinasi MEP kembali.</p>
+                <p style="font-size:13px; margin:0; color:#4c1d95; line-height: 1.5;">Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Potensi terjadinya clash MEP sangat tinggi pada zona ini.</p>
               </div>
             </div>
             
             <div class="card" style="padding: 30px; border-left: 5px solid #1e3a5f;">
               <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 18px; color: #1e3a5f;">Form Approval Decision</h3>
-              <div class="form-group" style="margin-bottom: 16px;">
-                <label>Review ID</label>
-                <input type="text" value="REV-PM-01" readonly style="padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; font-family: inherit; width: 100%; box-sizing: border-box;" />
-              </div>
-              <div class="form-group" style="margin-bottom: 16px;">
-                <label>Tanggal Keputusan</label>
-                <input type="date" value="2026-06-07" style="padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; font-family: inherit; width: 100%; box-sizing: border-box;" />
-              </div>
+              <div class="form-group" style="margin-bottom: 16px;"><label>Review ID</label><input type="text" value="REV-PM-01" readonly /></div>
+              <div class="form-group" style="margin-bottom: 16px;"><label>Tanggal Keputusan</label><input type="date" value="2026-06-07" /></div>
               <div class="form-group" style="margin-bottom: 16px;">
                 <label>Keputusan (Approval Decision)</label>
-                <select id="decisionSelect" style="font-weight:bold; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; width: 100%; box-sizing: border-box; font-family: inherit;">
-                  <option value="">-- Pilih Keputusan --</option>
-                  <option value="approve">🟢 Approved (Setuju)</option>
-                  <option value="cond">🟡 Approved with Condition (Setuju Bersyarat)</option>
-                  <option value="revise">🟠 Revise & Resubmit (Revisi)</option>
-                  <option value="reject">🔴 Rejected (Tolak)</option>
+                <select id="decisionSelect" style="font-weight:bold;">
+                  <option value="">-- Pilih Keputusan --</option><option value="approve">🟢 Approved</option>
+                  <option value="cond">🟡 Approved with Condition</option><option value="revise">🟠 Revise & Resubmit</option>
+                  <option value="reject">🔴 Rejected</option>
                 </select>
               </div>
               <div class="form-group" style="margin-bottom: 24px;">
@@ -831,72 +364,16 @@
         </div>
       </div>
 
+      <!-- SITE ENGINEER TAB & WBS MAPPING (Dipotong untuk singkat, tidak ada perubahan di HTML bawah ini) -->
       <div id="site-engineer" class="content-section">
-        <div class="header-dashboard">
-          <div>
-            <div class="subtitle">FIELD OPERATIONS • CHANGE LOGS</div>
-            <h1>Site Engineer Data</h1>
-            <p>Pantau seluruh daftar Change Request yang diajukan oleh Tim Site Engineer di lapangan.</p>
-          </div>
-          <div class="status-badge-header">MASTER ADMIN</div>
-        </div>
-
-        <div class="table-section">
-          <div class="table-header">
-            <h2>Ringkasan Change Request (CR)</h2>
-          </div>
-
+        <div class="header-dashboard"><div><div class="subtitle">FIELD OPERATIONS</div><h1>Site Engineer Data</h1></div></div>
+        <div class="table-section"><div class="table-header"><h2>Ringkasan CR</h2></div>
           <div class="table-container">
             <table>
-              <thead>
-                <tr>
-                  <th>Daftar CR</th>
-                  <th>Status</th>
-                  <th>Pengaju</th>
-                  <th>Tanggal</th>
-                  <th>Prioritas</th>
-                  <th>Dampak</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-
-              <tbody id="crTable">
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">CR-001</td>
-                  <td><span class="badge badge-pending">Submitted</span></td>
-                  <td>Ahmad</td>
-                  <td>2026-05-11</td>
-                  <td><strong>High</strong></td>
-                  <td>Delay pekerjaan pier</td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">CR-002</td>
-                  <td><span class="badge badge-completed">Approved</span></td>
-                  <td>Budi</td>
-                  <td>2026-05-10</td>
-                  <td><strong>Medium</strong></td>
-                  <td>Revisi metode kerja</td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-weight: 600; color: #0f2d52;">CR-003</td>
-                  <td><span class="badge badge-progress">Under Review</span></td>
-                  <td>Laksono</td>
-                  <td>2026-05-09</td>
-                  <td><strong style="color: #ef4444;">Urgent</strong></td>
-                  <td>Clash BIM area abutment</td>
-                  <td>
-                    <button class="action-btn edit">✏️ Edit</button>
-                    <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-                  </td>
-                </tr>
+              <thead><tr><th>Daftar CR</th><th>Status</th><th>Pengaju</th><th>Tanggal</th><th>Prioritas</th></tr></thead>
+              <tbody>
+                <tr><td>CR-001</td><td><span class="badge badge-pending">Submitted</span></td><td>Ahmad</td><td>2026-05-11</td><td><strong>High</strong></td></tr>
+                <tr><td>CR-002</td><td><span class="badge badge-completed">Approved</span></td><td>Budi</td><td>2026-05-10</td><td><strong>Medium</strong></td></tr>
               </tbody>
             </table>
           </div>
@@ -904,49 +381,10 @@
       </div>
 
       <div id="wbs-mapping" class="content-section">
-        <div class="header-dashboard">
-          <div>
-            <div class="subtitle">STANDARDIZATION • DICTIONARY</div>
-            <h1>Work Breakdown Structure (WBS)</h1>
-            <p>Eksplorasi hierarki aktivitas proyek dan pemetaan sumber daya.</p>
-          </div>
-          <div class="status-badge-header">MASTER ADMIN</div>
-        </div>
-
+        <div class="header-dashboard"><div><div class="subtitle">STANDARDIZATION</div><h1>WBS Mapping</h1></div></div>
         <div class="card">
-          <div class="title">
-            <h2>Navigasi WBS Bertingkat</h2>
-            <p>Pilih Paket Pekerjaan → Aktivitas → Sumber Daya</p>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label>Level 4 - Paket Pekerjaan</label>
-              <select id="level4">
-                <option value="">-- Pilih Paket Pekerjaan --</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Level 5 - Aktivitas</label>
-              <select id="level5">
-                <option value="">-- Pilih Aktivitas --</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Level 6 - Sumber Daya</label>
-              <select id="level6">
-                <option value="">-- Pilih Sumber Daya --</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="result">
-            <h3>Detail Pemetaan WBS</h3>
-            <div id="detailResult">Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.</div>
-            <div class="badge-system">Enterprise Construction Management System</div>
-          </div>
+           <div class="title"><h2>Navigasi WBS</h2></div>
+           <p>Silakan isi struktur WBS Anda di sini seperti kode sebelumnya.</p>
         </div>
       </div>
     </div>
@@ -956,115 +394,75 @@
       // FUNGSI UMUM ADMIN
       // ==========================================
       function switchMenu(sectionId, clickedElement) {
-        const sections = document.querySelectorAll('.content-section');
-        sections.forEach(section => {
-          section.classList.remove('active-section');
-        });
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active-section'));
         document.getElementById(sectionId).classList.add('active-section');
 
-        const menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(item => {
-          item.classList.remove('active');
-        });
+        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
         clickedElement.classList.add('active');
+
+        // Jika masuk tab Project Manager, reset ke tampilan Pilihan Project
+        if (sectionId === 'project-manager') {
+          showProjectSelection();
+        }
       }
-      
+
       const modal = document.getElementById("projectModal");
       function openModal() { modal.classList.add("show"); }
       function closeModal() { modal.classList.remove("show"); }
-      window.onclick = function(event) {
-        if (event.target === modal) { closeModal(); }
-      }
-
-      function addProject() {
-        const id = document.getElementById("projectId").value;
-        const name = document.getElementById("projectName").value;
-        const engineer = document.getElementById("engineerName").value;
-        const status = document.getElementById("projectStatus").value;
-        const progress = document.getElementById("projectProgress").value;
-
-        if (!id || !name || !engineer || !progress) {
-          alert("Mohon lengkapi semua field terlebih dahulu.");
-          return;
-        }
-
-        let statusClass = "";
-        if (status === "Completed") statusClass = "badge-completed";
-        else if (status === "In Progress") statusClass = "badge-progress";
-        else statusClass = "badge-pending";
-
-        const table = document.getElementById("projectTable");
-        const row = `
-        <tr>
-            <td style="font-weight: 600; color: #0f2d52;">${id}</td>
-            <td>${name}</td>
-            <td>${engineer}</td>
-            <td><span class="badge ${statusClass}">${status}</span></td>
-            <td><strong>${progress}%</strong></td>
-            <td>
-                <button class="action-btn edit">✏️ Edit</button>
-                <button class="action-btn delete" onclick="deleteRow(this)">🗑️ Delete</button>
-            </td>
-        </tr>`;
-
-        table.innerHTML += row;
-        
-        document.getElementById("projectId").value = "";
-        document.getElementById("projectName").value = "";
-        document.getElementById("engineerName").value = "";
-        document.getElementById("projectProgress").value = "";
-        document.getElementById("projectStatus").selectedIndex = 0;
-
-        updateStats();
-        closeModal();
-      }
-
-      function deleteRow(button) {
-        const confirmDelete = confirm("Hapus data ini?");
-        if(confirmDelete) {
-          button.parentElement.parentElement.remove();
-          updateStats();
-        }
-      }
-
-      function updateStats() {
-        const rows = document.querySelectorAll("#projectTable tr");
-        let completed = 0, progress = 0, pending = 0;
-
-        rows.forEach((row) => {
-          const statusText = row.querySelector(".badge").innerText;
-          if (statusText === "Completed") completed++;
-          else if (statusText === "In Progress") progress++;
-          else pending++;
-        });
-
-        document.getElementById("totalProjects").innerText = rows.length;
-        document.getElementById("completedProjects").innerText = completed;
-        document.getElementById("progressProjects").innerText = progress;
-        document.getElementById("pendingProjects").innerText = pending;
-      }
+      window.onclick = function(event) { if (event.target === modal) closeModal(); }
 
       // ==========================================
-      // LOGIKA REVIEW & APPROVAL DARI PM
+      // LOGIKA REVIEW & APPROVAL PM (NEW FLOW)
       // ==========================================
       const crData = [
-        { id:'CR-008', desc:'Relokasi Jalur Pipa Utama (Plumbing)', sender:'Budi Santoso', role:'Site Engineer', waktu:'07 Jun 2026, 09:15', waktuTs:new Date('2026-06-07T09:15:00').getTime(), risikoLabel:'Tinggi', risikoClass:'high', risikoScore:78, highlight:false, note:'' },
-        { id:'CR-009', desc:'Revisi Material Finishing Facade', sender:'Ani Wijaya', role:'Arsitek Senior', waktu:'06 Jun 2026, 14:20', waktuTs:new Date('2026-06-06T14:20:00').getTime(), risikoLabel:'Sedang', risikoClass:'medium', risikoScore:52, highlight:false, note:'' },
-        { id:'CR-010', desc:'Penambahan Titik Lampu Taman', sender:'Dedi Kurnia', role:'MEP Coordinator', waktu:'05 Jun 2026, 10:05', waktuTs:new Date('2026-06-05T10:05:00').getTime(), risikoLabel:'Rendah', risikoClass:'low', risikoScore:24, highlight:false, note:'' },
-        { id:'CR-004', desc:'Perubahan Spesifikasi Material (Potensi Cost Overrun)', sender:'Lia Susanti', role:'Quantity Surveyor', waktu:'01 Jun 2026, 11:30', waktuTs:new Date('2026-06-01T11:30:00').getTime(), risikoLabel:'Sangat Tinggi', risikoClass:'very-high', risikoScore:85, highlight:true, note:'Potensi Cost Overrun' }
+        { id:'CR-008', projectId: 'PRJ-001', desc:'Relokasi Jalur Pipa Utama (Plumbing)', sender:'Budi Santoso', role:'Site Engineer', waktu:'07 Jun 2026, 09:15', waktuTs:new Date('2026-06-07T09:15:00').getTime(), risikoLabel:'Tinggi', risikoClass:'high', risikoScore:78 },
+        { id:'CR-009', projectId: 'PRJ-001', desc:'Revisi Material Finishing Facade', sender:'Ani Wijaya', role:'Arsitek Senior', waktu:'06 Jun 2026, 14:20', waktuTs:new Date('2026-06-06T14:20:00').getTime(), risikoLabel:'Sedang', risikoClass:'medium', risikoScore:52 },
+        { id:'CR-010', projectId: 'PRJ-002', desc:'Penambahan Titik Lampu Taman', sender:'Dedi Kurnia', role:'MEP Coordinator', waktu:'05 Jun 2026, 10:05', waktuTs:new Date('2026-06-05T10:05:00').getTime(), risikoLabel:'Rendah', risikoClass:'low', risikoScore:24 },
+        { id:'CR-011', projectId: 'PRJ-002', desc:'Perubahan Tebal Lapisan Aspal', sender:'Brian Nugraha', role:'Site Engineer', waktu:'03 Jun 2026, 08:30', waktuTs:new Date('2026-06-03T08:30:00').getTime(), risikoLabel:'Sedang', risikoClass:'medium', risikoScore:45 },
+        { id:'CR-004', projectId: 'PRJ-003', desc:'Perubahan Spesifikasi Material Jembatan', sender:'Lia Susanti', role:'Quantity Surveyor', waktu:'01 Jun 2026, 11:30', waktuTs:new Date('2026-06-01T11:30:00').getTime(), risikoLabel:'Sangat Tinggi', risikoClass:'very-high', risikoScore:85 },
+        { id:'CR-015', projectId: 'PRJ-003', desc:'Penambahan Tiang Pancang Extra', sender:'Galuh Rizkiya', role:'Site Engineer', waktu:'04 Jun 2026, 16:00', waktuTs:new Date('2026-06-04T16:00:00').getTime(), risikoLabel:'Tinggi', risikoClass:'high', risikoScore:71 }
       ];
+
+      // Variabel global untuk menyimpan project yang sedang aktif dilihat
+      let currentReviewProject = 'ALL';
+
+      // Update Angka Badge pada Menu Utama
+      function updateProjectCounts() {
+        document.getElementById('count-all').innerText = crData.length;
+        document.getElementById('count-prj001').innerText = crData.filter(c => c.projectId === 'PRJ-001').length;
+        document.getElementById('count-prj002').innerText = crData.filter(c => c.projectId === 'PRJ-002').length;
+        document.getElementById('count-prj003').innerText = crData.filter(c => c.projectId === 'PRJ-003').length;
+      }
+
+      // Menampilkan Menu Grid Project
+      function showProjectSelection() {
+        updateProjectCounts();
+        document.getElementById('projectSelectionView').style.display = 'block';
+        document.getElementById('approvalInbox').style.display = 'none';
+        document.getElementById('approvalDetailView').style.display = 'none';
+      }
+
+      // Saat Kartu Project diklik -> Masuk ke Tabel
+      function selectProjectForReview(projectId, projectName) {
+        currentReviewProject = projectId;
+        document.getElementById('activeProjectLabel').innerText = projectName;
+        
+        // Ganti Tampilan
+        document.getElementById('projectSelectionView').style.display = 'none';
+        document.getElementById('approvalInbox').style.display = 'block';
+        
+        // Reset Search & Render ulang tabel
+        document.getElementById('searchInput').value = '';
+        applySearchAndSort();
+      }
 
       const sortStates = { main: { key: null, dir: 'asc' } };
       function crIdNum(id) { return parseInt(id.replace(/\D/g,''), 10); }
 
       function toggleSort(key, scope) {
         const st = sortStates[scope];
-        if (st.key === key) {
-          st.dir = st.dir === 'asc' ? 'desc' : 'asc';
-        } else {
-          st.key = key;
-          st.dir = 'asc';
-        }
+        if (st.key === key) { st.dir = st.dir === 'asc' ? 'desc' : 'asc'; } 
+        else { st.key = key; st.dir = 'asc'; }
         updateSortArrows(scope);
         if (scope === 'main') applySearchAndSort();
       }
@@ -1088,26 +486,29 @@
           const up   = document.getElementById('arrow-up-'   + prefix + col);
           const down = document.getElementById('arrow-down-' + prefix + col);
           if (!btn) return;
-          btn.classList.remove('asc','desc');
-          up.style.opacity   = '0.25';
-          down.style.opacity = '0.25';
+          btn.classList.remove('asc','desc'); up.style.opacity = '0.25'; down.style.opacity = '0.25';
           if (st.key === col) {
             btn.classList.add(st.dir);
-            if (st.dir === 'asc') up.style.opacity   = '1';
-            else                  down.style.opacity = '1';
+            if (st.dir === 'asc') up.style.opacity = '1'; else down.style.opacity = '1';
           }
         });
       }
 
       function applySearchAndSort() {
         const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
         let rows = crData.filter(r => {
+          // Logika 1: Filter Project ID berdasarkan JS Variable yg diset dari kartu menu
+          if (currentReviewProject !== 'ALL' && r.projectId !== currentReviewProject) return false;
+
+          // Logika 2: Filter Pencarian Teks
           if (!query) return true;
           return r.id.toLowerCase().includes(query) ||
                  r.sender.toLowerCase().includes(query) ||
-                 r.role.toLowerCase().includes(query) ||
-                 r.desc.toLowerCase().includes(query);
+                 r.desc.toLowerCase().includes(query) ||
+                 r.projectId.toLowerCase().includes(query);
         });
+
         rows = sortRows(rows, sortStates.main);
         renderInbox(rows);
       }
@@ -1116,12 +517,12 @@
         const tbody = document.getElementById('inboxTbody');
         if (!tbody) return;
         if (rows.length === 0) {
-          tbody.innerHTML = `<tr class="no-results-row"><td colspan="6"><div style="font-size:24px;margin-bottom:8px;">🔍</div>Tidak ada hasil yang cocok</td></tr>`;
+          tbody.innerHTML = `<tr class="no-results-row"><td colspan="6"><div style="font-size:24px;margin-bottom:8px;">🔍</div>Tidak ada pengajuan CR untuk project ini</td></tr>`;
           return;
         }
         tbody.innerHTML = rows.map(r => `
-          <tr class="hover-row" style="${r.highlight ? 'background-color:#fff1f2;' : ''}">
-            <td><b>${r.id}</b></td>
+          <tr class="hover-row">
+            <td><b>${r.id}</b><div style="font-size:11px;color:#64748b;margin-top:4px;">${r.projectId}</div></td>
             <td>${r.desc}</td>
             <td><div style="font-weight:700;">${r.sender}</div><div style="font-size:11px;color:#64748b;">${r.role}</div></td>
             <td>${r.waktu}</td>
@@ -1130,16 +531,20 @@
           </tr>`).join('');
       }
 
+      // Map untuk membuka Detail
       const crDetailMap = {
-        'CR-008': { sender:'Budi Santoso (Site Engineer)',    time:'07 Jun 2026, 09:15', risk:'high',      riskText:'Tinggi' },
-        'CR-009': { sender:'Ani Wijaya (Arsitek Senior)',     time:'06 Jun 2026, 14:20', risk:'medium',    riskText:'Sedang' },
-        'CR-010': { sender:'Dedi Kurnia (MEP Coordinator)',   time:'05 Jun 2026, 10:05', risk:'low',       riskText:'Rendah' },
-        'CR-004': { sender:'Lia Susanti (Quantity Surveyor)', time:'01 Jun 2026, 11:30', risk:'very-high', riskText:'Sangat Tinggi' }
+        'CR-008': { proj: 'PRJ-001', sender:'Budi Santoso (Site Engineer)',   time:'07 Jun 2026, 09:15', risk:'high',      riskText:'Tinggi' },
+        'CR-009': { proj: 'PRJ-001', sender:'Ani Wijaya (Arsitek Senior)',    time:'06 Jun 2026, 14:20', risk:'medium',    riskText:'Sedang' },
+        'CR-010': { proj: 'PRJ-002', sender:'Dedi Kurnia (MEP Coordinator)',  time:'05 Jun 2026, 10:05', risk:'low',       riskText:'Rendah' },
+        'CR-011': { proj: 'PRJ-002', sender:'Brian Nugraha (Site Engineer)',  time:'03 Jun 2026, 08:30', risk:'medium',    riskText:'Sedang' },
+        'CR-004': { proj: 'PRJ-003', sender:'Lia Susanti (Quantity Surveyor)',time:'01 Jun 2026, 11:30', risk:'very-high', riskText:'Sangat Tinggi' },
+        'CR-015': { proj: 'PRJ-003', sender:'Galuh Rizkiya (Site Engineer)',  time:'04 Jun 2026, 16:00', risk:'high',      riskText:'Tinggi' }
       };
 
       function openCrDetail(id) {
         const d = crDetailMap[id]; if (!d) return;
         document.getElementById('detailTitle').innerText      = 'Detail Pengajuan: ' + id;
+        document.getElementById('detailProject').innerText    = d.proj;
         document.getElementById('detailSender').innerText     = d.sender;
         document.getElementById('detailTime').innerText       = d.time;
         document.getElementById('detailRiskBadge').innerText  = d.riskText;
@@ -1149,88 +554,19 @@
       }
 
       function closeCrDetail() {
-        document.getElementById('approvalInbox').style.display      = 'block';
         document.getElementById('approvalDetailView').style.display = 'none';
+        document.getElementById('approvalInbox').style.display      = 'block';
       }
 
-      // Initialize PM inbox table on load
-      applySearchAndSort();
-
-
-      // ==========================================
-      // WBS DATA SOURCE
-      // ==========================================
-      const wbsData = {
-        "1.1.1 Program Mobilisasi": {
-          "1.1.1.1 Mobilisasi Material": [ "Besi Beton", "Agregat Base A", "Agregat Base B", "Beton Batching Plant" ],
-          "1.1.1.2 Mobilisasi Personil": [ "Tenaga Kerja", "Operator", "Staf Proyek" ],
-          "1.1.1.3 Mobilisasi Alat Berat": [ "Excavator", "Dump Truck", "Mobile Crane", "Motor Grader", "Vibro Roller", "Water Tank" ]
-        },
-        "1.1.2 Program Demobilisasi": {
-          "1.1.2.1 Demobilisasi Personil": [ "Tenaga Kerja", "Operator", "Staf Proyek" ],
-          "1.1.2.2 Demobilisasi Alat Berat": [ "Excavator", "Dump Truck", "Mobile Crane", "Motor Grader", "Vibro Roller", "Water Tank" ]
-        }
-        // ... Sisa data WBS dipotong untuk menyingkat kode, silahkan gunakan wbsData penuh Anda di sini.
-      };
-
-      const level4 = document.getElementById("level4");
-      const level5 = document.getElementById("level5");
-      const level6 = document.getElementById("level6");
-      const detailResult = document.getElementById("detailResult");
-
-      Object.keys(wbsData).forEach((item) => {
-        level4.innerHTML += `<option value="${item}">${item}</option>`;
-      });
-
-      level4.addEventListener("change", function () {
-        level5.innerHTML = '<option value="">-- Pilih Aktivitas --</option>';
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-        const selected = this.value;
-        if (selected) {
-          Object.keys(wbsData[selected]).forEach((item) => {
-            level5.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level5.addEventListener("change", function () {
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-        const selectedL4 = level4.value;
-        const selectedL5 = this.value;
-        if (selectedL5) {
-          wbsData[selectedL4][selectedL5].forEach((item) => {
-            level6.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level6.addEventListener("change", function () {
-        if (!this.value) {
-          detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-          return;
-        }
-        detailResult.innerHTML = `
-          <strong>Level 4 (Paket Pekerjaan):</strong><br>
-          ${level4.value}
-          <br><br>
-          <strong>Level 5 (Aktivitas):</strong><br>
-          ${level5.value}
-          <br><br>
-          <strong>Level 6 (Sumber Daya):</strong><br>
-          ${this.value}
-        `;
-      }); 
+      // Saat pertama kali file dibuka, pastikan angka project update
+      updateProjectCounts();
 
       function logout() {
         const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Admin?");
         if (confirmLogout) {
-          localStorage.removeItem("isLoggedIn"); 
-          sessionStorage.removeItem("isLoggedIn");
-          window.location.replace("login.html");
+          localStorage.removeItem("isLoggedIn"); window.location.replace("login.html");
         }
       }
     </script>
   </body>
-</html>
+</html> 
