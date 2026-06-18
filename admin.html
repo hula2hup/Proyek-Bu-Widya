@@ -255,6 +255,12 @@
         color: #1e3a5f;
         font-size: 22px;
       }
+      .btn {
+      border: 0; border-radius: 10px; padding: 10px 16px; font-size: 13px;
+      background: var(--primary); color: white; font-weight: 700; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(29,78,216,.2); transition: 0.2s;
+      }
+      .btn.secondary { background: #e2e8f0; color: #0f172a; box-shadow: none; }
       .btn-primary {
         background: #1e3a5f;
         color: white;
@@ -1154,7 +1160,12 @@
         <div class="menu-item" onclick="switchMenu('wbs-mapping', this)">
           📑 WBS Mapping
         </div>
-        <div class="menu-item">📈 Reports</div>
+        <div class="menu-item" onclick="switchMenu('knowledge-base', this)">
+          📖 Knowledge Base
+        </div>
+        <div class="menu-item" onclick="switchMenu('reports', this)">
+          📈 Reports
+        </div>
       </div>
       <div class="sidebar-footer">
         <div class="user-profile">
@@ -2196,6 +2207,41 @@
           <div class="title"><h2>Navigasi WBS</h2></div>
           <p>Silakan isi struktur WBS Anda di sini seperti kode sebelumnya.</p>
         </div>
+      </div>
+
+      <div id="reports" class="content-section">
+        <div class="header-dashboard">
+          <div>
+            <div class="subtitle">ADMINISTRATION</div>
+            <h1>Reports</h1>
+            <p>
+              Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.
+            </p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:20px;">
+        <div class="title"><h2 style="display:flex;justify-content:space-between;">Draft Laporan Akhir Proyek<button class="btn secondary no-print">Generate Ringkasan Otomatis</button></h2></div>
+        <div style="background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:20px;font-size:13px;line-height:1.6;">
+          <p><b>Executive Summary:</b><br>Proyek Pembangunan Gedung (Tahap 1) telah mencapai progres aktual sebesar <strong>68.5%</strong>. Terdapat total 8 Change Request selama masa konstruksi yang didominasi oleh kondisi lapangan (clash MEP).</p>
+          <p><b>Kinerja Waktu & Biaya:</b><br>SPI rata-rata: 0.94. Percepatan waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2 hari.</p>
+          <p><b>Lesson Learned Terverifikasi:</b><br>Clash detection wajib disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing. Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="title"><h2>RACI & Pengesahan Laporan Dokumen</h2></div>
+        <table>
+          <tr style="background:#f1f5f9;">
+            <th style="text-align:center;">Disusun Oleh (Site Engineer)</th>
+            <th style="text-align:center;">Diperiksa Oleh (Admin/MK)</th>
+            <th style="text-align:center;">Disetujui Oleh (Project Manager)</th>
+          </tr>
+          <tr>
+            <td style="height:100px;text-align:center;vertical-align:bottom;">( Tanda Tangan & Nama )</td>
+            <td style="height:100px;text-align:center;vertical-align:bottom;">( Tanda Tangan & Nama )</td>
+            <td style="height:100px;text-align:center;vertical-align:bottom;font-weight:bold;color:var(--primary)">( Tanda Tangan PM Secara Digital )</td>
+          </tr>
+        </table>
+      </div>
       </div>
     </div>
 
