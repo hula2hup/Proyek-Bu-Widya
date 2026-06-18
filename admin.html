@@ -3385,7 +3385,7 @@
       // KNOWLEDGE BASE MODULE (ALGORITMA & CRUD)
       // =========================================
 
-      let kbDatabase = [
+let kbDatabase = [
         {
           id: "KM-001",
           date: "2026-04-12",
@@ -3393,7 +3393,8 @@
           category: "Standardization",
           author: "Galuh Rizkiya",
           status: "PUBLISHED",
-          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang."
+          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang.",
+          imageUrl: "jembatan.jpg" 
         },
         {
           id: "KM-002",
@@ -3411,7 +3412,8 @@
           category: "Standardization",
           author: "Galuh Rizkiya",
           status: "PUBLISHED",
-          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing."
+          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing.",
+          imageUrl: "parkirmotor.jpg" 
         },
         {
           id: "KM-004",
@@ -3575,6 +3577,22 @@
         if (!doc) return;
         kbViewingId = id;
         
+        let imageSectionHTML = "";
+        if (doc.category === "Standardization" && doc.imageUrl) {
+          // encodeURI membantu browser membaca spasi pada nama file seperti "bridges images.jpg"
+          const safeUrl = encodeURI(doc.imageUrl); 
+          imageSectionHTML = `
+            <div class="view-field" style="margin-top:20px; border-top: 2px dashed #e2e8f0; padding-top: 16px;">
+              <label>Lampiran Visual / Ilustrasi Standar <span style="color:#2563eb;font-weight:normal;">(Klik gambar untuk buka di tab baru)</span></label>
+              <div style="margin-top:10px; border-radius:12px; overflow:hidden; border: 1px solid #cbd5e1; background: #f8fafc; padding: 4px; cursor: pointer;">
+                <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display: block;">
+                  <img src="${safeUrl}" alt="Ilustrasi Standar" style="width: 100%; height: auto; display: block; border-radius: 8px; transition: opacity 0.2s;" onmouseover="this.style.opacity=0.8" onmouseout="this.style.opacity=1" />
+                </a>
+              </div>
+            </div>
+          `;
+        }
+
         document.getElementById("kbViewTitle").innerText = "📄 Detail Dokumen: " + doc.id;
         document.getElementById("kbViewBody").innerHTML = `
           <div class="view-grid">
@@ -3595,6 +3613,7 @@
               ${doc.desc}
             </div>
           </div>
+          ${imageSectionHTML}
         `;
         document.getElementById("kbViewModal").classList.add("show");
       }
