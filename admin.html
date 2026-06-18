@@ -2338,16 +2338,52 @@
         </div>
 
         <div id="wbs-mapping" class="content-section">
-          <div class="header-dashboard">
-            <div>
-              <div class="subtitle">STANDARDIZATION</div>
-              <h1>WBS Mapping</h1>
+          
+            <div class="header-dashboard">
+              <div>
+                <div class="subtitle">STANDARDIZATION • DICTIONARY</div>
+                <h1>Work Breakdown Structure (WBS)</h1>
+                <p>Eksplorasi hierarki aktivitas proyek dan pemetaan sumber daya.</p>
+              </div>
+              <div class="status-badge-header">MASTER ADMIN</div>
             </div>
-          </div>
-          <div class="card">
-            <div class="title"><h2>Navigasi WBS</h2></div>
-            <p>Silakan isi struktur WBS Anda di sini seperti kode sebelumnya.</p>
-          </div>
+
+            <div class="card">
+              <div class="title">
+                <h2>Navigasi WBS Bertingkat</h2>
+                <p>Pilih Paket Pekerjaan → Aktivitas → Sumber Daya</p>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Level 4 - Paket Pekerjaan</label>
+                  <select id="level4">
+                    <option value="">-- Pilih Paket Pekerjaan --</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Level 5 - Aktivitas</label>
+                  <select id="level5">
+                    <option value="">-- Pilih Aktivitas --</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Level 6 - Sumber Daya</label>
+                  <select id="level6">
+                    <option value="">-- Pilih Sumber Daya --</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="result">
+                <h3>Detail Pemetaan WBS</h3>
+                <div id="detailResult">Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.</div>
+                <div class="badge-system">Enterprise Construction Management System</div>
+              </div>
+            </div>
+          
         </div>
 
   <div id="knowledge-base" class="content-section">
@@ -4390,6 +4426,60 @@
               ],
             },
         };
+
+        const level4 = document.getElementById("level4");
+        const level5 = document.getElementById("level5");
+        const level6 = document.getElementById("level6");
+        const detailResult = document.getElementById("detailResult");
+
+        Object.keys(wbsData).forEach((item) => {
+          level4.innerHTML += `<option value="${item}">${item}</option>`;
+        });
+
+        level4.addEventListener("change", function () {
+          level5.innerHTML = '<option value="">-- Pilih Aktivitas --</option>';
+          level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
+          detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
+
+          const selected = this.value;
+
+          if (selected) {
+            Object.keys(wbsData[selected]).forEach((item) => {
+              level5.innerHTML += `<option value="${item}">${item}</option>`;
+            });
+          }
+        });
+
+        level5.addEventListener("change", function () {
+          level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
+          detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
+
+          const selectedL4 = level4.value;
+          const selectedL5 = this.value;
+
+          if (selectedL5) {
+            wbsData[selectedL4][selectedL5].forEach((item) => {
+              level6.innerHTML += `<option value="${item}">${item}</option>`;
+            });
+          }
+        });
+
+        level6.addEventListener("change", function () {
+          if (!this.value) {
+            detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
+            return;
+          }
+          detailResult.innerHTML = `
+            <strong>Level 4 (Paket Pekerjaan):</strong><br>
+            ${level4.value}
+            <br><br>
+            <strong>Level 5 (Aktivitas):</strong><br>
+            ${level5.value}
+            <br><br>
+            <strong>Level 6 (Sumber Daya):</strong><br>
+            ${this.value}
+          `;
+        });
 
         const modal = document.getElementById("projectModal");
         function openModal() {
