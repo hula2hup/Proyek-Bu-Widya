@@ -2305,11 +2305,172 @@
         </div>
       </div>
 
-      <div id="knowledge-base" class="content-section">
+<div id="knowledge-base" class="content-section">
         <div class="header-dashboard">
           <div>
-            <div class="subtitle">STANDARDIZATION</div>
+            <div class="subtitle">STANDARDIZATION & LESSON LEARNED</div>
             <h1>Knowledge Base</h1>
+            <p>
+              Pusat penyimpanan standar operasional, lesson learned lapangan, dan pustaka BIM Object untuk efisiensi proyek.
+            </p>
+          </div>
+          <div class="status-badge-header">MASTER ADMIN</div>
+        </div>
+
+        <div class="se-kpi-grid">
+          <div class="se-kpi-card se-border-blue">
+            <h3>Total Dokumen</h3>
+            <span class="kpi-num" id="kb-total">0</span>
+            <p>Pustaka aktif di sistem</p>
+          </div>
+          <div class="se-kpi-card se-border-green">
+            <h3>Standardization</h3>
+            <span class="kpi-num" id="kb-std">0</span>
+            <p>SOP & Pedoman Desain</p>
+          </div>
+          <div class="se-kpi-card se-border-yellow">
+            <h3>Lesson Learned</h3>
+            <span class="kpi-num" id="kb-ll">0</span>
+            <p>Studi kasus lapangan</p>
+          </div>
+          <div class="se-kpi-card se-border-red">
+            <h3>BIM Object</h3>
+            <span class="kpi-num" id="kb-bim">0</span>
+            <p>Komponen 3D tervalidasi</p>
+          </div>
+        </div>
+
+        <div class="table-section">
+          <div class="se-section-header">
+            <h2 style="margin: 0; color: #1e3a5f; font-size: 20px">
+              📚 Direktori Pengetahuan
+            </h2>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+              <input
+                type="text"
+                id="kb-search"
+                class="se-search-box"
+                placeholder="🔍 Cari ID, Judul, Kategori..."
+                oninput="kbApplyFilter()"
+              />
+              <button class="btn-primary" onclick="kbOpenAddModal()">
+                ➕ Tambah Dokumen
+              </button>
+            </div>
+          </div>
+
+          <div class="se-tabs">
+            <div class="se-tab active" onclick="kbSetTab('all', this)">Semua</div>
+            <div class="se-tab" onclick="kbSetTab('Standardization', this)">Standardization</div>
+            <div class="se-tab" onclick="kbSetTab('Lesson Learned', this)">Lesson Learned</div>
+            <div class="se-tab" onclick="kbSetTab('BIM Object', this)">BIM Object</div>
+          </div>
+
+          <div class="se-tab-content active" id="kb-tab-content">
+            <div class="se-table-container">
+              <table class="change-table">
+                <thead>
+                  <tr>
+                    <th>Doc ID</th>
+                    <th>Tanggal Terbit</th>
+                    <th>Judul Dokumen</th>
+                    <th>Kategori</th>
+                    <th>Disusun Oleh</th>
+                    <th>Status Validasi</th>
+                    <th style="text-align: center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="kbTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="se-modal" id="kbFormModal">
+          <div class="se-modal-content">
+            <div class="se-modal-header">
+              <h2 id="kbFormModalTitle">Tambah Dokumen Knowledge Base</h2>
+              <button class="se-modal-close" onclick="kbCloseFormModal()">✕</button>
+            </div>
+            <div class="se-modal-body">
+              <div class="se-form-grid">
+                <div class="se-form-group">
+                  <label>Doc ID</label>
+                  <input type="text" id="kb-id" readonly style="background: #f8fafc" />
+                </div>
+                <div class="se-form-group">
+                  <label>Kategori Utama</label>
+                  <select id="kb-category">
+                    <option value="">Pilih Kategori</option>
+                    <option value="Standardization">Standardization</option>
+                    <option value="Lesson Learned">Lesson Learned</option>
+                    <option value="BIM Object">BIM Object</option>
+                  </select>
+                </div>
+                <div class="se-form-group">
+                  <label>Tanggal Terbit</label>
+                  <input type="date" id="kb-date" />
+                </div>
+              </div>
+              <div class="se-form-grid" style="grid-template-columns: 2fr 1fr; margin-top: 14px;">
+                <div class="se-form-group">
+                  <label>Judul Dokumen</label>
+                  <input type="text" id="kb-title" placeholder="Contoh: Pedoman Desain Geometrik Jalan Raya" />
+                </div>
+                <div class="se-form-group">
+                  <label>Disusun Oleh</label>
+                  <input type="text" id="kb-author" placeholder="Nama Penyusun" />
+                </div>
+              </div>
+              <div class="se-form-group" style="margin-top: 14px;">
+                <label>Status Validasi</label>
+                <select id="kb-status">
+                  <option value="DRAFT">📝 DRAFT</option>
+                  <option value="PUBLISHED">🟢 PUBLISHED</option>
+                  <option value="ARCHIVED">🗄️ ARCHIVED</option>
+                </select>
+              </div>
+              <div class="se-form-group" style="margin-top: 14px;">
+                <label>Deskripsi / Abstrak Singkat</label>
+                <textarea id="kb-desc" rows="4" placeholder="Tulis intisari dari dokumen ini..."></textarea>
+              </div>
+            </div>
+            <div class="se-modal-footer">
+              <button class="btn-secondary" onclick="kbCloseFormModal()">Batal</button>
+              <button class="btn-primary" id="kbFormSubmitBtn" onclick="kbSaveData()">💾 Simpan Data</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="se-modal" id="kbViewModal">
+          <div class="se-modal-content">
+            <div class="se-modal-header">
+              <h2 id="kbViewTitle">Detail Dokumen</h2>
+              <button class="se-modal-close" onclick="kbCloseViewModal()">✕</button>
+            </div>
+            <div class="se-modal-body" id="kbViewBody"></div>
+            <div class="se-modal-footer">
+              <button class="btn-secondary" onclick="kbCloseViewModal()">Tutup</button>
+              <button class="btn-primary" onclick="kbEditFromView()">✏️ Edit Data</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="se-modal" id="kbDeleteModal">
+          <div class="se-modal-content" style="max-width: 420px">
+            <div class="se-modal-header">
+              <h2 style="color: #ef4444">🗑️ Hapus Dokumen</h2>
+              <button class="se-modal-close" onclick="kbCloseDeleteModal()">✕</button>
+            </div>
+            <div class="se-modal-body">
+              <p style="font-size: 15px; color: #475569">
+                Apakah Anda yakin ingin menghapus <strong id="kbDeleteId"></strong>? Tindakan ini akan menghapus data dari pustaka secara permanen.
+              </p>
+            </div>
+            <div class="se-modal-footer">
+              <button class="btn-secondary" onclick="kbCloseDeleteModal()">Batal</button>
+              <button class="btn-primary" style="background: #ef4444" onclick="kbConfirmDelete()">Hapus Sekarang</button>
+            </div>
           </div>
         </div>
       </div>
@@ -3306,7 +3467,7 @@
           });
       });
 
-      // Init SE table when switching to tab
+// Menimpa switchMenu awal untuk mendeteksi inisialisasi tabel tiap menu
       const _origSwitchMenu = switchMenu;
       switchMenu = function (sectionId, clickedElement) {
         _origSwitchMenu(sectionId, clickedElement);
@@ -3314,7 +3475,17 @@
           seUpdateKPI();
           seRenderTable();
         }
+        if (sectionId === "knowledge-base") {
+          kbUpdateKPI();
+          kbRenderTable();
+        }
       };
+
+      // Pre-init tab jika load langsung di knowledge-base
+      if (document.getElementById("knowledge-base")?.classList.contains("active-section")) {
+        kbUpdateKPI();
+        kbRenderTable();
+      }
 
       // Pre-init if already on site-engineer tab on load
       if (
@@ -3325,6 +3496,259 @@
         seUpdateKPI();
         seRenderTable();
       }
+
+      // =========================================
+      // KNOWLEDGE BASE MODULE (ALGORITMA & CRUD)
+      // =========================================
+
+      let kbDatabase = [
+        {
+          id: "KM-001",
+          date: "2026-04-12",
+          title: "SOP Pengawasan Pengecoran Lantai Jembatan",
+          category: "Standardization",
+          author: "Galuh Rizkiya",
+          status: "PUBLISHED",
+          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang."
+        },
+        {
+          id: "KM-002",
+          date: "2026-05-20",
+          title: "Mitigasi Clash MEP vs Balok Struktur Utama",
+          category: "Lesson Learned",
+          author: "Tim Engineer IMS",
+          status: "PUBLISHED",
+          desc: "Catatan lesson learned mengenai seringnya clash antara rute pipa plumbing dengan dimensi balok pracetak. Solusi: Overlay wajib 3D BIM sebelum persetujuan shop drawing."
+        },
+        {
+          id: "KM-003",
+          date: "2026-06-02",
+          title: "Pedoman Evaluasi Kapasitas Parkir Kampus",
+          category: "Standardization",
+          author: "Galuh Rizkiya",
+          status: "PUBLISHED",
+          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing."
+        },
+        {
+          id: "KM-004",
+          date: "2026-06-15",
+          title: "Family Pipa PPRC 3 inch (Revit)",
+          category: "BIM Object",
+          author: "Dedi Kurnia",
+          status: "DRAFT",
+          desc: "Library Revit 2025 untuk komponen pipa PPRC lengkap dengan parameter routing preferences lokal."
+        }
+      ];
+
+      let kbCurrentTab = "all";
+      let kbEditingId = null;
+      let kbViewingId = null;
+      let kbPendingDeleteId = null;
+
+      function kbGenerateNextId() {
+        if (kbDatabase.length === 0) return "KM-001";
+        const nums = kbDatabase.map((r) => parseInt(r.id.replace(/\D/g, ""), 10));
+        const next = Math.max(...nums) + 1;
+        return "KM-" + String(next).padStart(3, "0");
+      }
+
+      function kbGetStatusHTML(status) {
+        const map = {
+          DRAFT: "badge badge-pending",
+          PUBLISHED: "badge badge-approved badge-completed",
+          ARCHIVED: "badge badge-rejected"
+        };
+        const cls = map[status] || "badge badge-pending";
+        return `<span class="${cls}">${status}</span>`;
+      }
+
+      function kbUpdateKPI() {
+        document.getElementById("kb-total").innerText = kbDatabase.length;
+        document.getElementById("kb-std").innerText = kbDatabase.filter((r) => r.category === "Standardization").length;
+        document.getElementById("kb-ll").innerText = kbDatabase.filter((r) => r.category === "Lesson Learned").length;
+        document.getElementById("kb-bim").innerText = kbDatabase.filter((r) => r.category === "BIM Object").length;
+      }
+
+      function kbRenderTable() {
+        const query = (document.getElementById("kb-search")?.value || "").toLowerCase().trim();
+        let rows = kbDatabase.filter((r) => {
+          if (kbCurrentTab !== "all" && r.category !== kbCurrentTab) return false;
+          if (!query) return true;
+          return (
+            r.id.toLowerCase().includes(query) ||
+            r.title.toLowerCase().includes(query) ||
+            r.author.toLowerCase().includes(query) ||
+            r.category.toLowerCase().includes(query)
+          );
+        });
+
+        const tbody = document.getElementById("kbTableBody");
+        if (!tbody) return;
+        if (rows.length === 0) {
+          tbody.innerHTML = `<tr class="no-data-row"><td colspan="7">🔍 Tidak ada pustaka dokumen yang ditemukan.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = rows.map((r) => `
+          <tr>
+            <td><b style="color:#0f2d52;">${r.id}</b></td>
+            <td>${r.date}</td>
+            <td><div style="font-weight:600; color:#1e3a5f;">${r.title}</div><div style="font-size:11px; color:#64748b; margin-top:4px;">${r.desc.substring(0, 60)}...</div></td>
+            <td><span class="badge" style="background:#eff6ff; color:#2563eb;">${r.category}</span></td>
+            <td>${r.author}</td>
+            <td>${kbGetStatusHTML(r.status)}</td>
+            <td style="text-align:center; white-space:nowrap;">
+              <button class="btn-edit-table" onclick="kbOpenViewModal('${r.id}')">👁️ Lihat</button>
+              <button class="btn-edit-table" onclick="kbOpenEditModal('${r.id}')">✏️ Edit</button>
+              <button class="btn-edit-table delete-btn" onclick="kbOpenDeleteModal('${r.id}')">🗑️ Hapus</button>
+            </td>
+          </tr>`).join("");
+      }
+
+      function kbSetTab(tab, el) {
+        kbCurrentTab = tab;
+        document.querySelectorAll("#knowledge-base .se-tab").forEach((t) => t.classList.remove("active"));
+        el.classList.add("active");
+        kbRenderTable();
+      }
+
+      function kbApplyFilter() {
+        kbRenderTable();
+      }
+
+      // -- FORM LOGIC --
+      function kbOpenAddModal() {
+        kbEditingId = null;
+        document.getElementById("kbFormModalTitle").innerText = "➕ Tambah Dokumen Knowledge Base";
+        document.getElementById("kbFormSubmitBtn").innerText = "💾 Simpan Data";
+        
+        document.getElementById("kb-id").value = kbGenerateNextId();
+        document.getElementById("kb-category").value = "";
+        document.getElementById("kb-date").value = new Date().toISOString().split("T")[0];
+        document.getElementById("kb-title").value = "";
+        document.getElementById("kb-author").value = "";
+        document.getElementById("kb-status").value = "DRAFT";
+        document.getElementById("kb-desc").value = "";
+        
+        document.getElementById("kbFormModal").classList.add("show");
+      }
+
+      function kbOpenEditModal(id) {
+        const doc = kbDatabase.find((x) => x.id === id);
+        if (!doc) return;
+        kbEditingId = id;
+        
+        document.getElementById("kbFormModalTitle").innerText = "✏️ Edit Dokumen — " + id;
+        document.getElementById("kbFormSubmitBtn").innerText = "💾 Update Data";
+        
+        document.getElementById("kb-id").value = doc.id;
+        document.getElementById("kb-category").value = doc.category;
+        document.getElementById("kb-date").value = doc.date;
+        document.getElementById("kb-title").value = doc.title;
+        document.getElementById("kb-author").value = doc.author;
+        document.getElementById("kb-status").value = doc.status;
+        document.getElementById("kb-desc").value = doc.desc;
+        
+        document.getElementById("kbViewModal").classList.remove("show");
+        document.getElementById("kbFormModal").classList.add("show");
+      }
+
+      function kbCloseFormModal() {
+        document.getElementById("kbFormModal").classList.remove("show");
+      }
+
+      function kbSaveData() {
+        const id = document.getElementById("kb-id").value;
+        const category = document.getElementById("kb-category").value;
+        const date = document.getElementById("kb-date").value;
+        const title = document.getElementById("kb-title").value;
+        const author = document.getElementById("kb-author").value;
+        const status = document.getElementById("kb-status").value;
+        const desc = document.getElementById("kb-desc").value;
+
+        if (!title || !category || !author) {
+          alert("Kategori, Judul, dan Penyusun wajib diisi!");
+          return;
+        }
+
+        const dataObj = { id, category, date, title, author, status, desc };
+
+        if (kbEditingId) {
+          const index = kbDatabase.findIndex((x) => x.id === kbEditingId);
+          if (index > -1) kbDatabase[index] = dataObj;
+        } else {
+          kbDatabase.unshift(dataObj);
+        }
+
+        kbCloseFormModal();
+        kbUpdateKPI();
+        kbRenderTable();
+      }
+
+      // -- VIEW LOGIC --
+      function kbOpenViewModal(id) {
+        const doc = kbDatabase.find((x) => x.id === id);
+        if (!doc) return;
+        kbViewingId = id;
+        
+        document.getElementById("kbViewTitle").innerText = "📄 Detail Dokumen: " + doc.id;
+        document.getElementById("kbViewBody").innerHTML = `
+          <div class="view-grid">
+            <div class="view-field"><label>Doc ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${doc.id}</div></div>
+            <div class="view-field"><label>Tanggal Terbit</label><div class="view-value">${doc.date}</div></div>
+            <div class="view-field"><label>Kategori Utama</label><div class="view-value">${doc.category}</div></div>
+            <div class="view-field"><label>Status Validasi</label><div class="view-value">${kbGetStatusHTML(doc.status)}</div></div>
+            <div class="view-field"><label>Disusun Oleh</label><div class="view-value">${doc.author}</div></div>
+          </div>
+          <hr class="se-section-divider">
+          <div class="view-field">
+            <label>Judul Dokumen</label>
+            <div class="view-value" style="font-size: 16px; font-weight:700; color: #1e3a5f;">${doc.title}</div>
+          </div>
+          <div class="view-field" style="margin-top:16px;">
+            <label>Deskripsi / Abstrak Singkat</label>
+            <div class="view-value" style="background:#f8fafc; padding:16px; border-radius:10px; line-height:1.6; border: 1px solid #e2e8f0;">
+              ${doc.desc}
+            </div>
+          </div>
+        `;
+        document.getElementById("kbViewModal").classList.add("show");
+      }
+
+      function kbCloseViewModal() {
+        document.getElementById("kbViewModal").classList.remove("show");
+      }
+
+      function kbEditFromView() {
+        kbOpenEditModal(kbViewingId);
+      }
+
+      // -- DELETE LOGIC --
+      function kbOpenDeleteModal(id) {
+        kbPendingDeleteId = id;
+        document.getElementById("kbDeleteId").innerText = id;
+        document.getElementById("kbDeleteModal").classList.add("show");
+      }
+
+      function kbCloseDeleteModal() {
+        document.getElementById("kbDeleteModal").classList.remove("show");
+        kbPendingDeleteId = null;
+      }
+
+      function kbConfirmDelete() {
+        if (!kbPendingDeleteId) return;
+        kbDatabase = kbDatabase.filter((r) => r.id !== kbPendingDeleteId);
+        kbCloseDeleteModal();
+        kbUpdateKPI();
+        kbRenderTable();
+      }
+
+      // Klik luar modal untuk menutup (Knowledge Base Event Listeners)
+      ["kbFormModal", "kbViewModal", "kbDeleteModal"].forEach((modalId) => {
+        document.getElementById(modalId)?.addEventListener("click", function (e) {
+          if (e.target === this) this.classList.remove("show");
+        });
+      });
     </script>
   </body>
 </html>
