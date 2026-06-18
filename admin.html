@@ -1153,6 +1153,83 @@
         cursor: pointer;
         transition: 0.2s;
       }
+
+      /* Container pembungkus utama */
+      .tag-input-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        
+        /* 1. Menambahkan padding agar kotak lebih luas dan proporsional */
+        padding: 10px 14px; 
+        
+        /* 2. Menyamakan background box dengan input standar (warna abu-abu sangat muda) */
+        background-color: #f8fafc; 
+        
+        border: 1px solid #cbd5e1; 
+        
+        /* 3. Menyamakan curvature (lengkungan) dengan input form di atasnya */
+        border-radius: 12px; 
+        
+        cursor: text;
+        transition: all 0.2s ease;
+      }
+
+      /* Efek saat sedang mengetik / fokus */
+      .tag-input-wrapper:focus-within {
+        border-color: #3b82f6;
+        background-color: #ffffff; /* Berubah putih bersih saat fokus (opsional) */
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      /* Input asli yang transparan */
+      .tag-input-wrapper input {
+        border: none;
+        outline: none;
+        background: transparent;
+        flex: 1 1 auto;
+        min-width: 160px; /* Ruang minimum sebelum wrap ke bawah */
+        
+        /* 4. Memberikan jarak spasi khusus untuk teks "Ketik nama..." */
+        padding: 4px 8px; 
+        margin-left: 2px; /* Jarak aman dari tag terakhir di sebelah kirinya */
+        
+        font-family: inherit;
+        font-size: 14px;
+        color: #334155;
+      }
+
+      /* --- Style Tag (Tetap dipertahankan) --- */
+      .tag-item {
+        background-color: #eff6ff; 
+        color: #1e40af; 
+        border: 1px solid #bfdbfe;
+        padding: 4px 12px;
+        border-radius: 20px; 
+        display: flex;
+        align-items: center;
+        font-size: 14px; /* Disesuaikan sedikit agar balance dengan teks input */
+        font-weight: 500;
+        white-space: nowrap; 
+      }
+
+      .tag-item span {
+        cursor: pointer;
+        margin-left: 8px;
+        color: #60a5fa;
+        font-size: 16px;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+      }
+
+      .tag-item span:hover {
+        color: #ef4444; 
+      }
     </style>
   </head>
 
@@ -1321,30 +1398,35 @@
               />
             </div>
             <div class="input-group">
-              <label>Site Engineer</label
-              ><input
-                type="text"
-                id="engineerName"
-                placeholder="Nama Engineer..."
-              />
+              <label>Project Manager</label>
+              <div class="tag-input-wrapper" id="pm-wrapper" onclick="document.getElementById('pm-input').focus()">
+                <input type="text" id="pm-input" placeholder="Ketik nama & Enter...">
+              </div>
             </div>
             <div class="input-group">
-              <label>Status</label
-              ><select id="projectStatus">
-                <option>Completed</option>
-                <option>In Progress</option>
-                <option>Pending</option>
-              </select>
+              <label>Site Manager</label>
+              <div class="tag-input-wrapper" id="sm-wrapper" onclick="document.getElementById('sm-input').focus()">
+                <input type="text" id="sm-input" placeholder="Ketik nama & Enter...">
+              </div>
             </div>
-            <div class="input-group">
-              <label>Progress (%)</label
-              ><input
-                type="number"
-                id="projectProgress"
-                min="0"
-                max="100"
-                placeholder="0 - 100"
-              />
+            <div class="advanced-section">
+              <details>
+                <summary style="cursor:pointer; font-weight:bold;">Advanced</summary>
+                <div style="margin-top:10px;">
+                  <div class="input-group">
+                    <label>Status</label>
+                    <select id="projectStatus">
+                      <option>Pending</option>
+                      <option>In Progress</option>
+                      <option>Completed</option>
+                    </select>
+                  </div>
+                  <div class="input-group">
+                    <label>Progress (%)</label>
+                    <input type="number" id="projectProgress" min="0" max="100" placeholder="0 - 100">
+                  </div>
+                </div>
+              </details>
             </div>
             <div class="modal-buttons">
               <button class="btn-secondary" onclick="closeModal()">Batal</button
@@ -2269,6 +2351,40 @@
     </div>
 
     <script>
+      function setupTagInput(inputId, wrapperId) {
+        const input = document.getElementById(inputId);
+        const wrapper = document.getElementById(wrapperId);
+
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault(); // Mencegah modal tersubmit (reload) jika ada form
+            const val = this.value.trim();
+            
+            if (val !== '') {
+              // Buat elemen tag baru
+              const tag = document.createElement('div');
+              tag.className = 'tag-item';
+              tag.innerHTML = `${val} <span>&times;</span>`;
+
+              // Logic untuk menghapus tag jika "x" diklik
+              tag.querySelector('span').addEventListener('click', function(e) {
+                e.stopPropagation(); // Mencegah focus terpicu
+                tag.remove();
+              });
+
+              // Sisipkan tag tepat di sebelah kiri kolom input text
+              wrapper.insertBefore(tag, input);
+              
+              // Kosongkan input setelah Enter
+              this.value = '';
+            }
+          }
+        });
+      }
+
+      // Cara inisialisasi:
+      setupTagInput('pm-input', 'pm-wrapper');
+      setupTagInput('sm-input', 'sm-wrapper');
       // ==========================================
       // FUNGSI UMUM ADMIN
       // ==========================================
