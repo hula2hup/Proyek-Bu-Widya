@@ -256,11 +256,22 @@
         font-size: 22px;
       }
       .btn {
-      border: 0; border-radius: 10px; padding: 10px 16px; font-size: 13px;
-      background: var(--primary); color: white; font-weight: 700; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(29,78,216,.2); transition: 0.2s;
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 13px;
+        background: var(--primary);
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+        transition: 0.2s;
       }
-      .btn.secondary { background: #e2e8f0; color: #0f172a; box-shadow: none; }
+      .btn.secondary {
+        background: #e2e8f0;
+        color: #0f172a;
+        box-shadow: none;
+      }
       .btn-primary {
         background: #1e3a5f;
         color: white;
@@ -1207,18 +1218,18 @@
         align-items: center;
         gap: 8px;
         width: 100%;
-        
+
         /* 1. Menambahkan padding agar kotak lebih luas dan proporsional */
-        padding: 10px 14px; 
-        
+        padding: 10px 14px;
+
         /* 2. Menyamakan background box dengan input standar (warna abu-abu sangat muda) */
-        background-color: #f8fafc; 
-        
-        border: 1px solid #cbd5e1; 
-        
+        background-color: #f8fafc;
+
+        border: 1px solid #cbd5e1;
+
         /* 3. Menyamakan curvature (lengkungan) dengan input form di atasnya */
-        border-radius: 12px; 
-        
+        border-radius: 12px;
+
         cursor: text;
         transition: all 0.2s ease;
       }
@@ -1237,11 +1248,11 @@
         background: transparent;
         flex: 1 1 auto;
         min-width: 160px; /* Ruang minimum sebelum wrap ke bawah */
-        
+
         /* 4. Memberikan jarak spasi khusus untuk teks "Ketik nama..." */
-        padding: 4px 8px; 
+        padding: 4px 8px;
         margin-left: 2px; /* Jarak aman dari tag terakhir di sebelah kirinya */
-        
+
         font-family: inherit;
         font-size: 14px;
         color: #334155;
@@ -1249,16 +1260,16 @@
 
       /* --- Style Tag (Tetap dipertahankan) --- */
       .tag-item {
-        background-color: #eff6ff; 
-        color: #1e40af; 
+        background-color: #eff6ff;
+        color: #1e40af;
         border: 1px solid #bfdbfe;
         padding: 4px 12px;
-        border-radius: 20px; 
+        border-radius: 20px;
         display: flex;
         align-items: center;
         font-size: 14px; /* Disesuaikan sedikit agar balance dengan teks input */
         font-weight: 500;
-        white-space: nowrap; 
+        white-space: nowrap;
       }
 
       .tag-item span {
@@ -1274,7 +1285,232 @@
       }
 
       .tag-item span:hover {
-        color: #ef4444; 
+        color: #ef4444;
+      }
+
+      /* =========================
+         RISK CASCADING STYLES
+      ========================= */
+      #se-riskDescription {
+        width: 100%;
+        min-height: 68px;
+        border: 1px solid #dbe4ef;
+        border-radius: 12px;
+        padding: 12px 14px;
+        background: #f8fafc;
+        color: #475569;
+        line-height: 1.6;
+        font-size: 14px;
+        font-family: inherit;
+        box-sizing: border-box;
+        display: block;
+      }
+
+      /* =========================
+         EVIDENCE UPLOAD STYLES
+      ========================= */
+      .se-upload-section {
+        margin-top: 8px;
+        padding: 18px 20px;
+        border: 2px dashed #dbe4ef;
+        border-radius: 16px;
+        background: #f8fafc;
+        transition: border-color 0.2s;
+      }
+      .se-upload-section:focus-within {
+        border-color: #0f2d52;
+      }
+      .se-upload-section label {
+        font-weight: 600;
+        color: #0f2d52;
+        font-size: 13px;
+        display: block;
+        margin-bottom: 10px;
+      }
+      .se-upload-section input[type="file"] {
+        display: block;
+        width: 100%;
+        font-size: 13px;
+        font-family: inherit;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 8px 12px;
+        background: white;
+        cursor: pointer;
+      }
+      .se-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .se-gallery-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+      .se-gallery-image:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        border-color: #2563eb;
+      }
+      .se-pdf-card {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        background: #eff6ff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #1e40af;
+        cursor: pointer;
+        padding: 4px;
+        text-align: center;
+        word-break: break-all;
+        transition: all 0.25s ease;
+        gap: 4px;
+      }
+      .se-pdf-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        border-color: #2563eb;
+      }
+      .se-pdf-card .pdf-icon {
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      /* Image / PDF preview modal */
+      .se-image-modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.88);
+        z-index: 99999;
+        overflow: hidden;
+      }
+      .se-image-modal.active {
+        display: block;
+      }
+      .se-modal-close-overlay {
+        position: fixed;
+        top: 20px;
+        right: 28px;
+        color: white;
+        font-size: 38px;
+        cursor: pointer;
+        z-index: 999999;
+        line-height: 1;
+        font-weight: 300;
+      }
+      .se-image-toolbar {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 999999;
+      }
+      .se-image-toolbar button {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        backdrop-filter: blur(4px);
+        transition: background 0.2s;
+      }
+      .se-image-toolbar button:hover {
+        background: rgba(255, 255, 255, 0.28);
+      }
+      #seModalImage {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        max-width: 90%;
+        max-height: 88%;
+        transform: translate(-50%, -50%) scale(1);
+        cursor: grab;
+        user-select: none;
+        pointer-events: auto;
+        border-radius: 6px;
+      }
+      #sePdfModal iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: white;
+      }
+
+      /* View detail evidence display */
+      .se-evidence-view-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .se-evidence-view-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+      .se-evidence-view-item img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .se-evidence-view-item img:hover {
+        border-color: #2563eb;
+        transform: scale(1.05);
+      }
+      .se-evidence-view-pdf {
+        width: 90px;
+        height: 90px;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        background: #eff6ff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #1e40af;
+        cursor: pointer;
+        padding: 6px;
+        text-align: center;
+        transition: all 0.2s;
+        gap: 4px;
+      }
+      .se-evidence-view-pdf:hover {
+        border-color: #2563eb;
+        transform: scale(1.05);
+      }
+      .se-evidence-view-item span,
+      .se-evidence-view-pdf span {
+        font-size: 10px;
+        color: #64748b;
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
       }
     </style>
   </head>
@@ -1445,20 +1681,38 @@
             </div>
             <div class="input-group">
               <label>Project Manager</label>
-              <div class="tag-input-wrapper" id="pm-wrapper" onclick="document.getElementById('pm-input').focus()">
-                <input type="text" id="pm-input" placeholder="Ketik nama & Enter...">
+              <div
+                class="tag-input-wrapper"
+                id="pm-wrapper"
+                onclick="document.getElementById('pm-input').focus()"
+              >
+                <input
+                  type="text"
+                  id="pm-input"
+                  placeholder="Ketik nama & Enter..."
+                />
               </div>
             </div>
             <div class="input-group">
               <label>Site Manager</label>
-              <div class="tag-input-wrapper" id="sm-wrapper" onclick="document.getElementById('sm-input').focus()">
-                <input type="text" id="sm-input" placeholder="Ketik nama & Enter...">
+              <div
+                class="tag-input-wrapper"
+                id="sm-wrapper"
+                onclick="document.getElementById('sm-input').focus()"
+              >
+                <input
+                  type="text"
+                  id="sm-input"
+                  placeholder="Ketik nama & Enter..."
+                />
               </div>
             </div>
             <div class="advanced-section">
               <details>
-                <summary style="cursor:pointer; font-weight:bold;">Advanced</summary>
-                <div style="margin-top:10px;">
+                <summary style="cursor: pointer; font-weight: bold">
+                  Advanced
+                </summary>
+                <div style="margin-top: 10px">
                   <div class="input-group">
                     <label>Status</label>
                     <select id="projectStatus">
@@ -1469,7 +1723,13 @@
                   </div>
                   <div class="input-group">
                     <label>Progress (%)</label>
-                    <input type="number" id="projectProgress" min="0" max="100" placeholder="0 - 100">
+                    <input
+                      type="number"
+                      id="projectProgress"
+                      min="0"
+                      max="100"
+                      placeholder="0 - 100"
+                    />
                   </div>
                 </div>
               </details>
@@ -2124,18 +2384,27 @@
               <div class="se-form-grid">
                 <div class="se-form-group">
                   <label>Kategori Risiko</label>
-                  <select id="se-riskCategory">
+                  <select
+                    id="se-riskCategory"
+                    onchange="seUpdateRiskVariables()"
+                  >
                     <option value="">Pilih Kategori Risiko</option>
-                    <option>Risiko Teknis</option>
-                    <option>Risiko Lingkungan</option>
-                    <option>Risiko Finansial</option>
-                    <option>Risiko Operasional</option>
-                    <option>Risiko Keselamatan</option>
+                    <option>Metode Pelaksanaan</option>
+                    <option>Paket Pekerjaan</option>
+                    <option>Metode Kerja</option>
+                    <option>Aktivitas</option>
+                    <option>Sumber Daya Material</option>
+                    <option>Sumber Daya Peralatan</option>
+                    <option>Sumber Daya Tenaga Kerja</option>
+                    <option>Lingkungan</option>
                   </select>
                 </div>
                 <div class="se-form-group">
                   <label>Variabel Risiko</label>
-                  <select id="se-riskVariable">
+                  <select
+                    id="se-riskVariable"
+                    onchange="seUpdateRiskDescription()"
+                  >
                     <option value="">Pilih Variabel Risiko</option>
                   </select>
                 </div>
@@ -2150,6 +2419,30 @@
                 </div>
               </div>
 
+              <!-- Deskripsi Risiko (auto-fill, read-only) -->
+              <div class="se-form-group" style="margin-top: 10px">
+                <label>Deskripsi Risiko</label>
+                <div
+                  id="se-riskDescription"
+                  style="
+                    width: 100%;
+                    min-height: 68px;
+                    border: 1px solid #dbe4ef;
+                    border-radius: 12px;
+                    padding: 12px 14px;
+                    background: #f8fafc;
+                    color: #475569;
+                    line-height: 1.6;
+                    font-size: 14px;
+                    font-family: inherit;
+                    box-sizing: border-box;
+                  "
+                >
+                  Pilih kategori dan variabel risiko untuk mengisi deskripsi
+                  secara otomatis.
+                </div>
+              </div>
+
               <div class="se-form-group" style="margin-top: 10px">
                 <label>Description (Brief)</label>
                 <textarea
@@ -2157,6 +2450,22 @@
                   rows="3"
                   placeholder="Jelaskan perubahan yang terjadi..."
                 ></textarea>
+              </div>
+
+              <!-- EVIDENCE UPLOAD -->
+              <div class="se-section-label" style="margin-top: 18px">
+                Evidence
+              </div>
+              <div class="se-upload-section">
+                <label>📎 Evidence Attachment</label>
+                <input
+                  type="file"
+                  id="se-evidenceUpload"
+                  accept=".jpg,.jpeg,.png,.pdf"
+                  multiple
+                  onchange="seHandleEvidenceUpload(this)"
+                />
+                <div id="se-evidenceGallery" class="se-gallery"></div>
               </div>
 
               <!-- STEP 2 -->
@@ -2305,6 +2614,34 @@
           </div>
         </div>
 
+        <!-- =============================================
+             EVIDENCE IMAGE MODAL (FULLSCREEN PREVIEW)
+        ============================================= -->
+        <div class="se-image-modal" id="seImageModal">
+          <span class="se-modal-close-overlay" id="seCloseImageModal"
+            >&times;</span
+          >
+          <div class="se-image-toolbar">
+            <button id="seZoomIn">+ Zoom In</button>
+            <button id="seZoomOut">− Zoom Out</button>
+            <button id="seResetZoom">Reset</button>
+          </div>
+          <img id="seModalImage" src="" alt="Preview" />
+        </div>
+
+        <!-- =============================================
+             EVIDENCE PDF MODAL (FULLSCREEN VIEWER)
+        ============================================= -->
+        <div class="se-image-modal" id="sePdfModal">
+          <span class="se-modal-close-overlay" id="seClosePdfModal"
+            >&times;</span
+          >
+          <iframe
+            id="sePdfViewer"
+            style="width: 100%; height: 100%; border: none; background: white"
+          ></iframe>
+        </div>
+
         <!-- DELETE CONFIRM MODAL -->
         <div class="se-modal" id="seDeleteModal">
           <div class="se-modal-content" style="max-width: 420px">
@@ -2350,13 +2687,14 @@
         </div>
       </div>
 
-<div id="knowledge-base" class="content-section">
+      <div id="knowledge-base" class="content-section">
         <div class="header-dashboard">
           <div>
             <div class="subtitle">STANDARDIZATION & LESSON LEARNED</div>
             <h1>Knowledge Base</h1>
             <p>
-              Pusat penyimpanan standar operasional, lesson learned lapangan, dan pustaka BIM Object untuk efisiensi proyek.
+              Pusat penyimpanan standar operasional, lesson learned lapangan,
+              dan pustaka BIM Object untuk efisiensi proyek.
             </p>
           </div>
           <div class="status-badge-header">MASTER ADMIN</div>
@@ -2390,7 +2728,14 @@
             <h2 style="margin: 0; color: #1e3a5f; font-size: 20px">
               📚 Direktori Pengetahuan
             </h2>
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
               <input
                 type="text"
                 id="kb-search"
@@ -2405,10 +2750,18 @@
           </div>
 
           <div class="se-tabs">
-            <div class="se-tab active" onclick="kbSetTab('all', this)">Semua</div>
-            <div class="se-tab" onclick="kbSetTab('Standardization', this)">Standardization</div>
-            <div class="se-tab" onclick="kbSetTab('Lesson Learned', this)">Lesson Learned</div>
-            <div class="se-tab" onclick="kbSetTab('BIM Object', this)">BIM Object</div>
+            <div class="se-tab active" onclick="kbSetTab('all', this)">
+              Semua
+            </div>
+            <div class="se-tab" onclick="kbSetTab('Standardization', this)">
+              Standardization
+            </div>
+            <div class="se-tab" onclick="kbSetTab('Lesson Learned', this)">
+              Lesson Learned
+            </div>
+            <div class="se-tab" onclick="kbSetTab('BIM Object', this)">
+              BIM Object
+            </div>
           </div>
 
           <div class="se-tab-content active" id="kb-tab-content">
@@ -2435,13 +2788,20 @@
           <div class="se-modal-content">
             <div class="se-modal-header">
               <h2 id="kbFormModalTitle">Tambah Dokumen Knowledge Base</h2>
-              <button class="se-modal-close" onclick="kbCloseFormModal()">✕</button>
+              <button class="se-modal-close" onclick="kbCloseFormModal()">
+                ✕
+              </button>
             </div>
             <div class="se-modal-body">
               <div class="se-form-grid">
                 <div class="se-form-group">
                   <label>Doc ID</label>
-                  <input type="text" id="kb-id" readonly style="background: #f8fafc" />
+                  <input
+                    type="text"
+                    id="kb-id"
+                    readonly
+                    style="background: #f8fafc"
+                  />
                 </div>
                 <div class="se-form-group">
                   <label>Kategori Utama</label>
@@ -2457,17 +2817,28 @@
                   <input type="date" id="kb-date" />
                 </div>
               </div>
-              <div class="se-form-grid" style="grid-template-columns: 2fr 1fr; margin-top: 14px;">
+              <div
+                class="se-form-grid"
+                style="grid-template-columns: 2fr 1fr; margin-top: 14px"
+              >
                 <div class="se-form-group">
                   <label>Judul Dokumen</label>
-                  <input type="text" id="kb-title" placeholder="Contoh: Pedoman Desain Geometrik Jalan Raya" />
+                  <input
+                    type="text"
+                    id="kb-title"
+                    placeholder="Contoh: Pedoman Desain Geometrik Jalan Raya"
+                  />
                 </div>
                 <div class="se-form-group">
                   <label>Disusun Oleh</label>
-                  <input type="text" id="kb-author" placeholder="Nama Penyusun" />
+                  <input
+                    type="text"
+                    id="kb-author"
+                    placeholder="Nama Penyusun"
+                  />
                 </div>
               </div>
-              <div class="se-form-group" style="margin-top: 14px;">
+              <div class="se-form-group" style="margin-top: 14px">
                 <label>Status Validasi</label>
                 <select id="kb-status">
                   <option value="DRAFT">📝 DRAFT</option>
@@ -2475,14 +2846,26 @@
                   <option value="ARCHIVED">🗄️ ARCHIVED</option>
                 </select>
               </div>
-              <div class="se-form-group" style="margin-top: 14px;">
+              <div class="se-form-group" style="margin-top: 14px">
                 <label>Deskripsi / Abstrak Singkat</label>
-                <textarea id="kb-desc" rows="4" placeholder="Tulis intisari dari dokumen ini..."></textarea>
+                <textarea
+                  id="kb-desc"
+                  rows="4"
+                  placeholder="Tulis intisari dari dokumen ini..."
+                ></textarea>
               </div>
             </div>
             <div class="se-modal-footer">
-              <button class="btn-secondary" onclick="kbCloseFormModal()">Batal</button>
-              <button class="btn-primary" id="kbFormSubmitBtn" onclick="kbSaveData()">💾 Simpan Data</button>
+              <button class="btn-secondary" onclick="kbCloseFormModal()">
+                Batal
+              </button>
+              <button
+                class="btn-primary"
+                id="kbFormSubmitBtn"
+                onclick="kbSaveData()"
+              >
+                💾 Simpan Data
+              </button>
             </div>
           </div>
         </div>
@@ -2491,12 +2874,18 @@
           <div class="se-modal-content">
             <div class="se-modal-header">
               <h2 id="kbViewTitle">Detail Dokumen</h2>
-              <button class="se-modal-close" onclick="kbCloseViewModal()">✕</button>
+              <button class="se-modal-close" onclick="kbCloseViewModal()">
+                ✕
+              </button>
             </div>
             <div class="se-modal-body" id="kbViewBody"></div>
             <div class="se-modal-footer">
-              <button class="btn-secondary" onclick="kbCloseViewModal()">Tutup</button>
-              <button class="btn-primary" onclick="kbEditFromView()">✏️ Edit Data</button>
+              <button class="btn-secondary" onclick="kbCloseViewModal()">
+                Tutup
+              </button>
+              <button class="btn-primary" onclick="kbEditFromView()">
+                ✏️ Edit Data
+              </button>
             </div>
           </div>
         </div>
@@ -2505,16 +2894,28 @@
           <div class="se-modal-content" style="max-width: 420px">
             <div class="se-modal-header">
               <h2 style="color: #ef4444">🗑️ Hapus Dokumen</h2>
-              <button class="se-modal-close" onclick="kbCloseDeleteModal()">✕</button>
+              <button class="se-modal-close" onclick="kbCloseDeleteModal()">
+                ✕
+              </button>
             </div>
             <div class="se-modal-body">
               <p style="font-size: 15px; color: #475569">
-                Apakah Anda yakin ingin menghapus <strong id="kbDeleteId"></strong>? Tindakan ini akan menghapus data dari pustaka secara permanen.
+                Apakah Anda yakin ingin menghapus
+                <strong id="kbDeleteId"></strong>? Tindakan ini akan menghapus
+                data dari pustaka secara permanen.
               </p>
             </div>
             <div class="se-modal-footer">
-              <button class="btn-secondary" onclick="kbCloseDeleteModal()">Batal</button>
-              <button class="btn-primary" style="background: #ef4444" onclick="kbConfirmDelete()">Hapus Sekarang</button>
+              <button class="btn-secondary" onclick="kbCloseDeleteModal()">
+                Batal
+              </button>
+              <button
+                class="btn-primary"
+                style="background: #ef4444"
+                onclick="kbConfirmDelete()"
+              >
+                Hapus Sekarang
+              </button>
             </div>
           </div>
         </div>
@@ -2526,33 +2927,91 @@
             <div class="subtitle">ADMINISTRATION</div>
             <h1>Reports</h1>
             <p>
-              Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.
+              Finalisasi laporan proyek berdasarkan data historis eksekusi
+              lapangan, review kinerja, dan penyimpanan ke Knowledge Base.
             </p>
           </div>
         </div>
-        <div class="card" style="margin-bottom:20px;">
-        <div class="title"><h2 style="display:flex;justify-content:space-between;">Draft Laporan Akhir Proyek<button class="btn secondary no-print">Generate Ringkasan Otomatis</button></h2></div>
-        <div style="background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:20px;font-size:13px;line-height:1.6;">
-          <p><b>Executive Summary:</b><br>Proyek Pembangunan Gedung (Tahap 1) telah mencapai progres aktual sebesar <strong>68.5%</strong>. Terdapat total 8 Change Request selama masa konstruksi yang didominasi oleh kondisi lapangan (clash MEP).</p>
-          <p><b>Kinerja Waktu & Biaya:</b><br>SPI rata-rata: 0.94. Percepatan waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2 hari.</p>
-          <p><b>Lesson Learned Terverifikasi:</b><br>Clash detection wajib disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing. Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.</p>
+        <div class="card" style="margin-bottom: 20px">
+          <div class="title">
+            <h2 style="display: flex; justify-content: space-between">
+              Draft Laporan Akhir Proyek<button class="btn secondary no-print">
+                Generate Ringkasan Otomatis
+              </button>
+            </h2>
+          </div>
+          <div
+            style="
+              background: #f8fafc;
+              border: 1px solid var(--line);
+              border-radius: 12px;
+              padding: 20px;
+              font-size: 13px;
+              line-height: 1.6;
+            "
+          >
+            <p>
+              <b>Executive Summary:</b><br />Proyek Pembangunan Gedung (Tahap 1)
+              telah mencapai progres aktual sebesar <strong>68.5%</strong>.
+              Terdapat total 8 Change Request selama masa konstruksi yang
+              didominasi oleh kondisi lapangan (clash MEP).
+            </p>
+            <p>
+              <b>Kinerja Waktu & Biaya:</b><br />SPI rata-rata: 0.94. Percepatan
+              waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil
+              memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2
+              hari.
+            </p>
+            <p>
+              <b>Lesson Learned Terverifikasi:</b><br />Clash detection wajib
+              disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing.
+              Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.
+            </p>
+          </div>
         </div>
-      </div>
-      <div class="card">
-        <div class="title"><h2>RACI & Pengesahan Laporan Dokumen</h2></div>
-        <table>
-          <tr style="background:#f1f5f9;">
-            <th style="text-align:center;">Disusun Oleh (Site Engineer)</th>
-            <th style="text-align:center;">Diperiksa Oleh (Admin/MK)</th>
-            <th style="text-align:center;">Disetujui Oleh (Project Manager)</th>
-          </tr>
-          <tr>
-            <td style="height:100px;text-align:center;vertical-align:bottom;">( Tanda Tangan & Nama )</td>
-            <td style="height:100px;text-align:center;vertical-align:bottom;">( Tanda Tangan & Nama )</td>
-            <td style="height:100px;text-align:center;vertical-align:bottom;font-weight:bold;color:var(--primary)">( Tanda Tangan PM Secara Digital )</td>
-          </tr>
-        </table>
-      </div>
+        <div class="card">
+          <div class="title"><h2>RACI & Pengesahan Laporan Dokumen</h2></div>
+          <table>
+            <tr style="background: #f1f5f9">
+              <th style="text-align: center">Disusun Oleh (Site Engineer)</th>
+              <th style="text-align: center">Diperiksa Oleh (Admin/MK)</th>
+              <th style="text-align: center">
+                Disetujui Oleh (Project Manager)
+              </th>
+            </tr>
+            <tr>
+              <td
+                style="
+                  height: 100px;
+                  text-align: center;
+                  vertical-align: bottom;
+                "
+              >
+                ( Tanda Tangan & Nama )
+              </td>
+              <td
+                style="
+                  height: 100px;
+                  text-align: center;
+                  vertical-align: bottom;
+                "
+              >
+                ( Tanda Tangan & Nama )
+              </td>
+              <td
+                style="
+                  height: 100px;
+                  text-align: center;
+                  vertical-align: bottom;
+                  font-weight: bold;
+                  color: var(--primary);
+                "
+              >
+                ( Tanda Tangan PM Secara Digital )
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -2561,36 +3020,36 @@
         const input = document.getElementById(inputId);
         const wrapper = document.getElementById(wrapperId);
 
-        input.addEventListener('keydown', function(e) {
-          if (e.key === 'Enter') {
+        input.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
             e.preventDefault(); // Mencegah modal tersubmit (reload) jika ada form
             const val = this.value.trim();
-            
-            if (val !== '') {
+
+            if (val !== "") {
               // Buat elemen tag baru
-              const tag = document.createElement('div');
-              tag.className = 'tag-item';
+              const tag = document.createElement("div");
+              tag.className = "tag-item";
               tag.innerHTML = `${val} <span>&times;</span>`;
 
               // Logic untuk menghapus tag jika "x" diklik
-              tag.querySelector('span').addEventListener('click', function(e) {
+              tag.querySelector("span").addEventListener("click", function (e) {
                 e.stopPropagation(); // Mencegah focus terpicu
                 tag.remove();
               });
 
               // Sisipkan tag tepat di sebelah kiri kolom input text
               wrapper.insertBefore(tag, input);
-              
+
               // Kosongkan input setelah Enter
-              this.value = '';
+              this.value = "";
             }
           }
         });
       }
 
       // Cara inisialisasi:
-      setupTagInput('pm-input', 'pm-wrapper');
-      setupTagInput('sm-input', 'sm-wrapper');
+      setupTagInput("pm-input", "pm-wrapper");
+      setupTagInput("sm-input", "sm-wrapper");
       // ==========================================
       // FUNGSI UMUM ADMIN
       // ==========================================
@@ -4719,8 +5178,11 @@
           projectArea: "PRJ-001",
           location: "Lantai 2",
           bimId: "BIM-001",
-          riskCategory: "Risiko Teknis",
-          riskVariable: "Clash MEP",
+          riskCategory: "Metode Pelaksanaan",
+          riskVariable: "Kondisi lapangan berubah",
+          riskVariableCode: "R1.3",
+          riskDescription:
+            "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
           description: "Relokasi jalur pipa utama akibat benturan desain.",
           changeType: "Material",
           siteCondition: "Normal",
@@ -4736,6 +5198,7 @@
           wbs4: "1.1.4 Pekerjaan MEP",
           wbs5: "1.1.4.1 Instalasi Pipa",
           wbs6: "Pipa PPRC",
+          evidenceFiles: [],
         },
         {
           id: "CR-002",
@@ -4747,8 +5210,11 @@
           projectArea: "PRJ-001",
           location: "Facade Barat",
           bimId: "BIM-002",
-          riskCategory: "Risiko Finansial",
-          riskVariable: "Kenaikan Harga Material",
+          riskCategory: "Sumber Daya Material",
+          riskVariable: "Fluktuasi harga material",
+          riskVariableCode: "R5.3",
+          riskDescription:
+            "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
           description: "Revisi material finishing facade.",
           changeType: "Material",
           siteCondition: "Normal",
@@ -4764,6 +5230,7 @@
           wbs4: "1.1.3 Pekerjaan Arsitektur",
           wbs5: "1.1.3.2 Finishing Eksterior",
           wbs6: "GRC Panel",
+          evidenceFiles: [],
         },
         {
           id: "CR-004",
@@ -4775,8 +5242,11 @@
           projectArea: "PRJ-003",
           location: "Pondasi P3",
           bimId: "BIM-008",
-          riskCategory: "Risiko Keselamatan",
-          riskVariable: "Stabilitas Struktur",
+          riskCategory: "Sumber Daya Peralatan",
+          riskVariable: "Kapasitas alat tidak sesuai",
+          riskVariableCode: "R6.2",
+          riskDescription:
+            "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
           description: "Perubahan spesifikasi material jembatan.",
           changeType: "Material",
           siteCondition: "Terbatas",
@@ -4792,6 +5262,7 @@
           wbs4: "1.1.2 Pekerjaan Sipil",
           wbs5: "1.1.2.1 Pekerjaan Pondasi",
           wbs6: "Tiang Pancang",
+          evidenceFiles: [],
         },
         {
           id: "CR-008",
@@ -4803,8 +5274,11 @@
           projectArea: "PRJ-001",
           location: "Shaft Plumbing Lt.3",
           bimId: "BIM-GUID-PIPE-010",
-          riskCategory: "Risiko Teknis",
-          riskVariable: "Clash MEP",
+          riskCategory: "Metode Pelaksanaan",
+          riskVariable: "Kondisi lapangan berubah",
+          riskVariableCode: "R1.3",
+          riskDescription:
+            "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
           description: "Relokasi Jalur Pipa Utama (Plumbing).",
           changeType: "Lingkungan",
           siteCondition: "Terbatas",
@@ -4820,6 +5294,7 @@
           wbs4: "1.1.4 Pekerjaan MEP",
           wbs5: "1.1.4.1 Instalasi Pipa",
           wbs6: "Pipa PPRC 3 inch",
+          evidenceFiles: [],
         },
         {
           id: "CR-009",
@@ -4831,8 +5306,11 @@
           projectArea: "PRJ-001",
           location: "Facade Selatan",
           bimId: "BIM-013",
-          riskCategory: "Risiko Finansial",
-          riskVariable: "Kenaikan Harga",
+          riskCategory: "Sumber Daya Material",
+          riskVariable: "Fluktuasi harga material",
+          riskVariableCode: "R5.3",
+          riskDescription:
+            "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
           description: "Revisi Material Finishing Facade.",
           changeType: "Material",
           siteCondition: "Normal",
@@ -4848,6 +5326,7 @@
           wbs4: "1.1.3 Pekerjaan Arsitektur",
           wbs5: "1.1.3.2 Finishing",
           wbs6: "Granit Lantai",
+          evidenceFiles: [],
         },
         {
           id: "CR-010",
@@ -4859,8 +5338,11 @@
           projectArea: "PRJ-002",
           location: "Taman Median",
           bimId: "BIM-020",
-          riskCategory: "Risiko Operasional",
-          riskVariable: "Utilitas Publik",
+          riskCategory: "Lingkungan",
+          riskVariable: "Gangguan sosial masyarakat",
+          riskVariableCode: "R8.5",
+          riskDescription:
+            "Kondisi sosial masyarakat, lalu lintas, akses warga, atau utilitas publik berubah dan menimbulkan gangguan.",
           description: "Penambahan Titik Lampu Taman.",
           changeType: "Lingkungan",
           siteCondition: "Normal",
@@ -4876,6 +5358,7 @@
           wbs4: "1.1.4 Pekerjaan MEP",
           wbs5: "1.1.4.3 Instalasi Listrik",
           wbs6: "Lampu Taman",
+          evidenceFiles: [],
         },
         {
           id: "CR-011",
@@ -4887,8 +5370,11 @@
           projectArea: "PRJ-002",
           location: "STA 0+200 – 0+500",
           bimId: "BIM-022",
-          riskCategory: "Risiko Teknis",
-          riskVariable: "Kualitas Material",
+          riskCategory: "Sumber Daya Material",
+          riskVariable: "Material tidak sesuai spesifikasi",
+          riskVariableCode: "R5.2",
+          riskDescription:
+            "Mutu, dimensi, finishing, atau spesifikasi material berubah atau tidak memenuhi persyaratan.",
           description: "Perubahan Tebal Lapisan Aspal.",
           changeType: "Material",
           siteCondition: "Normal",
@@ -4904,6 +5390,7 @@
           wbs4: "1.1.2 Pekerjaan Sipil",
           wbs5: "1.1.2.3 Perkerasan Jalan",
           wbs6: "Aspal AC-WC",
+          evidenceFiles: [],
         },
         {
           id: "CR-015",
@@ -4915,8 +5402,11 @@
           projectArea: "PRJ-003",
           location: "Pondasi P5-P6",
           bimId: "BIM-031",
-          riskCategory: "Risiko Keselamatan",
-          riskVariable: "Beban Berlebih",
+          riskCategory: "Sumber Daya Peralatan",
+          riskVariable: "Kapasitas alat tidak sesuai",
+          riskVariableCode: "R6.2",
+          riskDescription:
+            "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
           description: "Penambahan Tiang Pancang Extra.",
           changeType: "Waktu",
           siteCondition: "Terbatas",
@@ -4932,6 +5422,7 @@
           wbs4: "1.1.2 Pekerjaan Sipil",
           wbs5: "1.1.2.1 Pekerjaan Pondasi",
           wbs6: "Tiang Pancang Baja",
+          evidenceFiles: [],
         },
       ];
 
@@ -5365,42 +5856,6 @@
           },
         ],
       };
-      function initializeRiskDropdown() {
-        const categorySelect = document.getElementById("se-riskCategory");
-        const variableSelect = document.getElementById("se-riskVariable");
-        const descriptionField = document.getElementById("se-riskDescription");
-
-        if (!categorySelect || !variableSelect || !descriptionField) return;
-
-        categorySelect.addEventListener("change", function () {
-          const variables = riskData[this.value];
-
-          variableSelect.innerHTML =
-            '<option value="">Pilih Variabel Risiko</option>';
-
-          descriptionField.value = "";
-
-          if (!variables) return;
-
-          variables.forEach((item) => {
-            const option = document.createElement("option");
-
-            option.value = item.code;
-            option.textContent = item.code + " - " + item.title;
-
-            variableSelect.appendChild(option);
-          });
-        });
-
-        variableSelect.addEventListener("change", function () {
-          const category = categorySelect.value;
-
-          const item = riskData[category]?.find((r) => r.code === this.value);
-
-          descriptionField.value = item ? item.desc : "";
-        });
-      }
-
       // ---- RENDER TABLE ----
       function seRenderTable() {
         const query = (document.getElementById("se-search")?.value || "")
@@ -5589,6 +6044,21 @@
             el.value =
               el.tagName === "SELECT" ? el.options[0]?.value || "" : "";
         });
+        // Reset risk description div
+        const riskDescDiv = document.getElementById("se-riskDescription");
+        if (riskDescDiv)
+          riskDescDiv.innerHTML =
+            "Pilih kategori dan variabel risiko untuk mengisi deskripsi secara otomatis.";
+        // Reset variable dropdown
+        const varSel = document.getElementById("se-riskVariable");
+        if (varSel)
+          varSel.innerHTML = '<option value="">Pilih Variabel Risiko</option>';
+        // Reset evidence upload
+        const evUpload = document.getElementById("se-evidenceUpload");
+        if (evUpload) evUpload.value = "";
+        const evGallery = document.getElementById("se-evidenceGallery");
+        if (evGallery) evGallery.innerHTML = "";
+        seCurrentEvidenceFiles = [];
       }
 
       function sePopulateForm(r) {
@@ -5610,21 +6080,28 @@
         document.getElementById("se-projectArea").value = r.projectArea;
         document.getElementById("se-location").value = r.location;
         document.getElementById("se-bimId").value = r.bimId;
-        document.getElementById("se-riskCategory").value = r.riskCategory;
+        // Cascading risk: set category, populate variables, set variable, update description
+        const catSel = document.getElementById("se-riskCategory");
+        catSel.value = r.riskCategory || "";
+        seUpdateRiskVariables();
 
-        const variableSelect = document.getElementById("se-riskVariable");
+        const varSel = document.getElementById("se-riskVariable");
+        // Find and set the variable by matching title or code
+        if (r.riskVariable && riskData[r.riskCategory]) {
+          const matchedItem = riskData[r.riskCategory].find(
+            (item) =>
+              item.title === r.riskVariable || item.code === r.riskVariable,
+          );
+          if (matchedItem) {
+            varSel.value = matchedItem.code;
+          } else {
+            // Try to set by value directly
+            varSel.value = r.riskVariable;
+          }
+        }
+        seUpdateRiskDescription();
 
-        variableSelect.innerHTML = "";
-
-        Object.keys(riskData[r.riskCategory] || {}).forEach((variable) => {
-          const option = document.createElement("option");
-          option.value = variable;
-          option.textContent = variable;
-          variableSelect.appendChild(option);
-        });
-
-        variableSelect.value = r.riskVariable;
-
+        document.getElementById("se-description").value = r.description || "";
         document.getElementById("se-changeType").value = r.changeType;
         document.getElementById("se-siteCondition").value = r.siteCondition;
         document.getElementById("se-ownerRequest").value = r.ownerRequest;
@@ -5636,7 +6113,15 @@
         document.getElementById("se-descriptionDetail").value =
           r.descriptionDetail;
         document.getElementById("se-status").value = r.status;
-
+        // Evidence: restore stored file metadata display
+        seCurrentEvidenceFiles = r.evidenceFiles || [];
+        const evGallery = document.getElementById("se-evidenceGallery");
+        evGallery.innerHTML = "";
+        const evUpload = document.getElementById("se-evidenceUpload");
+        if (evUpload) evUpload.value = "";
+        seCurrentEvidenceFiles.forEach((ef) => {
+          seRenderEvidenceItem(ef, evGallery);
+        });
         updateRiskStatus();
       }
 
@@ -5654,6 +6139,36 @@
           return;
         }
 
+        // Get riskDescription from div content
+        const riskDescDiv = document.getElementById("se-riskDescription");
+        const riskDescText = riskDescDiv ? riskDescDiv.innerText.trim() : "";
+
+        // Get the selected variable title for storage
+        const varSel = document.getElementById("se-riskVariable");
+        const selectedVarCode = varSel?.value || "";
+        const selectedCat = getVal("se-riskCategory");
+        let riskVariableTitle = selectedVarCode;
+        if (selectedCat && riskData[selectedCat]) {
+          const found = riskData[selectedCat].find(
+            (i) => i.code === selectedVarCode,
+          );
+          if (found) riskVariableTitle = found.title;
+        }
+
+        // Merge new evidence files from upload input + existing stored files
+        const evUpload = document.getElementById("se-evidenceUpload");
+        const newFiles =
+          evUpload && evUpload.files ? Array.from(evUpload.files) : [];
+        const newFileMeta = newFiles.map((f) => ({
+          name: f.name,
+          type: f.type,
+          dataUrl: null,
+        }));
+        // We need to store dataUrls — use already-rendered gallery items' data
+        // seCurrentEvidenceFiles already holds dataUrl for stored items
+        // New items were processed by seHandleEvidenceUpload and pushed into seCurrentEvidenceFiles
+        const allEvidenceFiles = [...seCurrentEvidenceFiles];
+
         const data = {
           id: getVal("se-changeId"),
           changeDate: getVal("se-changeDate"),
@@ -5668,7 +6183,9 @@
           location: getVal("se-location"),
           bimId: getVal("se-bimId"),
           riskCategory: getVal("se-riskCategory"),
-          riskVariable: getVal("se-riskVariable"),
+          riskVariable: riskVariableTitle,
+          riskVariableCode: selectedVarCode,
+          riskDescription: riskDescText,
           description: getVal("se-description"),
           changeType: getVal("se-changeType"),
           siteCondition: getVal("se-siteCondition"),
@@ -5680,6 +6197,7 @@
           impactArea: getVal("se-impactArea"),
           descriptionDetail: getVal("se-descriptionDetail"),
           status: getVal("se-status"),
+          evidenceFiles: allEvidenceFiles,
         };
         if (seEditingId) {
           const idx = seChangeRequests.findIndex((x) => x.id === seEditingId);
@@ -5702,6 +6220,37 @@
         document.getElementById("seViewTitle").innerText = "📄 Detail: " + r.id;
         const isLocked = r.status === "APPROVED";
 
+        // Build evidence HTML
+        let evidenceHTML = "";
+        if (r.evidenceFiles && r.evidenceFiles.length > 0) {
+          evidenceHTML = '<div class="se-evidence-view-gallery">';
+          r.evidenceFiles.forEach((ef, idx) => {
+            const isPdf =
+              ef.type === "application/pdf" ||
+              ef.name.toLowerCase().endsWith(".pdf");
+            if (isPdf) {
+              evidenceHTML += `
+                <div class="se-evidence-view-item">
+                  <div class="se-evidence-view-pdf" onclick="seViewEvidencePdf('${idx}','${id}')">
+                    <span style="font-size:24px;">📄</span>
+                    <span>${ef.name}</span>
+                  </div>
+                  <span>${ef.name}</span>
+                </div>`;
+            } else {
+              evidenceHTML += `
+                <div class="se-evidence-view-item">
+                  <img src="${ef.dataUrl}" alt="${ef.name}" onclick="seViewEvidenceImage('${ef.dataUrl}','${ef.name}')" />
+                  <span>${ef.name}</span>
+                </div>`;
+            }
+          });
+          evidenceHTML += "</div>";
+        } else {
+          evidenceHTML =
+            '<p style="color:#94a3b8; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
+        }
+
         document.getElementById("seViewBody").innerHTML = `
             ${isLocked ? `<div style="background:#dcfce7;color:#166534;padding:12px 16px;border-left:5px solid #166534;border-radius:8px;font-weight:600;margin-bottom:20px;">🔒 STATUS APPROVED — Data terkunci (Read-Only)</div>` : ""}
             <p class="se-section-label">Langkah 1 — Identifikasi Perubahan</p>
@@ -5721,11 +6270,18 @@
               <div class="view-field"><label>Project Area</label><div class="view-value">${r.projectArea}</div></div>
               <div class="view-field"><label>Location</label><div class="view-value">${r.location}</div></div>
               <div class="view-field"><label>BIM Object ID</label><div class="view-value">${r.bimId}</div></div>
-              <div class="view-field"><label>Kategori Risiko</label><div class="view-value">${r.riskCategory}</div></div>
-              <div class="view-field"><label>Variabel Risiko</label><div class="view-value">${r.riskVariable}</div></div>
+              <div class="view-field"><label>Kategori Risiko</label><div class="view-value">${r.riskCategory || "—"}</div></div>
+              <div class="view-field"><label>Variabel Risiko</label><div class="view-value">${r.riskVariable || "—"}</div></div>
               <div class="view-field"><label>Status</label><div class="view-value">${seGetStatusHTML(r.status)}</div></div>
             </div>
+            <div class="view-field" style="margin-top:12px;">
+              <label>Deskripsi Risiko</label>
+              <div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;border:1px solid #e2e8f0;color:#475569;">${r.riskDescription || "—"}</div>
+            </div>
             <div class="view-field" style="margin-top:12px;"><label>Description</label><div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;">${r.description}</div></div>
+
+            <p class="se-section-label" style="margin-top:20px;">📎 Evidence</p>
+            ${evidenceHTML}
             <p class="se-section-label" style="margin-top:20px;">Langkah 2 — Register Change Request</p>
             <div class="view-grid">
               <div class="view-field"><label>Change Type</label><div class="view-value">${r.changeType}</div></div>
@@ -5771,7 +6327,6 @@
         seUpdateKPI();
         seRenderTable();
         updateProjectCounts();
-        initializeRiskDropdown();
       }
 
       // Close SE modals on backdrop click
@@ -5785,7 +6340,7 @@
           });
       });
 
-// Menimpa switchMenu awal untuk mendeteksi inisialisasi tabel tiap menu
+      // Menimpa switchMenu awal untuk mendeteksi inisialisasi tabel tiap menu
       const _origSwitchMenu = switchMenu;
       switchMenu = function (sectionId, clickedElement) {
         _origSwitchMenu(sectionId, clickedElement);
@@ -5800,7 +6355,11 @@
       };
 
       // Pre-init tab jika load langsung di knowledge-base
-      if (document.getElementById("knowledge-base")?.classList.contains("active-section")) {
+      if (
+        document
+          .getElementById("knowledge-base")
+          ?.classList.contains("active-section")
+      ) {
         kbUpdateKPI();
         kbRenderTable();
       }
@@ -5824,6 +6383,290 @@
       initializeWBS();
 
       // =========================================
+      // RISK CASCADING DROPDOWN LOGIC
+      // =========================================
+
+      function seUpdateRiskVariables() {
+        const categorySelect = document.getElementById("se-riskCategory");
+        const variableSelect = document.getElementById("se-riskVariable");
+        const descDiv = document.getElementById("se-riskDescription");
+
+        if (!categorySelect || !variableSelect || !descDiv) return;
+
+        const selectedCategory = categorySelect.value;
+        variableSelect.innerHTML =
+          '<option value="">Pilih Variabel Risiko</option>';
+        descDiv.innerHTML = "Pilih variabel risiko untuk melihat deskripsinya.";
+
+        if (!selectedCategory || !riskData[selectedCategory]) return;
+
+        riskData[selectedCategory].forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item.code;
+          option.textContent = item.code + " — " + item.title;
+          variableSelect.appendChild(option);
+        });
+      }
+
+      function seUpdateRiskDescription() {
+        const categorySelect = document.getElementById("se-riskCategory");
+        const variableSelect = document.getElementById("se-riskVariable");
+        const descDiv = document.getElementById("se-riskDescription");
+
+        if (!categorySelect || !variableSelect || !descDiv) return;
+
+        const selectedCategory = categorySelect.value;
+        const selectedCode = variableSelect.value;
+
+        if (!selectedCategory || !selectedCode || !riskData[selectedCategory]) {
+          descDiv.innerHTML =
+            "Pilih kategori dan variabel risiko untuk mengisi deskripsi secara otomatis.";
+          return;
+        }
+
+        const item = riskData[selectedCategory].find(
+          (r) => r.code === selectedCode,
+        );
+        if (item) {
+          descDiv.innerHTML = `<strong style="color:#0f2d52;">${item.code} — ${item.title}</strong><br><span style="color:#475569;">${item.desc}</span>`;
+        } else {
+          descDiv.innerHTML = "Deskripsi tidak ditemukan.";
+        }
+      }
+
+      // =========================================
+      // EVIDENCE UPLOAD & GALLERY LOGIC
+      // =========================================
+
+      // Global array to store evidence file metadata (name, type, dataUrl)
+      let seCurrentEvidenceFiles = [];
+
+      function seHandleEvidenceUpload(input) {
+        const files = Array.from(input.files);
+        const gallery = document.getElementById("se-evidenceGallery");
+
+        files.forEach((file) => {
+          const isPdf = file.type === "application/pdf";
+          const allowed = [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "application/pdf",
+          ];
+          if (
+            !allowed.includes(file.type) &&
+            !file.name.toLowerCase().match(/\.(jpg|jpeg|png|pdf)$/)
+          ) {
+            alert(
+              "Format file tidak didukung: " +
+                file.name +
+                "\nHanya JPG, JPEG, PNG, PDF yang diizinkan.",
+            );
+            return;
+          }
+
+          if (isPdf) {
+            const fileMeta = {
+              name: file.name,
+              type: file.type,
+              dataUrl: null,
+            };
+            seCurrentEvidenceFiles.push(fileMeta);
+            seRenderEvidenceItem(fileMeta, gallery);
+          } else {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              const fileMeta = {
+                name: file.name,
+                type: file.type,
+                dataUrl: e.target.result,
+              };
+              seCurrentEvidenceFiles.push(fileMeta);
+              seRenderEvidenceItem(fileMeta, gallery);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+
+      function seRenderEvidenceItem(fileMeta, gallery) {
+        if (!gallery) return;
+        const isPdf =
+          fileMeta.type === "application/pdf" ||
+          fileMeta.name.toLowerCase().endsWith(".pdf");
+        const wrapper = document.createElement("div");
+        wrapper.style.display = "flex";
+        wrapper.style.flexDirection = "column";
+        wrapper.style.alignItems = "center";
+        wrapper.style.gap = "4px";
+
+        if (isPdf) {
+          const pdfCard = document.createElement("div");
+          pdfCard.className = "se-pdf-card";
+          pdfCard.innerHTML = `<span class="pdf-icon">📄</span><span style="font-size:10px;word-break:break-all;">${fileMeta.name}</span>`;
+          pdfCard.addEventListener("click", () => {
+            if (fileMeta.dataUrl) {
+              seOpenEvidencePdfViewer(fileMeta.dataUrl);
+            } else {
+              alert(
+                "Preview PDF hanya tersedia untuk file yang baru diupload.",
+              );
+            }
+          });
+          wrapper.appendChild(pdfCard);
+        } else {
+          const img = document.createElement("img");
+          img.src = fileMeta.dataUrl;
+          img.className = "se-gallery-image";
+          img.title = fileMeta.name;
+          img.addEventListener("click", () => {
+            seOpenEvidenceImageViewer(fileMeta.dataUrl, fileMeta.name);
+          });
+          wrapper.appendChild(img);
+        }
+
+        const nameLabel = document.createElement("span");
+        nameLabel.style.cssText =
+          "font-size:10px;color:#64748b;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;";
+        nameLabel.textContent = fileMeta.name;
+        wrapper.appendChild(nameLabel);
+        gallery.appendChild(wrapper);
+      }
+
+      // =========================================
+      // EVIDENCE IMAGE & PDF VIEWER (MODAL)
+      // =========================================
+
+      let seImgScale = 1,
+        seImgPosX = 0,
+        seImgPosY = 0;
+      let seImgDragging = false,
+        seImgStartX = 0,
+        seImgStartY = 0;
+
+      function seUpdateModalImage() {
+        const img = document.getElementById("seModalImage");
+        if (img)
+          img.style.transform = `translate(calc(-50% + ${seImgPosX}px), calc(-50% + ${seImgPosY}px)) scale(${seImgScale})`;
+      }
+
+      function seOpenEvidenceImageViewer(dataUrl, name) {
+        const modal = document.getElementById("seImageModal");
+        const img = document.getElementById("seModalImage");
+        if (!modal || !img) return;
+        img.src = dataUrl;
+        seImgScale = 1;
+        seImgPosX = 0;
+        seImgPosY = 0;
+        seUpdateModalImage();
+        modal.classList.add("active");
+      }
+
+      function seOpenEvidencePdfViewer(dataUrl) {
+        const modal = document.getElementById("sePdfModal");
+        const viewer = document.getElementById("sePdfViewer");
+        if (!modal || !viewer) return;
+        viewer.src = dataUrl;
+        modal.classList.add("active");
+      }
+
+      // Viewer from view modal (uses stored data by index)
+      function seViewEvidenceImage(dataUrl, name) {
+        seOpenEvidenceImageViewer(dataUrl, name);
+      }
+
+      function seViewEvidencePdf(idx, crId) {
+        const r = seChangeRequests.find((x) => x.id === crId);
+        if (!r || !r.evidenceFiles) return;
+        const ef = r.evidenceFiles[parseInt(idx)];
+        if (!ef) return;
+        if (ef.dataUrl) {
+          seOpenEvidencePdfViewer(ef.dataUrl);
+        } else {
+          alert(
+            "Preview PDF tidak tersedia untuk file ini (hanya tersedia saat baru diupload).",
+          );
+        }
+      }
+
+      // Attach modal event listeners after DOM ready
+      document.addEventListener("DOMContentLoaded", function () {
+        seInitEvidenceModalListeners();
+      });
+      // Also call directly in case DOM is already ready
+      seInitEvidenceModalListeners();
+
+      function seInitEvidenceModalListeners() {
+        // Image modal controls
+        const imgModal = document.getElementById("seImageModal");
+        const imgEl = document.getElementById("seModalImage");
+        const closeImgBtn = document.getElementById("seCloseImageModal");
+        const zoomIn = document.getElementById("seZoomIn");
+        const zoomOut = document.getElementById("seZoomOut");
+        const resetZoom = document.getElementById("seResetZoom");
+        const pdfModal = document.getElementById("sePdfModal");
+        const closePdfBtn = document.getElementById("seClosePdfModal");
+        const pdfViewer = document.getElementById("sePdfViewer");
+
+        if (!imgModal || !imgEl) return;
+
+        if (closeImgBtn)
+          closeImgBtn.addEventListener("click", () =>
+            imgModal.classList.remove("active"),
+          );
+        if (zoomIn)
+          zoomIn.addEventListener("click", () => {
+            seImgScale += 0.25;
+            seUpdateModalImage();
+          });
+        if (zoomOut)
+          zoomOut.addEventListener("click", () => {
+            seImgScale = Math.max(0.25, seImgScale - 0.25);
+            seUpdateModalImage();
+          });
+        if (resetZoom)
+          resetZoom.addEventListener("click", () => {
+            seImgScale = 1;
+            seImgPosX = 0;
+            seImgPosY = 0;
+            seUpdateModalImage();
+          });
+
+        imgEl.addEventListener("mousedown", (e) => {
+          seImgDragging = true;
+          seImgStartX = e.clientX - seImgPosX;
+          seImgStartY = e.clientY - seImgPosY;
+          imgEl.style.cursor = "grabbing";
+        });
+        document.addEventListener("mousemove", (e) => {
+          if (!seImgDragging) return;
+          seImgPosX = e.clientX - seImgStartX;
+          seImgPosY = e.clientY - seImgStartY;
+          seUpdateModalImage();
+        });
+        document.addEventListener("mouseup", () => {
+          seImgDragging = false;
+          if (imgEl) imgEl.style.cursor = "grab";
+        });
+        imgModal.addEventListener("click", (e) => {
+          if (e.target === imgModal) imgModal.classList.remove("active");
+        });
+
+        if (closePdfBtn)
+          closePdfBtn.addEventListener("click", () => {
+            pdfModal.classList.remove("active");
+            if (pdfViewer) pdfViewer.src = "";
+          });
+        if (pdfModal)
+          pdfModal.addEventListener("click", (e) => {
+            if (e.target === pdfModal) {
+              pdfModal.classList.remove("active");
+              if (pdfViewer) pdfViewer.src = "";
+            }
+          });
+      }
+
+      // =========================================
       // KNOWLEDGE BASE MODULE (ALGORITMA & CRUD)
       // =========================================
 
@@ -5835,7 +6678,7 @@
           category: "Standardization",
           author: "Galuh Rizkiya",
           status: "PUBLISHED",
-          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang."
+          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang.",
         },
         {
           id: "KM-002",
@@ -5844,7 +6687,7 @@
           category: "Lesson Learned",
           author: "Tim Engineer IMS",
           status: "PUBLISHED",
-          desc: "Catatan lesson learned mengenai seringnya clash antara rute pipa plumbing dengan dimensi balok pracetak. Solusi: Overlay wajib 3D BIM sebelum persetujuan shop drawing."
+          desc: "Catatan lesson learned mengenai seringnya clash antara rute pipa plumbing dengan dimensi balok pracetak. Solusi: Overlay wajib 3D BIM sebelum persetujuan shop drawing.",
         },
         {
           id: "KM-003",
@@ -5853,7 +6696,7 @@
           category: "Standardization",
           author: "Galuh Rizkiya",
           status: "PUBLISHED",
-          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing."
+          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing.",
         },
         {
           id: "KM-004",
@@ -5862,8 +6705,8 @@
           category: "BIM Object",
           author: "Dedi Kurnia",
           status: "DRAFT",
-          desc: "Library Revit 2025 untuk komponen pipa PPRC lengkap dengan parameter routing preferences lokal."
-        }
+          desc: "Library Revit 2025 untuk komponen pipa PPRC lengkap dengan parameter routing preferences lokal.",
+        },
       ];
 
       let kbCurrentTab = "all";
@@ -5873,7 +6716,9 @@
 
       function kbGenerateNextId() {
         if (kbDatabase.length === 0) return "KM-001";
-        const nums = kbDatabase.map((r) => parseInt(r.id.replace(/\D/g, ""), 10));
+        const nums = kbDatabase.map((r) =>
+          parseInt(r.id.replace(/\D/g, ""), 10),
+        );
         const next = Math.max(...nums) + 1;
         return "KM-" + String(next).padStart(3, "0");
       }
@@ -5882,7 +6727,7 @@
         const map = {
           DRAFT: "badge badge-pending",
           PUBLISHED: "badge badge-approved badge-completed",
-          ARCHIVED: "badge badge-rejected"
+          ARCHIVED: "badge badge-rejected",
         };
         const cls = map[status] || "badge badge-pending";
         return `<span class="${cls}">${status}</span>`;
@@ -5890,15 +6735,24 @@
 
       function kbUpdateKPI() {
         document.getElementById("kb-total").innerText = kbDatabase.length;
-        document.getElementById("kb-std").innerText = kbDatabase.filter((r) => r.category === "Standardization").length;
-        document.getElementById("kb-ll").innerText = kbDatabase.filter((r) => r.category === "Lesson Learned").length;
-        document.getElementById("kb-bim").innerText = kbDatabase.filter((r) => r.category === "BIM Object").length;
+        document.getElementById("kb-std").innerText = kbDatabase.filter(
+          (r) => r.category === "Standardization",
+        ).length;
+        document.getElementById("kb-ll").innerText = kbDatabase.filter(
+          (r) => r.category === "Lesson Learned",
+        ).length;
+        document.getElementById("kb-bim").innerText = kbDatabase.filter(
+          (r) => r.category === "BIM Object",
+        ).length;
       }
 
       function kbRenderTable() {
-        const query = (document.getElementById("kb-search")?.value || "").toLowerCase().trim();
+        const query = (document.getElementById("kb-search")?.value || "")
+          .toLowerCase()
+          .trim();
         let rows = kbDatabase.filter((r) => {
-          if (kbCurrentTab !== "all" && r.category !== kbCurrentTab) return false;
+          if (kbCurrentTab !== "all" && r.category !== kbCurrentTab)
+            return false;
           if (!query) return true;
           return (
             r.id.toLowerCase().includes(query) ||
@@ -5915,7 +6769,9 @@
           return;
         }
 
-        tbody.innerHTML = rows.map((r) => `
+        tbody.innerHTML = rows
+          .map(
+            (r) => `
           <tr>
             <td><b style="color:#0f2d52;">${r.id}</b></td>
             <td>${r.date}</td>
@@ -5928,12 +6784,16 @@
               <button class="btn-edit-table" onclick="kbOpenEditModal('${r.id}')">✏️ Edit</button>
               <button class="btn-edit-table delete-btn" onclick="kbOpenDeleteModal('${r.id}')">🗑️ Hapus</button>
             </td>
-          </tr>`).join("");
+          </tr>`,
+          )
+          .join("");
       }
 
       function kbSetTab(tab, el) {
         kbCurrentTab = tab;
-        document.querySelectorAll("#knowledge-base .se-tab").forEach((t) => t.classList.remove("active"));
+        document
+          .querySelectorAll("#knowledge-base .se-tab")
+          .forEach((t) => t.classList.remove("active"));
         el.classList.add("active");
         kbRenderTable();
       }
@@ -5945,17 +6805,20 @@
       // -- FORM LOGIC --
       function kbOpenAddModal() {
         kbEditingId = null;
-        document.getElementById("kbFormModalTitle").innerText = "➕ Tambah Dokumen Knowledge Base";
+        document.getElementById("kbFormModalTitle").innerText =
+          "➕ Tambah Dokumen Knowledge Base";
         document.getElementById("kbFormSubmitBtn").innerText = "💾 Simpan Data";
-        
+
         document.getElementById("kb-id").value = kbGenerateNextId();
         document.getElementById("kb-category").value = "";
-        document.getElementById("kb-date").value = new Date().toISOString().split("T")[0];
+        document.getElementById("kb-date").value = new Date()
+          .toISOString()
+          .split("T")[0];
         document.getElementById("kb-title").value = "";
         document.getElementById("kb-author").value = "";
         document.getElementById("kb-status").value = "DRAFT";
         document.getElementById("kb-desc").value = "";
-        
+
         document.getElementById("kbFormModal").classList.add("show");
       }
 
@@ -5963,10 +6826,11 @@
         const doc = kbDatabase.find((x) => x.id === id);
         if (!doc) return;
         kbEditingId = id;
-        
-        document.getElementById("kbFormModalTitle").innerText = "✏️ Edit Dokumen — " + id;
+
+        document.getElementById("kbFormModalTitle").innerText =
+          "✏️ Edit Dokumen — " + id;
         document.getElementById("kbFormSubmitBtn").innerText = "💾 Update Data";
-        
+
         document.getElementById("kb-id").value = doc.id;
         document.getElementById("kb-category").value = doc.category;
         document.getElementById("kb-date").value = doc.date;
@@ -5974,7 +6838,7 @@
         document.getElementById("kb-author").value = doc.author;
         document.getElementById("kb-status").value = doc.status;
         document.getElementById("kb-desc").value = doc.desc;
-        
+
         document.getElementById("kbViewModal").classList.remove("show");
         document.getElementById("kbFormModal").classList.add("show");
       }
@@ -6016,8 +6880,9 @@
         const doc = kbDatabase.find((x) => x.id === id);
         if (!doc) return;
         kbViewingId = id;
-        
-        document.getElementById("kbViewTitle").innerText = "📄 Detail Dokumen: " + doc.id;
+
+        document.getElementById("kbViewTitle").innerText =
+          "📄 Detail Dokumen: " + doc.id;
         document.getElementById("kbViewBody").innerHTML = `
           <div class="view-grid">
             <div class="view-field"><label>Doc ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${doc.id}</div></div>
@@ -6071,9 +6936,11 @@
 
       // Klik luar modal untuk menutup (Knowledge Base Event Listeners)
       ["kbFormModal", "kbViewModal", "kbDeleteModal"].forEach((modalId) => {
-        document.getElementById(modalId)?.addEventListener("click", function (e) {
-          if (e.target === this) this.classList.remove("show");
-        });
+        document
+          .getElementById(modalId)
+          ?.addEventListener("click", function (e) {
+            if (e.target === this) this.classList.remove("show");
+          });
       });
     </script>
   </body>
