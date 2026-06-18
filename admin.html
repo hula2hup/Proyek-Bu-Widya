@@ -668,12 +668,14 @@
         background: white;
         border-radius: 16px;
         border: 1px solid #e2e8f0;
-        overflow: hidden;
+        overflow-x: auto;
+        overflow-y: visible;
         margin-top: 25px;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
       }
       .change-table {
         width: 100%;
+        min-width: 1200px;
         border-collapse: collapse;
         text-align: left;
       }
@@ -693,6 +695,18 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         border-bottom: 2px solid #e2e8f0;
+      }
+      .se-table-container::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .se-table-container::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 999px;
+      }
+
+      .se-table-container::-webkit-scrollbar-track {
+        background: #f8fafc;
       }
       .change-table tr:last-child td {
         border-bottom: none;
