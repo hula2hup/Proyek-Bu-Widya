@@ -34,3 +34,17 @@ CREATE TABLE IF NOT EXISTS change_requests (
     status VARCHAR(50) DEFAULT NULL,
     PRIMARY KEY (changeId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS knowledge_base (
+    docId VARCHAR(50) NOT NULL,
+    changeDate DATE DEFAULT NULL,
+    documentName VARCHAR(100) DEFAULT NULL,
+    knowledgeCategory VARCHAR(50) DEFAULT NULL,
+    submittedBy VARCHAR(50) DEFAULT NULL,
+    validationStatus VARCHAR(50) DEFAULT NULL,
+    description TEXT DEFAULT NULL,
+    changeRequestLink VARCHAR(255) DEFAULT NULL,
+    riskVariableLink VARCHAR(255) DEFAULT NULL,
+    documentFile VARCHAR(255) DEFAULT NULL,
+    PRIMARY KEY (docId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
