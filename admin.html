@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Project Monitoring</title>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
       document.documentElement.style.display = "none";
 
@@ -381,6 +381,62 @@
         background: #f0fdf4;
         color: #15803d;
         border-color: #bbf7d0;
+      }
+      .badge.info {
+        background: #eff6ff;
+        color: #1d4ed8;
+        border-color: #bfdbfe;
+      }
+
+      /* =========================
+          PROJECT DASHBOARD POPUP (TIMELINE)
+        ========================= */
+      .pmd-timeline {
+        position: relative;
+        margin-top: 8px;
+        padding-left: 10px;
+      }
+      .pmd-timeline-item {
+        display: grid;
+        grid-template-columns: 110px 1fr;
+        gap: 14px;
+        border-left: 2px solid #e2e8f0;
+        padding: 0 0 28px 24px;
+        margin-left: 8px;
+        position: relative;
+      }
+      .pmd-timeline-item:last-child {
+        border-left-color: transparent;
+        padding-bottom: 0;
+      }
+      .pmd-timeline-item::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: #2563eb;
+        position: absolute;
+        left: -8px;
+        top: 2px;
+        border: 3px solid white;
+        box-shadow: 0 0 0 1px #2563eb;
+      }
+      .pmd-timeline-date {
+        font-weight: 700;
+        color: #0f172a;
+        font-size: 13px;
+      }
+      .pmd-timeline-item strong {
+        display: block;
+        margin-bottom: 6px;
+        color: #0f172a;
+        font-size: 14px;
+      }
+      .pmd-timeline-item p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
       }
 
       .action-btn {
@@ -1623,6 +1679,20 @@
                   <td><span class="badge badge-completed">Completed</span></td>
                   <td><strong>100%</strong></td>
                   <td>
+                    <button
+                      class="action-btn"
+                      style="color: #0f2d52"
+                      onclick="
+                        openProjectDashboardModal(
+                          'PRJ-001',
+                          'Gedung Sekolah Tahap 1',
+                          'Completed',
+                          100,
+                        )
+                      "
+                    >
+                      👁️ Lihat
+                    </button>
                     <button class="action-btn edit">✏️ Edit</button>
                     <button class="action-btn delete" onclick="deleteRow(this)">
                       🗑️ Delete
@@ -1636,6 +1706,20 @@
                   <td><span class="badge badge-progress">In Progress</span></td>
                   <td><strong>70%</strong></td>
                   <td>
+                    <button
+                      class="action-btn"
+                      style="color: #0f2d52"
+                      onclick="
+                        openProjectDashboardModal(
+                          'PRJ-002',
+                          'Renovasi Jalan Protokol',
+                          'In Progress',
+                          70,
+                        )
+                      "
+                    >
+                      👁️ Lihat
+                    </button>
                     <button class="action-btn edit">✏️ Edit</button>
                     <button class="action-btn delete" onclick="deleteRow(this)">
                       🗑️ Delete
@@ -1649,6 +1733,20 @@
                   <td><span class="badge badge-pending">Pending</span></td>
                   <td><strong>20%</strong></td>
                   <td>
+                    <button
+                      class="action-btn"
+                      style="color: #0f2d52"
+                      onclick="
+                        openProjectDashboardModal(
+                          'PRJ-003',
+                          'Pembangunan Jembatan',
+                          'Pending',
+                          20,
+                        )
+                      "
+                    >
+                      👁️ Lihat
+                    </button>
                     <button class="action-btn edit">✏️ Edit</button>
                     <button class="action-btn delete" onclick="deleteRow(this)">
                       🗑️ Delete
@@ -1738,6 +1836,258 @@
               <button class="btn-secondary" onclick="closeModal()">Batal</button
               ><button class="btn-primary" onclick="addProject()">
                 Simpan Data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================
+             PROJECT DASHBOARD POPUP (LIHAT)
+        ============================================= -->
+        <div class="se-modal" id="projectDashboardModal">
+          <div class="se-modal-content" style="max-width: 1100px">
+            <div class="se-modal-header">
+              <div>
+                <h2 id="pmdProjectTitle">PRJ-001 — Gedung Sekolah Tahap 1</h2>
+                <p
+                  id="pmdProjectSubtitle"
+                  style="
+                    margin: 4px 0 0;
+                    font-size: 13px;
+                    color: #64748b;
+                    font-weight: 500;
+                  "
+                >
+                  Status: Completed · Progress Fisik: 100%
+                </p>
+              </div>
+              <button
+                class="se-modal-close"
+                onclick="closeProjectDashboardModal()"
+              >
+                ✕
+              </button>
+            </div>
+            <div class="se-modal-body">
+              <div class="se-kpi-grid" style="margin-bottom: 20px">
+                <div class="se-kpi-card se-border-yellow">
+                  <h3>Pending Approval</h3>
+                  <span class="kpi-num" id="pmdPending">0</span>
+                  <p>Butuh keputusan PM</p>
+                </div>
+                <div class="se-kpi-card se-border-red">
+                  <h3>High Risk Exposure</h3>
+                  <span class="kpi-num" id="pmdHighRisk">0</span>
+                  <p>Membutuhkan mitigasi segera</p>
+                </div>
+                <div class="se-kpi-card se-border-blue">
+                  <h3>SPI (Schedule Perf.)</h3>
+                  <span class="kpi-num" id="pmdSpi">0.00</span>
+                  <p>Indikasi performa jadwal</p>
+                </div>
+                <div class="se-kpi-card se-border-green">
+                  <h3>Progress Fisik</h3>
+                  <span class="kpi-num" id="pmdProgress">0%</span>
+                  <p>Berdasarkan laporan terakhir</p>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background: white;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 18px;
+                  padding: 20px;
+                  margin-bottom: 20px;
+                  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+                "
+              >
+                <h3 style="margin: 0 0 16px; font-size: 16px; color: #0f172a">
+                  Kurva S - Kinerja Waktu &amp; Progres Terintegrasi
+                </h3>
+                <div style="position: relative; height: 280px; width: 100%">
+                  <canvas id="pmdSCurveChart"></canvas>
+                </div>
+              </div>
+
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: 1.1fr 0.9fr;
+                  gap: 18px;
+                "
+              >
+                <div
+                  style="
+                    background: white;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 18px;
+                    padding: 20px;
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+                  "
+                >
+                  <h3 style="margin: 0 0 16px; font-size: 16px; color: #0f172a">
+                    Recent Change Activities
+                  </h3>
+                  <div class="pmd-timeline" id="pmdTimeline"></div>
+                </div>
+                <div
+                  style="
+                    background: white;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 18px;
+                    padding: 20px;
+                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+                  "
+                >
+                  <h3 style="margin: 0 0 16px; font-size: 16px; color: #0f172a">
+                    Decision Summary
+                  </h3>
+                  <table
+                    style="
+                      width: 100%;
+                      border-collapse: collapse;
+                      font-size: 13px;
+                    "
+                  >
+                    <tr>
+                      <th
+                        style="
+                          text-align: left;
+                          padding: 10px 8px;
+                          border-bottom: 1px solid #e2e8f0;
+                          color: #475569;
+                          font-size: 11px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.04em;
+                        "
+                      >
+                        Status
+                      </th>
+                      <th
+                        style="
+                          text-align: left;
+                          padding: 10px 8px;
+                          border-bottom: 1px solid #e2e8f0;
+                          color: #475569;
+                          font-size: 11px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.04em;
+                        "
+                      >
+                        Total
+                      </th>
+                      <th
+                        style="
+                          text-align: left;
+                          padding: 10px 8px;
+                          border-bottom: 1px solid #e2e8f0;
+                          color: #475569;
+                          font-size: 11px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.04em;
+                        "
+                      >
+                        Action
+                      </th>
+                    </tr>
+                    <tr>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <span class="badge info">Under Review</span>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <strong id="pmdUnderReview">0</strong>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        Need impact analysis
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <span class="badge medium">Need Mitigation</span>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <strong id="pmdNeedMitigation">0</strong>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        Assign risk owner
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <span class="badge low">Approved</span>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        <strong id="pmdApproved">0</strong>
+                      </td>
+                      <td
+                        style="
+                          padding: 12px 8px;
+                          border-bottom: 1px solid #f1f5f9;
+                        "
+                      >
+                        Update BIM & schedule
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="padding: 12px 8px">
+                        <span class="badge high">Rejected</span>
+                      </td>
+                      <td style="padding: 12px 8px">
+                        <strong id="pmdRejected">0</strong>
+                      </td>
+                      <td style="padding: 12px 8px">Archive with reason</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="se-modal-footer">
+              <button
+                class="btn-secondary"
+                onclick="closeProjectDashboardModal()"
+              >
+                Tutup
               </button>
             </div>
           </div>
@@ -4888,61 +5238,6 @@
             ],
           },
       };
-
-      const level4 = document.getElementById("level4");
-      const level5 = document.getElementById("level5");
-      const level6 = document.getElementById("level6");
-      const detailResult = document.getElementById("detailResult");
-
-      Object.keys(wbsData).forEach((item) => {
-        level4.innerHTML += `<option value="${item}">${item}</option>`;
-      });
-
-      level4.addEventListener("change", function () {
-        level5.innerHTML = '<option value="">-- Pilih Aktivitas --</option>';
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-
-        const selected = this.value;
-
-        if (selected) {
-          Object.keys(wbsData[selected]).forEach((item) => {
-            level5.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level5.addEventListener("change", function () {
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-
-        const selectedL4 = level4.value;
-        const selectedL5 = this.value;
-
-        if (selectedL5) {
-          wbsData[selectedL4][selectedL5].forEach((item) => {
-            level6.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level6.addEventListener("change", function () {
-        if (!this.value) {
-          detailResult.innerHTML = "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-          return;
-        }
-        detailResult.innerHTML = `
-          <strong>Level 4 (Paket Pekerjaan):</strong><br>
-          ${level4.value}
-          <br><br>
-          <strong>Level 5 (Aktivitas):</strong><br>
-          ${level5.value}
-          <br><br>
-          <strong>Level 6 (Sumber Daya):</strong><br>
-          ${this.value}
-        `;
-      });
-
       const modal = document.getElementById("projectModal");
       function openModal() {
         modal.classList.add("show");
@@ -4954,6 +5249,218 @@
         if (event.target === modal) closeModal();
       };
 
+      // ==========================================
+      // PROJECT DASHBOARD POPUP (FITUR "LIHAT" PADA
+      // TABEL PROJECT DATA REGISTRY)
+      // ==========================================
+
+      // Data pendukung Kurva S & SPI per project.
+      // Catatan: data ini belum tersedia di sumber data lain,
+      // sehingga untuk sementara menggunakan data dummy yang
+      // diselaraskan dengan progress fisik tiap project.
+      const projectDashboardExtra = {
+        "PRJ-001": {
+          spi: 1.02,
+          planCurve: [8, 18, 30, 45, 58, 70, 80, 88, 94, 98, 100, 100],
+          actualCurve: [8, 19, 31, 46, 60, 73, 84, 92, 98, 100, 100, 100],
+        },
+        "PRJ-002": {
+          spi: 0.94,
+          planCurve: [2, 8, 15, 24, 35, 48, 60, 72, 83, 91, 96, 100],
+          actualCurve: [2, 7.5, 14, 22, 33, 45, 55, 68.5, 70],
+        },
+        "PRJ-003": {
+          spi: 0.78,
+          planCurve: [3, 9, 16, 24, 33, 43, 53, 63, 73, 83, 92, 100],
+          actualCurve: [2, 5, 9, 14, 20],
+        },
+      };
+
+      let projectDashboardChart = null;
+
+      function pmdFormatDate(dateStr) {
+        if (!dateStr) return "-";
+        const bulan = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "Mei",
+          "Jun",
+          "Jul",
+          "Agu",
+          "Sep",
+          "Okt",
+          "Nov",
+          "Des",
+        ];
+        const d = new Date(dateStr + "T00:00:00");
+        if (isNaN(d.getTime())) return dateStr;
+        return d.getDate() + " " + bulan[d.getMonth()] + " " + d.getFullYear();
+      }
+
+      function openProjectDashboardModal(
+        projectId,
+        projectName,
+        projectStatus,
+        projectProgress,
+      ) {
+        // Ambil seluruh Change Request milik project ini dari data
+        // Site Engineer (sumber data yang sudah ada di sistem).
+        const crs =
+          typeof seChangeRequests !== "undefined"
+            ? seChangeRequests.filter((c) => c.projectArea === projectId)
+            : [];
+
+        const pendingCount = crs.filter((c) => c.status === "PENDING").length;
+        const approvedCount = crs.filter((c) => c.status === "APPROVED").length;
+        const rejectedCount = crs.filter((c) => c.status === "REJECTED").length;
+        const needMitigationCount = crs.filter(
+          (c) => c.status === "PENDING" && c.risk >= 7,
+        ).length;
+        const underReviewCount = pendingCount - needMitigationCount;
+
+        const extra = projectDashboardExtra[projectId] || {
+          spi: 1.0,
+          planCurve: [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 98, 100],
+          actualCurve: [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 98, 100],
+        };
+
+        // -- Header --
+        document.getElementById("pmdProjectTitle").innerText =
+          projectId + " — " + projectName;
+        document.getElementById("pmdProjectSubtitle").innerText =
+          "Status: " +
+          projectStatus +
+          " · Progress Fisik: " +
+          projectProgress +
+          "%";
+
+        // -- KPI Cards --
+        document.getElementById("pmdPending").innerText = pendingCount;
+        document.getElementById("pmdHighRisk").innerText = needMitigationCount;
+        document.getElementById("pmdSpi").innerText = extra.spi.toFixed(2);
+        document.getElementById("pmdProgress").innerText =
+          projectProgress + "%";
+
+        // -- Recent Change Activities (3 CR terbaru pada project ini) --
+        const sortedCrs = [...crs].sort(
+          (a, b) => new Date(b.changeDate) - new Date(a.changeDate),
+        );
+        const recent = sortedCrs.slice(0, 3);
+        const timelineEl = document.getElementById("pmdTimeline");
+        if (recent.length === 0) {
+          timelineEl.innerHTML =
+            '<p style="color:#94a3b8;font-size:13px;margin:0;">Belum ada riwayat Change Request untuk project ini.</p>';
+        } else {
+          timelineEl.innerHTML = recent
+            .map(
+              (c) => `
+              <div class="pmd-timeline-item">
+                <div class="pmd-timeline-date">${pmdFormatDate(c.changeDate)}</div>
+                <div>
+                  <strong>${c.id} ${c.description || ""}</strong>
+                  <p>${c.descriptionDetail || c.riskDescription || "Tidak ada catatan tambahan."}</p>
+                </div>
+              </div>`,
+            )
+            .join("");
+        }
+
+        // -- Decision Summary --
+        document.getElementById("pmdUnderReview").innerText = underReviewCount;
+        document.getElementById("pmdNeedMitigation").innerText =
+          needMitigationCount;
+        document.getElementById("pmdApproved").innerText = approvedCount;
+        document.getElementById("pmdRejected").innerText = rejectedCount;
+
+        // -- Kurva S Chart --
+        const ctx = document.getElementById("pmdSCurveChart").getContext("2d");
+        if (projectDashboardChart) projectDashboardChart.destroy();
+        if (typeof Chart !== "undefined") {
+          projectDashboardChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: [
+                "Mg 1",
+                "Mg 2",
+                "Mg 3",
+                "Mg 4",
+                "Mg 5",
+                "Mg 6",
+                "Mg 7",
+                "Mg 8",
+                "Mg 9",
+                "Mg 10",
+                "Mg 11",
+                "Mg 12",
+              ],
+              datasets: [
+                {
+                  label: "Rencana (Plan %)",
+                  data: extra.planCurve,
+                  borderColor: "#64748b",
+                  borderWidth: 3,
+                  borderDash: [5, 5],
+                  tension: 0.4,
+                  pointBackgroundColor: "#64748b",
+                },
+                {
+                  label: "Realisasi Aktual (Actual %)",
+                  data: extra.actualCurve,
+                  borderColor: "#2563eb",
+                  backgroundColor: "rgba(37,99,235,0.1)",
+                  borderWidth: 4,
+                  tension: 0.4,
+                  fill: true,
+                  pointBackgroundColor: "#2563eb",
+                  pointRadius: 5,
+                  pointHoverRadius: 7,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: { font: { family: "Inter", weight: "bold" } },
+                },
+                tooltip: { mode: "index", intersect: false },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  title: {
+                    display: true,
+                    text: "Progress Fisik (%)",
+                    font: { weight: "bold" },
+                  },
+                  grid: { color: "#e2e8f0" },
+                },
+                x: { grid: { display: false } },
+              },
+              interaction: { mode: "nearest", axis: "x", intersect: false },
+            },
+          });
+        }
+
+        document.getElementById("projectDashboardModal").classList.add("show");
+      }
+
+      function closeProjectDashboardModal() {
+        document
+          .getElementById("projectDashboardModal")
+          .classList.remove("show");
+      }
+
+      document
+        .getElementById("projectDashboardModal")
+        ?.addEventListener("click", function (e) {
+          if (e.target === this) closeProjectDashboardModal();
+        });
       // ==========================================
       // LOGIKA REVIEW & APPROVAL PM (NEW FLOW)
       // ==========================================
