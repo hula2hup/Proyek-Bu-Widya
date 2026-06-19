@@ -5,7 +5,19 @@ CREATE DATABASE IF NOT EXISTS db_data_proyek;
 USE db_data_proyek;
 
 -- 3. Membuat tabel PERTAMA: change_requests
+CREATE TABLE IF NOT EXISTS project_data (
+    projectId VARCHAR(50) NOT NULL,
+    projectName VARCHAR(100) DEFAULT NULL,
+    submittedBy VARCHAR(50) DEFAULT NULL,
+    projectManager VARCHAR(255) DEFAULT NULL,
+    siteEngineer VARCHAR(255) DEFAULT NULL,
+    projectStatus VARCHAR(50) DEFAULT NULL,
+    progressPercent INT DEFAULT NULL,
+    PRIMARY KEY (projectId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS change_requests (
+    projectId VARCHAR(50) NOT NULL,
     changeId VARCHAR(50) NOT NULL,
     changeDate DATE DEFAULT NULL,
     submittedBy VARCHAR(50) DEFAULT NULL,
@@ -32,6 +44,9 @@ CREATE TABLE IF NOT EXISTS change_requests (
     descriptionDetail TEXT DEFAULT NULL,
     photoEvidence VARCHAR(255) DEFAULT NULL,
     status VARCHAR(50) DEFAULT NULL,
+    timeImpact INT DEFAULT NULL,
+    costImpact DECIMAL(21,2) DEFAULT NULL,
+    associatedKnowledge VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (changeId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
