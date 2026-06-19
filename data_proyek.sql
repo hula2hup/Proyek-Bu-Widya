@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS project_data (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS change_requests (
-    projectId VARCHAR(50) NOT NULL,
     changeId VARCHAR(50) NOT NULL,
+    projectId VARCHAR(50) NOT NULL,
     changeDate DATE DEFAULT NULL,
     submittedBy VARCHAR(50) DEFAULT NULL,
     wbsLevel4 VARCHAR(100) DEFAULT NULL,
