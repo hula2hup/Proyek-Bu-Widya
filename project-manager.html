@@ -517,6 +517,72 @@
       window.location.replace("login.html");
     }
   })();
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1. Panggil fungsi untuk mengambil data proyek
+    fetchAssignedProjects();
+});
+
+// Variabel global untuk menyimpan data proyek yang aktif
+let activeProjects = [];
+
+function fetchAssignedProjects() {
+    fetch('api_get_projects.php')
+        .then(response => response.json())
+        .then(res => {
+            if (res.status === 'success') {
+                activeProjects = res.data;
+                
+                // Cek apakah user punya proyek atau tidak
+                if (activeProjects.length === 0) {
+                    alert("Anda belum di-assign ke proyek manapun.");
+                    // Opsional: Sembunyikan tabel atau tampilkan pesan kosong di UI
+                    return;
+                }
+
+                // Jika punya proyek, render ke UI
+                console.log("Proyek yang diassign:", activeProjects);
+                
+                // CONTOH 1: Memasukkan data ke dalam dropdown/select box (jika user punya >1 proyek)
+                // renderProjectDropdown(activeProjects);
+                
+                // CONTOH 2: Jika Anda ingin langsung me-render tabel laporan/progress 
+                // menggunakan data proyek pertama [0] secara default:
+                // renderDashboardData(activeProjects[0].project_id);
+
+            } else if (res.message === "Akses ditolak. Silakan login.") {
+                // Keamanan ekstra: Jika session PHP hilang, kembalikan ke login
+                localStorage.removeItem("isLoggedIn");
+                window.location.replace("login.html");
+            } else {
+                alert("Error: " + res.message);
+            }
+        })
+        .catch(error => console.error("Error fetching projects:", error));
+}
+
+/* --- CONTOH FUNGSI PENDUKUNG (Sesuaikan dengan ID HTML Anda) --- */
+
+// Fungsi jika Anda punya elemen <select id="projectSelector"> di navbar/header
+function renderProjectDropdown(projects) {
+    const selector = document.getElementById('projectSelector');
+    if (!selector) return;
+
+    selector.innerHTML = ''; // Kosongkan dulu
+    projects.forEach(proj => {
+        const option = document.createElement('option');
+        option.value = proj.project_id;
+        option.textContent = `${proj.project_name} (${proj.project_id})`;
+        selector.appendChild(option);
+    });
+
+    // Event listener jika user mengganti proyek di dropdown
+    selector.addEventListener('change', function(e) {
+        const selectedProjectId = e.target.value;
+        // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
+        // renderDashboardData(selectedProjectId); 
+    });
+}
   // ══════════════════════════════════════════
   // DATA
   // ══════════════════════════════════════════
@@ -711,7 +777,11 @@
   function logout() {
     const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Workspace PM?");
     if (confirmLogout) {
-      window.location.href = "login.html";
+      fetch('api_logout.php')
+        .then(() => {
+            localStorage.clear(); // Bersihkan localStorage frontend
+            window.location.replace("login.html");
+        });
     }
   }
   

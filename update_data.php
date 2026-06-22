@@ -72,7 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // 4. QUERY UPDATE SQL (Sudah dilengkapi dengan seluruh kolom Langkah 1 & Langkah 2 menu New Change)
+    // Menangkap Array Checkbox dari frontend
+    $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
+
+    // 4. QUERY UPDATE SQL (Disesuaikan dengan Form Step 2 yang baru)
     $sql = "UPDATE change_requests SET 
                 changeDate        = :changeDate,
                 wbsLevel4         = :wbsLevel4,
@@ -84,20 +87,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 projectArea       = :projectArea,
                 location          = :location,
                 bimObjectId       = :bimObjectId,
-                riskCategory      = :riskCategory,       -- 🆕 Sebelumnya Kurang
-                riskVariable      = :riskVariable,       -- 🆕 Sebelumnya Kurang
+                riskCategory      = :riskCategory,
+                riskVariable      = :riskVariable,
                 description       = :description,
-                changeType        = :changeType,         -- 🆕 Sebelumnya Kurang
-                siteCondition     = :siteCondition,       -- 🆕 Sebelumnya Kurang
-                ownerRequest      = :ownerRequest,       -- 🆕 Sebelumnya Kurang
-                materialChange    = :materialChange,     -- 🆕 Sebelumnya Kurang
-                methodChange      = :methodChange,       -- 🆕 Sebelumnya Kurang
-                scheduleChange    = :scheduleChange,     -- 🆕 Sebelumnya Kurang
-                safetyChange      = :safetyChange,       -- 🆕 Sebelumnya Kurang
-                impactArea        = :impactArea,         -- 🆕 Sebelumnya Kurang
+                ownerRequest      = :ownerRequest,
+                changeDrivers     = :changeDrivers,     -- 🆕 Baru
+                impactCost        = :impactCost,        -- 🆕 Baru
+                impactTime        = :impactTime,        -- 🆕 Baru
+                impactScope       = :impactScope,       -- 🆕 Baru
+                impactQuality     = :impactQuality,     -- 🆕 Baru
+                impactSafety      = :impactSafety,      -- 🆕 Baru
                 descriptionDetail = :descriptionDetail,
                 photoEvidence     = :photoEvidence,
-                status            = :status              -- 🔄 Pembaruan status otomatis (REJECTED -> PENDING)
+                status            = :status
             WHERE changeId = :changeId";
 
     try {
@@ -113,20 +115,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'projectArea'       => $_POST['projectArea'] ?? null,
             'location'          => $_POST['location'] ?? null,
             'bimObjectId'       => $_POST['bimObjectId'] ?? null,
-            'riskCategory'      => $_POST['riskCategory'] ?? null,       // 🆕 Dilengkapi
-            'riskVariable'      => $_POST['riskVariable'] ?? null,       // 🆕 Dilengkapi
+            'riskCategory'      => $_POST['riskCategory'] ?? null,
+            'riskVariable'      => $_POST['riskVariable'] ?? null,
             'description'       => $_POST['description'] ?? null,
-            'changeType'        => $_POST['changeType'] ?? null,         // 🆕 Dilengkapi
-            'siteCondition'     => $_POST['siteCondition'] ?? null,       // 🆕 Dilengkapi
-            'ownerRequest'      => $_POST['ownerRequest'] ?? null,       // 🆕 Dilengkapi
-            'materialChange'    => $_POST['materialChange'] ?? null,     // 🆕 Dilengkapi
-            'methodChange'      => $_POST['methodChange'] ?? null,       // 🆕 Dilengkapi
-            'scheduleChange'    => $_POST['scheduleChange'] ?? null,     // 🆕 Dilengkapi
-            'safetyChange'      => $_POST['safetyChange'] ?? null,       // 🆕 Dilengkapi
-            'impactArea'        => $_POST['impactArea'] ?? null,         // 🆕 Dilengkapi
+            'ownerRequest'      => $_POST['ownerRequest'] ?? null,
+            'changeDrivers'     => $changeDrivers,                         // 🆕 Baru
+            'impactCost'        => $_POST['impactCost'] ?? null,           // 🆕 Baru
+            'impactTime'        => $_POST['impactTime'] ?? null,           // 🆕 Baru
+            'impactScope'       => $_POST['impactScope'] ?? null,          // 🆕 Baru
+            'impactQuality'     => $_POST['impactQuality'] ?? null,        // 🆕 Baru
+            'impactSafety'      => $_POST['impactSafety'] ?? null,         // 🆕 Baru
             'descriptionDetail' => $_POST['descriptionDetail'] ?? null,
             'photoEvidence'     => $photo_evidence,
-            'status'            => $newStatus,                           // 🔄 Mengikat status baru
+            'status'            => $newStatus,                           
             'changeId'          => $changeId
         ]);
 

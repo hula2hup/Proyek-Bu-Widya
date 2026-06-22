@@ -59,49 +59,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gabungkan nama-nama file menjadi string dipisahkan koma untuk disimpan di satu kolom database
     $photo_evidence = implode(',', $uploaded_files);
 
+    // Menangkap Array Checkbox jika dikirim via form biasa (diubah jadi string dipisah koma)
+    $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
+
     // Ambil data input secara terstruktur dan berikan nilai fallback (null) jika kosong
     $data = [
         'changeId'          => $_POST['changeId'] ?? uniqid('CR-'),
+        'projectId'         => $_POST['projectId'] ?? null,
         'changeDate'        => $_POST['changeDate'] ?? date('Y-m-d'),
         'submittedBy'       => $_POST['submittedBy'] ?? 'SITE ENGINEER',
-        'wbsLevel4'          => $_POST['wbsLevel4'] ?? null,
-        'wbsLevel5'      => $_POST['wbsLevel5'] ?? null,
-        'wbsLevel6'    => $_POST['wbsLevel6'] ?? null,
-        'changeCategory' => $_POST['changeCategory'] ?? null,
-        'priority'           => $_POST['priority'] ?? null,
-        'risk'               => $_POST['risk'] ?? null,
+        'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
+        'wbsLevel5'         => $_POST['wbsLevel5'] ?? null,
+        'wbsLevel6'         => $_POST['wbsLevel6'] ?? null,
+        'changeCategory'    => $_POST['changeCategory'] ?? null,
+        'priority'          => $_POST['priority'] ?? null,
+        'risk'              => $_POST['risk'] ?? null,
         'projectArea'       => $_POST['projectArea'] ?? null,
-        'location'           => $_POST['location'] ?? null,
-        'bimObjectId'      => $_POST['bimObjectId'] ?? null,
-        'riskCategory'    => $_POST['riskCategory'] ?? null,
-        'riskVariable'    => $_POST['riskVariable'] ?? null,
-        'description'        => $_POST['description'] ?? null,
-        'changeType'        => $_POST['changeType'] ?? null,
-        'siteCondition'     => $_POST['siteCondition'] ?? null,
+        'location'          => $_POST['location'] ?? null,
+        'bimObjectId'       => $_POST['bimObjectId'] ?? null,
+        'riskCategory'      => $_POST['riskCategory'] ?? null,
+        'riskVariable'      => $_POST['riskVariable'] ?? null,
+        'description'       => $_POST['description'] ?? null,
         'ownerRequest'      => $_POST['ownerRequest'] ?? null,
-        'materialChange'    => $_POST['materialChange'] ?? null,
-        'methodChange'      => $_POST['methodChange'] ?? null,
-        'scheduleChange'    => $_POST['scheduleChange'] ?? null,
-        'safetyChange'      => $_POST['safetyChange'] ?? null,
-        'impactArea'        => $_POST['impactArea'] ?? null,
+        'changeDrivers'     => $changeDrivers, // 🆕 Baru
+        'impactCost'        => $_POST['impactCost'] ?? null, // 🆕 Baru (JSON string)
+        'impactTime'        => $_POST['impactTime'] ?? null, // 🆕 Baru (JSON string)
+        'impactScope'       => $_POST['impactScope'] ?? null, // 🆕 Baru (JSON string)
+        'impactQuality'     => $_POST['impactQuality'] ?? null, // 🆕 Baru (JSON string)
+        'impactSafety'      => $_POST['impactSafety'] ?? null, // 🆕 Baru (JSON string)
         'descriptionDetail' => $_POST['descriptionDetail'] ?? null,
         'photoEvidence'     => $photo_evidence,
-        'status'             => 'PENDING' // Menandakan request awal berstatus pending
+        'status'            => 'PENDING'
     ];
 
-    // Query INSERT yang mendefinisikan kolom secara eksplisit (Sangat Aman & Fleksibel)
+    // Query INSERT yang mendefinisikan kolom secara eksplisit
     $sql = "INSERT INTO change_requests (
                 changeId, changeDate, submittedBy, wbsLevel4, wbsLevel5, 
                 wbsLevel6, changeCategory, priority, risk, projectArea, 
                 location, bimObjectId, riskCategory, riskVariable, description, 
-                changeType, siteCondition, ownerRequest, materialChange, methodChange, 
-                scheduleChange, safetyChange, impactArea, descriptionDetail, photoEvidence, status
+                ownerRequest, changeDrivers, impactCost, impactTime, 
+                impactScope, impactQuality, impactSafety, descriptionDetail, photoEvidence, status
             ) VALUES (
                 :changeId, :changeDate, :submittedBy, :wbsLevel4, :wbsLevel5, 
                 :wbsLevel6, :changeCategory, :priority, :risk, :projectArea, 
                 :location, :bimObjectId, :riskCategory, :riskVariable, :description, 
-                :changeType, :siteCondition, :ownerRequest, :materialChange, :methodChange, 
-                :scheduleChange, :safetyChange, :impactArea, :descriptionDetail, :photoEvidence, :status
+                :ownerRequest, :changeDrivers, :impactCost, :impactTime, 
+                :impactScope, :impactQuality, :impactSafety, :descriptionDetail, :photoEvidence, :status
             )";
 
     try {
@@ -122,3 +125,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 }
+?>

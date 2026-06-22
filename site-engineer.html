@@ -870,6 +870,93 @@
         background: #e2e8f0;
         margin: 0 20px;
       }
+      /* --- STYLE BARU UNTUK TABEL DINAMIS IMPACT AREA --- */
+      .impact-table-container {
+          display: none; /* Sembunyikan secara default */
+          margin-top: 15px;
+          padding: 15px;
+          background: #f8f9fa;
+          border-left: 4px solid #0f2d52;
+          border-radius: 4px;
+          overflow-x: auto;
+      }
+
+      .dynamic-table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 10px;
+          background: #fff;
+      }
+
+      .dynamic-table th {
+          background-color: #0f2d52;
+          color: white;
+          padding: 8px;
+          font-size: 13px;
+          text-align: left;
+      }
+
+      .dynamic-table td {
+          padding: 6px;
+          border: 1px solid #ddd;
+      }
+
+      .dynamic-table input, .dynamic-table select {
+          width: 100%;
+          padding: 6px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+      }
+
+      .btn-add-row {
+          margin-top: 10px;
+          background-color: #1cc88a;
+          color: white;
+          border: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 13px;
+      }
+
+      .btn-remove-row {
+          background-color: #e74a3b;
+          color: white;
+          border: none;
+          padding: 4px 8px;
+          border-radius: 4px;
+          cursor: pointer;
+      }
+      /* --- STYLE UNTUK RADIO & CHECKBOX GROUP --- */
+      .radio-checkbox-wrapper {
+          display: flex;
+          flex-direction: column; /* Menyusun opsi ke bawah */
+          gap: -4px !important; /* Jarak antar opsi */
+          margin-top: 8px;
+      }
+
+      .compact-label {
+          display: inline-flex;
+          align-items: center;
+          width: fit-content !important; /* KUNCI: Mencegah area klik melebar */
+          padding: -12px 8px -12px 4px !important; /* Padding kanan untuk area klik ekstra sedikit */
+          margin: 0 !important; /* Menghapus margin default */
+          cursor: pointer;
+          font-weight: normal !important; /* Agar tidak bold seperti judul label */
+          border-radius: 4px;
+          transition: background-color 0.2s ease;
+      }
+
+      /* Efek hover opsional agar lebih interaktif */
+      .compact-label:hover {
+          background-color: #f8f9fa;
+      }
+
+      .compact-label input {
+          margin: -12px 8px -12px 0 !important; /* Memastikan browser tidak menambahkan margin bawaan secara vertikal */
+          cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -1232,117 +1319,153 @@
           </div>
 
           <div id="register" class="form-card hidden">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Change Type</label>
-                <select id="changeType" required>
-                  <option value="">Pilih Change Type</option>
-                  <option>Lingkungan</option>
-                  <option>Waktu</option>
-                  <option>Tenaga Kerja</option>
-                  <option>Material</option>
-                  <option>Biaya</option>
-                </select>
-              </div>
 
-              <div class="form-group">
-                <label>Site Condition</label>
-                <select id="siteCondition" required>
-                  <option value="">Pilih Site Condition</option>
-                  <option>Normal</option>
-                  <option>Terbatas</option>
-                  <option>Tidak Siap</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Owner Request</label>
-                <textarea
-                  rows="2"
-                  placeholder="Tuliskan permintaan owner/konsultan apabila ada..."
-                  id="ownerRequest"
-                ></textarea>
-              </div>
+    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
+        
+        <div class="form-group">
+            <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
+            <div class="radio-checkbox-wrapper">
+                <label class="compact-label">
+                    <input type="radio" name="ownerRequest" value="Ya" required> Ya (Potensi VO)
+                </label>
+                <label class="compact-label">
+                    <input type="radio" name="ownerRequest" value="Tidak"> Tidak (Internal/Kontraktor)
+                </label>
             </div>
+        </div>
 
-            <hr class="section-divider" />
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Material Change</label>
-                <select id="materialChange" required>
-                  <option value="">Pilih Material Change</option>
-                  <option>Tidak Ada</option>
-                  <option>Ada</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Method Change</label>
-                <select id="methodChange" required>
-                  <option value="">Pilih Method Change</option>
-                  <option>Tidak Ada</option>
-                  <option>Ada</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Schedule Change</label>
-                <select id="scheduleChange" required>
-                  <option value="">Pilih Schedule Change</option>
-                  <option>Tidak Ada</option>
-                  <option>Ada</option>
-                </select>
-              </div>
+        <div class="form-group">
+            <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
+            <div class="radio-checkbox-wrapper">
+                <label class="compact-label">
+                    <input type="checkbox" name="changeDrivers" value="Desain"> Kesalahan Desain / Gambar Kontrak
+                </label>
+                <label class="compact-label">
+                    <input type="checkbox" name="changeDrivers" value="Lapangan"> Kondisi Lapangan Aktual (Site Condition)
+                </label>
+                <label class="compact-label">
+                    <input type="checkbox" name="changeDrivers" value="Material"> Kelangkaan Material / Suplai
+                </label>
+                <label class="compact-label">
+                    <input type="checkbox" name="changeDrivers" value="Metode"> Usulan Optimasi Metode
+                </label>
             </div>
+        </div>
 
-            <hr class="section-divider" />
+    </div>
 
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Safety Change</label>
-                <select id="safetyChange" required>
-                  <option value="">Pilih Safety Change</option>
-                  <option>Tidak Ada</option>
-                  <option>Ada</option>
-                </select>
-              </div>
+    <hr class="section-divider" style="margin:20px 0;" />
 
-              <div class="form-group">
-                <label>Impact Area</label>
-                <select id="impactArea" required>
-                  <option value="">Pilih Impact Area</option>
-                  <option>Scope</option>
-                  <option>Cost</option>
-                  <option>Time</option>
-                  <option>Quality</option>
-                  <option>Safety</option>
-                </select>
-              </div>
-            </div>
+    <div class="form-group">
+        <label style="font-size:16px; color:#0f2d52;">Centang Parameter yang Terdampak: <span style="color:red;">*</span></label>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
+            <label><input type="checkbox" id="chk-cost" onchange="toggleTable('cost')"> Cost (Biaya)</label>
+            <label><input type="checkbox" id="chk-time" onchange="toggleTable('time')"> Time (Waktu)</label>
+            <label><input type="checkbox" id="chk-scope" onchange="toggleTable('scope')"> Scope (Lingkup)</label>
+            <label><input type="checkbox" id="chk-quality" onchange="toggleTable('quality')"> Quality (Mutu)</label>
+            <label><input type="checkbox" id="chk-safety" onchange="toggleTable('safety')"> Safety (K3)</label>
+        </div>
+    </div>
 
-            <div class="full-width">
-              <label>Description Detail</label>
-              <textarea
-                rows="6"
-                required
-                id="descriptionDetail"
-                placeholder="Jelaskan detail perubahan yang diajukan..."
-              ></textarea>
-            </div>
+    <div id="table-cost" class="impact-table-container" style="border-left-color: #4e73df;">
+        <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
+        <table class="dynamic-table" id="dyn-cost">
+            <thead>
+                <tr>
+                    <th>Item / Material</th>
+                    <th width="15%">Sifat</th>
+                    <th width="15%">Kuantitas</th>
+                    <th width="10%">Satuan</th>
+                    <th width="30%">Justifikasi</th>
+                    <th width="5%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button type="button" class="btn-add-row" onclick="addRow('cost')">+ Tambah Item</button>
+    </div>
 
-            <div
-              class="button-group"
-              style="justify-content: space-between; margin-top: 35px"
-            >
-              <button type="button" class="btn-back" onclick="backForm()">
-                Back
-              </button>
-              <button type="button" class="btn-submit" onclick="submitCR(event)">
-                Submit CR
-              </button>
-            </div>
-          </div>
+    <div id="table-time" class="impact-table-container" style="border-left-color: #4e73df;">
+        <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
+        <table class="dynamic-table" id="dyn-time">
+            <thead>
+                <tr>
+                    <th>Aktivitas Terdampak</th>
+                    <th width="20%">Sifat</th>
+                    <th width="15%">Waktu</th>
+                    <th width="10%">Satuan</th>
+                    <th width="30%">Justifikasi</th>
+                    <th width="5%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button type="button" class="btn-add-row" onclick="addRow('time')">+ Tambah Item</button>
+    </div>
+    <div id="table-scope" class="impact-table-container" style="border-left-color: #4e73df;">
+        <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
+        <table class="dynamic-table" id="dyn-scope">
+            <thead>
+                <tr>
+                    <th>Lingkup Pekerjaan</th>
+                    <th width="20%">Sifat</th>
+                    <th width="15%">Kuantitas</th>
+                    <th width="10%">Satuan</th>
+                    <th width="30%">Dokumen Acuan</th>
+                    <th width="5%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button type="button" class="btn-add-row" onclick="addRow('scope')">+ Tambah Item</button>
+    </div>
+
+    <div id="table-quality" class="impact-table-container" style="border-left-color: #4e73df;">
+        <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
+        <table class="dynamic-table" id="dyn-quality">
+            <thead>
+                <tr>
+                    <th>Item Terdampak</th>
+                    <th width="15%">Spesifikasi Awal</th>
+                    <th width="15%">Spesifikasi Baru</th>
+                    <th width="15%">Tingkat Mutu</th>
+                    <th width="30%">Justifikasi</th>
+                    <th width="5%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button type="button" class="btn-add-row" onclick="addRow('quality')">+ Tambah Item</button>
+    </div>
+
+    <div id="table-safety" class="impact-table-container" style="border-left-color: #4e73df;">
+        <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
+        <table class="dynamic-table" id="dyn-safety">
+            <thead>
+                <tr>
+                    <th>Aktivitas Berisiko</th>
+                    <th width="15%">Sifat</th>
+                    <th width="30%">Kebutuhan</th>
+                    <th width="10%">Kuantitas</th>
+                    <th width="10%">Satuan</th>
+                    <th width="5%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button type="button" class="btn-add-row" onclick="addRow('safety')">+ Tambah Item</button>
+    </div>
+
+    <div class="full-width" style="margin-top:20px;">
+        <label>Justifikasi Teknis & Narasi Lapangan</label>
+        <textarea rows="4" id="descriptionDetail" required placeholder="Jelaskan secara kronologis kejadian di lapangan..."></textarea>
+    </div>
+
+    <div class="button-group" style="justify-content: space-between; margin-top: 35px">
+        <button type="button" class="btn-back" onclick="backForm()">Back</button>
+        <button type="button" class="btn-submit" onclick="submitCR(event)">Submit Request</button>
+    </div>
+</div>
         </div>
       </div>
 
@@ -1477,6 +1600,195 @@
           }
       }
 
+      // --- LOGIKA TABEL DINAMIS IMPACT AREA ---
+
+      function toggleTable(type) {
+          const isChecked = document.getElementById(`chk-${type}`).checked;
+          const container = document.getElementById(`table-${type}`);
+          const tbody = document.querySelector(`#dyn-${type} tbody`);
+          
+          if (isChecked) {
+              container.style.display = 'block';
+              if (tbody.children.length === 0) addRow(type); // Otomatis buat 1 baris saat dicentang
+          } else {
+              container.style.display = 'none';
+              tbody.innerHTML = ''; // Hapus semua isian jika di-uncheck
+          }
+      }
+
+      function addRow(type) {
+        const tbody = document.querySelector(`#dyn-${type} tbody`);
+        const tr = document.createElement('tr');
+
+        if (type === 'cost') {
+            tr.innerHTML = `
+                <td><input type="text" class="dyn-val" data-key="item" placeholder="Contoh: Besi D16" required></td>
+                <td>
+                    <select class="dyn-val" data-key="sifat" required>
+                        <option value="Penambahan (+)">Penambahan (+)</option>
+                        <option value="Pengurangan (-)">Pengurangan (-)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="dyn-val" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="dyn-val" data-key="satuan" placeholder="Btg / m3" required></td>
+                <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Alasan perubahan" required></td>
+                <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
+            `;
+        } 
+        else if (type === 'time') {
+            tr.innerHTML = `
+                <td><input type="text" class="dyn-val" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" required></td>
+                <td>
+                    <select class="dyn-val" data-key="sifat" required>
+                        <option value="Penundaan">Penundaan (Delay)</option>
+                        <option value="Percepatan">Percepatan (Crash Program)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="dyn-val" data-key="waktu" placeholder="0" required></td>
+                <td>
+                    <select class="dyn-val" data-key="satuan" required>
+                        <option value="Hari">Hari</option>
+                        <option value="Jam">Jam</option>
+                        <option value="Minggu">Minggu</option>
+                    </select>
+                </td>
+                <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Alasan hambatan" required></td>
+                <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
+            `;
+        } 
+        else if (type === 'scope') {
+            tr.innerHTML = `
+                <td><input type="text" class="dyn-val" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" required></td>
+                <td>
+                    <select class="dyn-val" data-key="sifat" required>
+                        <option value="Pekerjaan Baru (New Item)">Pekerjaan Baru (New Item)</option>
+                        <option value="Perubahan (Major Change)">Perubahan (Major Change)</option>
+                        <option value="Peniadaan (Reduction)">Peniadaan (Reduction)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="dyn-val" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="dyn-val" data-key="satuan" placeholder="m / ls" required></td>
+                <td><input type="text" class="dyn-val" data-key="dokumen" placeholder="No. Sketsa / RFI" required></td>
+                <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
+            `;
+        } 
+        else if (type === 'quality') {
+            tr.innerHTML = `
+                <td><input type="text" class="dyn-val" data-key="item" placeholder="Contoh: Pipa Air Bersih" required></td>
+                <td><input type="text" class="dyn-val" data-key="spekAwal" placeholder="Merk A (Kontrak)" required></td>
+                <td><input type="text" class="dyn-val" data-key="spekBaru" placeholder="Merk B (Aktual)" required></td>
+                <td>
+                    <select class="dyn-val" data-key="mutu" required>
+                        <option value="Setara (Equivalent)">Setara (Equivalent)</option>
+                        <option value="Lebih Baik (Upgrade)">Lebih Baik (Upgrade)</option>
+                        <option value="Turun Mutu (Downgrade)">Turun Mutu (Downgrade)</option>
+                    </select>
+                </td>
+                <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Contoh: Stok Kosong" required></td>
+                <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
+            `;
+        } 
+        else if (type === 'safety') {
+            tr.innerHTML = `
+                <td><input type="text" class="dyn-val" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" required></td>
+                <td>
+                    <select class="dyn-val" data-key="sifat" required>
+                        <option value="Bahaya Baru">Bahaya Baru</option>
+                        <option value="Peningkatan Risiko Lama">Peningkatan Risiko Lama</option>
+                    </select>
+                </td>
+                <td><input type="text" class="dyn-val" data-key="kebutuhan" placeholder="Contoh: Gondola / Body Harness" required></td>
+                <td><input type="number" step="any" class="dyn-val" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="dyn-val" data-key="satuan" placeholder="Unit / Pcs" required></td>
+                <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
+            `;
+        }
+
+        tbody.appendChild(tr);
+    }
+
+      // Fungsi Pemanen Data Tabel sebelum disubmit ke PHP
+      function extractTableData(type) {
+          const tbody = document.querySelector(`#dyn-${type} tbody`);
+          if (!tbody || tbody.children.length === 0) return null;
+          
+          let dataArray = [];
+          tbody.querySelectorAll('tr').forEach(row => {
+              let rowObj = {};
+              row.querySelectorAll('.dyn-val').forEach(input => {
+                  rowObj[input.dataset.key] = input.value;
+              });
+              dataArray.push(rowObj);
+          });
+          return JSON.stringify(dataArray); // Ubah jadi JSON text untuk dikirim
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+          // 1. Panggil fungsi untuk mengambil data proyek
+          fetchAssignedProjects();
+      });
+
+      // Variabel global untuk menyimpan data proyek yang aktif
+      let activeProjects = [];
+
+      function fetchAssignedProjects() {
+          fetch('api_get_projects.php')
+              .then(response => response.json())
+              .then(res => {
+                  if (res.status === 'success') {
+                      activeProjects = res.data;
+                      
+                      // Cek apakah user punya proyek atau tidak
+                      if (activeProjects.length === 0) {
+                          alert("Anda belum di-assign ke proyek manapun.");
+                          // Opsional: Sembunyikan tabel atau tampilkan pesan kosong di UI
+                          return;
+                      }
+
+                      // Jika punya proyek, render ke UI
+                      console.log("Proyek yang diassign:", activeProjects);
+                      
+                      // CONTOH 1: Memasukkan data ke dalam dropdown/select box (jika user punya >1 proyek)
+                      // renderProjectDropdown(activeProjects);
+                      
+                      // CONTOH 2: Jika Anda ingin langsung me-render tabel laporan/progress 
+                      // menggunakan data proyek pertama [0] secara default:
+                      // renderDashboardData(activeProjects[0].project_id);
+
+                  } else if (res.message === "Akses ditolak. Silakan login.") {
+                      // Keamanan ekstra: Jika session PHP hilang, kembalikan ke login
+                      localStorage.removeItem("isLoggedIn");
+                      window.location.replace("login.html");
+                  } else {
+                      alert("Error: " + res.message);
+                  }
+              })
+              .catch(error => console.error("Error fetching projects:", error));
+      }
+
+      /* --- CONTOH FUNGSI PENDUKUNG (Sesuaikan dengan ID HTML Anda) --- */
+
+      // Fungsi jika Anda punya elemen <select id="projectSelector"> di navbar/header
+      function renderProjectDropdown(projects) {
+          const selector = document.getElementById('projectSelector');
+          if (!selector) return;
+
+          selector.innerHTML = ''; // Kosongkan dulu
+          projects.forEach(proj => {
+              const option = document.createElement('option');
+              option.value = proj.project_id;
+              option.textContent = `${proj.project_name} (${proj.project_id})`;
+              selector.appendChild(option);
+          });
+
+          // Event listener jika user mengganti proyek di dropdown
+          selector.addEventListener('change', function(e) {
+              const selectedProjectId = e.target.value;
+              // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
+              // renderDashboardData(selectedProjectId); 
+          });
+      }
+
       function editChange(id) {
         // 1. Cari data di dalam array database lokal Anda
         selectedChange = changeRequestsFromDB.find((x) => (x.change_id || x.changeId) === id);
@@ -1515,6 +1827,47 @@
         } else {
             evidenceHTML = '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
         }
+
+        // 1. Definisikan atribut disabled untuk mengunci Checkbox & Radio
+        const actionDisplay = isReadOnly ? 'none' : 'table-cell'; // Sembunyikan kolom aksi jika readonly
+        const btnDisplay = isReadOnly ? 'none' : 'inline-block'; // Sembunyikan tombol tambah
+
+        // 2. Fungsi untuk merender isi (tbody) dari tabel dinamis
+        function generateTableRows(dataJson) {
+            if (!dataJson || dataJson === '[]') return '';
+            try {
+                const data = JSON.parse(dataJson);
+                return data.map(row => `
+                    <tr>
+                        <td><input type="text" value="${row.item || row.aktivitas || row.lingkup || row.kebutuhan || ''}" ${readonlyAttr}></td>
+                        <td><input type="text" value="${row.sifat || row.spesifikasiAwal || ''}" ${readonlyAttr}></td>
+                        <td><input type="text" value="${row.kuantitas || row.waktu || row.spesifikasiBaru || ''}" ${readonlyAttr}></td>
+                        <td><input type="text" value="${row.satuan || row.tingkatMutu || ''}" ${readonlyAttr}></td>
+                        <td><input type="text" value="${row.justifikasi || row.dokumenAcuan || ''}" ${readonlyAttr}></td>
+                        <td style="display: ${actionDisplay}; text-align:center;">
+                            <button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                return '';
+            }
+        }
+
+        // 3. Generate HTML untuk masing-masing baris tabel
+        const costRows = generateTableRows(selectedChange.impactCost);
+        const timeRows = generateTableRows(selectedChange.impactTime);
+        const scopeRows = generateTableRows(selectedChange.impactScope);
+        const qualityRows = generateTableRows(selectedChange.impactQuality);
+        const safetyRows = generateTableRows(selectedChange.impactSafety);
+
+        // 4. Deteksi apakah parameter harus dicentang
+        const drivers = selectedChange.changeDrivers || '';
+        const hasCost = costRows !== '';
+        const hasTime = timeRows !== '';
+        const hasScope = scopeRows !== '';
+        const hasQuality = qualityRows !== '';
+        const hasSafety = safetyRows !== '';
 
         // 3. Render HTML Menggunakan Struktur Kelas CSS Asli Anda (form-card, form-grid, form-group)
         document.getElementById("editFormContainer").innerHTML = `
@@ -1624,85 +1977,146 @@
                 <div class="form-card" style="margin-top:20px;">
                     <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 2: Register Change Request</h3>
                     
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Change Type</label>
-                            <select id="editChangeType" ${disabledAttr}>
-                                <option value="">Pilih Change Type</option>
-                                <option value="Lingkungan" ${selectedChange.changeType === 'Lingkungan' ? 'selected' : ''}>Lingkungan</option>
-                                <option value="Waktu" ${selectedChange.changeType === 'Waktu' ? 'selected' : ''}>Waktu</option>
-                                <option value="Tenaga Kerja" ${selectedChange.changeType === 'Tenaga Kerja' ? 'selected' : ''}>Tenaga Kerja</option>
-                                <option value="Material" ${selectedChange.changeType === 'Material' ? 'selected' : ''}>Material</option>
-                                <option value="Biaya" ${selectedChange.changeType === 'Biaya' ? 'selected' : ''}>Biaya</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Site Condition</label>
-                            <select id="editSiteCondition" ${disabledAttr}>
-                                <option value="">Pilih Site Condition</option>
-                                <option value="Normal" ${selectedChange.siteCondition === 'Normal' ? 'selected' : ''}>Normal</option>
-                                <option value="Terbatas" ${selectedChange.siteCondition === 'Terbatas' ? 'selected' : ''}>Terbatas</option>
-                                <option value="Tidak Siap" ${selectedChange.siteCondition === 'Tidak Siap' ? 'selected' : ''}>Tidak Siap</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Owner Request</label>
-                            <textarea rows="2" id="editOwnerRequest" ${readonlyAttr}>${selectedChange.ownerRequest || ""}</textarea>
-                        </div>
+                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top:20px;">
+        
+                      <div class="form-group">
+                          <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
+                          <div class="radio-checkbox-wrapper">
+                              <label class="compact-label">
+                                  <input type="radio" name="editOwnerRequest" value="Ya" ${selectedChange.ownerRequest === 'Ya' ? 'checked' : ''} ${disabledAttr}> Ya (Potensi VO)
+                              </label>
+                              <label class="compact-label">
+                                  <input type="radio" name="editOwnerRequest" value="Tidak" ${selectedChange.ownerRequest === 'Tidak' ? 'checked' : ''} ${disabledAttr}> Tidak (Internal/Kontraktor)
+                              </label>
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
+                          <div class="radio-checkbox-wrapper">
+                              <label class="compact-label">
+                                  <input type="checkbox" name="editChangeDrivers" value="Desain" ${drivers.includes('Desain') ? 'checked' : ''} ${disabledAttr}> Kesalahan Desain / Gambar Kontrak
+                              </label>
+                              <label class="compact-label">
+                                  <input type="checkbox" name="editChangeDrivers" value="Lapangan" ${drivers.includes('Lapangan') ? 'checked' : ''} ${disabledAttr}> Kondisi Lapangan Aktual (Site Condition)
+                              </label>
+                              <label class="compact-label">
+                                  <input type="checkbox" name="editChangeDrivers" value="Material" ${drivers.includes('Material') ? 'checked' : ''} ${disabledAttr}> Kelangkaan Material / Suplai
+                              </label>
+                              <label class="compact-label">
+                                  <input type="checkbox" name="editChangeDrivers" value="Metode" ${drivers.includes('Metode') ? 'checked' : ''} ${disabledAttr}> Usulan Optimasi Metode
+                              </label>
+                          </div>
+                      </div>
                     </div>
+                </div>
 
-                    <hr class="section-divider" style="margin:20px 0;" />
+                <hr class="section-divider" style="margin:20px 0;" />
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Material Change</label>
-                            <select id="editMaterialChange" ${disabledAttr}>
-                                <option value="Tidak Ada" ${selectedChange.materialChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
-                                <option value="Ada" ${selectedChange.materialChange === 'Ada' ? 'selected' : ''}>Ada</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Method Change</label>
-                            <select id="editMethodChange" ${disabledAttr}>
-                                <option value="Tidak Ada" ${selectedChange.methodChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
-                                <option value="Ada" ${selectedChange.methodChange === 'Ada' ? 'selected' : ''}>Ada</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Schedule Change</label>
-                            <select id="editScheduleChange" ${disabledAttr}>
-                                <option value="Tidak Ada" ${selectedChange.scheduleChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
-                                <option value="Ada" ${selectedChange.scheduleChange === 'Ada' ? 'selected' : ''}>Ada</option>
-                            </select>
-                        </div>
+                <div class="form-group">
+                    <label style="font-size:16px; color:#0f2d52;">Parameter yang Terdampak:</label>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
+                        <label><input type="checkbox" id="edit-chk-cost" ${hasCost ? 'checked' : ''} ${disabledAttr}> Cost (Biaya)</label>
+                        <label><input type="checkbox" id="edit-chk-time" ${hasTime ? 'checked' : ''} ${disabledAttr}> Time (Waktu)</label>
+                        <label><input type="checkbox" id="edit-chk-scope" ${hasScope ? 'checked' : ''} ${disabledAttr}> Scope (Lingkup)</label>
+                        <label><input type="checkbox" id="edit-chk-quality" ${hasQuality ? 'checked' : ''} ${disabledAttr}> Quality (Mutu)</label>
+                        <label><input type="checkbox" id="edit-chk-safety" ${hasSafety ? 'checked' : ''} ${disabledAttr}> Safety (K3)</label>
                     </div>
+                </div>
 
-                    <hr class="section-divider" style="margin:20px 0;" />
+                <div id="edit-table-cost" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasCost ? 'block' : 'none'};">
+                    <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
+                    <table class="dynamic-table" id="edit-dyn-cost">
+                        <thead>
+                            <tr>
+                                <th>Item / Material</th>
+                                <th width="15%">Sifat</th>
+                                <th width="15%">Kuantitas</th>
+                                <th width="10%">Satuan</th>
+                                <th width="30%">Justifikasi</th>
+                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${costRows}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addRow('cost')" style="display:${btnDisplay}">+ Tambah Item</button>
+                </div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Safety Change</label>
-                            <select id="editSafetyChange" ${disabledAttr}>
-                                <option value="Tidak Ada" ${selectedChange.safetyChange === 'Tidak Ada' ? 'selected' : ''}>Tidak Ada</option>
-                                <option value="Ada" ${selectedChange.safetyChange === 'Ada' ? 'selected' : ''}>Ada</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Impact Area</label>
-                            <select id="editImpactArea" ${disabledAttr}>
-                                <option value="Scope" ${selectedChange.impactArea === 'Scope' ? 'selected' : ''}>Scope</option>
-                                <option value="Cost" ${selectedChange.impactArea === 'Cost' ? 'selected' : ''}>Cost</option>
-                                <option value="Time" ${selectedChange.impactArea === 'Time' ? 'selected' : ''}>Time</option>
-                                <option value="Quality" ${selectedChange.impactArea === 'Quality' ? 'selected' : ''}>Quality</option>
-                                <option value="Safety" ${selectedChange.impactArea === 'Safety' ? 'selected' : ''}>Safety</option>
-                            </select>
-                        </div>
-                    </div>
+                <div id="edit-table-time" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasTime ? 'block' : 'none'};">
+                    <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
+                    <table class="dynamic-table" id="edit-dyn-time">
+                        <thead>
+                            <tr>
+                                <th>Aktivitas Terdampak</th>
+                                <th width="20%">Sifat</th>
+                                <th width="15%">Waktu</th>
+                                <th width="10%">Satuan</th>
+                                <th width="30%">Justifikasi</th>
+                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${timeRows}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addRow('time')" style="display:${btnDisplay}">+ Tambah Item</button>
+                </div>
 
-                    <div class="full-width" style="margin-top:10px;">
-                        <label>Description Detail</label>
-                        <textarea rows="5" id="editDescriptionDetail" ${readonlyAttr}>${selectedChange.descriptionDetail || ""}</textarea>
-                    </div>
+                <div id="edit-table-scope" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasScope ? 'block' : 'none'};">
+                    <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
+                    <table class="dynamic-table" id="edit-dyn-scope">
+                        <thead>
+                            <tr>
+                                <th>Lingkup Pekerjaan</th>
+                                <th width="20%">Sifat</th>
+                                <th width="15%">Kuantitas</th>
+                                <th width="10%">Satuan</th>
+                                <th width="30%">Dokumen Acuan</th>
+                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${scopeRows}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addRow('scope')" style="display:${btnDisplay}">+ Tambah Item</button>
+                </div>
+
+                <div id="edit-table-quality" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasQuality ? 'block' : 'none'};">
+                    <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
+                    <table class="dynamic-table" id="edit-dyn-quality">
+                        <thead>
+                            <tr>
+                                <th>Item Terdampak</th>
+                                <th width="15%">Spesifikasi Awal</th>
+                                <th width="15%">Spesifikasi Baru</th>
+                                <th width="15%">Tingkat Mutu</th>
+                                <th width="30%">Justifikasi</th>
+                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${qualityRows}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addRow('quality')" style="display:${btnDisplay}">+ Tambah Item</button>
+                </div>
+
+                <div id="edit-table-safety" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasSafety ? 'block' : 'none'};">
+                    <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
+                    <table class="dynamic-table" id="edit-dyn-safety">
+                        <thead>
+                            <tr>
+                                <th>Aktivitas Berisiko</th>
+                                <th width="15%">Sifat</th>
+                                <th width="30%">Kebutuhan</th>
+                                <th width="10%">Kuantitas</th>
+                                <th width="10%">Satuan</th>
+                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${safetyRows}</tbody>
+                    </table>
+                    <button type="button" class="btn-add-row" onclick="addRow('safety')" style="display:${btnDisplay}">+ Tambah Item</button>
+                </div>
+
+                <div class="full-width" style="margin-top:20px;">
+                    <label>Justifikasi Teknis & Narasi Lapangan</label>
+                    <textarea rows="4" id="editDescriptionDetail" ${readonlyAttr} placeholder="Jelaskan secara kronologis kejadian di lapangan...">${selectedChange.descriptionDetail || ''}</textarea>
                 </div>
 
                 <div style="margin-top:25px; text-align:right;">
@@ -4162,14 +4576,29 @@
         formData.append('description', document.getElementById('description').value);
 
         // 3. Ambil data dari elemen Tahap 2 (Register)
-        formData.append('changeType', document.getElementById('changeType').value);
-        formData.append('siteCondition', document.getElementById('siteCondition').value);
-        formData.append('ownerRequest', document.getElementById('ownerRequest').value);
-        formData.append('materialChange', document.getElementById('materialChange').value);
-        formData.append('methodChange', document.getElementById('methodChange').value);
-        formData.append('scheduleChange', document.getElementById('scheduleChange').value);
-        formData.append('safetyChange', document.getElementById('safetyChange').value);
-        formData.append('impactArea', document.getElementById('impactArea').value);
+        
+        const ownerReq = document.querySelector('input[name="ownerRequest"]:checked');
+        formData.append('ownerRequest', ownerReq ? ownerReq.value : 'Tidak');
+        const drivers = [];
+        document.querySelectorAll('input[name="changeDrivers"]:checked').forEach(cb => drivers.push(cb.value));
+        formData.append('changeDrivers', drivers.join(', '));
+
+        // 3. Panen Data JSON dari masing-masing Tabel Dinamis
+        const costData = extractTableData('cost');
+        if(costData) formData.append('impactCost', costData);
+
+        const timeData = extractTableData('time');
+        if(timeData) formData.append('impactTime', timeData);
+
+        const scopeData = extractTableData('scope');
+        if(scopeData) formData.append('impactScope', scopeData);
+
+        const qualityData = extractTableData('quality');
+        if(qualityData) formData.append('impactQuality', qualityData);
+
+        const safetyData = extractTableData('safety');
+        if(safetyData) formData.append('impactSafety', safetyData);
+
         formData.append('descriptionDetail', document.getElementById('descriptionDetail').value);
 
         // 4. Ambil file Foto / PDF (Mendukung multiple files)
@@ -4473,7 +4902,11 @@
           "Apakah Anda yakin ingin keluar dari sistem?",
         );
         if (confirmLogout) {
-          window.location.href = "login.html";
+          fetch('api_logout.php')
+            .then(() => {
+                localStorage.clear(); // Bersihkan localStorage frontend
+                window.location.replace("login.html");
+            });
         }
       }
 

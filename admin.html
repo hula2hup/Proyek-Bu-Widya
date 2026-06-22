@@ -1834,7 +1834,7 @@
             </div>
             <div class="modal-buttons">
               <button class="btn-secondary" onclick="closeModal()">Batal</button
-              ><button class="btn-primary" onclick="addProject()">
+              ><button class="btn-primary" onclick="addProject(event)">
                 Simpan Data
               </button>
             </div>
@@ -3458,6 +3458,141 @@
           showProjectSelection();
         }
       }
+
+      let globalProjectsData = []; // Untuk menyimpan data mentah dari database
+
+      function syncProjectData() {
+        fetch('api_get_projects.php')
+          .then(response => response.json())
+          .then(res => {
+            if (res.status === 'success') {
+              globalProjectsData = res.data; // Simpan ke variabel global
+              
+              const tbody = document.getElementById('projectTableBody');
+              tbody.innerHTML = ''; 
+
+              let grandTotalChanges = 0;
+              let grandOpenChanges = 0;
+
+              res.data.forEach(item => {
+                // Akumulasikan total keseluruhan untuk kartu KPI atas Dashboard
+                grandTotalChanges += parseInt(item.total_changes || 0);
+                grandOpenChanges += parseInt(item.open_changes || 0);
+
+                const tr = document.createElement('tr');
+                // Tambahkan attribute data-id agar baris bisa diklik untuk memfilter data detail
+                tr.setAttribute('onclick', `showProjectDetails('${item.project_id}')`);
+                tr.style.cursor = 'pointer'; 
+                
+                tr.innerHTML = `
+                  <td>${item.project_id}</td>
+                  <td><strong>${item.project_name}</strong></td>
+                  <td>${item.location}</td>
+                  <td>${item.site_engineer_name || 'Belum Ada'}</td>
+                  <td>${item.project_manager_name || 'Belum Ada'}</td>
+                  <td><span class="badge-change-count">${item.total_changes} Total Usulan</span></td>
+                  <td><span class="badge-status">${item.status}</span></td>
+                `;
+                tbody.appendChild(tr);
+              });
+
+              // UPDATE KARTU KPI UTAMA DI ATAS DASHBOARD SECARA DINAMIS
+              if(document.getElementById('kpiTotalProjects')) {
+                  document.getElementById('kpiTotalProjects').innerText = res.data.length;
+                  document.getElementById('kpiTotalChanges').innerText = grandTotalChanges;
+                  document.getElementById('kpiOpenChanges').innerText = grandOpenChanges;
+              }
+              
+              // UPDATE GRAFIK CHART.JS ANDA AGAR SESUAI DATA DATABASE
+              updateDashboardChart(res.data);
+
+            }
+          });
+      }
+
+      // Fungsi opsional ketika salah satu baris proyek diklik (Membuka detail change request khusus PRJ tersebut)
+      function showProjectDetails(projectId) {
+          const selectedProj = globalProjectsData.find(p => p.project_id === projectId);
+          alert(`Membuka log Change Request khusus untuk: ${selectedProj.project_name} (${projectId})\nTotal Open: ${selectedProj.open_changes}`);
+          
+          // Di sini Anda bisa memanggil API lain untuk memfilter tabel change_requests di bawahnya
+          // Contoh: fetch(\`api_get_change_requests.php?project_id=\${projectId}\`)...
+      }
+
+      // Fungsi untuk memperbarui grafik lingkaran / batang Chart.js Anda
+      function updateDashboardChart(projects) {
+          // Ambil nama proyek dan jumlah change request-nya sebagai data grafik
+          const labels = projects.map(p => p.project_id);
+          const dataValues = projects.map(p => p.total_changes);
+
+          // Asumsikan variabel 'myChart' adalah instansiasi Chart.js Anda
+          if (typeof myChart !== 'undefined') {
+              myChart.data.labels = labels;
+              myChart.data.datasets[0].data = dataValues;
+              myChart.update(); // Refresh grafik secara visual
+          }
+      }
+
+      function addProject(event) {
+        // Mencegah halaman refresh jika terikat pada tag <form>
+        if (event) event.preventDefault();
+
+        // 1. AMBIL NILAI DARI FORM INPUT HTML ANDA
+        // Catatan: Sesuaikan ID dokumen di bawah ini ('projectIdInput', dll) 
+        // dengan ID attribute <input> yang ada di dalam Modal form "Add Project" Anda.
+        const idValue = document.getElementById("projectIdInput").value;
+        const nameValue = document.getElementById("projectNameInput").value;
+        const locValue = document.getElementById("projectLocationInput").value;
+        const engValue = document.getElementById("projectEngineerInput").value; // value ini disarankan berisi 'username' engineer, contoh: 'engineer'
+        const mgrValue = document.getElementById("projectManagerInput").value; // value ini disarankan berisi 'username' manager, contoh: 'manager'
+        const statValue = document.getElementById("projectStatusInput").value;
+
+        // 2. BUNGKUS DATA KE DALAM OBJEK PAYLOAD
+        const payload = {
+          id: idValue,
+          name: nameValue,
+          location: locValue,
+          engineer: engValue, 
+          manager: mgrValue,
+          status: statValue
+        };
+
+        // 3. KIRIM DATA KE DATABASE VIA API PHP
+        fetch('api_add_project.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(res => {
+          if (res.status === 'success') {
+            alert("Berhasil: " + res.message);
+            
+            // Kosongkan kembali form setelah sukses
+            document.getElementById("formAddProject").reset(); 
+            
+            // Tutup modal (Sesuaikan dengan nama fungsi penutup modal Anda)
+            if (typeof closeAddProjectModal === 'function') {
+                closeAddProjectModal();
+            }
+
+            // Refresh Data Tabel agar proyek yang baru ditambah langsung muncul
+            if (typeof syncProjectData === 'function') {
+                syncProjectData(); 
+            }
+          } else {
+            alert("Gagal menambahkan: " + res.message);
+          }
+        })
+        .catch(err => {
+          console.error("Error Koneksi:", err);
+          alert("Terjadi kesalahan sistem saat menghubungi server.");
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", syncProjectData);
       const wbsData = {
         "1.1.1 Program Mobilisasi": {
           "1.1.1.1 Mobilisasi Material": [
@@ -5292,7 +5427,7 @@
           ${this.value}
         `;
       });
-      
+
       const modal = document.getElementById("projectModal");
       function openModal() {
         modal.classList.add("show");

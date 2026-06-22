@@ -683,6 +683,40 @@
         if (e.key === "Enter") login();
       });
 
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        const userVal = document.getElementById('loginUsername').value;
+        const passVal = document.getElementById('loginPassword').value;
+
+        fetch('api_login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: userVal, password: passVal })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // 1. Amankan penulisan ke localStorage
+                localStorage.setItem("isLoggedIn", "true"); 
+                localStorage.setItem("username", data.full_name);
+                localStorage.setItem("role", data.role);
+
+                // 2. Berikan alert, perpindahan halaman HANYA terjadi setelah user klik "OK"
+                alert('Selamat datang, ' + data.full_name + '!');
+                
+                // 3. Gunakan setTimeout minimal (100ms) untuk memastikan browser selesai mencatat localStorage
+                setTimeout(() => {
+                    window.location.href = data.redirect; // Menggunakan .href seringkali lebih stabil untuk membawa session data dibanding .replace pada beberapa kasus local server
+                }, 100);
+
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
       (function () {
         // Menambahkan state fiktif ke history browser
         window.history.pushState(null, "", window.location.href);
