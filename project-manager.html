@@ -12,12 +12,13 @@
     // 2. Fungsi utama untuk memvalidasi sesi login
     function enforceSecurity() {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const role = localStorage.getItem("role");
       
-      if (isLoggedIn !== "true") {
-        // Jika tidak ada tanda login, ganti URL tanpa meninggalkan jejak history
+      // PM HANYA boleh mengakses jika logged in DAN role-nya adalah 'Project Manager'
+      if (isLoggedIn !== "true" || role !== "Project Manager") {
+        localStorage.clear();
         window.location.replace("login.html");
       } else {
-        // Jika valid, munculkan kembali halamannya
         document.documentElement.style.display = 'block';
       }
     }

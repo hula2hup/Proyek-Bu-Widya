@@ -620,102 +620,128 @@
         setTimeout(() => input.classList.remove("error-field"), 600);
       }
 
-      function login() {
-        const usernameRaw = document.getElementById("username").value.trim();
-        const username = usernameRaw.toLowerCase();
-        const password = document.getElementById("password").value;
-        const btn = document.getElementById("loginBtn");
+      function login(event) {
+          // Opsional: cegah form reload jika fungsi ini dipanggil via onsubmit form
+          if (event && event.preventDefault) event.preventDefault();
 
-        if (!username && !password) {
-          showToast("⚠  Please fill in your username and password.", "error");
-          setFieldError("username");
-          setFieldError("password");
-          return;
-        }
-        if (!username) {
-          showToast("⚠  Username cannot be empty.", "error");
-          setFieldError("username");
-          return;
-        }
-        if (!password) {
-          showToast("⚠  Password cannot be empty.", "error");
-          setFieldError("password");
-          return;
-        }
+          const usernameRaw = document.getElementById("username").value.trim();
+          const username = usernameRaw.toLowerCase();
+          const password = document.getElementById("password").value;
+          const btn = document.getElementById("loginBtn");
 
-        btn.disabled = true;
-        btn.textContent = "Verifying...";
-
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.textContent = "Login";
-
-          if (!(username in accounts)) {
-            showToast("✗  Username or password is incorrect.", "error");
+          // --- 1. BAGIAN VALIDASI KOSONG (Dipertahankan) ---
+          if (!username && !password) {
+            showToast("⚠  Please fill in your username and password.", "error");
             setFieldError("username");
             setFieldError("password");
-            document.getElementById("password").value = "";
             return;
           }
-
-          if (accounts[username] !== password) {
-            showToast("✗  Username or password is incorrect.", "error");
+          if (!username) {
+            showToast("⚠  Username cannot be empty.", "error");
+            setFieldError("username");
+            return;
+          }
+          if (!password) {
+            showToast("⚠  Password cannot be empty.", "error");
             setFieldError("password");
-            document.getElementById("password").value = "";
             return;
           }
 
-          showToast("✓  Login successful! Redirecting...", "success");
-          setTimeout(() => {
-            
-            // 1. TAMBAHKAN BARIS INI (Wajib sebelum redirect)
-            localStorage.setItem("isLoggedIn", "true"); 
-            localStorage.setItem("username", "Budi Setiawan"); // Simpan nama user yang login, bisa diganti sesuai kebutuhan
+          // --- 2. UBAH STATE TOMBOL JADI LOADING (Dipertahankan) ---
+          btn.disabled = true;
+          btn.textContent = "Verifying...";
 
-            // 2. UBAH .href MENJADI .replace AGAR HISTORY BERSIH
-            window.location.replace(redirectPages[username]);
-            
-          }, 1400);
-        }, 900);
+          // ================================================================
+          // 🚀 SISIPKAN KODE BYPASS SEMENTARA DI SINI
+          // ================================================================
+
+          // Bypass untuk Project Manager
+          //if (username === "manager" && password === "manager123") {
+          //    showToast("✓  [Bypass] Login Project Manager!", "success");
+          //    setTimeout(() => {
+          //        localStorage.setItem("isLoggedIn", "true"); 
+          //        localStorage.setItem("username", "PM Tester"); 
+          //        localStorage.setItem("role", "Project Manager");
+          //        window.location.replace("project-manager.html"); // Arahkan ke PM
+          //    }, 1400);
+          //    return; // PENTING: return agar tidak lanjut ke fetch API PHP
+          //}
+
+          // Bypass untuk Site Engineer
+          //if (username === "engineer" && password === "engineer123") {
+          //    showToast("✓  [Bypass] Login Site Engineer!", "success");
+          //    setTimeout(() => {
+          //        localStorage.setItem("isLoggedIn", "true"); 
+          //        localStorage.setItem("username", "SE Tester"); 
+          //        localStorage.setItem("role", "Site Engineer");
+          //        window.location.replace("site-engineer.html"); // Arahkan ke SE
+          //    }, 1400);
+          //    return; // PENTING: return agar tidak lanjut ke fetch API PHP
+          //}
+
+          // Bypass untuk Admin
+          //if (username === "admin" && password === "admin123") {
+          //    showToast("✓  [Bypass] Login Admin!", "success");
+          //    setTimeout(() => {
+          //        localStorage.setItem("isLoggedIn", "true"); 
+          //        localStorage.setItem("username", "Admin Tester"); 
+          //        localStorage.setItem("role", "Admin");
+          //        window.location.replace("admin.html"); // Arahkan ke Admin
+          //    }, 1400);
+          //    return; // PENTING: return agar tidak lanjut ke fetch API PHP
+          //}
+
+          // ================================================================
+          // AKHIR KODE BYPASS
+          // ================================================================
+
+          // --- 3. KIRIM DATA KE BACKEND PHP (Menggantikan setTimeout mock & hardcoded array) ---
+          fetch('api_login.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username: username, password: password })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  // --- 4A. JIKA LOGIN SUKSES (Struktur Toast & Delay Dipertahankan) ---
+                  showToast("✓  Login successful! Redirecting...", "success");
+                  
+                  setTimeout(() => {
+                      // Simpan data dinamis dari database ke localStorage
+                      localStorage.setItem("isLoggedIn", "true"); 
+                      localStorage.setItem("username", data.full_name); 
+                      localStorage.setItem("role", data.role);
+
+                      // Redirect sesuai file yang dilempar dari API PHP
+                      window.location.replace(data.redirect);
+                  }, 1400);
+
+              } else {
+                  // --- 4B. JIKA LOGIN GAGAL (Password Salah/User Tidak Ada) ---
+                  btn.disabled = false;
+                  btn.textContent = "Login";
+
+                  // Tampilkan pesan error dari backend
+                  showToast("✗  " + data.message, "error"); 
+                  setFieldError("username");
+                  setFieldError("password");
+                  document.getElementById("password").value = "";
+              }
+          })
+          .catch(error => {
+              // --- 4C. JIKA TERJADI ERROR KONEKSI/SERVER ---
+              btn.disabled = false;
+              btn.textContent = "Login";
+              
+              console.error("Error:", error);
+              showToast("⚠  System error. Cannot connect to server.", "error");
+          });
       }
 
       document.addEventListener("keydown", (e) => {
         if (e.key === "Enter") login();
       });
-
-      document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault(); 
-
-        const userVal = document.getElementById('loginUsername').value;
-        const passVal = document.getElementById('loginPassword').value;
-
-        fetch('api_login.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username: userVal, password: passVal })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                // 1. Amankan penulisan ke localStorage
-                localStorage.setItem("isLoggedIn", "true"); 
-                localStorage.setItem("username", data.full_name);
-                localStorage.setItem("role", data.role);
-
-                // 2. Berikan alert, perpindahan halaman HANYA terjadi setelah user klik "OK"
-                alert('Selamat datang, ' + data.full_name + '!');
-                
-                // 3. Gunakan setTimeout minimal (100ms) untuk memastikan browser selesai mencatat localStorage
-                setTimeout(() => {
-                    window.location.href = data.redirect; // Menggunakan .href seringkali lebih stabil untuk membawa session data dibanding .replace pada beberapa kasus local server
-                }, 100);
-
-            } else {
-                alert(data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    });
 
       (function () {
         // Menambahkan state fiktif ke history browser

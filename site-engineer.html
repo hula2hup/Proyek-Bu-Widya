@@ -11,12 +11,14 @@
     // 2. Fungsi utama untuk memvalidasi sesi login
     function enforceSecurity() {
       const isLoggedIn = localStorage.getItem("isLoggedIn");
+      const role = localStorage.getItem("role"); // <--- Ambil data role
       
-      if (isLoggedIn !== "true") {
-        // Jika tidak ada tanda login, ganti URL tanpa meninggalkan jejak history
+      // Engineer HANYA boleh mengakses jika logged in DAN role-nya adalah 'Site Engineer'
+      if (isLoggedIn !== "true" || role !== "Site Engineer") {
+        // Jika tidak sesuai, bersihkan localStorage sisaan dan lempar ke login
+        localStorage.clear(); 
         window.location.replace("login.html");
       } else {
-        // Jika valid, munculkan kembali halamannya
         document.documentElement.style.display = 'block';
       }
     }

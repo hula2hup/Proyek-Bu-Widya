@@ -1781,12 +1781,12 @@
               <label>Project Manager</label>
               <div
                 class="tag-input-wrapper"
-                id="pm-wrapper"
-                onclick="document.getElementById('pm-input').focus()"
+                id="pmWrapper"
+                onclick="document.getElementById('pmInput').focus()"
               >
                 <input
                   type="text"
-                  id="pm-input"
+                  id="pmInput"
                   placeholder="Ketik nama & Enter..."
                 />
               </div>
@@ -1795,12 +1795,12 @@
               <label>Site Manager</label>
               <div
                 class="tag-input-wrapper"
-                id="sm-wrapper"
-                onclick="document.getElementById('sm-input').focus()"
+                id="seWrapper"
+                onclick="document.getElementById('seInput').focus()"
               >
                 <input
                   type="text"
-                  id="sm-input"
+                  id="seInput"
                   placeholder="Ketik nama & Enter..."
                 />
               </div>
@@ -2380,7 +2380,7 @@
                     <b>Status Pengaju</b>
                   </td>
                   <td style="border: none; padding: 10px 0">
-                    <span id="detailSender">Budi Santoso (Site Engineer)</span>
+                    <span id="detailSender">Budi Setiawan (Site Engineer)</span>
                   </td>
                 </tr>
                 <tr>
@@ -3437,8 +3437,27 @@
       }
 
       // Cara inisialisasi:
-      setupTagInput("pm-input", "pm-wrapper");
-      setupTagInput("sm-input", "sm-wrapper");
+      setupTagInput("pmInput", "pmWrapper");
+      setupTagInput("seInput", "seWrapper");
+
+      // Fungsi untuk mengekstrak array nama dari elemen tags UI
+      function getTagsData(wrapperId) {
+          const wrapper = document.getElementById(wrapperId);
+          if (!wrapper) return []; // Kembalikan array kosong jika wrapper tidak ditemukan
+
+          const tags = wrapper.querySelectorAll('.tag-item');
+          const tagValues = [];
+          
+          tags.forEach(tag => {
+              // Ambil text content-nya, hilangkan tanda silang '×' dan spasi berlebih
+              let name = tag.textContent.replace('×', '').replace('x', '').trim();
+              if(name !== '') {
+                  tagValues.push(name);
+              }
+          });
+          
+          return tagValues;
+      }
       // ==========================================
       // FUNGSI UMUM ADMIN
       // ==========================================
@@ -3533,63 +3552,73 @@
           }
       }
 
+      // 2. Timpa (replace) function addProject lama Anda dengan yang ini:
       function addProject(event) {
-        // Mencegah halaman refresh jika terikat pada tag <form>
-        if (event) event.preventDefault();
+          // Mencegah halaman refresh jika terikat pada tag <form>
+          if (event) event.preventDefault();
 
-        // 1. AMBIL NILAI DARI FORM INPUT HTML ANDA
-        // Catatan: Sesuaikan ID dokumen di bawah ini ('projectIdInput', dll) 
-        // dengan ID attribute <input> yang ada di dalam Modal form "Add Project" Anda.
-        const idValue = document.getElementById("projectIdInput").value;
-        const nameValue = document.getElementById("projectNameInput").value;
-        const locValue = document.getElementById("projectLocationInput").value;
-        const engValue = document.getElementById("projectEngineerInput").value; // value ini disarankan berisi 'username' engineer, contoh: 'engineer'
-        const mgrValue = document.getElementById("projectManagerInput").value; // value ini disarankan berisi 'username' manager, contoh: 'manager'
-        const statValue = document.getElementById("projectStatusInput").value;
+          // AMBIL NILAI STANDAR
+          const idValue = document.getElementById("projectId").value;
+          const nameValue = document.getElementById("projectName").value;
+          const statValue = document.getElementById("projectStatus").value; 
+          const progValue = document.getElementById("projectProgress").value;
 
-        // 2. BUNGKUS DATA KE DALAM OBJEK PAYLOAD
-        const payload = {
-          id: idValue,
-          name: nameValue,
-          location: locValue,
-          engineer: engValue, 
-          manager: mgrValue,
-          status: statValue
-        };
+          // --- PERUBAHAN KUNCI: AMBIL NILAI MULTIPLE TAGS ---
+          // Pastikan "pm-wrapper" dan "se-wrapper" adalah ID dari div bungkus tags Anda
+          const pmTagsArray = getTagsData('pmWrapper'); 
+          const seTagsArray = getTagsData('seWrapper');
 
-        // 3. KIRIM DATA KE DATABASE VIA API PHP
-        fetch('api_add_project.php', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(res => {
-          if (res.status === 'success') {
-            alert("Berhasil: " + res.message);
-            
-            // Kosongkan kembali form setelah sukses
-            document.getElementById("formAddProject").reset(); 
-            
-            // Tutup modal (Sesuaikan dengan nama fungsi penutup modal Anda)
-            if (typeof closeAddProjectModal === 'function') {
-                closeAddProjectModal();
-            }
+          // BUNGKUS DATA KE DALAM OBJEK PAYLOAD
+          const payload = {
+              id: idValue,
+              name: nameValue,
+              status: statValue,
+              progress: progValue,
+              // Properti ini dikirim sebagai ARRAY ke PHP
+              pm_tags: pmTagsArray, 
+              se_tags: seTagsArray
+          };
 
-            // Refresh Data Tabel agar proyek yang baru ditambah langsung muncul
-            if (typeof syncProjectData === 'function') {
-                syncProjectData(); 
-            }
-          } else {
-            alert("Gagal menambahkan: " + res.message);
-          }
-        })
-        .catch(err => {
-          console.error("Error Koneksi:", err);
-          alert("Terjadi kesalahan sistem saat menghubungi server.");
-        });
+          // KIRIM DATA KE DATABASE VIA API PHP
+          fetch('api_add_project.php', {
+              method: 'POST',
+              credentials: 'same-origin', // <--- TAMBAHKAN BARIS INI
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(payload)
+          })
+          .then(response => response.json())
+          .then(res => {
+              if (res.status === 'success') {
+                  alert("Berhasil: " + res.message);
+                  
+                  // Kosongkan kembali form input standar
+                  document.getElementById("formAddProject").reset(); 
+                  
+                  // Kosongkan juga elemen visual Tags yang sudah diketik
+                  const pmWrapper = document.getElementById('pmWrapper');
+                  const seWrapper = document.getElementById('seWrapper');
+                  if(pmWrapper) pmWrapper.querySelectorAll('.tag-item').forEach(e => e.remove());
+                  if(seWrapper) seWrapper.querySelectorAll('.tag-item').forEach(e => e.remove());
+                  
+                  // Tutup modal
+                  if (typeof closeAddProjectModal === 'function') {
+                      closeAddProjectModal();
+                  }
+
+                  // Refresh Data Tabel
+                  if (typeof syncProjectData === 'function') {
+                      syncProjectData(); 
+                  }
+              } else {
+                  alert("Gagal menambahkan: " + res.message);
+              }
+          })
+          .catch(err => {
+              console.error("Error Koneksi:", err);
+              alert("Terjadi kesalahan sistem saat menghubungi server.");
+          });
       }
 
       document.addEventListener("DOMContentLoaded", syncProjectData);
@@ -5659,7 +5688,7 @@
           id: "CR-008",
           projectId: "PRJ-001",
           desc: "Relokasi Jalur Pipa Utama (Plumbing)",
-          sender: "Budi Santoso",
+          sender: "Budi Setiawan",
           role: "Site Engineer",
           waktu: "07 Jun 2026, 09:15",
           waktuTs: new Date("2026-06-07T09:15:00").getTime(),
@@ -5877,7 +5906,7 @@
       const crDetailMap = {
         "CR-008": {
           proj: "PRJ-001",
-          sender: "Budi Santoso (Site Engineer)",
+          sender: "Budi Setiawan (Site Engineer)",
           time: "07 Jun 2026, 09:15",
           risk: "high",
           riskText: "Tinggi",
@@ -5993,7 +6022,7 @@
         {
           id: "CR-002",
           changeDate: "2026-05-10",
-          submittedBy: "Budi Santoso",
+          submittedBy: "Budi Setiawan",
           category: "Material",
           priority: 3,
           risk: 5,
@@ -6057,7 +6086,7 @@
         {
           id: "CR-008",
           changeDate: "2026-06-07",
-          submittedBy: "Budi Santoso",
+          submittedBy: "Budi Setiawan",
           category: "Design",
           priority: 4,
           risk: 8,

@@ -15,6 +15,60 @@ if (!$data || empty($data['username']) || empty($data['password'])) {
 $username = $data['username'];
 $password = $data['password'];
 
+// =================================================================
+// 🚀 SISIPAN KODE BYPASS DI SISI BACKEND (Aman & Sinkron)
+// =================================================================
+if ($username === "manager" && $password === "manager123") {
+    // Buat sesi dummy agar diakui oleh API PHP lainnya
+    $_SESSION['user_id']   = 998; 
+    $_SESSION['username']  = "manager";
+    $_SESSION['full_name'] = "PM Tester";
+    $_SESSION['role']      = "Project Manager";
+
+    echo json_encode([
+        "status"    => "success",
+        "full_name" => "PM Tester",
+        "role"      => "Project Manager",
+        "redirect"  => "project-manager.html"
+    ]);
+    exit;
+}
+
+if ($username === "engineer" && $password === "engineer123") {
+    // Buat sesi dummy agar diakui oleh API PHP lainnya
+    $_SESSION['user_id']   = 999; 
+    $_SESSION['username']  = "engineer";
+    $_SESSION['full_name'] = "SE Tester";
+    $_SESSION['role']      = "Site Engineer";
+
+    echo json_encode([
+        "status"    => "success",
+        "full_name" => "SE Tester",
+        "role"      => "Site Engineer",
+        "redirect"  => "site-engineer.html"
+    ]);
+    exit;
+}
+
+if ($username === "admin" && $password === "admin123") {
+    // Buat sesi dummy agar diakui oleh API PHP lainnya
+    $_SESSION['user_id']   = 1000; 
+    $_SESSION['username']  = "admin";
+    $_SESSION['full_name'] = "Administrator";
+    $_SESSION['role']      = "Admin";
+
+    echo json_encode([
+        "status"    => "success",
+        "full_name" => "Administrator",
+        "role"      => "Admin",
+        "redirect"  => "admin.html"
+    ]);
+    exit;
+}
+// =================================================================
+// AKHIR KODE BYPASS
+// =================================================================
+
 try {
     // Cari user berdasarkan username
     $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? LIMIT 1");
@@ -30,10 +84,11 @@ try {
         $_SESSION['role']      = $user['role'];
 
         // Tentukan halaman redirect berdasarkan Role di database
-        $redirect_page = 'admin.html'; // Default jika Admin
-        if ($user['role'] === 'Project Manager') {
+        if ($user['role'] === 'Admin') {
+            $redirect_page === 'admin.html';
+        } if ($user['role'] === 'Project Manager') {
             $redirect_page = 'project-manager.html';
-        } elseif ($user['role'] === 'Site Engineer') {
+        } if ($user['role'] === 'Site Engineer') {
             $redirect_page = 'site-engineer.html';
         }
 
