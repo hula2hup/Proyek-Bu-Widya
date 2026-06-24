@@ -28,9 +28,9 @@ try {
              WHERE pa.project_id = p.project_id AND pa.role_assigned = 'Project Manager' LIMIT 1) AS project_manager_name,
             
             -- Menghitung KPI dari tabel change_requests (menggunakan projectId dan 'Pending')
-            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectId = p.project_id) AS total_changes,
-            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectId = p.project_id AND cr.status = 'Pending') AS open_changes,
-            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectId = p.project_id AND cr.status = 'Approved') AS approved_changes
+            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectArea = p.project_id) AS total_changes,
+            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectArea = p.project_id AND cr.status = 'Pending') AS open_changes,
+            (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectArea = p.project_id AND cr.status = 'Approved') AS approved_changes
         FROM projects p
     ";
 

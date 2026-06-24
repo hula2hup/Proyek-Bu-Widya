@@ -1,9 +1,12 @@
 <?php
+// Pastikan response selalu berupa JSON
+header('Content-Type: application/json');
+
 // 1. KONFIGURASI DATABASE (Laragon Default)
 $host = 'localhost';
-$db   = 'db_data_proyek'; // Pastikan nama database ini sudah Anda buat di phpMyAdmin Laragon
+$db   = 'db_data_proyek'; 
 $user = 'root';
-$pass = ''; // Default Laragon adalah kosong/tanpa password
+$pass = ''; 
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -16,20 +19,10 @@ $options = [
 try {
     // Membuat koneksi ke MySQL Laragon
     $pdo = new PDO($dsn, $user, $pass, $options);
-
-    $file_sql_eksternal = 'data_proyek.sql'; // Nama file SQL kamu
-
-    if (file_exists($file_sql_eksternal)) {
-        // Membaca seluruh text/query di dalam file setup.sql
-        $query_dari_file = file_get_contents($file_sql_eksternal);
-        
-        // Mengeksekusi query tersebut ke MySQL Laragon
-        $pdo->exec($query_dari_file);
-    } else {
-        die("Error: File script SQL '$file_sql_eksternal' tidak ditemukan!");
-    }
 } catch (PDOException $e) {
-    die("Koneksi database gagal: " . $e->getMessage());
+    // Balas dengan JSON jika koneksi database mati
+    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
+    exit();
 }
 
 // 2. PROSES DATA SAAT FORM DI-SUBMIT (POST)
@@ -41,13 +34,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mkdir($target_dir, 0777, true);
     }
 
-    // Proses multi-upload untuk file 'photo' (sesuai input id="photo" di HTML)
+    // Proses multi-upload untuk file 'photo'
+    // WAJIB: Di HTML harus menggunakan name="photo[]"
     $uploaded_files = [];
-    if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'][0])) {
+    if (isset($_FILES['photo']) && is_array($_FILES['photo']['name']) && !empty($_FILES['photo']['name'][0])) {
         foreach ($_FILES['photo']['name'] as $key => $name) {
             if ($_FILES['photo']['error'][$key] == 0) {
                 $ext = pathinfo($name, PATHINFO_EXTENSION);
-                // Generate nama file unik agar tidak saling menimpa
                 $new_filename = time() . '_evidence_' . uniqid() . '.' . $ext;
                 
                 if (move_uploaded_file($_FILES['photo']['tmp_name'][$key], $target_dir . $new_filename)) {
@@ -56,16 +49,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    // Gabungkan nama-nama file menjadi string dipisahkan koma untuk disimpan di satu kolom database
+    // Gabungkan nama-nama file menjadi string dipisahkan koma
     $photo_evidence = implode(',', $uploaded_files);
 
-    // Menangkap Array Checkbox jika dikirim via form biasa (diubah jadi string dipisah koma)
+    // Menangkap Array Checkbox 
     $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
 
-    // Ambil data input secara terstruktur dan berikan nilai fallback (null) jika kosong
+    // Ambil data input secara terstruktur
     $data = [
         'changeId'          => $_POST['changeId'] ?? uniqid('CR-'),
-        'projectId'         => $_POST['projectId'] ?? null,
         'changeDate'        => $_POST['changeDate'] ?? date('Y-m-d'),
         'submittedBy'       => $_POST['submittedBy'] ?? 'SITE ENGINEER',
         'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
@@ -81,18 +73,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'riskVariable'      => $_POST['riskVariable'] ?? null,
         'description'       => $_POST['description'] ?? null,
         'ownerRequest'      => $_POST['ownerRequest'] ?? null,
-        'changeDrivers'     => $changeDrivers, // 🆕 Baru
-        'impactCost'        => $_POST['impactCost'] ?? null, // 🆕 Baru (JSON string)
-        'impactTime'        => $_POST['impactTime'] ?? null, // 🆕 Baru (JSON string)
-        'impactScope'       => $_POST['impactScope'] ?? null, // 🆕 Baru (JSON string)
-        'impactQuality'     => $_POST['impactQuality'] ?? null, // 🆕 Baru (JSON string)
-        'impactSafety'      => $_POST['impactSafety'] ?? null, // 🆕 Baru (JSON string)
+        'changeDrivers'     => $changeDrivers, 
+        'impactCost'        => $_POST['impactCost'] ?? null, 
+        'impactTime'        => $_POST['impactTime'] ?? null, 
+        'impactScope'       => $_POST['impactScope'] ?? null, 
+        'impactQuality'     => $_POST['impactQuality'] ?? null, 
+        'impactSafety'      => $_POST['impactSafety'] ?? null, 
         'descriptionDetail' => $_POST['descriptionDetail'] ?? null,
         'photoEvidence'     => $photo_evidence,
         'status'            => 'PENDING'
     ];
 
-    // Query INSERT yang mendefinisikan kolom secara eksplisit
+    // Query INSERT 
     $sql = "INSERT INTO change_requests (
                 changeId, changeDate, submittedBy, wbsLevel4, wbsLevel5, 
                 wbsLevel6, changeCategory, priority, risk, projectArea, 
@@ -112,17 +104,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $saved = $stmt->execute($data);
 
         if ($saved) {
-            // HAPUS ATAU KOMENTARI BARIS INI:
-            // header("Location: site-engineer.html?status=success");
-            
-            // GANTI DENGAN INI (Balasan JSON untuk ditangkap JavaScript):
             echo json_encode(["status" => "success", "message" => "Data berhasil disimpan"]);
             exit();
         }
     } catch (PDOException $e) {
-        // Balas juga dengan JSON jika ada error database
-        echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+        // Balas dengan JSON jika ada error query (misal: tipe data salah, nama kolom tidak cocok)
+        echo json_encode(["status" => "error", "message" => "Gagal menyimpan data: " . $e->getMessage()]);
         exit();
     }
+} else {
+    // Jika file diakses langsung dari URL tanpa disubmit
+    echo json_encode(["status" => "error", "message" => "Metode tidak diizinkan. Gunakan POST."]);
+    exit();
 }
 ?>

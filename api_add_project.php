@@ -2,7 +2,7 @@
 // File: api_add_project.php
 session_start();
 header('Content-Type: application/json');
-require 'db_user.php'; // Menggunakan koneksi database yang sudah ada
+require 'db_user.php'; 
 
 // 1. Verifikasi Keamanan: Hanya Admin yang boleh menambah proyek
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'Admin') {
@@ -19,61 +19,66 @@ if (empty($data['id']) || empty($data['name'])) {
     exit;
 }
 
-$project_id   = $data['id'];
-$project_name = $data['name'];
-$status       = $data['status'] ?? 'Pending';
-$progress     = $data['progress'] ?? 0;
+$projectId       = $data['id'];
+$projectName     = $data['name'];
+$projectStatus   = $data['status'] ?? 'Pending';
+$progressPercent = $data['progress'] ?? 0;
 
-// 3. Tangkap data Tags sebagai ARRAY
-// Sesuaikan key 'se_tags' dan 'pm_tags' dengan nama properti JSON yang dikirim dari JS frontend Anda
-$se_names = isset($data['se_tags']) && is_array($data['se_tags']) ? $data['se_tags'] : [];
-$pm_names = isset($data['pm_tags']) && is_array($data['pm_tags']) ? $data['pm_tags'] : [];
+// Tangkap data Tags sebagai ARRAY yang benar
+$siteEngineers   = isset($data['se_tags']) && is_array($data['se_tags']) ? $data['se_tags'] : [];
+$projectManagers = isset($data['pm_tags']) && is_array($data['pm_tags']) ? $data['pm_tags'] : [];
 
 try {
     // Mulai proses database (Transaction) agar aman
     $pdo->beginTransaction();
 
-    // 1. Masukkan data ke tabel utama `projects`
+    // 1. Masukkan data ke tabel utama `projects` (TANPA memasukkan variabel array langsung ke sini)
     $stmt = $pdo->prepare("INSERT INTO projects (project_id, project_name, status, progress) VALUES (?, ?, ?, ?)");
-    $stmt->execute([$project_id, $project_name, $status, $progress]);
+    $stmt->execute([$projectId, $projectName, $projectStatus, $progressPercent]);
 
-    // Siapkan Query pencari ID User (Asumsi isi tags adalah 'full_name', ubah ke 'username' jika tags isinya username)
-    $stmtFindUser = $pdo->prepare("SELECT id FROM users WHERE full_name = ? LIMIT 1");
+    // 2. Siapkan query pencarian User (Fleksibel: Bisa mendeteksi berdasarkan Username ATAU Full Name)
+    $stmtFindUser = $pdo->prepare("SELECT id FROM users WHERE username = ? OR full_name = ? LIMIT 1");
     
-    // Siapkan Query untuk Insert ke tabel relasi
+    // 3. Siapkan query insert untuk tabel relasi assignments
     $stmtAssign = $pdo->prepare("INSERT INTO project_assignments (project_id, user_id, role_assigned) VALUES (?, ?, ?)");
 
-    // 2 & 3. Fungsi internal untuk melakukan looping pada array tags dan memasukkannya ke DB
-    function assignMultipleUsers($stmtFind, $stmtAssign, $namesArray, $role, $projectId) {
+    // Fungsi internal untuk melakukan looping pada array tags secara aman
+    function assignMultipleUsers($stmtFindUser, $stmtAssign, $namesArray, $role, $projectId) {
         foreach ($namesArray as $name) {
-            // Cari apakah user dengan nama tersebut ada di database
-            $stmtFind->execute([$name]);
-            $user = $stmtFind->fetch(PDO::FETCH_ASSOC);
+            $trimmedName = trim($name);
+            if (empty($trimmedName)) continue;
+
+            // Jalankan pencarian (Parameter dimasukkan dua kali untuk mengecek username dan full_name)
+            $stmtFindUser->execute([$trimmedName, $trimmedName]);
+            $user = $stmtFindUser->fetch(PDO::FETCH_ASSOC);
             
-            // Jika user ditemukan, masukkan ke tabel project_assignments
+            // Jika user ditemukan di database, masukkan ke tabel project_assignments
             if ($user) {
                 $stmtAssign->execute([$projectId, $user['id'], $role]);
             }
         }
     }
 
-    // Eksekusi perulangan untuk Site Engineer
-    if (!empty($se_names)) {
-        assignMultipleUsers($stmtFindUser, $stmtAssign, $se_names, 'Site Engineer', $project_id);
+    // Eksekusi perulangan untuk Site Engineer dengan nama variabel yang BENAR
+    if (!empty($siteEngineers)) {
+        assignMultipleUsers($stmtFindUser, $stmtAssign, $siteEngineers, 'Site Engineer', $projectId);
     }
 
-    // Eksekusi perulangan untuk Project Manager
-    if (!empty($pm_names)) {
-        assignMultipleUsers($stmtFindUser, $stmtAssign, $pm_names, 'Project Manager', $project_id);
+    // Eksekusi perulangan untuk Project Manager dengan nama variabel yang BENAR
+    if (!empty($projectManagers)) {
+        assignMultipleUsers($stmtFindUser, $stmtAssign, $projectManagers, 'Project Manager', $projectId);
     }
 
-    // Simpan semua perubahan
+    // Simpan semua perubahan jika tidak ada error
     $pdo->commit();
 
     echo json_encode(["status" => "success", "message" => "Proyek baru dan tim berhasil ditambahkan!"]);
+    exit;
+
 } catch (PDOException $e) {
-    // Jika gagal atau ID duplikat, batalkan semua proses
+    // Jika ada yang gagal, batalkan semua data yang sempat masuk agar database tidak kotor
     $pdo->rollBack();
-    echo json_encode(["status" => "error", "message" => "Gagal menyimpan proyek: " . $e->getMessage()]);
+    echo json_encode(["status" => "error", "message" => "Gagal menyimpan ke database: " . $e->getMessage()]);
+    exit;
 }
 ?>

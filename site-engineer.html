@@ -1203,8 +1203,10 @@
                 <label>Project Area</label>
                 <input
                   type="text"
-                  placeholder="Masukkan Project Area"
+                  placeholder="Masukkan Project Area (PRJ-ID)"
+                  value="Loading..."
                   id="projectArea"
+                  readonly
                   required
                 />
               </div>
@@ -1737,35 +1739,34 @@
           fetch('api_get_projects.php')
               .then(response => response.json())
               .then(res => {
-                  if (res.status === 'success') {
-                      activeProjects = res.data;
+                  // 2. Jika sukses dan user tersebut memang punya proyek
+                  if (res.status === 'success' && res.data.length > 0) {
                       
-                      // Cek apakah user punya proyek atau tidak
-                      if (activeProjects.length === 0) {
-                          alert("Anda belum di-assign ke proyek manapun.");
-                          // Opsional: Sembunyikan tabel atau tampilkan pesan kosong di UI
-                          return;
+                      // Ambil data proyek pertama (index 0)
+                      const assignedProject = res.data[0]; 
+                      const projectId = assignedProject.project_id; // Contoh: "PRJ-001"
+                      
+                      // 3. Cari elemen input HTML Anda berdasarkan ID
+                      const projectAreaInput = document.getElementById("projectArea");
+                      
+                      if (projectAreaInput) {
+                          // Autofill nilainya dengan Kode Proyek
+                          projectAreaInput.value = projectId;
+                          
+                          // [PENTING] Kunci kolom agar tidak bisa diketik/diubah manual oleh user
+                          projectAreaInput.readOnly = true; 
+                          
+                          // Beri efek visual abu-abu agar user paham kolom ini otomatis
+                          projectAreaInput.style.backgroundColor = "#e9ecef"; 
+                          projectAreaInput.style.cursor = "not-allowed";
                       }
-
-                      // Jika punya proyek, render ke UI
-                      console.log("Proyek yang diassign:", activeProjects);
-                      
-                      // CONTOH 1: Memasukkan data ke dalam dropdown/select box (jika user punya >1 proyek)
-                      // renderProjectDropdown(activeProjects);
-                      
-                      // CONTOH 2: Jika Anda ingin langsung me-render tabel laporan/progress 
-                      // menggunakan data proyek pertama [0] secara default:
-                      // renderDashboardData(activeProjects[0].project_id);
-
-                  } else if (res.message === "Akses ditolak. Silakan login.") {
-                      // Keamanan ekstra: Jika session PHP hilang, kembalikan ke login
-                      localStorage.removeItem("isLoggedIn");
-                      window.location.replace("login.html");
                   } else {
-                      alert("Error: " + res.message);
+                      console.warn("User ini tidak di-assign ke proyek mana pun.");
                   }
               })
-              .catch(error => console.error("Error fetching projects:", error));
+              .catch(error => {
+                  console.error("Gagal menarik data proyek:", error);
+              });
       }
 
       /* --- CONTOH FUNGSI PENDUKUNG (Sesuaikan dengan ID HTML Anda) --- */
