@@ -1793,353 +1793,284 @@
       }
 
       function editChange(id) {
-        // 1. Cari data di dalam array database lokal Anda
-        selectedChange = changeRequestsFromDB.find((x) => (x.change_id || x.changeId) === id);
-        
-        if (!selectedChange) {
-            alert("Data Change Request tidak ditemukan!");
-            return;
-        }
+          selectedChange = changeRequestsFromDB.find((x) => (x.change_id || x.changeId) === id);
+          if (!selectedChange) {
+              alert("Data Change Request tidak ditemukan!");
+              return;
+          }
 
-        const status = (selectedChange.status || "PENDING").toUpperCase();
-        const isReadOnly = (status === "APPROVED");
-        const disabledAttr = isReadOnly ? "disabled" : "";
-        const readonlyAttr = isReadOnly ? "readonly" : "";
+          const status = (selectedChange.status || "PENDING").toUpperCase();
+          const isReadOnly = (status === "APPROVED");
+          const disabledAttr = isReadOnly ? "disabled" : "";
+          const readonlyAttr = isReadOnly ? "readonly" : "";
 
-        // 2. Siapkan Pratinjau Dokumen & Gambar Bukti (Photo Evidence)
-        let evidenceHTML = '';
-        if (selectedChange.photoEvidence && selectedChange.photoEvidence.trim() !== "") {
-            const fileList = selectedChange.photoEvidence.split(',');
-            fileList.forEach(file => {
-                const fileTrimmed = file.trim();
-                if (fileTrimmed.toLowerCase().endsWith('.pdf')) {
-                    evidenceHTML += `
-                        <div style="margin: 5px 0;">
-                            <a href="uploads/${fileTrimmed}" target="_blank" style="color:#0f2d52; font-weight:600; text-decoration:underline;">
-                                📄 Buka Dokumen PDF (${fileTrimmed})
-                            </a>
-                        </div>`;
-                } else {
-                    evidenceHTML += `
-                        <div style="margin:5px; display:inline-block; border:1px solid #ddd; padding:5px; background:#fff; border-radius:4px;">
-                            <img src="uploads/${fileTrimmed}" style="max-width:120px; max-height:120px; display:block; border-radius:2px;">
-                            <a href="uploads/${fileTrimmed}" target="_blank" style="font-size:11px; text-align:center; display:block; margin-top:4px; color:#0f2d52;">Perbesar</a>
-                        </div>`;
-                }
-            });
-        } else {
-            evidenceHTML = '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
-        }
+          let evidenceHTML = '';
+          if (selectedChange.photoEvidence && selectedChange.photoEvidence.trim() !== "") {
+              const fileList = selectedChange.photoEvidence.split(',');
+              fileList.forEach(file => {
+                  const fileTrimmed = file.trim();
+                  if (fileTrimmed.toLowerCase().endsWith('.pdf')) {
+                      evidenceHTML += `<div style="margin: 5px 0;"><a href="uploads/${fileTrimmed}" target="_blank" style="color:#0f2d52; font-weight:600; text-decoration:underline;">📄 Buka Dokumen PDF (${fileTrimmed})</a></div>`;
+                  } else {
+                      evidenceHTML += `<div style="margin:5px; display:inline-block; border:1px solid #ddd; padding:5px; background:#fff; border-radius:4px;"><img src="uploads/${fileTrimmed}" style="max-width:120px; max-height:120px; display:block; border-radius:2px;"><a href="uploads/${fileTrimmed}" target="_blank" style="font-size:11px; text-align:center; display:block; margin-top:4px; color:#0f2d52;">Perbesar</a></div>`;
+                  }
+              });
+          } else {
+              evidenceHTML = '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
+          }
 
-        // 1. Definisikan atribut disabled untuk mengunci Checkbox & Radio
-        const actionDisplay = isReadOnly ? 'none' : 'table-cell'; // Sembunyikan kolom aksi jika readonly
-        const btnDisplay = isReadOnly ? 'none' : 'inline-block'; // Sembunyikan tombol tambah
+          const actionDisplay = isReadOnly ? 'none' : 'table-cell'; 
+          const btnDisplay = isReadOnly ? 'none' : 'inline-block'; 
 
-        // 2. Fungsi untuk merender isi (tbody) dari tabel dinamis
-        function generateTableRows(dataJson) {
-            if (!dataJson || dataJson === '[]') return '';
-            try {
-                const data = JSON.parse(dataJson);
-                return data.map(row => `
-                    <tr>
-                        <td><input type="text" value="${row.item || row.aktivitas || row.lingkup || row.kebutuhan || ''}" ${readonlyAttr}></td>
-                        <td><input type="text" value="${row.sifat || row.spesifikasiAwal || ''}" ${readonlyAttr}></td>
-                        <td><input type="text" value="${row.kuantitas || row.waktu || row.spesifikasiBaru || ''}" ${readonlyAttr}></td>
-                        <td><input type="text" value="${row.satuan || row.tingkatMutu || ''}" ${readonlyAttr}></td>
-                        <td><input type="text" value="${row.justifikasi || row.dokumenAcuan || ''}" ${readonlyAttr}></td>
-                        <td style="display: ${actionDisplay}; text-align:center;">
-                            <button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (e) {
-                return '';
-            }
-        }
+          // --- GENERATOR TABEL SPESIFIK (Menyamakan Logika form Add New) ---
+          function parseSafe(dataJson) {
+              if (!dataJson || dataJson === '[]') return [];
+              try { return typeof dataJson === 'string' ? JSON.parse(dataJson) : dataJson; } catch (e) { return []; }
+          }
 
-        // 3. Generate HTML untuk masing-masing baris tabel
-        const costRows = generateTableRows(selectedChange.impactCost);
-        const timeRows = generateTableRows(selectedChange.impactTime);
-        const scopeRows = generateTableRows(selectedChange.impactScope);
-        const qualityRows = generateTableRows(selectedChange.impactQuality);
-        const safetyRows = generateTableRows(selectedChange.impactSafety);
+          const costRows = parseSafe(selectedChange.impactCost).map(row => `
+              <tr>
+                  <td><input type="text" class="input-col-1" value="${row.item || ''}" ${readonlyAttr}></td>
+                  <td>
+                      <select class="input-col-2" ${disabledAttr}>
+                          <option value="Penambahan" ${row.sifat === 'Penambahan' ? 'selected' : ''}>Penambahan</option>
+                          <option value="Pengurangan" ${row.sifat === 'Pengurangan' ? 'selected' : ''}>Pengurangan</option>
+                          <option value="Penggantian" ${row.sifat === 'Penggantian' ? 'selected' : ''}>Penggantian</option>
+                      </select>
+                  </td>
+                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
+              </tr>`).join('');
 
-        // 4. Deteksi apakah parameter harus dicentang
-        const drivers = selectedChange.changeDrivers || '';
-        const hasCost = costRows !== '';
-        const hasTime = timeRows !== '';
-        const hasScope = scopeRows !== '';
-        const hasQuality = qualityRows !== '';
-        const hasSafety = safetyRows !== '';
+          const timeRows = parseSafe(selectedChange.impactTime).map(row => `
+              <tr>
+                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ''}" ${readonlyAttr}></td>
+                  <td>
+                      <select class="input-col-2" ${disabledAttr}>
+                          <option value="Percepatan" ${row.sifat === 'Percepatan' ? 'selected' : ''}>Percepatan</option>
+                          <option value="Penundaan" ${row.sifat === 'Penundaan' ? 'selected' : ''}>Penundaan</option>
+                          <option value="Perpanjangan" ${row.sifat === 'Perpanjangan' ? 'selected' : ''}>Perpanjangan</option>
+                      </select>
+                  </td>
+                  <td><input type="number" class="input-col-3" value="${row.waktu || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || 'Hari'}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
+              </tr>`).join('');
 
-        // 3. Render HTML Menggunakan Struktur Kelas CSS Asli Anda (form-card, form-grid, form-group)
-        document.getElementById("editFormContainer").innerHTML = `
-            ${isReadOnly ? `
-                <div style="background:#e2f0d9; color:#385723; padding:15px; margin-bottom:20px; border-left:5px solid #385723; font-weight:600; border-radius:4px;">
-                    🔒 STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.
-                </div>
-            ` : `
-                <div style="background:#fff3cd; color:#856404; padding:15px; margin-bottom:20px; border-left:5px solid #856404; font-weight:600; border-radius:4px;">
-                    ✏️ MODE EDITING (Status: ${status}): Anda diizinkan untuk melakukan modifikasi data dan mengunggah ulang dokumen bukti jika diperlukan.
-                </div>
-            `}
-            
-            <form id="updateCrForm">
-                <div class="form-card">
-                    <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 1: Identifikasi Perubahan</h3>
-                    
-                    <div class="form-grid wbs-grid">
-                        <div class="form-group">
-                            <label>WBS-Paket Pekerjaan</label>
-                            <input type="text" id="editWbs4" value="${selectedChange.wbsLevel4 || ""}" ${readonlyAttr} placeholder="Masukkan Paket Pekerjaan">
-                        </div>
-                        <div class="form-group">
-                            <label>WBS-Aktivitas</label>
-                            <input type="text" id="editWbs5" value="${selectedChange.wbsLevel5 || ""}" ${readonlyAttr} placeholder="Masukkan Aktivitas">
-                        </div>
-                        <div class="form-group">
-                            <label>WBS-Sumber Daya</label>
-                            <input type="text" id="editWbs6" value="${selectedChange.wbsLevel6 || ""}" ${readonlyAttr} placeholder="Masukkan Sumber Daya">
-                        </div>
-                        <div class="form-group">
-                            <label>Kategori Perubahan</label>
-                            <select id="editCategory" ${disabledAttr}>
-                                <option value="Design" ${selectedChange.changeCategory === 'Design' ? 'selected' : ''}>Design</option>
-                                <option value="Method" ${selectedChange.changeCategory === 'Method' ? 'selected' : ''}>Method</option>
-                                <option value="Material" ${selectedChange.changeCategory === 'Material' ? 'selected' : ''}>Material</option>
-                                <option value="Schedule" ${selectedChange.changeCategory === 'Schedule' ? 'selected' : ''}>Schedule</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Priority (1 - 5)</label>
-                            <input type="number" id="editPriority" min="1" max="5" value="${selectedChange.priority || ""}" ${readonlyAttr}>
-                        </div>
-                        <div class="form-group">
-                            <label>Risk (1 - 10)</label>
-                            <input type="number" id="editRisk" min="1" max="10" value="${selectedChange.risk || ""}" ${readonlyAttr}>
-                        </div>
-                    </div>
+          const scopeRows = parseSafe(selectedChange.impactScope).map(row => `
+              <tr>
+                  <td><input type="text" class="input-col-1" value="${row.lingkup || ''}" ${readonlyAttr}></td>
+                  <td>
+                      <select class="input-col-2" ${disabledAttr}>
+                          <option value="Penambahan" ${row.sifat === 'Penambahan' ? 'selected' : ''}>Penambahan</option>
+                          <option value="Pengurangan" ${row.sifat === 'Pengurangan' ? 'selected' : ''}>Pengurangan</option>
+                          <option value="Perubahan" ${row.sifat === 'Perubahan' ? 'selected' : ''}>Perubahan</option>
+                      </select>
+                  </td>
+                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.dokumenAcuan || ''}" ${readonlyAttr}></td>
+                  <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
+              </tr>`).join('');
 
-                    <hr class="section-divider" style="margin:20px 0;" />
+          const qualityRows = parseSafe(selectedChange.impactQuality).map(row => `
+              <tr>
+                  <td><input type="text" class="input-col-1" value="${row.item || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-2" value="${row.spesifikasiAwal || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-3" value="${row.spesifikasiBaru || ''}" ${readonlyAttr}></td>
+                  <td>
+                      <select class="input-col-4" ${disabledAttr}>
+                          <option value="Lebih Tinggi" ${row.tingkatMutu === 'Lebih Tinggi' ? 'selected' : ''}>Lebih Tinggi</option>
+                          <option value="Setara" ${row.tingkatMutu === 'Setara' ? 'selected' : ''}>Setara</option>
+                          <option value="Lebih Rendah" ${row.tingkatMutu === 'Lebih Rendah' ? 'selected' : ''}>Lebih Rendah</option>
+                      </select>
+                  </td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
+              </tr>`).join('');
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Change ID</label>
-                            <input id="editChangeId" value="${selectedChange.change_id || selectedChange.changeId || ""}" readonly style="background:#e9ecef; font-weight:bold;">
-                        </div>
-                        <div class="form-group">
-                            <label>Date</label>
-                            <input type="date" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}>
-                        </div>
-                        <div class="form-group">
-                            <label>Submitted By</label>
-                            <input id="editSubmittedBy" value="${selectedChange.submittedBy || "SITE ENGINEER"}" readonly style="background:#e9ecef;">
-                        </div>
-                        <div class="form-group">
-                            <label>Project Area</label>
-                            <input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" ${readonlyAttr}>
-                        </div>
-                        <div class="form-group">
-                            <label>Location</label>
-                            <input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}>
-                        </div>
-                        <div class="form-group">
-                            <label>BIM Object ID</label>
-                            <input type="text" id="editBimObjectId" value="${selectedChange.bimObjectId || ""}" ${readonlyAttr}>
-                        </div>
-                    </div>
+          const safetyRows = parseSafe(selectedChange.impactSafety).map(row => `
+              <tr>
+                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ''}" ${readonlyAttr}></td>
+                  <td>
+                      <select class="input-col-2" ${disabledAttr}>
+                          <option value="Risiko Baru" ${row.sifat === 'Risiko Baru' ? 'selected' : ''}>Risiko Baru</option>
+                          <option value="Peningkatan Risiko" ${row.sifat === 'Peningkatan Risiko' ? 'selected' : ''}>Peningkatan Risiko</option>
+                      </select>
+                  </td>
+                  <td><input type="text" class="input-col-3" value="${row.kebutuhan || ''}" ${readonlyAttr}></td>
+                  <td><input type="number" class="input-col-4" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.satuan || ''}" ${readonlyAttr}></td>
+                  <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
+              </tr>`).join('');
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Kategori Risiko</label>
-                            <input type="text" id="editRiskCategory" value="${selectedChange.riskCategory || ""}" ${readonlyAttr}>
-                        </div>
-                        <div class="form-group">
-                            <label>Variabel Risiko</label>
-                            <input type="text" id="editRiskVariable" value="${selectedChange.riskVariable || ""}" ${readonlyAttr}>
-                        </div>
-                    </div>
+          const drivers = selectedChange.changeDrivers || '';
+          const hasCost = costRows !== '';
+          const hasTime = timeRows !== '';
+          const hasScope = scopeRows !== '';
+          const hasQuality = qualityRows !== '';
+          const hasSafety = safetyRows !== '';
 
-                    <div class="full-width" style="margin-top:10px;">
-                        <label>Description (Brief Object)</label>
-                        <textarea rows="3" id="editDescription" ${readonlyAttr}>${selectedChange.description || ""}</textarea>
-                    </div>
-
-                    <div class="upload-section full-width" style="margin-top:15px;">
-                        <label style="font-weight:bold; color:#0f2d52;">Lampiran Bukti Saat Ini:</label>
-                        <div style="margin: 10px 0; background:#f8f9fa; padding:10px; border:1px solid #ddd; border-radius:4px;">
-                            ${evidenceHTML}
-                        </div>
-                        ${!isReadOnly ? `
-                            <label>Unggah Bukti Baru (Pilihan, melampirkan berkas tambahan)</label>
-                            <input type="file" id="editPhoto" accept="image/*,.pdf" multiple>
-                        ` : ''}
-                    </div>
-                </div>
-
-                <div class="form-card" style="margin-top:20px;">
-                    <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 2: Register Change Request</h3>
-                    
-                    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top:20px;">
-        
-                      <div class="form-group">
-                          <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
-                          <div class="radio-checkbox-wrapper">
-                              <label class="compact-label">
-                                  <input type="radio" name="editOwnerRequest" value="Ya" ${selectedChange.ownerRequest === 'Ya' ? 'checked' : ''} ${disabledAttr}> Ya (Potensi VO)
-                              </label>
-                              <label class="compact-label">
-                                  <input type="radio" name="editOwnerRequest" value="Tidak" ${selectedChange.ownerRequest === 'Tidak' ? 'checked' : ''} ${disabledAttr}> Tidak (Internal/Kontraktor)
-                              </label>
+          // --- RENDER HTML UTAMA ---
+          document.getElementById("editFormContainer").innerHTML = `
+              ${isReadOnly ? `
+                  <div style="background:#e2f0d9; color:#385723; padding:15px; margin-bottom:20px; border-left:5px solid #385723; font-weight:600; border-radius:4px;">
+                      🔒 STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.
+                  </div>
+              ` : `
+                  <div style="background:#fff3cd; color:#856404; padding:15px; margin-bottom:20px; border-left:5px solid #856404; font-weight:600; border-radius:4px;">
+                      ✏️ MODE EDITING (Status: ${status}): Anda diizinkan untuk melakukan modifikasi data dan mengunggah ulang dokumen bukti jika diperlukan.
+                  </div>
+              `}
+              
+              <form id="updateCrForm" onsubmit="event.preventDefault();">
+                  <div class="form-card">
+                      <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 1: Identifikasi Perubahan</h3>
+                      
+                      <div class="form-grid wbs-grid">
+                          <div class="form-group"><label>WBS-Paket Pekerjaan</label><input type="text" id="editWbs4" value="${selectedChange.wbsLevel4 || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>WBS-Aktivitas</label><input type="text" id="editWbs5" value="${selectedChange.wbsLevel5 || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>WBS-Sumber Daya</label><input type="text" id="editWbs6" value="${selectedChange.wbsLevel6 || ""}" ${readonlyAttr}></div>
+                          <div class="form-group">
+                              <label>Kategori Perubahan</label>
+                              <select id="editCategory" ${disabledAttr}>
+                                  <option value="Design" ${selectedChange.changeCategory === 'Design' ? 'selected' : ''}>Design</option>
+                                  <option value="Method" ${selectedChange.changeCategory === 'Method' ? 'selected' : ''}>Method</option>
+                                  <option value="Material" ${selectedChange.changeCategory === 'Material' ? 'selected' : ''}>Material</option>
+                                  <option value="Schedule" ${selectedChange.changeCategory === 'Schedule' ? 'selected' : ''}>Schedule</option>
+                              </select>
                           </div>
+                          <div class="form-group"><label>Priority (1 - 5)</label><input type="number" id="editPriority" min="1" max="5" step="1" value="${selectedChange.priority || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Risk (1 - 10)</label><input type="number" id="editRisk" min="1" max="10" step="1" value="${selectedChange.risk || ""}" ${readonlyAttr}></div>
                       </div>
 
-                      <div class="form-group">
-                          <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
-                          <div class="radio-checkbox-wrapper">
-                              <label class="compact-label">
-                                  <input type="checkbox" name="editChangeDrivers" value="Desain" ${drivers.includes('Desain') ? 'checked' : ''} ${disabledAttr}> Kesalahan Desain / Gambar Kontrak
-                              </label>
-                              <label class="compact-label">
-                                  <input type="checkbox" name="editChangeDrivers" value="Lapangan" ${drivers.includes('Lapangan') ? 'checked' : ''} ${disabledAttr}> Kondisi Lapangan Aktual (Site Condition)
-                              </label>
-                              <label class="compact-label">
-                                  <input type="checkbox" name="editChangeDrivers" value="Material" ${drivers.includes('Material') ? 'checked' : ''} ${disabledAttr}> Kelangkaan Material / Suplai
-                              </label>
-                              <label class="compact-label">
-                                  <input type="checkbox" name="editChangeDrivers" value="Metode" ${drivers.includes('Metode') ? 'checked' : ''} ${disabledAttr}> Usulan Optimasi Metode
-                              </label>
-                          </div>
+                      <hr class="section-divider" style="margin:20px 0;" />
+
+                      <div class="form-grid">
+                          <div class="form-group"><label>Change ID</label><input id="editChangeId" value="${selectedChange.change_id || selectedChange.changeId || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
+                          <div class="form-group"><label>Date</label><input type="date" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Submitted By</label><input id="editSubmittedBy" value="${selectedChange.submittedBy || "SITE ENGINEER"}" readonly style="background:#e9ecef; font-weight:bold;"></div>
+                          <div class="form-group"><label>Project Area</label><input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
+                          <div class="form-group"><label>Location</label><input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>BIM Object ID</label><input type="text" id="editBimObjectId" value="${selectedChange.bimObjectId || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Kategori Risiko</label><input type="text" id="editRiskCategory" value="${selectedChange.riskCategory || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Variabel Risiko</label><input type="text" id="editRiskVariable" value="${selectedChange.riskVariable || ""}" ${readonlyAttr}></div>
                       </div>
-                    </div>
-                </div>
 
-                <hr class="section-divider" style="margin:20px 0;" />
+                      <div class="full-width" style="margin-top:10px;">
+                          <label>Description (Brief Object)</label>
+                          <textarea rows="3" id="editDescription" ${readonlyAttr}>${selectedChange.description || ""}</textarea>
+                      </div>
 
-                <div class="form-group">
-                    <label style="font-size:16px; color:#0f2d52;">Parameter yang Terdampak:</label>
-                    <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
-                        <label><input type="checkbox" id="edit-chk-cost" ${hasCost ? 'checked' : ''} ${disabledAttr}> Cost (Biaya)</label>
-                        <label><input type="checkbox" id="edit-chk-time" ${hasTime ? 'checked' : ''} ${disabledAttr}> Time (Waktu)</label>
-                        <label><input type="checkbox" id="edit-chk-scope" ${hasScope ? 'checked' : ''} ${disabledAttr}> Scope (Lingkup)</label>
-                        <label><input type="checkbox" id="edit-chk-quality" ${hasQuality ? 'checked' : ''} ${disabledAttr}> Quality (Mutu)</label>
-                        <label><input type="checkbox" id="edit-chk-safety" ${hasSafety ? 'checked' : ''} ${disabledAttr}> Safety (K3)</label>
-                    </div>
-                </div>
+                      <div class="upload-section full-width" style="margin-top:15px;">
+                          <label style="font-weight:bold; color:#0f2d52;">Lampiran Bukti Saat Ini:</label>
+                          <div style="margin: 10px 0; background:#f8f9fa; padding:10px; border:1px solid #ddd; border-radius:4px;">${evidenceHTML}</div>
+                          ${!isReadOnly ? `<label>Unggah Bukti Baru (Pilihan)</label><input type="file" id="editPhoto" accept="image/*,.pdf" multiple>` : ''}
+                      </div>
+                  </div>
 
-                <div id="edit-table-cost" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasCost ? 'block' : 'none'};">
-                    <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
-                    <table class="dynamic-table" id="edit-dyn-cost">
-                        <thead>
-                            <tr>
-                                <th>Item / Material</th>
-                                <th width="15%">Sifat</th>
-                                <th width="15%">Kuantitas</th>
-                                <th width="10%">Satuan</th>
-                                <th width="30%">Justifikasi</th>
-                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${costRows}</tbody>
-                    </table>
-                    <button type="button" class="btn-add-row" onclick="addRow('cost')" style="display:${btnDisplay}">+ Tambah Item</button>
-                </div>
+                  <div class="form-card" style="margin-top:20px;">
+                      <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 2: Register Change Request</h3>
+                      <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; margin-top:20px;">
+                        <div class="form-group">
+                            <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
+                            <div class="radio-checkbox-wrapper">
+                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Ya" ${selectedChange.ownerRequest === 'Ya' ? 'checked' : ''} ${disabledAttr}> Ya (Potensi VO)</label>
+                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Tidak" ${selectedChange.ownerRequest === 'Tidak' ? 'checked' : ''} ${disabledAttr}> Tidak (Internal/Kontraktor)</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
+                            <div class="radio-checkbox-wrapper">
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Desain" ${drivers.includes('Desain') ? 'checked' : ''} ${disabledAttr}> Kesalahan Desain</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Lapangan" ${drivers.includes('Lapangan') ? 'checked' : ''} ${disabledAttr}> Kondisi Lapangan</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Material" ${drivers.includes('Material') ? 'checked' : ''} ${disabledAttr}> Kelangkaan Material</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Metode" ${drivers.includes('Metode') ? 'checked' : ''} ${disabledAttr}> Usulan Optimasi Metode</label>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
 
-                <div id="edit-table-time" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasTime ? 'block' : 'none'};">
-                    <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
-                    <table class="dynamic-table" id="edit-dyn-time">
-                        <thead>
-                            <tr>
-                                <th>Aktivitas Terdampak</th>
-                                <th width="20%">Sifat</th>
-                                <th width="15%">Waktu</th>
-                                <th width="10%">Satuan</th>
-                                <th width="30%">Justifikasi</th>
-                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${timeRows}</tbody>
-                    </table>
-                    <button type="button" class="btn-add-row" onclick="addRow('time')" style="display:${btnDisplay}">+ Tambah Item</button>
-                </div>
+                  <hr class="section-divider" style="margin:20px 0;" />
 
-                <div id="edit-table-scope" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasScope ? 'block' : 'none'};">
-                    <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
-                    <table class="dynamic-table" id="edit-dyn-scope">
-                        <thead>
-                            <tr>
-                                <th>Lingkup Pekerjaan</th>
-                                <th width="20%">Sifat</th>
-                                <th width="15%">Kuantitas</th>
-                                <th width="10%">Satuan</th>
-                                <th width="30%">Dokumen Acuan</th>
-                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${scopeRows}</tbody>
-                    </table>
-                    <button type="button" class="btn-add-row" onclick="addRow('scope')" style="display:${btnDisplay}">+ Tambah Item</button>
-                </div>
+                  <div class="form-group">
+                      <label style="font-size:16px; color:#0f2d52;">Parameter yang Terdampak:</label>
+                      <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
+                          <label><input type="checkbox" id="edit-chk-cost" ${hasCost ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-cost').style.display = this.checked ? 'block' : 'none'"> Cost (Biaya)</label>
+                          <label><input type="checkbox" id="edit-chk-time" ${hasTime ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-time').style.display = this.checked ? 'block' : 'none'"> Time (Waktu)</label>
+                          <label><input type="checkbox" id="edit-chk-scope" ${hasScope ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-scope').style.display = this.checked ? 'block' : 'none'"> Scope (Lingkup)</label>
+                          <label><input type="checkbox" id="edit-chk-quality" ${hasQuality ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-quality').style.display = this.checked ? 'block' : 'none'"> Quality (Mutu)</label>
+                          <label><input type="checkbox" id="edit-chk-safety" ${hasSafety ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-safety').style.display = this.checked ? 'block' : 'none'"> Safety (K3)</label>
+                      </div>
+                  </div>
 
-                <div id="edit-table-quality" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasQuality ? 'block' : 'none'};">
-                    <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
-                    <table class="dynamic-table" id="edit-dyn-quality">
-                        <thead>
-                            <tr>
-                                <th>Item Terdampak</th>
-                                <th width="15%">Spesifikasi Awal</th>
-                                <th width="15%">Spesifikasi Baru</th>
-                                <th width="15%">Tingkat Mutu</th>
-                                <th width="30%">Justifikasi</th>
-                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${qualityRows}</tbody>
-                    </table>
-                    <button type="button" class="btn-add-row" onclick="addRow('quality')" style="display:${btnDisplay}">+ Tambah Item</button>
-                </div>
+                  <div id="edit-table-cost" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasCost ? 'block' : 'none'};">
+                      <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
+                      <table class="dynamic-table" id="edit-dyn-cost">
+                          <thead><tr><th>Item / Material</th><th width="15%">Sifat</th><th width="15%">Kuantitas</th><th width="10%">Satuan</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
+                          <tbody>${costRows}</tbody>
+                      </table>
+                      <button type="button" class="btn-add-row" onclick="addRowForEdit('cost')" style="display:${btnDisplay}">+ Tambah Item</button>
+                  </div>
 
-                <div id="edit-table-safety" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasSafety ? 'block' : 'none'};">
-                    <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
-                    <table class="dynamic-table" id="edit-dyn-safety">
-                        <thead>
-                            <tr>
-                                <th>Aktivitas Berisiko</th>
-                                <th width="15%">Sifat</th>
-                                <th width="30%">Kebutuhan</th>
-                                <th width="10%">Kuantitas</th>
-                                <th width="10%">Satuan</th>
-                                <th width="5%" style="display:${actionDisplay}">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>${safetyRows}</tbody>
-                    </table>
-                    <button type="button" class="btn-add-row" onclick="addRow('safety')" style="display:${btnDisplay}">+ Tambah Item</button>
-                </div>
+                  <div id="edit-table-time" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasTime ? 'block' : 'none'};">
+                      <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
+                      <table class="dynamic-table" id="edit-dyn-time">
+                          <thead><tr><th>Aktivitas Terdampak</th><th width="20%">Sifat</th><th width="15%">Waktu</th><th width="10%">Satuan</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
+                          <tbody>${timeRows}</tbody>
+                      </table>
+                      <button type="button" class="btn-add-row" onclick="addRowForEdit('time')" style="display:${btnDisplay}">+ Tambah Item</button>
+                  </div>
 
-                <div class="full-width" style="margin-top:20px;">
-                    <label>Justifikasi Teknis & Narasi Lapangan</label>
-                    <textarea rows="4" id="editDescriptionDetail" ${readonlyAttr} placeholder="Jelaskan secara kronologis kejadian di lapangan...">${selectedChange.descriptionDetail || ''}</textarea>
-                </div>
+                  <div id="edit-table-scope" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasScope ? 'block' : 'none'};">
+                      <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
+                      <table class="dynamic-table" id="edit-dyn-scope">
+                          <thead><tr><th>Lingkup Pekerjaan</th><th width="20%">Sifat</th><th width="15%">Kuantitas</th><th width="10%">Satuan</th><th width="30%">Dokumen Acuan</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
+                          <tbody>${scopeRows}</tbody>
+                      </table>
+                      <button type="button" class="btn-add-row" onclick="addRowForEdit('scope')" style="display:${btnDisplay}">+ Tambah Item</button>
+                  </div>
 
-                <div style="margin-top:25px; text-align:right;">
-                    <button type="button" class="btn-back" onclick="showPage('historyPage')" style="margin-right:10px;">Kembali</button>
-                    ${!isReadOnly ? `
-                        <button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">
-                            💾 Simpan Perubahan Data
-                        </button>
-                    ` : ''}
-                </div>
-            </form>
-        `;
+                  <div id="edit-table-quality" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasQuality ? 'block' : 'none'};">
+                      <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
+                      <table class="dynamic-table" id="edit-dyn-quality">
+                          <thead><tr><th>Item Terdampak</th><th width="15%">Spesifikasi Awal</th><th width="15%">Spesifikasi Baru</th><th width="15%">Tingkat Mutu</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
+                          <tbody>${qualityRows}</tbody>
+                      </table>
+                      <button type="button" class="btn-add-row" onclick="addRowForEdit('quality')" style="display:${btnDisplay}">+ Tambah Item</button>
+                  </div>
 
-        showPage("editChangePage");
-    }
+                  <div id="edit-table-safety" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasSafety ? 'block' : 'none'};">
+                      <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
+                      <table class="dynamic-table" id="edit-dyn-safety">
+                          <thead><tr><th>Aktivitas Berisiko</th><th width="15%">Sifat</th><th width="30%">Kebutuhan</th><th width="10%">Kuantitas</th><th width="10%">Satuan</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
+                          <tbody>${safetyRows}</tbody>
+                      </table>
+                      <button type="button" class="btn-add-row" onclick="addRowForEdit('safety')" style="display:${btnDisplay}">+ Tambah Item</button>
+                  </div>
+
+                  <div class="full-width" style="margin-top:20px;">
+                      <label>Justifikasi Teknis & Narasi Lapangan</label>
+                      <textarea rows="4" id="editDescriptionDetail" ${readonlyAttr} placeholder="Jelaskan secara kronologis...">${selectedChange.descriptionDetail || ''}</textarea>
+                  </div>
+
+                  <div style="margin-top:25px; text-align:right;">
+                      <button type="button" class="btn-back" onclick="showPage('historyPage')" style="margin-right:10px;">Kembali</button>
+                      ${!isReadOnly ? `<button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">💾 Simpan Perubahan</button>` : ''}
+                  </div>
+              </form>
+          `;
+
+          showPage("editChangePage");
+      }
 
     function executeDatabaseUpdate() {
       const formData = new FormData();
 
-      // Mapping seluruh form data lengkap ke server PHP
+      // 1. DATA UTAMA
       formData.append('changeId', document.getElementById('editChangeId').value);
       formData.append('changeDate', document.getElementById('editChangeDate').value);
       formData.append('wbsLevel4', document.getElementById('editWbs4').value);
@@ -2154,36 +2085,81 @@
       formData.append('riskCategory', document.getElementById('editRiskCategory').value);
       formData.append('riskVariable', document.getElementById('editRiskVariable').value);
       formData.append('description', document.getElementById('editDescription').value);
-      
-      // Form bagian langkah 2
-      formData.append('changeType', document.getElementById('editChangeType').value);
-      formData.append('siteCondition', document.getElementById('editSiteCondition').value);
-      formData.append('ownerRequest', document.getElementById('editOwnerRequest').value);
-      formData.append('materialChange', document.getElementById('editMaterialChange').value);
-      formData.append('methodChange', document.getElementById('editMethodChange').value);
-      formData.append('scheduleChange', document.getElementById('editScheduleChange').value);
-      formData.append('safetyChange', document.getElementById('editSafetyChange').value);
-      formData.append('impactArea', document.getElementById('editImpactArea').value);
       formData.append('descriptionDetail', document.getElementById('editDescriptionDetail').value);
+      
+      // 2. CHECKBOX & RADIO
+      const checkedOwner = document.querySelector('input[name="editOwnerRequest"]:checked');
+      formData.append('ownerRequest', checkedOwner ? checkedOwner.value : 'Tidak');
 
-      // Ambil file bukti baru jika ditambahkan oleh user
+      const driverCheckboxes = document.querySelectorAll('input[name="editChangeDrivers"]:checked');
+      if (driverCheckboxes.length > 0) {
+          driverCheckboxes.forEach(cb => formData.append('changeDrivers[]', cb.value));
+      }
+
+      // 3. FUNGSI SCRAPER PINTAR (Menggunakan Class .input-col)
+      function scrapeTableToJson(tableId, type) {
+          const table = document.getElementById(tableId);
+          if (!table) return '[]';
+          
+          const rows = table.querySelectorAll('tbody tr');
+          const items = [];
+          
+          rows.forEach(row => {
+              const el1 = row.querySelector('.input-col-1');
+              const el2 = row.querySelector('.input-col-2');
+              const el3 = row.querySelector('.input-col-3');
+              const el4 = row.querySelector('.input-col-4');
+              const el5 = row.querySelector('.input-col-5');
+
+              if (el1 && el2) { 
+                  const val1 = el1.value.trim();
+                  const val2 = el2.value.trim();
+                  const val3 = el3 ? el3.value.trim() : '';
+                  const val4 = el4 ? el4.value.trim() : '';
+                  const val5 = el5 ? el5.value.trim() : '';
+
+                  if (val1 === "") return; // Abaikan jika kosong
+
+                  let obj = {};
+                  if (type === 'cost') obj = { item: val1, sifat: val2, kuantitas: val3, satuan: val4, justifikasi: val5 };
+                  else if (type === 'time') obj = { aktivitas: val1, sifat: val2, waktu: val3, satuan: val4, justifikasi: val5 };
+                  else if (type === 'scope') obj = { lingkup: val1, sifat: val2, kuantitas: val3, satuan: val4, dokumenAcuan: val5 };
+                  else if (type === 'quality') obj = { item: val1, spesifikasiAwal: val2, spesifikasiBaru: val3, tingkatMutu: val4, justifikasi: val5 };
+                  else if (type === 'safety') obj = { aktivitas: val1, sifat: val2, kebutuhan: val3, kuantitas: val4, satuan: val5 };
+                  items.push(obj);
+              }
+          });
+          return JSON.stringify(items);
+      }
+
+      const costChecked = document.getElementById('edit-chk-cost')?.checked;
+      const timeChecked = document.getElementById('edit-chk-time')?.checked;
+      const scopeChecked = document.getElementById('edit-chk-scope')?.checked;
+      const qualityChecked = document.getElementById('edit-chk-quality')?.checked;
+      const safetyChecked = document.getElementById('edit-chk-safety')?.checked;
+
+      formData.append('impactCost', costChecked ? scrapeTableToJson('edit-dyn-cost', 'cost') : '[]');
+      formData.append('impactTime', timeChecked ? scrapeTableToJson('edit-dyn-time', 'time') : '[]');
+      formData.append('impactScope', scopeChecked ? scrapeTableToJson('edit-dyn-scope', 'scope') : '[]');
+      formData.append('impactQuality', qualityChecked ? scrapeTableToJson('edit-dyn-quality', 'quality') : '[]');
+      formData.append('impactSafety', safetyChecked ? scrapeTableToJson('edit-dyn-safety', 'safety') : '[]');
+
+      // 4. DATA LAMPIRAN
       const fileInput = document.getElementById('editPhoto');
       if (fileInput && fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
-              formData.append('photo[]', fileInput.files[i]); // Sesuai bug sebelumnya, gunakan photo[]
+              formData.append('photo[]', fileInput.files[i]); 
           }
       }
 
-      fetch('update_data.php', {
-          method: 'POST',
-          body: formData
-      })
+      // 5. FETCH KE UPDATE_DATA.PHP
+      fetch('update_data.php', { method: 'POST', body: formData })
       .then(response => response.json())
       .then(data => {
           if (data.status === 'success') {
-              alert("Perubahan Berhasil Disimpan!");
-              fetchDashboardData(); // Update refresh data
-              showPage('historyPage');
+              alert(data.message || "Perubahan Berhasil Disimpan!");
+              if (typeof fetchDashboardData === "function") fetchDashboardData(); 
+              if (typeof showPage === "function") showPage('historyPage');
           } else {
               alert("Error: " + data.message);
           }
@@ -2192,6 +2168,92 @@
           console.error(err);
           alert("Terjadi masalah pada koneksi server.");
       });
+  }
+
+  function addRowForEdit(type) {
+      const tbody = document.querySelector(`#edit-dyn-${type} tbody`);
+      if (!tbody) return;
+
+      const newRow = document.createElement('tr');
+      let colsHtml = '';
+
+      if (type === 'cost') {
+          colsHtml = `
+              <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Besi D16" required></td>
+                <td>
+                    <select class="input-col-2" data-key="sifat" required>
+                        <option value="Penambahan (+)">Penambahan (+)</option>
+                        <option value="Pengurangan (-)">Pengurangan (-)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="input-col-3" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="input-col-4" data-key="satuan" placeholder="Btg / m3" required></td>
+                <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan perubahan" required></td>
+                `;
+      } else if (type === 'time') {
+          colsHtml = `
+              <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" required></td>
+                <td>
+                    <select class="input-col-2" data-key="sifat" required>
+                        <option value="Penundaan">Penundaan (Delay)</option>
+                        <option value="Percepatan">Percepatan (Crash Program)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="input-col-3" data-key="waktu" placeholder="0" required></td>
+                <td>
+                    <select class="input-col-4" data-key="satuan" required>
+                        <option value="Hari">Hari</option>
+                        <option value="Jam">Jam</option>
+                        <option value="Minggu">Minggu</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan hambatan" required></td>
+                `;
+      } else if (type === 'scope') {
+          colsHtml = `
+              <td><input type="text" class="input-col-1" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" required></td>
+                <td>
+                    <select class="input-col-2" data-key="sifat" required>
+                        <option value="Pekerjaan Baru (New Item)">Pekerjaan Baru (New Item)</option>
+                        <option value="Perubahan (Major Change)">Perubahan (Major Change)</option>
+                        <option value="Peniadaan (Reduction)">Peniadaan (Reduction)</option>
+                    </select>
+                </td>
+                <td><input type="number" step="any" class="input-col-3" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="input-col-4" data-key="satuan" placeholder="m / ls" required></td>
+                <td><input type="text" class="input-col-5" data-key="dokumen" placeholder="No. Sketsa / RFI" required></td>
+                `;
+      } else if (type === 'quality') {
+          colsHtml = `
+              <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Pipa Air Bersih" required></td>
+                <td><input type="text" class="input-col-2" data-key="spekAwal" placeholder="Merk A (Kontrak)" required></td>
+                <td><input type="text" class="input-col-3" data-key="spekBaru" placeholder="Merk B (Aktual)" required></td>
+                <td>
+                    <select class="input-col-4" data-key="mutu" required>
+                        <option value="Setara (Equivalent)">Setara (Equivalent)</option>
+                        <option value="Lebih Baik (Upgrade)">Lebih Baik (Upgrade)</option>
+                        <option value="Turun Mutu (Downgrade)">Turun Mutu (Downgrade)</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Contoh: Stok Kosong" required></td>
+                `;
+      } else if (type === 'safety') {
+          colsHtml = `
+              <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" required></td>
+                <td>
+                    <select class="input-col-2" data-key="sifat" required>
+                        <option value="Bahaya Baru">Bahaya Baru</option>
+                        <option value="Peningkatan Risiko Lama">Peningkatan Risiko Lama</option>
+                    </select>
+                </td>
+                <td><input type="text" class="input-col-3" data-key="kebutuhan" placeholder="Contoh: Gondola / Body Harness" required></td>
+                <td><input type="number" step="any" class="input-col-4" data-key="kuantitas" placeholder="0" required></td>
+                <td><input type="text" class="input-col-5" data-key="satuan" placeholder="Unit / Pcs" required></td>
+                `;
+      }
+
+      newRow.innerHTML = colsHtml + `<td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>`;
+      tbody.appendChild(newRow);
   }
 
       const wbsData = {

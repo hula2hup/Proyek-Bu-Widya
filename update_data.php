@@ -56,7 +56,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $target_dir = "uploads/";
     $photo_evidence = $currentData['photoEvidence']; // Gunakan file lama sebagai default
 
-    if (isset($_FILES['photo']) && !empty($_FILES['photo']['name'][0])) {
+    // ✅ PERBAIKAN DI SINI: Tambahkan is_array() agar tidak crash jika format form salah
+    if (isset($_FILES['photo']) && is_array($_FILES['photo']['name']) && !empty($_FILES['photo']['name'][0])) {
         $uploaded_files = [];
         foreach ($_FILES['photo']['name'] as $key => $name) {
             if ($_FILES['photo']['error'][$key] == 0) {
@@ -75,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Menangkap Array Checkbox dari frontend
     $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
 
-    // 4. QUERY UPDATE SQL (Disesuaikan dengan Form Step 2 yang baru)
+    // 4. QUERY UPDATE SQL
     $sql = "UPDATE change_requests SET 
                 changeDate        = :changeDate,
                 wbsLevel4         = :wbsLevel4,
@@ -91,12 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 riskVariable      = :riskVariable,
                 description       = :description,
                 ownerRequest      = :ownerRequest,
-                changeDrivers     = :changeDrivers,     -- 🆕 Baru
-                impactCost        = :impactCost,        -- 🆕 Baru
-                impactTime        = :impactTime,        -- 🆕 Baru
-                impactScope       = :impactScope,       -- 🆕 Baru
-                impactQuality     = :impactQuality,     -- 🆕 Baru
-                impactSafety      = :impactSafety,      -- 🆕 Baru
+                changeDrivers     = :changeDrivers,
+                impactCost        = :impactCost,
+                impactTime        = :impactTime,
+                impactScope       = :impactScope,
+                impactQuality     = :impactQuality,
+                impactSafety      = :impactSafety,
                 descriptionDetail = :descriptionDetail,
                 photoEvidence     = :photoEvidence,
                 status            = :status
@@ -119,12 +120,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'riskVariable'      => $_POST['riskVariable'] ?? null,
             'description'       => $_POST['description'] ?? null,
             'ownerRequest'      => $_POST['ownerRequest'] ?? null,
-            'changeDrivers'     => $changeDrivers,                         // 🆕 Baru
-            'impactCost'        => $_POST['impactCost'] ?? null,           // 🆕 Baru
-            'impactTime'        => $_POST['impactTime'] ?? null,           // 🆕 Baru
-            'impactScope'       => $_POST['impactScope'] ?? null,          // 🆕 Baru
-            'impactQuality'     => $_POST['impactQuality'] ?? null,        // 🆕 Baru
-            'impactSafety'      => $_POST['impactSafety'] ?? null,         // 🆕 Baru
+            'changeDrivers'     => $changeDrivers,
+            'impactCost'        => $_POST['impactCost'] ?? null,
+            'impactTime'        => $_POST['impactTime'] ?? null,
+            'impactScope'       => $_POST['impactScope'] ?? null,
+            'impactQuality'     => $_POST['impactQuality'] ?? null,
+            'impactSafety'      => $_POST['impactSafety'] ?? null,
             'descriptionDetail' => $_POST['descriptionDetail'] ?? null,
             'photoEvidence'     => $photo_evidence,
             'status'            => $newStatus,                           
@@ -142,5 +143,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } catch (PDOException $e) {
         echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
     }
+} else {
+    // Jika diakses selain menggunakan metode POST
+    echo json_encode(["status" => "error", "message" => "Metode tidak diizinkan. Gunakan POST."]);
 }
 ?>
