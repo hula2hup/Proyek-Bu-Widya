@@ -242,6 +242,100 @@
     .logout-btn:hover {
       background: rgba(239, 68, 68, 0.15);
     }
+
+    .project-selector-container {
+      margin-top: 4px;
+      width: 100%;
+    }
+
+    .sidebar-project-select {
+      background: rgba(255, 255, 255, 0.1); /* Latar transparan tipis */
+      color: #ffffff; /* Teks putih */
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 160px; /* Atur lebar maksimal agar tidak merusak sidebar */
+      max-width: 100%;
+      outline: none;
+      font-family: inherit;
+    }
+
+    /* Mengubah warna teks opsi di dalam dropdown saat diklik */
+    .sidebar-project-select option {
+      background-color: #ffffff !important; /* Paksa latar belakang opsi menjadi putih murni */
+      color: #0f172a !important;            /* Paksa teks opsi menjadi gelap agar jelas terbaca */
+    }
+
+    /* Style Kapsul Dasar */
+    .capsule-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 12px;
+      margin-right: 5px;
+      margin-top: 5px;
+      cursor: help;
+      position: relative;
+    }
+
+    .capsule-wbs {
+      background-color: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .capsule-risk {
+      background-color: #fff1f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+    }
+
+    /* Tooltip Balon Teks Saat Hover */
+    .capsule-badge::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: normal;
+      white-space: pre-wrap; /* Mendukung baris baru \n */
+      width: 240px;
+      z-index: 999;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Panah kecil di bawah balon teks */
+    .capsule-badge::before {
+      content: "";
+      position: absolute;
+      bottom: 115%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 5px;
+      border-style: solid;
+      border-color: #0f172a transparent transparent transparent;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Efek Tampil saat Kursor Mendekat (Hover) */
+    .capsule-badge:hover::after,
+    .capsule-badge:hover::before {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -251,7 +345,11 @@
       <div class="logo">PM</div>
       <div>
         <h1>Project Manager</h1>
-        <span>Change Control Board</span>
+        <div class="project-selector-container">
+          <select id="projectDropdown" class="sidebar-project-select">
+            <option value="" disabled selected>Memuat proyek...</option>
+          </select>
+        </div>
       </div>
     </div>
     <nav>
@@ -265,9 +363,9 @@
       
       <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
         <div style="display: flex; align-items: center; gap: 10px;">
-          <div class="user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;">PM</div>
+          <div class="user-avatar" style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold;" id="userInitial">--</div>
           <div class="user-info" style="line-height: 1.2;">
-            <strong style="display: block; font-size: 13px;">Budi Santoso</strong>
+            <strong style="display: block; font-size: 13px;" id="userFullName">Memuat...</strong>
             <span style="font-size: 11px; color: #cbd5e1;">Project Manager</span>
           </div>
         </div>
@@ -295,13 +393,13 @@
       <div class="grid cols-4" style="margin-bottom: 20px;">
         <div class="card metric" style="border-color: var(--warning)">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div><h3>Pending Approval</h3><div class="num">4</div><small>Butuh keputusan PM</small></div>
+            <div><h3>Pending Approval</h3><div class="num" id="cardUnderReview">-</div><small>Butuh keputusan PM</small></div>
             <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">🡪</button>
           </div>
         </div>
         <div class="card metric" style="border-color: var(--danger)">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div><h3>High Risk Exposure</h3><div class="num">2</div><small>Membutuhkan mitigasi segera</small></div>
+            <div><h3>High Risk Exposure</h3><div class="num" id="cardNeedMitigation">-</div><small>Membutuhkan mitigasi segera</small></div>
             <button class="icon-btn" onclick="openModal('modalRisk')" title="Lihat Daftar Risiko Tinggi">🡪</button>
           </div>
         </div>
@@ -319,29 +417,34 @@
       <div class="grid cols-2">
         <div class="card">
           <h3>Recent Change Activities</h3>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-date">Today</div>
-              <div><strong>CR-007 Pipe Support Relocation</strong><p>BIM object PS-04 linked to WBS 3.2.1. Potential delay: 3 days.</p></div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">Yesterday</div>
-              <div><strong>CR-006 Slab Opening Revision</strong><p>Risk R-014 added. Mitigation assigned to site engineering team.</p></div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2 days ago</div>
-              <div><strong>CR-005 MEP Clash Change</strong><p>Approved and BIM model version updated to V2.4.</p></div>
-            </div>
+          <div class="timeline" id="recentActivitiesList">
+              <p style="text-align:center; color:#94a3b8; font-style:italic; padding: 20px 0;">Memuat aktivitas terbaru...</p>
           </div>
         </div>
         <div class="card">
           <h3>Decision Summary</h3>
           <table>
             <tr><th>Status</th><th>Total</th><th>Action</th></tr>
-            <tr><td><span class="badge info">Under Review</span></td><td><strong>3</strong></td><td>Need impact analysis</td></tr>
-            <tr><td><span class="badge medium">Need Mitigation</span></td><td><strong>2</strong></td><td>Assign risk owner</td></tr>
-            <tr><td><span class="badge low">Approved</span></td><td><strong>2</strong></td><td>Update BIM & schedule</td></tr>
-            <tr><td><span class="badge high">Rejected</span></td><td><strong>0</strong></td><td>Archive with reason</td></tr>
+            <tr>
+              <td><span class="badge info">Under Review</span></td>
+              <td><strong id="summaryUnderReview">0</strong></td>
+              <td>Need impact analysis</td>
+            </tr>
+            <tr>
+              <td><span class="badge medium">Need Mitigation</span></td>
+              <td><strong id="summaryNeedMitigation">0</strong></td>
+              <td>Assign risk owner</td>
+            </tr>
+            <tr>
+              <td><span class="badge low">Approved</span></td>
+              <td><strong id="summaryApproved">0</strong></td>
+              <td>Update BIM & schedule</td>
+            </tr>
+            <tr>
+              <td><span class="badge high">Rejected</span></td>
+              <td><strong id="summaryRejected">0</strong></td>
+              <td>Archive with reason</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -371,7 +474,7 @@
               <th>Deskripsi Perubahan</th>
               <th>Diajukan Oleh</th>
               <th><span class="th-inner">Waktu Masuk<button class="sort-btn" id="sortBtn-waktu" onclick="toggleSort('waktu','main')" title="Urutkan Waktu Masuk"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-waktu"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-waktu"/></svg></button></span></th>
-              <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">ⓘ</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1–20 = Sangat Rendah<br>21–40 = Rendah<br>41–60 = Sedang<br>61–80 = Tinggi<br>81–100 = Sangat Tinggi</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')" title="Urutkan Skala Risiko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
+              <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">ⓘ</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1–2 = Aman<br>3–4 = Rendah<br>5–6 = Sedang<br>7–8 = Tinggi<br>9–10 = Kritis</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')" title="Urutkan Skala Risiko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
               <th style="text-align:center;">Aksi</th>
             </tr>
           </thead>
@@ -382,14 +485,14 @@
         <button class="btn secondary" onclick="closeCrDetail()" style="margin-bottom: 15px;">🡨 Kembali</button>
         <div class="grid cols-2">
           <div class="card">
-            <h3 id="detailTitle">Detail Pengajuan: CR-008</h3>
+            <h3 id="detailTitle">Detail Pengajuan: (Loading...)</h3>
             <table style="margin-bottom: 16px;">
-              <tr><td width="35%"><b>Status Pengaju</b></td><td><span id="detailSender">Budi Santoso (Site Engineer)</span></td></tr>
-              <tr><td><b>Timestamp</b></td><td><span id="detailTime">07 Jun 2026, 09:15</span></td></tr>
-              <tr><td><b>BIM Object ID</b></td><td>BIM-GUID-PIPE-010</td></tr>
-              <tr><td><b>WBS Mapping</b></td><td>WBS 3.2.1 - Pekerjaan Plumbing</td></tr>
-              <tr><td><b>Impact Analysis</b></td><td>Biaya: +Rp 85 Jt | Waktu: <span style="color:var(--danger);font-weight:bold;">+3 Hari</span></td></tr>
-              <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Tinggi</span></td></tr>
+              <tr><td width="35%"><b>Status Pengaju</b></td><td><span id="sender">Loading...</span></td></tr>
+              <tr><td><b>Timestamp</b></td><td><span id="detailTime">Loading...</span></td></tr>
+              <tr><td><b>BIM Object ID</b></td><td>Loading...</td></tr>
+              <tr><td><b>WBS Mapping</b></td><td>Loading...</td></tr>
+              <tr><td><b>Impact Analysis</b></td><td>Biaya: Loading... | Waktu: Loading...</td></tr>
+              <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Loading...</span></td></tr>
             </table>
             <div class="ai-box">
               <h4>✨ AI Recommendation Engine</h4>
@@ -398,25 +501,25 @@
           </div>
           <div class="card" style="border-left: 4px solid var(--primary)">
             <h3>Form Approval Decision (Project Manager)</h3>
-            <div class="form-grid">
-              <div><label>Review ID</label><input value="REV-PM-01" readonly></div>
-              <div><label>Tanggal Keputusan</label><input type="date" value="2026-06-07"></div>
-              <div class="full">
-                <label>Keputusan (Approval Decision)</label>
-                <select id="decisionSelect" style="font-weight:bold;">
-                  <option value="">-- Pilih Keputusan --</option>
-                  <option value="approve">🟢 Approved (Setuju)</option>
-                  <option value="cond">🟡 Approved with Condition (Setuju Bersyarat)</option>
-                  <option value="revise">🟠 Revise & Resubmit (Revisi)</option>
-                  <option value="reject">🔴 Rejected (Tolak)</option>
-                </select>
-              </div>
-              <div class="full"><label>Approval Notes / Instruksi PM</label><textarea placeholder="Berikan arahan untuk mitigasi risiko atau alasan keputusan..."></textarea></div>
-              <div class="full no-print"><button class="btn success" style="width:100%;padding:12px;">Sahkan Keputusan Perubahan</button></div>
+            <input type="hidden" id="changeId" value="CR-004"> <div class="form-grid">
+                <div><label>Review ID</label><input id="reviewId" value="Memuat..." readonly></div>
+                
+                <div><label>Tanggal Keputusan</label><input type="date" id="approvalDate"></div>
+                
+                <div class="full">
+                    <label>Keputusan (Approval Decision)</label>
+                    <select id="decisionSelect" style="font-weight:bold;">
+                        <option value="">-- Pilih Keputusan --</option>
+                        <option value="APPROVED">🟢 Approved (Setuju)</option>
+                        <option value="REJECTED">🔴 Rejected (Tolak)</option>
+                    </select>
+                </div>
+                <div class="full"><label>Approval Notes / Instruksi PM</label><textarea id="approvalNotes" placeholder="Berikan arahan untuk mitigasi risiko atau alasan keputusan..."></textarea></div>
+                <div class="full no-print"><button class="btn success" onclick="submitApproval()" style="width:100%;padding:12px;">Sahkan Keputusan Perubahan</button></div>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </section>
 
     <!-- SECTION 03: LAPORAN -->
@@ -519,7 +622,21 @@
     }
   })();
 
-  document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    // --- SINKRONISASI PROFIL USER (2 Huruf Pertama) ---
+    const fullName = localStorage.getItem("full_name") || "Project Manager";
+    const words = fullName.trim().split(/\s+/);
+    let initial = "";
+    if (words.length > 0 && words[0]) initial += words[0].charAt(0).toUpperCase();
+    if (words.length > 1 && words[1]) initial += words[1].charAt(0).toUpperCase();
+    if (!initial) initial = "PM"; 
+
+    const nameDisplay = document.getElementById("userFullName");
+    const initialDisplay = document.getElementById("userInitial");
+    if (nameDisplay) nameDisplay.innerText = fullName;
+    if (initialDisplay) initialDisplay.innerText = initial;
+    // ---------------------------------------------------------
+
     // 1. Panggil fungsi untuk mengambil data proyek
     fetchAssignedProjects();
 });
@@ -534,25 +651,41 @@ function fetchAssignedProjects() {
             if (res.status === 'success') {
                 activeProjects = res.data;
                 
+                // 🚀 SINKRONISASI NAMA LANGSUNG DARI BACKEND SESSION (Anti Gagal)
+                if (res.user_name) {
+                    const nameDisplay = document.getElementById("userFullName");
+                    if (nameDisplay) nameDisplay.innerText = res.user_name;
+                    
+                    // Hitung inisial 2 kata pertama dari nama user (Contoh: "Budi Setiawan" -> "BS")
+                    const words = res.user_name.trim().split(/\s+/);
+                    let initial = "";
+                    if (words.length > 0 && words[0]) initial += words[0].charAt(0).toUpperCase();
+                    if (words.length > 1 && words[1]) initial += words[1].charAt(0).toUpperCase();
+                    if (!initial) initial = "PM"; // Fallback jika kosong
+                    
+                    const initialDisplay = document.getElementById("userInitial");
+                    if (initialDisplay) initialDisplay.innerText = initial;
+                }
+
                 // Cek apakah user punya proyek atau tidak
                 if (activeProjects.length === 0) {
+                    const dropdown = document.getElementById("projectDropdown");
+                    if (dropdown) dropdown.innerHTML = `<option disabled selected>Tidak ada proyek</option>`;
                     alert("Anda belum di-assign ke proyek manapun.");
-                    // Opsional: Sembunyikan tabel atau tampilkan pesan kosong di UI
                     return;
                 }
 
-                // Jika punya proyek, render ke UI
                 console.log("Proyek yang diassign:", activeProjects);
                 
-                // CONTOH 1: Memasukkan data ke dalam dropdown/select box (jika user punya >1 proyek)
-                // renderProjectDropdown(activeProjects);
-                
-                // CONTOH 2: Jika Anda ingin langsung me-render tabel laporan/progress 
-                // menggunakan data proyek pertama [0] secara default:
-                // renderDashboardData(activeProjects[0].project_id);
+                // Render data proyek ke dropdown pilihan
+                renderProjectDropdown(activeProjects);
+
+                // Jalankan dashboard pertama kali dengan proyek indeks pertama [0]
+                if (typeof renderDashboardData === "function") {
+                    renderDashboardData(activeProjects[0].project_id);
+                }
 
             } else if (res.message === "Akses ditolak. Silakan login.") {
-                // Keamanan ekstra: Jika session PHP hilang, kembalikan ke login
                 localStorage.removeItem("isLoggedIn");
                 window.location.replace("login.html");
             } else {
@@ -562,18 +695,49 @@ function fetchAssignedProjects() {
         .catch(error => console.error("Error fetching projects:", error));
 }
 
+// FUNGSI BARU: Merender data array proyek ke dalam Dropdown HTML
+function renderProjectDropdown(projects) {
+    const dropdown = document.getElementById("projectDropdown");
+    if (!dropdown) return;
+
+    // Bersihkan isi dropdown/tulisan loading terlebih dahulu
+    dropdown.innerHTML = "";
+
+    // Lakukan perulangan untuk memasukkan opsi proyek ke dropdown
+    projects.forEach(proj => {
+        const option = document.createElement("option");
+        option.value = proj.project_id; // Nilai ID proyek (misal: PRJ-001) untuk query ke database nanti
+        
+        // Menampilkan teks gabungan: "PRJ-001 - Nama Proyeknya"
+        option.innerText = `${proj.project_id} - ${proj.project_name}`; 
+        
+        dropdown.appendChild(option);
+    });
+
+    // Tambahkan Event Listener: Jika Project Manager mengganti pilihan proyek di dropdown
+    dropdown.addEventListener("change", function () {
+        const selectedProjectId = this.value;
+        console.log("PM berpindah proyek ke ID:", selectedProjectId);
+        
+        // Panggil fungsi utama dashboard Anda untuk mem-filter data berdasarkan project_id yang dipilih
+        if (typeof renderDashboardData === "function") {
+            renderDashboardData(selectedProjectId);
+        }
+    });
+}
+
 /* --- CONTOH FUNGSI PENDUKUNG (Sesuaikan dengan ID HTML Anda) --- */
 
-// Fungsi jika Anda punya elemen <select id="projectSelector"> di navbar/header
+// Fungsi jika Anda punya elemen <select id="projectDropdown"> di navbar/header
 function renderProjectDropdown(projects) {
-    const selector = document.getElementById('projectSelector');
+    const selector = document.getElementById('projectDropdown');
     if (!selector) return;
 
     selector.innerHTML = ''; // Kosongkan dulu
     projects.forEach(proj => {
         const option = document.createElement('option');
         option.value = proj.project_id;
-        option.textContent = `${proj.project_name} (${proj.project_id})`;
+        option.textContent = `${proj.project_id} – ${proj.project_name}`;
         selector.appendChild(option);
     });
 
@@ -581,21 +745,404 @@ function renderProjectDropdown(projects) {
     selector.addEventListener('change', function(e) {
         const selectedProjectId = e.target.value;
         // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
-        // renderDashboardData(selectedProjectId); 
+        renderDashboardData(selectedProjectId); 
     });
+}
+
+// Fungsi Utama untuk me-refresh data Dashboard berdasarkan Proyek yang dipilih
+function renderDashboardData(projectId) {
+    console.log("Memuat data dashboard untuk proyek:", projectId);
+    
+    // 1. Jalankan fungsi pengambilan angka statistik card
+    fetchDashboardStats(projectId);
+    
+    // 2. Jalankan fungsi render tabel/grafik Anda yang sudah ada sebelumnya
+    // (misal: fetchInboxRequests(projectId); atau sejenisnya)
+}
+
+// FUNGSI BARU: Mengambil angka statistik Under Review & Need Mitigation dari PHP
+function fetchDashboardStats(projectId) {
+    fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`)
+        .then(response => response.json())
+        .then(res => {
+            if (res.status === 'success') {
+                
+                // === Bagian A: Update Card Angka Utama (Atas) ===
+                const countReviewEl = document.getElementById("countUnderReview");
+                const countMitigationEl = document.getElementById("countNeedMitigation");
+                if (countReviewEl) countReviewEl.innerText = res.data.under_review;
+                if (countMitigationEl) countMitigationEl.innerText = res.data.need_mitigation;
+
+
+                // === Bagian B: 🆕 Update Tabel Ringkasan DAN Card Matriks Sekaligus ===
+
+                // 1. Definisikan Elemen untuk Tabel Ringkasan (Bawah)
+                const sumReviewEl = document.getElementById("summaryUnderReview");
+                const sumMitigationEl = document.getElementById("summaryNeedMitigation");
+                const sumApprovedEl = document.getElementById("summaryApproved");
+                const sumRejectedEl = document.getElementById("summaryRejected");
+
+                // 2. Definisikan Elemen untuk Card Matriks (Atas)
+                const cardReviewEl = document.getElementById("cardUnderReview");
+                const cardMitigationEl = document.getElementById("cardNeedMitigation");
+
+                // 3. Suntikkan Data ke Tabel Ringkasan (Bawah)
+                if (sumReviewEl) sumReviewEl.innerText = res.data.under_review;
+                if (sumMitigationEl) sumMitigationEl.innerText = res.data.need_mitigation;
+                if (sumApprovedEl) sumApprovedEl.innerText = res.data.approved;
+                if (sumRejectedEl) sumRejectedEl.innerText = res.data.rejected;
+
+                // 4. Suntikkan Data yang Sama ke Card Matriks (Atas)
+                if (cardReviewEl) cardReviewEl.innerText = res.data.under_review;
+                if (cardMitigationEl) cardMitigationEl.innerText = res.data.need_mitigation;
+
+                // === SINKRONISASI DATA REVIEW & APPROVAL KE SISTEM EKSISTING ===
+                const pendingRequests = res.data.pending_requests || [];
+                
+                // === Bagian C: 🆕 Populasikan Tabel Modal High Risk Exposure ===
+
+                const riskTbody = document.getElementById("riskTbody");
+
+                if (riskTbody && typeof pendingRequests !== 'undefined') {
+                    
+                    // Filter: Ambil yang risk-nya berupa angka dan lebih dari 6
+                    const highRiskData = pendingRequests.filter(cr => {
+                        let r = parseInt(cr.risk);
+                        return !isNaN(r) && r > 6;
+                    });
+
+                    if (highRiskData.length > 0) {
+                        const riskRows = highRiskData.map(cr => {
+                            let riskVal = parseInt(cr.risk);
+                            
+                            // 🎨 Menentukan Class CSS dan Teks berdasarkan level risiko
+                            let badgeClass = '';
+                            let badgeText = '';
+                            
+                            if (riskVal >= 9) {
+                                badgeClass = 'badge very-high';
+                                badgeText = `Kritis (${riskVal})`;
+                            } else {
+                                badgeClass = 'badge high';
+                                badgeText = `Tinggi (${riskVal})`;
+                            }
+
+                            // Format tanggal 
+                            let dateObj = new Date(cr.changeDate);
+                            let timeStr = isNaN(dateObj) ? (cr.changeDate || '-') : dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+
+                            return `
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="font-weight: 600; padding: 12px 8px;">${cr.changeId}</td>
+                                    <td style="padding: 12px 8px;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <span style="font-weight: 600; font-size: 14px;">${cr.submittedBy || '-'}</span>
+                                            <span style="font-size: 12px; color: #6c757d;">Site Engineer</span>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 12px 8px; color: #495057;">${timeStr}</td>
+                                    <td style="padding: 12px 8px;">
+                                        <span class="${badgeClass}">${badgeText}</span>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <button class="btn danger" onclick="reviewFromModal('modalRisk', '${cr.changeId}')">
+                                            Mitigasi
+                                        </button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                        
+                        riskTbody.innerHTML = riskRows;
+                        
+                    } else {
+                        riskTbody.innerHTML = `
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px; color: #6c757d;">
+                                    🎉 Luar biasa! Saat ini tidak ada pengajuan dengan risiko tinggi.
+                                </td>
+                            </tr>
+                        `;
+                    }
+                } else {
+                    console.error("Variabel pendingRequests tidak ditemukan!");
+                }
+
+                // === Bagian C: Update Daftar Recent Change Activities ===
+                const activitiesContainer = document.getElementById("recentActivitiesList");
+                if (activitiesContainer) {
+                    const activities = res.data.recent_activities;
+                    
+                    if (activities.length === 0) {
+                        activitiesContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; font-style:italic; padding: 20px 0;">Belum ada aktivitas Change Request di proyek ini.</p>';
+                    } else {
+                        let today = new Date();
+                        today.setHours(0, 0, 0, 0);
+
+                        activitiesContainer.innerHTML = activities.map(act => {
+                            // Status Badge Bawaan
+                            let statusBadge = `<span style="color:#d97706; font-weight:bold;">[PENDING]</span>`;
+                            if (act.status.toUpperCase() === 'APPROVED') {
+                                statusBadge = `<span style="color:#16a34a; font-weight:bold;">[APPROVED]</span>`;
+                            } else if (act.status.toUpperCase() === 'REJECTED') {
+                                statusBadge = `<span style="color:#dc2626; font-weight:bold;">[REJECTED]</span>`;
+                            }
+
+                            // Pengolahan Tanggal
+                            let dateObj = new Date(act.changeDate);
+                            let formattedDate = isNaN(dateObj) ? act.changeDate : dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+
+                            // Logika Waktu Relatif
+                            let relativeLabel = "Baru saja";
+                            if (!isNaN(dateObj)) {
+                                let compareDate = new Date(dateObj);
+                                compareDate.setHours(0, 0, 0, 0);
+                                let diffTime = today.getTime() - compareDate.getTime();
+                                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+                                if (diffDays === 0) relativeLabel = "Hari ini";
+                                else if (diffDays === 1) relativeLabel = "Kemarin";
+                                else if (diffDays > 1) relativeLabel = `${diffDays} hari yang lalu`;
+                            }
+
+                            // 1. Penyusunan teks tooltip untuk kapsul WBS
+                            let wbsText = `WBS Level 4 (Paket Pekerjaan):\n${act.wbsLevel4 || '-'}\n\nWBS Level 5 (Aktivitas):\n${act.wbsLevel5 || '-'}\n\nWBS Level 6 (Sumber Daya):\n${act.wbsLevel6 || '-'}`;
+                            
+                            // 2. Penyusunan teks tooltip untuk kapsul RISIKO beserta kolom Insight & Saran dari Knowledge Repository
+                            let riskText = `Level 1 (Kategori): ${act.risk_kategori || '-'}\nLevel 2 (Variabel): ${act.risk_nama || '-'}\n\n💡 Insight:\n${act.insight || 'Tidak ada data'}\n\n🛠️ Saran:\n${act.saran || 'Tidak ada data'}`;
+
+                            // Ambil dari riskVariable (regex /[^\d.]/g akan menyisakan angka dan titik saja, misal dari "R1.2" menjadi "1.2")
+                            let riskCodeShort = act.riskVariable ? act.riskVariable.replace(/[^\d.]/g, '') : '0';
+
+                            return `
+                            <div class="timeline-item" style="align-items: flex-start;">
+                                <div class="timeline-date" style="white-space:nowrap; margin-right:15px; display:flex; flex-direction:column; justify-content:flex-start; line-height:1.3; min-width:95px;">
+                                    <span style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:2px;">${relativeLabel}</span>
+                                    <span style="font-size:11px; color:#64748b;">${formattedDate}</span>
+                                </div>
+                                <div style="flex: 1;">
+                                    <strong style="color:#0f172a; display:block;">${act.changeId} - ${act.changeCategory}</strong>
+                                    
+                                    <div style="margin: 4px 0 8px 0; display: flex; flex-wrap: wrap;">
+                                        <div class="capsule-badge capsule-wbs" data-tooltip="${wbsText}">
+                                            🗂️ WBS ${act.wbsLevel5 ? act.wbsLevel5.substring(0, 7) : 'Info'}
+                                        </div>
+                                        <div class="capsule-badge capsule-risk" data-tooltip="${riskText}">
+                                            ⚠️ R${riskCodeShort}
+                                        </div>
+                                    </div>
+
+                                    <p style="font-size:12px; color:#475569; line-height:1.4; margin:0;">
+                                        ${statusBadge} • <b>${act.submittedBy}</b> (Site Engineer)
+                                    </p>
+                                </div>
+                            </div>
+                            `;
+                        }).join('');
+                    }
+                }
+
+                // Petakan data dari database agar sesuai dengan format objek "crData" eksisting Anda
+                crData = pendingRequests.map(cr => {
+                    // 1. Kalkulasi Skala Risiko sesuai aturan Anda
+                    let riskVal = parseInt(cr.risk) || 0;
+                    let rClass = 'info';
+                    let rLabel = 'Aman';
+                    
+                    // Sesuaikan nama class dengan CSS Anda (very-high, high, medium, low)
+                    if (riskVal > 8) { rClass = 'very-high'; rLabel = 'Kritis'; }
+                    else if (riskVal > 6) { rClass = 'high'; rLabel = 'Tinggi'; }
+                    else if (riskVal > 4) { rClass = 'medium'; rLabel = 'Sedang'; }
+                    else if (riskVal > 2) { rClass = 'low'; rLabel = 'Rendah'; }
+
+                    // 2. Format Tanggal (String dan Timestamp untuk Sorting)
+                    let dateObj = new Date(cr.changeDate);
+                    let timeStr = isNaN(dateObj) ? (cr.changeDate || '-') : dateObj.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                    let ts = isNaN(dateObj) ? 0 : dateObj.getTime();
+
+                    // 3. Kembalikan objek persis seperti struktur dummy Anda
+                    return {
+                        id: cr.changeId,
+                        desc: cr.description || 'Penyesuaian WBS', 
+                        sender: cr.submittedBy || '-',
+                        role: 'Site Engineer', 
+                        waktu: timeStr,
+                        waktuTs: ts,
+                        risikoLabel: rLabel,
+                        risikoClass: rClass,
+                        risikoScore: riskVal,
+                        highlight: riskVal > 8, 
+                        note: (cr.costImpact && cr.costImpact > 0) ? 'Potensi Cost Overrun' : '',
+                        
+                        // 4. Simpan juga data mentah agar fungsi detail bisa membaca dampaknya
+                        costImpact: cr.costImpact,
+                        timeImpact: cr.timeImpact,
+                        wbsLevel5: cr.wbsLevel5,
+                        changeDate: cr.changeDate,
+
+                        // PASTIKAN BARIS INI ADA:
+                        riskVariable: cr.riskVariable,
+
+                        // 🌟 TAMBAHKAN BARIS INI:
+                        bimObjectId: cr.bimObjectId,
+
+                        // 🌟 PASTIKAN BARIS INI ADA AGAR BISA DIFILTER
+                        risk: cr.risk,
+                        
+                        // 🌟 TAMBAHKAN DUA BARIS INI AGAR DATA DARI PHP TIDAK HILANG 🌟
+                        insight: cr.insight || cr.insightText || '',
+                        saran: cr.saran || cr.saranText || ''
+                    };
+                });
+
+                // Panggil fungsi render bawaan Anda agar tabel terbentuk dan fitur Search/Sort aktif!
+                if (typeof renderInbox === "function") {
+                    renderInbox(crData);
+                    // Jika Anda punya fungsi render terpisah untuk data PENDING (di sidebar/dsb), panggil juga:
+                    if (typeof renderPending === "function") {
+                        renderPending(crData);
+                    }
+                }
+            } else {
+                console.error("Gagal memuat statistik dashboard:", res.message);
+            }
+        })
+        .catch(error => console.error("Error fetching dashboard stats:", error));
+}
+
+// Fungsi untuk membuka Detail View dan Mengisi Datanya secara Dinamis Tanpa Mengubah Struktur HTML
+function openCrDetail(cr) {
+    // DETEKSI PINTAR: Jika yang dikirim ke fungsi ini adalah teks ID (misal: 'CR-008'),
+    // kita otomatis carikan objek data lengkapnya dari array global crData
+    let data = cr;
+    if (typeof cr === 'string') {
+        data = crData.find(item => item.changeId === cr || item.id === cr);
+    }
+
+    // Antisipasi jika data tidak ditemukan agar tidak menyebabkan crash
+    if (!data) {
+        console.error("Data CR tidak ditemukan untuk ID:", cr);
+        return;
+    }
+
+    // 1. Tukar visibilitas kontainer workspace
+    if (document.getElementById("approvalInbox")) {
+        document.getElementById("approvalInbox").style.display = "none";
+    }
+    if (document.getElementById("approvalDetailView")) {
+        document.getElementById("approvalDetailView").style.display = "block";
+    }
+
+    // 2. Isi data teks dasar (Menggunakan variabel 'data' hasil pencarian di atas)
+    if (document.getElementById("detailTitle")) {
+        document.getElementById("detailTitle").innerText = `Detail Pengajuan: ${data.changeId || data.id || '-'}`;
+    }
+    
+    // DISESUAIKAN: Menembak id="sender" sesuai dengan tag HTML eksisting Anda
+    if (document.getElementById("sender")) {
+        document.getElementById("sender").innerText = `${data.submittedBy || data.sender || '-'} (Pemohon Perubahan)`;
+    }
+    
+    if (document.getElementById("detailTime")) {
+        let dateSrc = data.changeDate || data.waktu;
+        let dateObj = new Date(dateSrc);
+        document.getElementById("detailTime").innerText = isNaN(dateObj) ? (dateSrc || '-') : dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    // 3. Modifikasi isi baris tabel detail secara presisi memanfaatkan indeks DOM
+    const detailTable = document.querySelector("#approvalDetailView .card table");
+    if (detailTable && detailTable.rows.length >= 5) {
+        // Baris 3 (Index 2): BIM Object ID
+        let bimid = data.bimObjectId || data.bimId;
+        detailTable.rows[2].cells[1].innerText = bimid ? `${bimid}` : '-';
+        
+        // Baris 4 (Index 3): WBS Mapping
+        detailTable.rows[3].cells[1].innerText = data.wbsLevel5 || '-';
+        
+        // Baris 5 (Index 4): Impact Analysis (Biaya & Waktu)
+        let costVal = data.costImpact;
+        let costFormatted = 'Rp 0';
+        if (costVal && !isNaN(costVal)) {
+            costFormatted = 'Rp ' + parseFloat(costVal).toLocaleString('id-ID');
+        } else {
+            costFormatted = costVal || 'Rp 0';
+        }
+        detailTable.rows[4].cells[1].innerHTML = `Biaya: <span class="text-danger" style="font-weight:bold;">+${costFormatted}</span> | Waktu: <span style="color:var(--danger);font-weight:bold;">+${data.timeImpact || 0} Hari</span>`;
+    }
+
+    // 4. Update Badge Skala Risiko Detail
+    let riskVal = parseInt(data.risk || data.risikoScore) || 0;
+    let riskLabel = 'Aman';
+    let riskClass = 'info';
+
+    if (riskVal >= 9) {
+        // 9-10: Kritis
+        riskLabel = 'Kritis';
+        riskClass = 'very-high';
+    } else if (riskVal >= 7) {
+        // 7-8: Tinggi
+        riskLabel = 'Tinggi';
+        riskClass = 'high';
+    } else if (riskVal >= 5) {
+        // 5-6: Sedang
+        riskLabel = 'Sedang';
+        riskClass = 'medium';
+    } else if (riskVal >= 3) {
+        // 3-4: Rendah
+        riskLabel = 'Rendah';
+        riskClass = 'low';
+    } else {
+        // 1-2 (atau 0): Aman
+        riskLabel = 'Aman';
+        riskClass = 'info';
+    }
+    
+    // (Opsional) Jika database Anda sewaktu-waktu mengirimkan skala 0-100 (persentase)
+    if (riskVal > 10) {
+        if (riskVal >= 81) { riskLabel = 'Kritis'; riskClass = 'very-high'; }
+        else if (riskVal >= 61) { riskLabel = 'Tinggi'; riskClass = 'high'; }
+        else if (riskVal >= 41) { riskLabel = 'Sedang'; riskClass = 'medium'; }
+        else if (riskVal >= 21) { riskLabel = 'Rendah'; riskClass = 'low'; }
+        else { riskLabel = 'Aman'; riskClass = 'info'; }
+    }
+    
+    const riskBadge = document.getElementById("detailRiskBadge");
+    if (riskBadge) {
+        riskBadge.innerText = `${riskVal} (${riskLabel})`;
+        riskBadge.className = `badge ${riskClass}`;
+    }
+
+    // 5. Update teks AI Recommendation cerdas dinamis berdasarkan data WBS pengaju
+    const aiBoxParagraph = document.querySelector("#approvalDetailView .ai-box p");
+    if (aiBoxParagraph) {
+        let wbsStr = data.wbsLevel5 || '';
+        let wbsCode = wbsStr ? wbsStr.substring(0, 7) : 'Umum';
+        
+        // Ambil kode riskVariable, berikan fallback '-' jika kosong
+        let riskCode = data.riskVariable || '-';
+
+        // Ambil insight & saran dari properti objek data
+        let insightText = data.insight ? data.insight : `null.`;
+        let saranText = data.saran ? data.saran : `null.`;
+
+        // Tampilkan ke komponen AI Engine HTML (Ditambahkan variabel riskCode)
+        aiBoxParagraph.innerHTML = `Berdasarkan pembelajaran histori proyek pada elemen <strong>WBS (${wbsCode})</strong> dan <strong>kode risiko ${riskCode}</strong>:<br><br><strong>Insight:</strong> ${insightText} <br><br><strong>Rekomendasi:</strong> ${saranText}`;
+    }
+}
+
+// Fungsi untuk kembali ke daftar antrean semula
+function closeCrDetail() {
+    document.getElementById("approvalInbox").style.display = "block";
+    document.getElementById("approvalDetailView").style.display = "none";
 }
   // ══════════════════════════════════════════
   // DATA
   // ══════════════════════════════════════════
-  const crData = [
-    { id:'CR-008', desc:'Relokasi Jalur Pipa Utama (Plumbing)', sender:'Budi Santoso', role:'Site Engineer', waktu:'07 Jun 2026, 09:15', waktuTs:new Date('2026-06-07T09:15:00').getTime(), risikoLabel:'Tinggi', risikoClass:'high', risikoScore:78, highlight:false, note:'' },
-    { id:'CR-009', desc:'Revisi Material Finishing Facade', sender:'Ani Wijaya', role:'Arsitek Senior', waktu:'06 Jun 2026, 14:20', waktuTs:new Date('2026-06-06T14:20:00').getTime(), risikoLabel:'Sedang', risikoClass:'medium', risikoScore:52, highlight:false, note:'' },
-    { id:'CR-010', desc:'Penambahan Titik Lampu Taman', sender:'Dedi Kurnia', role:'MEP Coordinator', waktu:'05 Jun 2026, 10:05', waktuTs:new Date('2026-06-05T10:05:00').getTime(), risikoLabel:'Rendah', risikoClass:'low', risikoScore:24, highlight:false, note:'' },
-    { id:'CR-004', desc:'Perubahan Spesifikasi Material (Potensi Cost Overrun)', sender:'Lia Susanti', role:'Quantity Surveyor', waktu:'01 Jun 2026, 11:30', waktuTs:new Date('2026-06-01T11:30:00').getTime(), risikoLabel:'Sangat Tinggi', risikoClass:'very-high', risikoScore:85, highlight:true, note:'Potensi Cost Overrun' }
-  ];
+  // Ubah dari const menjadi let dan kosongkan isinya
+  let crData = [];
 
   // High-risk subset
-  const riskData = crData.filter(r => r.risikoScore >= 61);
+  const riskData = crData.filter(r => r.risikoScore >= 7);
 
   // ── Per-scope sort states ──
   const sortStates = {
@@ -726,28 +1273,7 @@ function renderProjectDropdown(projects) {
   // ══════════════════════════════════════════
   // CR DETAIL
   // ══════════════════════════════════════════
-  const crDetailMap = {
-    'CR-008': { sender:'Budi Santoso (Site Engineer)',    time:'07 Jun 2026, 09:15', risk:'high',      riskText:'Tinggi' },
-    'CR-009': { sender:'Ani Wijaya (Arsitek Senior)',     time:'06 Jun 2026, 14:20', risk:'medium',    riskText:'Sedang' },
-    'CR-010': { sender:'Dedi Kurnia (MEP Coordinator)',   time:'05 Jun 2026, 10:05', risk:'low',       riskText:'Rendah' },
-    'CR-004': { sender:'Lia Susanti (Quantity Surveyor)', time:'01 Jun 2026, 11:30', risk:'very-high', riskText:'Sangat Tinggi' }
-  };
-
-  function openCrDetail(id) {
-    const d = crDetailMap[id]; if (!d) return;
-    document.getElementById('detailTitle').innerText      = 'Detail Pengajuan: ' + id;
-    document.getElementById('detailSender').innerText     = d.sender;
-    document.getElementById('detailTime').innerText       = d.time;
-    document.getElementById('detailRiskBadge').innerText  = d.riskText;
-    document.getElementById('detailRiskBadge').className  = 'badge ' + d.risk;
-    document.getElementById('approvalInbox').style.display      = 'none';
-    document.getElementById('approvalDetailView').style.display = 'block';
-  }
-
-  function closeCrDetail() {
-    document.getElementById('approvalInbox').style.display      = 'block';
-    document.getElementById('approvalDetailView').style.display = 'none';
-  }
+  const crDetailMap = {};
 
   // ══════════════════════════════════════════
   // NAVIGATION
@@ -815,6 +1341,107 @@ function renderProjectDropdown(projects) {
       }
     });
   });
+
+  // Jalankan otomatis saat dokumen HTML selesai dimuat
+  document.addEventListener("DOMContentLoaded", () => {
+      initApprovalForm();
+  });
+
+  async function initApprovalForm() {
+      // === 1. Otomatisasi Tanggal Keputusan (Hari Ini) ===
+      const approvalDateInput = document.getElementById('approvalDate');
+      if (approvalDateInput) {
+          const today = new Date();
+          
+          // Format ke YYYY-MM-DD agar bisa dibaca oleh input type="date"
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          const day = String(today.getDate()).padStart(2, '0');
+          
+          approvalDateInput.value = `${year}-${month}-${day}`;
+      }
+
+      // === 2. Otomatisasi Review ID dari Database ===
+      const reviewIdInput = document.getElementById('reviewId');
+      if (reviewIdInput) {
+          try {
+              // Tarik nomor urut berikutnya dari backend
+              const response = await fetch('get_next_review_id.php');
+              const data = await response.json();
+              
+              if (data.status === 'success') {
+                  reviewIdInput.value = data.nextReviewId;
+              } else {
+                  console.error("Gagal mengambil urutan Review ID:", data.message);
+                  reviewIdInput.value = "REV-PM-AUTO"; // Fallback jika gagal
+              }
+          } catch (error) {
+              console.error("Error fetching next review ID:", error);
+              reviewIdInput.value = "REV-PM-AUTO";
+          }
+      }
+  }
+
+  async function submitApproval() {
+    // 1. Ambil nilai dari semua input berdasarkan ID
+    const changeId = document.getElementById('changeId').value;
+    const reviewId = document.getElementById('reviewId').value;
+    const approvalDate = document.getElementById('approvalDate').value;
+    const decisionSelect = document.getElementById('decisionSelect').value;
+    const approvalNotes = document.getElementById('approvalNotes').value;
+
+    // 2. Validasi sederhana
+    if (!decisionSelect) {
+        alert("Mohon pilih keputusan (Setuju/Tolak) terlebih dahulu.");
+        document.getElementById('decisionSelect').focus();
+        return;
+    }
+    if (!approvalNotes) {
+        alert("Catatan/Instruksi PM tidak boleh kosong.");
+        document.getElementById('approvalNotes').focus();
+        return;
+    }
+
+    // 3. Siapkan data untuk dikirim (FormData)
+    const formData = new FormData();
+    formData.append('changeId', changeId);
+    formData.append('reviewId', reviewId);
+    formData.append('approvalDate', approvalDate);
+    formData.append('approvalDecision', decisionSelect);
+    formData.append('approvalNotes', approvalNotes);
+
+    // 4. Ubah teks tombol menjadi loading (Opsional UI UX)
+    const btnSubmit = document.querySelector('.btn.success');
+    const originalText = btnSubmit.innerText;
+    btnSubmit.innerText = "Menyimpan...";
+    btnSubmit.disabled = true;
+
+    try {
+        // 5. Kirim data ke API / backend PHP kita
+        const response = await fetch('save_approval.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+
+        // 6. Tangani respon dari server
+        if (result.status === 'success') {
+            alert("✅ Keputusan berhasil disahkan!");
+            // Refresh halaman atau redirect kembali ke tabel dashboard
+            window.location.href = 'project-manager.html'; 
+        } else {
+            alert("❌ Gagal menyimpan: " + result.message);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan sistem. Cek koneksi Anda.");
+    } finally {
+        // Kembalikan tombol ke keadaan semula
+        btnSubmit.innerText = originalText;
+        btnSubmit.disabled = false;
+    }
+}
 </script>
 </body>
 </html>

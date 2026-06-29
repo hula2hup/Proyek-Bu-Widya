@@ -7868,6 +7868,206 @@
             if (e.target === this) this.classList.remove("show");
           });
       });
+
+      // ==========================================================
+      // INTEGRASI DATA STATISTIK DAN AKTIVITAS DARI DATABASE
+      // ==========================================================
+
+      // Jalankan saat halaman pertama kali dimuat
+      document.addEventListener("DOMContentLoaded", () => {
+          const projectSelect = document.getElementById("globalProjectSelect");
+          
+          if (projectSelect) {
+              // 1. Muat data pertama kali berdasarkan proyek yang terpilih awal
+              fetchAdminDashboardStats(projectSelect.value);
+
+              // 2. Pasang event listener: Setiap kali opsi proyek diubah, perbarui data
+              projectSelect.addEventListener("change", function() {
+                  fetchAdminDashboardStats(this.value);
+              });
+          }
+      });
+
+      // Fungsi utama untuk mengambil data dari get_dashboard_data_stats.php
+      async function fetchAdminDashboardStats(projectId) {
+          const activitiesList = document.getElementById("recentActivitiesList");
+          
+          try {
+              // Tembak file PHP yang sama dengan melempar parameter project_id
+              const response = await fetch(`get_dashboard_data_stats.php?project_id=${projectId}`);
+              const result = await response.json();
+
+              if (result.status === "success") {
+                  const stats = result.data;
+
+                  // === A. ISI DATA KANAN: DECISION SUMMARY ===
+                  if (document.getElementById("summaryUnderReview")) {
+                      document.getElementById("summaryUnderReview").innerText = stats.under_review;
+                  }
+                  if (document.getElementById("summaryNeedMitigation")) {
+                      document.getElementById("summaryNeedMitigation").innerText = stats.need_mitigation;
+                  }
+                  if (document.getElementById("summaryApproved")) {
+                      document.getElementById("summaryApproved").innerText = stats.approved;
+                  }
+                  if (document.getElementById("summaryRejected")) {
+                      document.getElementById("summaryRejected").innerText = stats.rejected;
+                  }
+
+                  // === B. ISI DATA KIRI: RECENT CHANGE ACTIVITIES ===
+                  if (activitiesList) {
+                      renderAdminRecentActivities(stats.recent_activities);
+                  }
+
+              } else {
+                  console.error("Gagal memuat statistik admin:", result.message);
+              }
+          } catch (error) {
+              console.error("Sistem error saat fetch dashboard stats:", error);
+          }
+      }
+
+      // Fungsi pembantu untuk membuat baris HTML di Recent Change Activities
+      function renderAdminRecentActivities(activities) {
+          const container = document.getElementById("recentActivitiesList");
+          container.innerHTML = ""; // Bersihkan data dummy/lama
+
+          if (activities.length === 0) {
+              container.innerHTML = `<p style="text-align:center; font-size:13px; color:#94a3b8; margin: 20px 0;">Belum ada aktivitas perubahan pada proyek ini.</p>`;
+              return;
+          }
+
+          activities.forEach(act => {
+              // Tentukan warna badge dan border kiri berdasarkan status
+              let badgeBg = "#fef3c7";
+              let badgeColor = "#d97706";
+              let borderLeftColor = "#f59e0b";
+
+              if (act.status.toUpperCase() === "APPROVED") {
+                  badgeBg = "#dcfce7";
+                  badgeColor = "#15803d";
+                  borderLeftColor = "#10b981";
+              } else if (act.status.toUpperCase() === "REJECTED") {
+                  badgeBg = "#fee2e2";
+                  badgeColor = "#b91c1c";
+                  borderLeftColor = "#ef4444";
+              }
+
+              // Susun template card kecil item aktivitas sesuai desain UI admin.html
+              const activityItem = `
+                  <div style="display: flex; gap: 12px; padding: 12px; background: #f8fafc; border-radius: 6px; border-left: 4px solid ${borderLeftColor}; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                      <div style="flex: 1;">
+                          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                              <strong style="font-size: 13px; color: #1e293b;">${act.changeId}</strong>
+                              <span style="font-size: 11px; color: #94a3b8;">${act.changeDate}</span>
+                          </div>
+                          <p style="margin: 0; font-size: 12px; color: #475569; line-height: 1.4;">
+                              Kategori: <strong>${act.changeCategory}</strong> <br>
+                              WBS Level 5: <span style="color:#0284c7; font-family:monospace;">${act.wbsLevel5}</span>
+                          </p>
+                          <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+                              <span style="font-size: 10px; background: ${badgeBg}; color: ${badgeColor}; padding: 2px 8px; border-radius: 4px; font-weight: 700; letter-spacing: 0.5px;">
+                                  ${act.status.toUpperCase()}
+                              </span>
+                              <span style="font-size: 11px; color: #64748b;">Oleh: ${act.submittedBy || 'Site Engineer'}</span>
+                          </div>
+                      </div>
+                  </div>
+              `;
+              container.insertAdjacentHTML("beforeend", activityItem);
+          });
+      }
+
+      /**
+       * Memuat dan memperbarui komponen statistik dashboard (Decision Summary & Recent Activities)
+       * @param {string} projectId - ID Proyek pilihan untuk filter (opsional)
+       */
+      function loadDashboardStats(projectId = '') {
+        // 1. Tentukan URL endpoint API (tambahkan parameter query jika memfilter proyek tertentu)
+        let url = 'get_dashboard_data_stats.php';
+        if (projectId) {
+          url += `?projectId=${encodeURIComponent(projectId)}`;
+        }
+
+        // 2. Lakukan request data ke backend PHP
+        fetch(url)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Gagal memuat respons dari server');
+            }
+            return response.json();
+          })
+          .then(res => {
+            if (res.status === 'success') {
+              
+              // --- Bagian A: Update Konter Ringkasan Keputusan (Decision Summary) ---
+              const stats = res.stats || {};
+              document.getElementById('pmdUnderReview').innerText   = stats.under_review || 0;
+              document.getElementById('pmdNeedMitigation').innerText = stats.need_mitigation || 0;
+              document.getElementById('pmdApproved').innerText       = stats.approved || 0;
+              document.getElementById('pmdRejected').innerText       = stats.rejected || 0;
+
+              // --- Bagian B: Render Aktivitas Perubahan Terbaru (Recent Change Activities) ---
+              const timelineContainer = document.getElementById('pmdTimeline');
+              timelineContainer.innerHTML = ''; // Kosongkan kontainer lama
+
+              const activities = res.recent_activities || [];
+              if (activities.length === 0) {
+                timelineContainer.innerHTML = `
+                  <p style="color: #64748b; font-size: 13px; margin: 0; padding: 10px 0;">
+                    Belum ada aktivitas perubahan terbaru pada proyek ini.
+                  </p>`;
+                return;
+              }
+
+              // Looping data aktivitas dan bentuk elemen DOM sesuai dengan grid layout CSS Anda
+              activities.forEach(act => {
+                const item = document.createElement('div');
+                item.className = 'pmd-timeline-item'; // Mengikuti struktur grid CSS admin.html
+
+                // Tentukan kelas warna badge berdasarkan status aktivitas terkini
+                const badgeClass = getBadgeStatusClass(act.status);
+
+                item.innerHTML = `
+                  <div class="pmd-timeline-date">${act.date}</div>
+                  <div>
+                    <strong>${act.change_id}: ${act.title}</strong>
+                    <p>Proyek: <em>${act.project_name}</em></p>
+                    <p>Oleh: ${act.sender} (${act.role})</p>
+                    <div style="margin-top: 8px;">
+                      <span class="badge ${badgeClass}">${act.status}</span>
+                    </div>
+                  </div>
+                `;
+                timelineContainer.appendChild(item);
+              });
+
+            } else {
+              console.error('API Error:', res.message);
+            }
+          })
+          .catch(error => {
+            console.error('Kesalahan Sistem:', error);
+          });
+      }
+
+      /**
+       * Fungsi pembantu untuk memetakan nama status ke class badge yang sesuai
+       */
+      function getBadgeStatusClass(status) {
+        switch (status?.toLowerCase()) {
+          case 'under review':     return 'info';
+          case 'need mitigation': return 'medium';
+          case 'approved':        return 'low';
+          case 'rejected':        return 'high';
+          default:                return 'info';
+        }
+      }
+
+      // Panggil fungsi secara otomatis saat halaman admin selesai dimuat pertama kali
+      document.addEventListener('DOMContentLoaded', function() {
+        loadDashboardStats(); // Memuat data keseluruhan (global/all projects) secara default
+      });
     </script>
   </body>
 </html>
