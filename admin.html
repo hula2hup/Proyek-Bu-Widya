@@ -1841,6 +1841,96 @@
           </div>
         </div>
 
+        <div class="modal" id="editProjectModal">
+          <div class="modal-content">
+            <h2>Edit Data Proyek</h2>
+            
+            <div class="input-group">
+              <label>Project ID</label>
+              <input
+                type="text"
+                id="editProjectId"
+                readonly
+                style="background: #f1f5f9; cursor: not-allowed; color: #64748b;"
+              />
+            </div>
+            
+            <div class="input-group">
+              <label>Project Name</label>
+              <input
+                type="text"
+                id="editProjectName"
+                placeholder="Nama Proyek..."
+              />
+            </div>
+            
+            <div class="input-group">
+              <label>Project Manager</label>
+              <div
+                class="tag-input-wrapper"
+                id="editPmWrapper"
+                onclick="document.getElementById('editPmInput').focus()"
+              >
+                <input
+                  type="text"
+                  id="editPmInput"
+                  placeholder="Ketik nama & Enter..."
+                />
+              </div>
+            </div>
+            
+            <div class="input-group">
+              <label>Site Manager</label>
+              <div
+                class="tag-input-wrapper"
+                id="editSeWrapper"
+                onclick="document.getElementById('editSeInput').focus()"
+              >
+                <input
+                  type="text"
+                  id="editSeInput"
+                  placeholder="Ketik nama & Enter..."
+                />
+              </div>
+            </div>
+            
+            <div class="advanced-section">
+              <details open>
+                <summary style="cursor: pointer; font-weight: bold">
+                  Advanced
+                </summary>
+                <div style="margin-top: 10px">
+                  <div class="input-group">
+                    <label>Status</label>
+                    <select id="editProjectStatus">
+                      <option>Pending</option>
+                      <option>In Progress</option>
+                      <option>Completed</option>
+                    </select>
+                  </div>
+                  <div class="input-group">
+                    <label>Progress (%)</label>
+                    <input
+                      type="number"
+                      id="editProjectProgress"
+                      min="0"
+                      max="100"
+                      placeholder="0 - 100"
+                    />
+                  </div>
+                </div>
+              </details>
+            </div>
+            
+            <div class="modal-buttons">
+              <button class="btn-secondary" onclick="closeEditModal()">Batal</button>
+              <button class="btn-primary" id="btnSaveEdit" onclick="saveProjectEdit(event)">
+                Simpan Perubahan
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- =============================================
              PROJECT DASHBOARD POPUP (LIHAT)
         ============================================= -->
@@ -6628,7 +6718,160 @@
         .getElementById("se-wbs5")
         ?.addEventListener("change", populateWBS6);
 
-      // ---- ADD MODAL ----
+      // ==========================================================
+      // SCRIPT INTERAKSI MODAL EDIT PROYEK (PM & SE ASSIGNMENT)
+      // ==========================================================
+
+      // Membuka modal dan memuat data
+      function editProject(projectId) {
+        const modal = document.getElementById("editProjectModal");
+        modal.classList.add("show");
+
+        // 2. Fetch data dari database
+        fetch(`api_get_project_detail.php?project_id=${projectId}`)
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status === "success") {
+              const p = res.data;
+
+              // Isi input text standar
+              document.getElementById("editProjectId").value = p.project_id;
+              document.getElementById("editProjectName").value = p.project_name;
+              document.getElementById("editProjectStatus").value = p.status || "Pending";
+              document.getElementById("editProjectProgress").value = p.progress || 0;
+
+              // Render Tags untuk PM dan SE (Diasumsikan p.pm_tags dan p.se_tags adalah Array)
+              renderEditTags("editPmWrapper", p.pm_tags || []);
+              renderEditTags("editSeWrapper", p.se_tags || []);
+
+              // Setup Enter key listeners untuk tag input di edit modal
+              setupEditTagInput("editPmInput", "editPmWrapper");
+              setupEditTagInput("editSeInput", "editSeWrapper");
+            } else {
+              alert("Gagal memuat proyek: " + res.message);
+              closeEditModal();
+            }
+          })
+          .catch((err) => {
+            console.error("Error fetching data:", err);
+            alert("Terjadi kesalahan sistem saat mengambil data proyek.");
+          });
+      }
+
+      // Fungsi helper untuk merender ulang tag secara visual ke dalam wrapper Anda
+      function renderEditTags(wrapperId, tagsArray) {
+        const wrapper = document.getElementById(wrapperId);
+        if (!wrapper) return;
+
+        // Bersihkan tag lama (tetap biarkan elemen inputnya hidup)
+        wrapper.querySelectorAll(".tag-item").forEach((el) => el.remove());
+
+        // Sisipkan tag baru tepat sebelum elemen input
+        const inputEl = wrapper.querySelector("input");
+        tagsArray.forEach((tag) => {
+          const span = document.createElement("span");
+          span.className = "tag-item"; // Asumsi nama class CSS tag Anda
+          span.innerHTML = `${tag} <span class="remove-tag" onclick="this.parentElement.remove()" style="cursor:pointer; margin-left:5px;">&times;</span>`;
+          wrapper.insertBefore(span, inputEl);
+        });
+      }
+
+      // Setup Enter key listener untuk tag input di edit project modal
+      function setupEditTagInput(inputId, wrapperId) {
+        const input = document.getElementById(inputId);
+        const wrapper = document.getElementById(wrapperId);
+
+        if (!input || !wrapper) return; // Cegah error jika elemen tidak ditemukan
+
+        // Hapus listener lama jika ada (untuk menghindari duplikasi)
+        const newInput = input.cloneNode(true);
+        input.parentNode.replaceChild(newInput, input);
+
+        // Tambahkan listener baru ke elemen yang sudah di-replace
+        newInput.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            const val = this.value.trim();
+
+            if (val !== "") {
+              // Buat elemen tag baru
+              const tag = document.createElement("span");
+              tag.className = "tag-item";
+              tag.innerHTML = `${val} <span class="remove-tag" onclick="this.parentElement.remove()" style="cursor:pointer; margin-left:5px;">&times;</span>`;
+
+              // Sisipkan tag tepat di sebelah kiri kolom input text
+              wrapper.insertBefore(tag, newInput);
+
+              // Kosongkan input setelah Enter
+              this.value = "";
+            }
+          }
+        });
+      }
+
+      // Menutup modal Edit
+      function closeEditModal() {
+        document.getElementById("editProjectModal").classList.remove("show");
+        
+        // Kosongkan Tags visual
+        document.querySelectorAll("#editPmWrapper .tag-item, #editSeWrapper .tag-item").forEach(e => e.remove());
+      }
+
+      // Menyimpan Perubahan
+      function saveProjectEdit(event) {
+        if (event) event.preventDefault();
+
+        // Ambil nilai text
+        const idValue = document.getElementById("editProjectId").value;
+        const nameValue = document.getElementById("editProjectName").value;
+        const statValue = document.getElementById("editProjectStatus").value;
+        const progValue = document.getElementById("editProjectProgress").value;
+
+        // Ambil nilai Tags menggunakan fungsi eksisting Anda
+        const pmTagsArray = getTagsData("editPmWrapper");
+        const seTagsArray = getTagsData("editSeWrapper");
+
+        const payload = {
+          id: idValue,
+          name: nameValue,
+          status: statValue,
+          progress: progValue,
+          pm_tags: pmTagsArray,
+          se_tags: seTagsArray,
+        };
+
+        const btnSubmit = document.getElementById("btnSaveEdit");
+        const originalText = btnSubmit.innerText;
+        btnSubmit.innerText = "Menyimpan...";
+        btnSubmit.disabled = true;
+
+        fetch("api_update_project.php", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status === "success") {
+              alert("✅ Berhasil: " + res.message);
+              closeEditModal();
+              if (typeof loadProjectRegistry === "function") loadProjectRegistry();
+            } else {
+              alert("❌ Gagal memperbarui: " + res.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Error Koneksi:", err);
+            alert("Terjadi kesalahan saat menghubungi server.");
+          })
+          .finally(() => {
+            btnSubmit.innerText = originalText;
+            btnSubmit.disabled = false;
+          });
+      }
+      
+        // ---- ADD MODAL ----
       function seOpenAddModal() {
         seEditingId = null;
         document.getElementById("seFormModalTitle").innerText =
