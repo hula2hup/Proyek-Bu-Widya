@@ -1247,9 +1247,10 @@
 
             <div class="full-width">
               <label>Deskripsi Risiko</label>
-              <div id="riskDescription" class="risk-info">
-                Pilih variabel risiko
-              </div>
+              <textarea
+                id="riskDescription"
+                readonly
+              >Pilih variabel risiko</textarea>
             </div>
 
             <div class="upload-section full-width">
@@ -1931,9 +1932,9 @@
                       <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 1: Identifikasi Perubahan</h3>
                       
                       <div class="form-grid wbs-grid">
-                          <div class="form-group"><label>WBS-Paket Pekerjaan</label><input type="text" id="editWbs4" value="${selectedChange.wbsLevel4 || ""}" ${readonlyAttr}></div>
-                          <div class="form-group"><label>WBS-Aktivitas</label><input type="text" id="editWbs5" value="${selectedChange.wbsLevel5 || ""}" ${readonlyAttr}></div>
-                          <div class="form-group"><label>WBS-Sumber Daya</label><input type="text" id="editWbs6" value="${selectedChange.wbsLevel6 || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>WBS-Paket Pekerjaan</label><select id="editWbs4" ${disabledAttr}></select></div>
+                          <div class="form-group"><label>WBS-Aktivitas</label><select id="editWbs5" ${disabledAttr}></select></div>
+                          <div class="form-group"><label>WBS-Sumber Daya</label><select id="editWbs6" ${disabledAttr}></select></div>
                           <div class="form-group">
                               <label>Kategori Perubahan</label>
                               <select id="editCategory" ${disabledAttr}>
@@ -1956,10 +1957,14 @@
                           <div class="form-group"><label>Project Area</label><input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
                           <div class="form-group"><label>Location</label><input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}></div>
                           <div class="form-group"><label>BIM Object ID</label><input type="text" id="editBimObjectId" value="${selectedChange.bimObjectId || ""}" ${readonlyAttr}></div>
-                          <div class="form-group"><label>Kategori Risiko</label><input type="text" id="editRiskCategory" value="${selectedChange.riskCategory || ""}" ${readonlyAttr}></div>
-                          <div class="form-group"><label>Variabel Risiko</label><input type="text" id="editRiskVariable" value="${selectedChange.riskVariable || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Kategori Risiko</label><select id="editRiskCategory" ${disabledAttr}></select></div>
+                          <div class="form-group"><label>Variabel Risiko</label><select id="editRiskVariable" ${disabledAttr}></select></div>
                       </div>
 
+                      <div class="full-width" style="margin-top:10px;">
+                          <label>Deskripsi Risiko</label>
+                          <textarea rows="1" id="editRiskDescription" readonly ${disabledAttr}>${selectedChange.riskDescription || ""}</textarea>
+                      </div>
                       <div class="full-width" style="margin-top:10px;">
                           <label>Description (Brief Object)</label>
                           <textarea rows="3" id="editDescription" ${readonlyAttr}>${selectedChange.description || ""}</textarea>
@@ -2064,6 +2069,84 @@
               </form>
           `;
 
+          const editWbs4 = document.getElementById('editWbs4');
+          const editWbs5 = document.getElementById('editWbs5');
+          const editWbs6 = document.getElementById('editWbs6');
+
+          if (editWbs4 && editWbs5 && editWbs6 && typeof syncWbsSelects === 'function') {
+            editWbs4.addEventListener('change', () => {
+              populateWbsOptions(editWbs5, Object.keys(wbsData[editWbs4.value] || {}), 'Pilih Aktivitas');
+              populateWbsOptions(editWbs6, [], 'Pilih Sumber Daya');
+            });
+
+            editWbs5.addEventListener('change', () => {
+              populateWbsOptions(editWbs6, wbsData[editWbs4.value]?.[editWbs5.value] || [], 'Pilih Sumber Daya');
+            });
+
+            const editRiskCategoryEl = document.getElementById('editRiskCategory');
+            const editRiskVariableEl = document.getElementById('editRiskVariable');
+            const editRiskDescriptionEl = document.getElementById('editRiskDescription');
+
+            function populateEditRiskCategories() {
+              editRiskCategoryEl.innerHTML = '';
+              editRiskCategoryEl.appendChild(new Option('Pilih Kategori Risiko', ''));
+              Object.keys(riskData).forEach((category) => {
+                const option = new Option(category, category);
+                if (category === selectedChange.riskCategory) {
+                  option.selected = true;
+                }
+                editRiskCategoryEl.appendChild(option);
+              });
+            }
+
+            function populateEditRiskVariables(category) {
+              editRiskVariableEl.innerHTML = '';
+              editRiskVariableEl.appendChild(new Option('Pilih Variabel Risiko', ''));
+              if (category && riskData[category]) {
+                riskData[category].forEach((item) => {
+                  const option = new Option(`${item.code} - ${item.title}`, item.code);
+                  if (item.code === selectedChange.riskVariable) {
+                    option.selected = true;
+                  }
+                  editRiskVariableEl.appendChild(option);
+                });
+              }
+            }
+
+            function updateEditRiskDescription() {
+              const category = editRiskCategoryEl.value;
+              const variableCode = editRiskVariableEl.value;
+              const item = riskData[category]?.find((r) => r.code === variableCode);
+              if (item) {
+                editRiskDescriptionEl.value = item.desc;
+              } else if (selectedChange.riskDescription) {
+                editRiskDescriptionEl.value = selectedChange.riskDescription;
+              } else {
+                editRiskDescriptionEl.value = '';
+              }
+            }
+
+            if (editRiskCategoryEl && editRiskVariableEl && editRiskDescriptionEl) {
+              editRiskCategoryEl.addEventListener('change', () => {
+                populateEditRiskVariables(editRiskCategoryEl.value);
+                updateEditRiskDescription();
+              });
+              editRiskVariableEl.addEventListener('change', updateEditRiskDescription);
+              populateEditRiskCategories();
+              populateEditRiskVariables(selectedChange.riskCategory);
+              updateEditRiskDescription();
+            }
+
+            syncWbsSelects(
+              editWbs4,
+              editWbs5,
+              editWbs6,
+              selectedChange.wbsLevel4,
+              selectedChange.wbsLevel5,
+              selectedChange.wbsLevel6,
+            );
+          }
+
           showPage("editChangePage");
       }
 
@@ -2084,6 +2167,7 @@
       formData.append('bimObjectId', document.getElementById('editBimObjectId').value);
       formData.append('riskCategory', document.getElementById('editRiskCategory').value);
       formData.append('riskVariable', document.getElementById('editRiskVariable').value);
+      formData.append('riskDescription', document.getElementById('editRiskDescription').value);
       formData.append('description', document.getElementById('editDescription').value);
       formData.append('descriptionDetail', document.getElementById('editDescriptionDetail').value);
       
@@ -4072,6 +4156,48 @@
         });
       });
 
+      function populateWbsOptions(select, items, placeholder) {
+        select.innerHTML = "";
+        const placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.textContent = placeholder;
+        select.appendChild(placeholderOption);
+        items.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item;
+          option.textContent = item;
+          select.appendChild(option);
+        });
+      }
+
+      function syncWbsSelects(level4Select, level5Select, level6Select, selected4, selected5, selected6) {
+        populateWbsOptions(level4Select, Object.keys(wbsData), "Pilih Paket Pekerjaan");
+        if (selected4 && wbsData[selected4]) {
+          level4Select.value = selected4;
+        } else {
+          level4Select.value = "";
+        }
+        level4Select.dispatchEvent(new Event("change"));
+
+        if (selected5 && wbsData[level4Select.value] && wbsData[level4Select.value][selected5]) {
+          level5Select.value = selected5;
+        } else {
+          level5Select.value = "";
+        }
+        level5Select.dispatchEvent(new Event("change"));
+
+        if (
+          selected6 &&
+          wbsData[level4Select.value] &&
+          wbsData[level4Select.value][level5Select.value] &&
+          wbsData[level4Select.value][level5Select.value].includes(selected6)
+        ) {
+          level6Select.value = selected6;
+        } else {
+          level6Select.value = "";
+        }
+      }
+
       function closeInfo() {
         document.getElementById("infoModal").style.display = "none";
       }
@@ -4422,7 +4548,7 @@
       const riskCategory = document.getElementById("riskCategory");
       const riskVariable = document.getElementById("riskVariable");
       const riskDescription = document.getElementById("riskDescription");
-      riskDescription.innerHTML = "Pilih kategori risiko terlebih dahulu.";
+      riskDescription.value = "Pilih kategori risiko terlebih dahulu.";
 
       Object.keys(riskData).forEach((cat) => {
         riskCategory.add(new Option(cat, cat));
@@ -4437,14 +4563,14 @@
             riskVariable.add(new Option(`${r.code} - ${r.title}`, r.code));
           });
         }
-        riskDescription.innerHTML = "Pilih variabel risiko";
+        riskDescription.value = "Pilih variabel risiko";
       }
 
       function updateRisk() {
         const item = riskData[riskCategory.value]?.find(
           (r) => r.code === riskVariable.value,
         );
-        riskDescription.innerHTML = item ? item.desc : "";
+        riskDescription.value = item ? item.desc : "";
       }
 
       document.getElementById("riskCategory").selectedIndex = 0;
@@ -4638,6 +4764,8 @@
         formData.append('bimObjectId', document.getElementById('bimObjectId').value);
         formData.append('riskCategory', document.getElementById('riskCategory').value);
         formData.append('riskVariable', document.getElementById('riskVariable').value);
+        const createRiskDescription = document.getElementById('riskDescription');
+        formData.append('riskDescription', createRiskDescription ? createRiskDescription.value : '');
         formData.append('description', document.getElementById('description').value);
 
         // 3. Ambil data dari elemen Tahap 2 (Register)

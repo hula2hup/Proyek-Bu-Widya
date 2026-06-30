@@ -1929,7 +1929,11 @@
                   <h3 style="margin: 0 0 16px; font-size: 16px; color: #0f172a">
                     Recent Change Activities
                   </h3>
-                  <div class="pmd-timeline" id="pmdTimeline"></div>
+                  <div class="pmd-timeline" id="pmdTimeline">
+                    <p style="color: #64748b; font-size: 13px; margin: 0; padding: 10px 0; font-style: italic;">
+                      Memuat data aktivitas terbaru...
+                    </p>
+                  </div>
                 </div>
                 <div
                   style="
@@ -2820,84 +2824,130 @@
               <div class="se-section-label" style="margin-top: 24px">
                 Langkah 2 — Register Change Request
               </div>
-              <div class="se-form-grid">
-                <div class="se-form-group">
-                  <label>Change Type</label>
-                  <select id="se-changeType">
-                    <option value="">Pilih Change Type</option>
-                    <option>Lingkungan</option>
-                    <option>Waktu</option>
-                    <option>Tenaga Kerja</option>
-                    <option>Material</option>
-                    <option>Biaya</option>
-                  </select>
-                </div>
-                <div class="se-form-group">
-                  <label>Site Condition</label>
-                  <select id="se-siteCondition">
-                    <option value="">Pilih Site Condition</option>
-                    <option>Normal</option>
-                    <option>Terbatas</option>
-                    <option>Tidak Siap</option>
-                  </select>
-                </div>
-                <div class="se-form-group">
-                  <label>Owner Request</label>
-                  <textarea
-                    id="se-ownerRequest"
-                    rows="2"
-                    placeholder="Permintaan owner/konsultan apabila ada..."
-                  ></textarea>
-                </div>
-              </div>
-
-              <hr class="se-section-divider" />
 
               <div class="se-form-grid">
                 <div class="se-form-group">
-                  <label>Material Change</label>
-                  <select id="se-materialChange">
-                    <option>Tidak Ada</option>
-                    <option>Ada</option>
-                  </select>
+                  <label style="font-weight: 700; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan?</label>
+                  <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;">
+                    <label style="display: flex; align-items: center; gap: 6px;">
+                      <input type="radio" name="se-ownerRequest" value="Ya" /> Ya (Potensi VO)
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px;">
+                      <input type="radio" name="se-ownerRequest" value="Tidak" /> Tidak (Internal/Kontraktor)
+                    </label>
+                  </div>
                 </div>
+
                 <div class="se-form-group">
-                  <label>Method Change</label>
-                  <select id="se-methodChange">
-                    <option>Tidak Ada</option>
-                    <option>Ada</option>
-                  </select>
-                </div>
-                <div class="se-form-group">
-                  <label>Schedule Change</label>
-                  <select id="se-scheduleChange">
-                    <option>Tidak Ada</option>
-                    <option>Ada</option>
-                  </select>
+                  <label style="font-weight: 700; color: #0f2d52;">Akar Penyebab Utama</label>
+                  <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+                    <label><input type="checkbox" name="se-changeDrivers" value="Desain" /> Kesalahan Desain / Gambar Kontrak</label>
+                    <label><input type="checkbox" name="se-changeDrivers" value="Lapangan" /> Kondisi Lapangan Aktual (Site Condition)</label>
+                    <label><input type="checkbox" name="se-changeDrivers" value="Material" /> Kelangkaan Material / Suplai</label>
+                    <label><input type="checkbox" name="se-changeDrivers" value="Metode" /> Usulan Optimasi Metode</label>
+                  </div>
                 </div>
               </div>
 
-              <hr class="se-section-divider" />
+              <div class="se-form-group" style="margin-top: 12px">
+                <label style="font-weight: 700; color: #0f2d52;">Centang Parameter yang Terdampak</label>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; padding: 10px; background: #f8fafc; border-radius: 10px;">
+                  <label><input type="checkbox" id="se-chk-cost" onchange="seToggleTable('cost')" /> Cost</label>
+                  <label><input type="checkbox" id="se-chk-time" onchange="seToggleTable('time')" /> Time</label>
+                  <label><input type="checkbox" id="se-chk-scope" onchange="seToggleTable('scope')" /> Scope</label>
+                  <label><input type="checkbox" id="se-chk-quality" onchange="seToggleTable('quality')" /> Quality</label>
+                  <label><input type="checkbox" id="se-chk-safety" onchange="seToggleTable('safety')" /> Safety</label>
+                </div>
+              </div>
 
-              <div class="se-form-grid-2">
-                <div class="se-form-group">
-                  <label>Safety Change</label>
-                  <select id="se-safetyChange">
-                    <option>Tidak Ada</option>
-                    <option>Ada</option>
-                  </select>
-                </div>
-                <div class="se-form-group">
-                  <label>Impact Area</label>
-                  <select id="se-impactArea">
-                    <option value="">Pilih Impact Area</option>
-                    <option>Scope</option>
-                    <option>Cost</option>
-                    <option>Time</option>
-                    <option>Quality</option>
-                    <option>Safety</option>
-                  </select>
-                </div>
+              <div id="se-table-cost" style="display:none; margin-top:10px; border-left: 4px solid #4e73df; padding-left: 12px;">
+                <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
+                <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Item / Material</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Sifat</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Kuantitas</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Satuan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Justifikasi</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="se-dyn-cost"></tbody>
+                </table>
+                <button type="button" class="btn-secondary" onclick="seAddDynamicRow('cost')" style="margin-top:8px;">+ Tambah Item</button>
+              </div>
+
+              <div id="se-table-time" style="display:none; margin-top:10px; border-left: 4px solid #4e73df; padding-left: 12px;">
+                <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
+                <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aktivitas Terdampak</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Sifat</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Waktu</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Satuan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Justifikasi</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="se-dyn-time"></tbody>
+                </table>
+                <button type="button" class="btn-secondary" onclick="seAddDynamicRow('time')" style="margin-top:8px;">+ Tambah Item</button>
+              </div>
+
+              <div id="se-table-scope" style="display:none; margin-top:10px; border-left: 4px solid #4e73df; padding-left: 12px;">
+                <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
+                <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Lingkup Pekerjaan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Sifat</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Kuantitas</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Satuan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Dokumen Acuan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="se-dyn-scope"></tbody>
+                </table>
+                <button type="button" class="btn-secondary" onclick="seAddDynamicRow('scope')" style="margin-top:8px;">+ Tambah Item</button>
+              </div>
+
+              <div id="se-table-quality" style="display:none; margin-top:10px; border-left: 4px solid #4e73df; padding-left: 12px;">
+                <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
+                <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Item Terdampak</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Spesifikasi Awal</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Spesifikasi Baru</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Tingkat Mutu</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Justifikasi</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="se-dyn-quality"></tbody>
+                </table>
+                <button type="button" class="btn-secondary" onclick="seAddDynamicRow('quality')" style="margin-top:8px;">+ Tambah Item</button>
+              </div>
+
+              <div id="se-table-safety" style="display:none; margin-top:10px; border-left: 4px solid #4e73df; padding-left: 12px;">
+                <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
+                <table style="width:100%; border-collapse:collapse; margin-top:8px;">
+                  <thead>
+                    <tr>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aktivitas Berisiko</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Sifat</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Kebutuhan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Kuantitas</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Satuan</th>
+                      <th style="text-align:left; padding:8px; border-bottom:1px solid #dbe4ef;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="se-dyn-safety"></tbody>
+                </table>
+                <button type="button" class="btn-secondary" onclick="seAddDynamicRow('safety')" style="margin-top:8px;">+ Tambah Item</button>
               </div>
 
               <div class="se-form-group" style="margin-top: 10px">
@@ -3481,7 +3531,7 @@
       let globalProjectsData = []; // Untuk menyimpan data mentah dari database
 
       function syncProjectData() {
-        fetch('api_get_projects.php')
+        fetch('api_get_projects.php?view_as=Admin')
           .then(response => response.json())
           .then(res => {
             if (res.status === 'success') {
@@ -5495,8 +5545,6 @@
         },
       };
 
-      let projectDashboardChart = null;
-
       function pmdFormatDate(dateStr) {
         if (!dateStr) return "-";
         const bulan = [
@@ -5518,161 +5566,200 @@
         return d.getDate() + " " + bulan[d.getMonth()] + " " + d.getFullYear();
       }
 
+      // Pastikan variabel global chart sudah dideklarasikan di luar fungsi
+      let projectDashboardChart = null;
+
       function openProjectDashboardModal(
         projectId,
         projectName,
         projectStatus,
-        projectProgress,
+        projectProgress
       ) {
-        // Ambil seluruh Change Request milik project ini dari data
-        // Site Engineer (sumber data yang sudah ada di sistem).
-        const crs =
-          typeof seChangeRequests !== "undefined"
-            ? seChangeRequests.filter((c) => c.projectArea === projectId)
-            : [];
-
-        const pendingCount = crs.filter((c) => c.status === "PENDING").length;
-        const approvedCount = crs.filter((c) => c.status === "APPROVED").length;
-        const rejectedCount = crs.filter((c) => c.status === "REJECTED").length;
-        const needMitigationCount = crs.filter(
-          (c) => c.status === "PENDING" && c.risk >= 7,
-        ).length;
-        const underReviewCount = pendingCount - needMitigationCount;
-
-        const extra = projectDashboardExtra[projectId] || {
-          spi: 1.0,
-          planCurve: [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 98, 100],
-          actualCurve: [10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 98, 100],
-        };
-
-        // -- Header --
-        document.getElementById("pmdProjectTitle").innerText =
-          projectId + " — " + projectName;
+        // ==========================================================
+        // 1. UPDATE HEADER & INFO DASAR (Langsung dieksekusi)
+        // ==========================================================
+        document.getElementById("pmdProjectTitle").innerText = projectId + " — " + projectName;
         document.getElementById("pmdProjectSubtitle").innerText =
-          "Status: " +
-          projectStatus +
-          " · Progress Fisik: " +
-          projectProgress +
-          "%";
+          "Status: " + projectStatus + " · Progress Fisik: " + projectProgress + "%";
+        document.getElementById("pmdProgress").innerText = projectProgress + "%";
 
-        // -- KPI Cards --
-        document.getElementById("pmdPending").innerText = pendingCount;
-        document.getElementById("pmdHighRisk").innerText = needMitigationCount;
-        document.getElementById("pmdSpi").innerText = extra.spi.toFixed(2);
-        document.getElementById("pmdProgress").innerText =
-          projectProgress + "%";
+        // Set teks loading sementara untuk KPI & Timeline
+        document.getElementById("pmdPending").innerText = "...";
+        document.getElementById("pmdHighRisk").innerText = "...";
+        document.getElementById("pmdSpi").innerText = "...";
+        document.getElementById("pmdUnderReview").innerText = "...";
+        document.getElementById("pmdNeedMitigation").innerText = "...";
+        document.getElementById("pmdApproved").innerText = "...";
+        document.getElementById("pmdRejected").innerText = "...";
+        document.getElementById("pmdTimeline").innerHTML = '<p style="color:#94a3b8;font-size:13px;margin:0;">Memuat data proyek...</p>';
 
-        // -- Recent Change Activities (3 CR terbaru pada project ini) --
-        const sortedCrs = [...crs].sort(
-          (a, b) => new Date(b.changeDate) - new Date(a.changeDate),
-        );
-        const recent = sortedCrs.slice(0, 3);
-        const timelineEl = document.getElementById("pmdTimeline");
-        if (recent.length === 0) {
-          timelineEl.innerHTML =
-            '<p style="color:#94a3b8;font-size:13px;margin:0;">Belum ada riwayat Change Request untuk project ini.</p>';
-        } else {
-          timelineEl.innerHTML = recent
-            .map(
-              (c) => `
-              <div class="pmd-timeline-item">
-                <div class="pmd-timeline-date">${pmdFormatDate(c.changeDate)}</div>
-                <div>
-                  <strong>${c.id} ${c.description || ""}</strong>
-                  <p>${c.descriptionDetail || c.riskDescription || "Tidak ada catatan tambahan."}</p>
-                </div>
-              </div>`,
-            )
-            .join("");
-        }
-
-        // -- Decision Summary --
-        document.getElementById("pmdUnderReview").innerText = underReviewCount;
-        document.getElementById("pmdNeedMitigation").innerText =
-          needMitigationCount;
-        document.getElementById("pmdApproved").innerText = approvedCount;
-        document.getElementById("pmdRejected").innerText = rejectedCount;
-
-        // -- Kurva S Chart --
-        const ctx = document.getElementById("pmdSCurveChart").getContext("2d");
-        if (projectDashboardChart) projectDashboardChart.destroy();
-        if (typeof Chart !== "undefined") {
-          projectDashboardChart = new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: [
-                "Mg 1",
-                "Mg 2",
-                "Mg 3",
-                "Mg 4",
-                "Mg 5",
-                "Mg 6",
-                "Mg 7",
-                "Mg 8",
-                "Mg 9",
-                "Mg 10",
-                "Mg 11",
-                "Mg 12",
-              ],
-              datasets: [
-                {
-                  label: "Rencana (Plan %)",
-                  data: extra.planCurve,
-                  borderColor: "#64748b",
-                  borderWidth: 3,
-                  borderDash: [5, 5],
-                  tension: 0.4,
-                  pointBackgroundColor: "#64748b",
-                },
-                {
-                  label: "Realisasi Aktual (Actual %)",
-                  data: extra.actualCurve,
-                  borderColor: "#2563eb",
-                  backgroundColor: "rgba(37,99,235,0.1)",
-                  borderWidth: 4,
-                  tension: 0.4,
-                  fill: true,
-                  pointBackgroundColor: "#2563eb",
-                  pointRadius: 5,
-                  pointHoverRadius: 7,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                  labels: { font: { family: "Inter", weight: "bold" } },
-                },
-                tooltip: { mode: "index", intersect: false },
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  max: 100,
-                  title: {
-                    display: true,
-                    text: "Progress Fisik (%)",
-                    font: { weight: "bold" },
-                  },
-                  grid: { color: "#e2e8f0" },
-                },
-                x: { grid: { display: false } },
-              },
-              interaction: { mode: "nearest", axis: "x", intersect: false },
-            },
-          });
-        }
-
+        // Tampilkan Modal secara visual
         document.getElementById("projectDashboardModal").classList.add("show");
+
+        // ==========================================================
+        // 2. FETCH DATA STATISTIK PERUBAHAN (DECISION SUMMARY & TIMELINE)
+        // ==========================================================
+        fetch(`api_get_dashboard_stats.php?project_id=${projectId}`)
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status === "success") {
+              const stats = res.data;
+
+              // -- Decision Summary (Dari Database) --
+              document.getElementById("pmdUnderReview").innerText = stats.under_review || 0;
+              document.getElementById("pmdNeedMitigation").innerText = stats.need_mitigation || 0;
+              document.getElementById("pmdApproved").innerText = stats.approved || 0;
+              document.getElementById("pmdRejected").innerText = stats.rejected || 0;
+
+              // -- KPI Cards (Hitung ulang berdasar stats) --
+              // Asumsi Pending = Under Review + Need Mitigation
+              const pendingCount = (stats.under_review || 0) + (stats.need_mitigation || 0);
+              document.getElementById("pmdPending").innerText = pendingCount;
+              document.getElementById("pmdHighRisk").innerText = stats.need_mitigation || 0;
+              
+              // Mempertahankan nilai statis SPI karena belum ada di skema DB (sesuai eksisting)
+              document.getElementById("pmdSpi").innerText = (1.0).toFixed(2);
+
+              // -- Recent Change Activities (Ambil 3 CR terbaru dari DB) --
+              const timelineEl = document.getElementById("pmdTimeline");
+              const activities = stats.recent_activities || [];
+              
+              if (activities.length === 0) {
+                timelineEl.innerHTML = '<p style="color:#94a3b8;font-size:13px;margin:0;">Belum ada riwayat Change Request untuk project ini.</p>';
+              } else {
+                // Ambil maksimal 3 item
+                const recent = activities.slice(0, 3);
+                timelineEl.innerHTML = recent.map((c) => {
+                  // Gunakan fungsi pmdFormatDate jika ada, atau string asli
+                  const dateStr = typeof pmdFormatDate === 'function' ? pmdFormatDate(c.changeDate) : (c.changeDate || '-');
+                  const statusClass = typeof getBadgeStatusClass === 'function' ? getBadgeStatusClass(c.status) : 'info';
+                  
+                  return `
+                    <div class="pmd-timeline-item">
+                      <div class="pmd-timeline-date">${dateStr}</div>
+                      <div>
+                        <strong>${c.changeId || c.change_id} — ${c.changeCategory || "CR"}</strong>
+                        <p style="margin:2px 0;">Oleh: ${c.submittedBy || c.sender || 'System'}</p>
+                        <div style="margin-top: 4px;">
+                            <span class="badge ${statusClass}">${c.status || 'PENDING'}</span>
+                        </div>
+                      </div>
+                    </div>`;
+                }).join("");
+              }
+            }
+          })
+          .catch((err) => console.error("Error fetching stats:", err));
+
+        // ==========================================================
+        // 3. FETCH DATA KURVA S LALU KALKULASI SPI & RENDER CHART
+        // ==========================================================
+        fetch(`api_get_scurve.php?project_id=${projectId}`)
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status === "success") {
+              // --- A. SIAPKAN ARRAY UNTUK CHART ---
+              const labelsDb = [];
+              const planDb = [];
+              const actualDb = [];
+
+              // --- B. LOGIKA KALKULASI SPI (SCHEDULE PERFORMANCE INDEX) ---
+              // Filter dan cari minggu terakhir di mana progres nyata (aktual) sudah diisi (bukan NULL)
+              const validData = res.curve_data.filter(item => item.realisasi_kumulatif !== null);
+              let latestSpi = 0; // Default jika proyek belum mulai
+
+              if (validData.length > 0) {
+                  // Ambil array indeks terakhir (minggu proyek yang berjalan saat ini)
+                  const latestWeek = validData[validData.length - 1];
+                  const currentPlan = parseFloat(latestWeek.rencana_kumulatif) || 0;
+                  const currentActual = parseFloat(latestWeek.realisasi_kumulatif) || 0;
+
+                  // Hitung SPI = Aktual / Rencana
+                  if (currentPlan > 0) {
+                      latestSpi = currentActual / currentPlan;
+                  } else if (currentPlan === 0 && currentActual >= 0) {
+                      latestSpi = 1.0; 
+                  }
+              }
+
+              // --- C. UPDATE UI CARD SPI DENGAN INDIKATOR WARNA ---
+              const spiCardValue = document.getElementById("pmdSpi");
+              if (spiCardValue) {
+                  spiCardValue.innerText = latestSpi.toFixed(2); // Format 2 angka desimal (Contoh: 0.88)
+                  
+                  // Berikan notifikasi warna agar Admin langsung waspada
+                  if (latestSpi >= 1.0) {
+                      spiCardValue.style.color = "#10b981"; // Hijau: Ahead / On Schedule
+                  } else if (latestSpi > 0 && latestSpi < 1.0) {
+                      spiCardValue.style.color = "#ef4444"; // Merah: Behind Schedule
+                  } else {
+                      spiCardValue.style.color = "#0f2d52"; // Biru/Default: Proyek belum mulai
+                  }
+              }
+
+              // --- D. RENDER KE GRAFIK CHART.JS ---
+              res.curve_data.forEach((item) => {
+                labelsDb.push(`Mg ${item.periode_ke}`);
+                planDb.push(item.rencana_kumulatif);
+                actualDb.push(item.realisasi_kumulatif);
+              });
+
+              const ctx = document.getElementById("pmdSCurveChart").getContext("2d");
+              
+              if (projectDashboardChart) projectDashboardChart.destroy();
+              
+              if (typeof Chart !== "undefined") {
+                projectDashboardChart = new Chart(ctx, {
+                  type: "line",
+                  data: {
+                    labels: labelsDb.length > 0 ? labelsDb : ["Mg 1"],
+                    datasets: [
+                      {
+                        label: "Rencana (Plan %)",
+                        data: planDb.length > 0 ? planDb : [0],
+                        borderColor: "#64748b",
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        tension: 0.4,
+                        pointBackgroundColor: "#64748b",
+                      },
+                      {
+                        label: "Realisasi Aktual (Actual %)",
+                        data: actualDb.length > 0 ? actualDb : [0],
+                        borderColor: "#2563eb",
+                        backgroundColor: "rgba(37,99,235,0.1)",
+                        borderWidth: 4,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: "#2563eb",
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                      },
+                    ],
+                  },
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: { position: "bottom", labels: { font: { family: "Inter", weight: "bold" } } },
+                      tooltip: { mode: "index", intersect: false },
+                    },
+                    scales: {
+                      y: { beginAtZero: true, max: 100, title: { display: true, text: "Progress Fisik (%)", font: { weight: "bold" } }, grid: { color: "#e2e8f0" } },
+                      x: { grid: { display: false } },
+                    },
+                    interaction: { mode: "nearest", axis: "x", intersect: false },
+                  },
+                });
+              }
+            }
+          })
+          .catch((err) => console.error("Error fetching S-Curve:", err));
       }
 
+      // Fungsi tutup modal eksisting tetap dipertahankan
       function closeProjectDashboardModal() {
-        document
-          .getElementById("projectDashboardModal")
-          .classList.remove("show");
+        document.getElementById("projectDashboardModal").classList.remove("show");
       }
 
       document
@@ -5683,80 +5770,7 @@
       // ==========================================
       // LOGIKA REVIEW & APPROVAL PM (NEW FLOW)
       // ==========================================
-      const crData = [
-        {
-          id: "CR-008",
-          projectId: "PRJ-001",
-          desc: "Relokasi Jalur Pipa Utama (Plumbing)",
-          sender: "Budi Setiawan",
-          role: "Site Engineer",
-          waktu: "07 Jun 2026, 09:15",
-          waktuTs: new Date("2026-06-07T09:15:00").getTime(),
-          risikoLabel: "Tinggi",
-          risikoClass: "high",
-          risikoScore: 78,
-        },
-        {
-          id: "CR-009",
-          projectId: "PRJ-001",
-          desc: "Revisi Material Finishing Facade",
-          sender: "Ani Wijaya",
-          role: "Arsitek Senior",
-          waktu: "06 Jun 2026, 14:20",
-          waktuTs: new Date("2026-06-06T14:20:00").getTime(),
-          risikoLabel: "Sedang",
-          risikoClass: "medium",
-          risikoScore: 52,
-        },
-        {
-          id: "CR-010",
-          projectId: "PRJ-002",
-          desc: "Penambahan Titik Lampu Taman",
-          sender: "Dedi Kurnia",
-          role: "MEP Coordinator",
-          waktu: "05 Jun 2026, 10:05",
-          waktuTs: new Date("2026-06-05T10:05:00").getTime(),
-          risikoLabel: "Rendah",
-          risikoClass: "low",
-          risikoScore: 24,
-        },
-        {
-          id: "CR-011",
-          projectId: "PRJ-002",
-          desc: "Perubahan Tebal Lapisan Aspal",
-          sender: "Brian Nugraha",
-          role: "Site Engineer",
-          waktu: "03 Jun 2026, 08:30",
-          waktuTs: new Date("2026-06-03T08:30:00").getTime(),
-          risikoLabel: "Sedang",
-          risikoClass: "medium",
-          risikoScore: 45,
-        },
-        {
-          id: "CR-004",
-          projectId: "PRJ-003",
-          desc: "Perubahan Spesifikasi Material Jembatan",
-          sender: "Lia Susanti",
-          role: "Quantity Surveyor",
-          waktu: "01 Jun 2026, 11:30",
-          waktuTs: new Date("2026-06-01T11:30:00").getTime(),
-          risikoLabel: "Sangat Tinggi",
-          risikoClass: "very-high",
-          risikoScore: 85,
-        },
-        {
-          id: "CR-015",
-          projectId: "PRJ-003",
-          desc: "Penambahan Tiang Pancang Extra",
-          sender: "Galuh Rizkiya",
-          role: "Site Engineer",
-          waktu: "04 Jun 2026, 16:00",
-          waktuTs: new Date("2026-06-04T16:00:00").getTime(),
-          risikoLabel: "Tinggi",
-          risikoClass: "high",
-          risikoScore: 71,
-        },
-      ];
+      const crData = [];
 
       // Variabel global untuk menyimpan project yang sedang aktif dilihat
       let currentReviewProject = "ALL";
@@ -5985,265 +5999,8 @@
       // SITE ENGINEER — CHANGE HISTORY MODULE
       // =========================================
 
-      // Sample data seeded from existing CR data
-      let seChangeRequests = [
-        {
-          id: "CR-001",
-          changeDate: "2026-05-11",
-          submittedBy: "Ahmad Fauzi",
-          category: "Design",
-          priority: 4,
-          risk: 8,
-          projectArea: "PRJ-001",
-          location: "Lantai 2",
-          bimId: "BIM-001",
-          riskCategory: "Metode Pelaksanaan",
-          riskVariable: "Kondisi lapangan berubah",
-          riskVariableCode: "R1.3",
-          riskDescription:
-            "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
-          description: "Relokasi jalur pipa utama akibat benturan desain.",
-          changeType: "Material",
-          siteCondition: "Normal",
-          ownerRequest: "",
-          materialChange: "Ada",
-          methodChange: "Tidak Ada",
-          scheduleChange: "Tidak Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Scope",
-          descriptionDetail:
-            "Perubahan jalur pipa utama di zona lantai 2 karena clash dengan struktur balok.",
-          status: "PENDING",
-          wbs4: "1.1.4 Pekerjaan MEP",
-          wbs5: "1.1.4.1 Instalasi Pipa",
-          wbs6: "Pipa PPRC",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-002",
-          changeDate: "2026-05-10",
-          submittedBy: "Budi Setiawan",
-          category: "Material",
-          priority: 3,
-          risk: 5,
-          projectArea: "PRJ-001",
-          location: "Facade Barat",
-          bimId: "BIM-002",
-          riskCategory: "Sumber Daya Material",
-          riskVariable: "Fluktuasi harga material",
-          riskVariableCode: "R5.3",
-          riskDescription:
-            "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
-          description: "Revisi material finishing facade.",
-          changeType: "Material",
-          siteCondition: "Normal",
-          ownerRequest: "Owner minta material premium",
-          materialChange: "Ada",
-          methodChange: "Tidak Ada",
-          scheduleChange: "Tidak Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Cost",
-          descriptionDetail:
-            "Penggantian material keramik eksterior menjadi GRC panel sesuai arahan owner.",
-          status: "APPROVED",
-          wbs4: "1.1.3 Pekerjaan Arsitektur",
-          wbs5: "1.1.3.2 Finishing Eksterior",
-          wbs6: "GRC Panel",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-004",
-          changeDate: "2026-06-01",
-          submittedBy: "Lia Susanti",
-          category: "Method",
-          priority: 5,
-          risk: 9,
-          projectArea: "PRJ-003",
-          location: "Pondasi P3",
-          bimId: "BIM-008",
-          riskCategory: "Sumber Daya Peralatan",
-          riskVariable: "Kapasitas alat tidak sesuai",
-          riskVariableCode: "R6.2",
-          riskDescription:
-            "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
-          description: "Perubahan spesifikasi material jembatan.",
-          changeType: "Material",
-          siteCondition: "Terbatas",
-          ownerRequest: "Konsultan minta review ulang",
-          materialChange: "Ada",
-          methodChange: "Ada",
-          scheduleChange: "Ada",
-          safetyChange: "Ada",
-          impactArea: "Safety",
-          descriptionDetail:
-            "Perubahan spesifikasi baja struktur dari BJ 37 ke BJ 41 karena beban desain yang melebihi perhitungan awal.",
-          status: "PENDING",
-          wbs4: "1.1.2 Pekerjaan Sipil",
-          wbs5: "1.1.2.1 Pekerjaan Pondasi",
-          wbs6: "Tiang Pancang",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-008",
-          changeDate: "2026-06-07",
-          submittedBy: "Budi Setiawan",
-          category: "Design",
-          priority: 4,
-          risk: 8,
-          projectArea: "PRJ-001",
-          location: "Shaft Plumbing Lt.3",
-          bimId: "BIM-GUID-PIPE-010",
-          riskCategory: "Metode Pelaksanaan",
-          riskVariable: "Kondisi lapangan berubah",
-          riskVariableCode: "R1.3",
-          riskDescription:
-            "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
-          description: "Relokasi Jalur Pipa Utama (Plumbing).",
-          changeType: "Lingkungan",
-          siteCondition: "Terbatas",
-          ownerRequest: "",
-          materialChange: "Ada",
-          methodChange: "Ada",
-          scheduleChange: "Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Time",
-          descriptionDetail:
-            "Jalur pipa PPRC 3 inch harus direlokasi karena clash dengan balok struktur pada as C4-D4.",
-          status: "PENDING",
-          wbs4: "1.1.4 Pekerjaan MEP",
-          wbs5: "1.1.4.1 Instalasi Pipa",
-          wbs6: "Pipa PPRC 3 inch",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-009",
-          changeDate: "2026-06-06",
-          submittedBy: "Ani Wijaya",
-          category: "Material",
-          priority: 3,
-          risk: 5,
-          projectArea: "PRJ-001",
-          location: "Facade Selatan",
-          bimId: "BIM-013",
-          riskCategory: "Sumber Daya Material",
-          riskVariable: "Fluktuasi harga material",
-          riskVariableCode: "R5.3",
-          riskDescription:
-            "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
-          description: "Revisi Material Finishing Facade.",
-          changeType: "Material",
-          siteCondition: "Normal",
-          ownerRequest: "",
-          materialChange: "Ada",
-          methodChange: "Tidak Ada",
-          scheduleChange: "Tidak Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Cost",
-          descriptionDetail:
-            "Penggantian granit import ke granit lokal untuk efisiensi biaya.",
-          status: "APPROVED",
-          wbs4: "1.1.3 Pekerjaan Arsitektur",
-          wbs5: "1.1.3.2 Finishing",
-          wbs6: "Granit Lantai",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-010",
-          changeDate: "2026-06-05",
-          submittedBy: "Dedi Kurnia",
-          category: "Design",
-          priority: 2,
-          risk: 2,
-          projectArea: "PRJ-002",
-          location: "Taman Median",
-          bimId: "BIM-020",
-          riskCategory: "Lingkungan",
-          riskVariable: "Gangguan sosial masyarakat",
-          riskVariableCode: "R8.5",
-          riskDescription:
-            "Kondisi sosial masyarakat, lalu lintas, akses warga, atau utilitas publik berubah dan menimbulkan gangguan.",
-          description: "Penambahan Titik Lampu Taman.",
-          changeType: "Lingkungan",
-          siteCondition: "Normal",
-          ownerRequest: "Permintaan dinas tata kota",
-          materialChange: "Ada",
-          methodChange: "Tidak Ada",
-          scheduleChange: "Tidak Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Scope",
-          descriptionDetail:
-            "Penambahan 12 titik lampu taman solar cell di sepanjang median jalan.",
-          status: "APPROVED",
-          wbs4: "1.1.4 Pekerjaan MEP",
-          wbs5: "1.1.4.3 Instalasi Listrik",
-          wbs6: "Lampu Taman",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-011",
-          changeDate: "2026-06-03",
-          submittedBy: "Brian Nugraha",
-          category: "Method",
-          priority: 3,
-          risk: 5,
-          projectArea: "PRJ-002",
-          location: "STA 0+200 – 0+500",
-          bimId: "BIM-022",
-          riskCategory: "Sumber Daya Material",
-          riskVariable: "Material tidak sesuai spesifikasi",
-          riskVariableCode: "R5.2",
-          riskDescription:
-            "Mutu, dimensi, finishing, atau spesifikasi material berubah atau tidak memenuhi persyaratan.",
-          description: "Perubahan Tebal Lapisan Aspal.",
-          changeType: "Material",
-          siteCondition: "Normal",
-          ownerRequest: "",
-          materialChange: "Ada",
-          methodChange: "Ada",
-          scheduleChange: "Tidak Ada",
-          safetyChange: "Tidak Ada",
-          impactArea: "Quality",
-          descriptionDetail:
-            "Perubahan tebal AC-WC dari 4cm menjadi 5cm sesuai hasil FWD test yang menunjukkan lemah struktur perkerasan.",
-          status: "PENDING",
-          wbs4: "1.1.2 Pekerjaan Sipil",
-          wbs5: "1.1.2.3 Perkerasan Jalan",
-          wbs6: "Aspal AC-WC",
-          evidenceFiles: [],
-        },
-        {
-          id: "CR-015",
-          changeDate: "2026-06-04",
-          submittedBy: "Galuh Rizkiya",
-          category: "Design",
-          priority: 4,
-          risk: 7,
-          projectArea: "PRJ-003",
-          location: "Pondasi P5-P6",
-          bimId: "BIM-031",
-          riskCategory: "Sumber Daya Peralatan",
-          riskVariable: "Kapasitas alat tidak sesuai",
-          riskVariableCode: "R6.2",
-          riskDescription:
-            "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
-          description: "Penambahan Tiang Pancang Extra.",
-          changeType: "Waktu",
-          siteCondition: "Terbatas",
-          ownerRequest: "",
-          materialChange: "Tidak Ada",
-          methodChange: "Ada",
-          scheduleChange: "Ada",
-          safetyChange: "Ada",
-          impactArea: "Safety",
-          descriptionDetail:
-            "Penambahan 4 titik tiang pancang ekstra pada pier P5-P6 setelah hasil sondir menunjukkan tanah lunak lebih dalam dari perkiraan awal.",
-          status: "REJECTED",
-          wbs4: "1.1.2 Pekerjaan Sipil",
-          wbs5: "1.1.2.1 Pekerjaan Pondasi",
-          wbs6: "Tiang Pancang Baja",
-          evidenceFiles: [],
-        },
-      ];
+      // Data perubahan site engineer disimpan dari form terbaru tanpa sample dummy.
+      let seChangeRequests = [];
 
       let seCurrentTab = "all";
       let seEditingId = null;
@@ -6284,11 +6041,44 @@
         return `<span class="${cls}">${status}</span>`;
       }
 
+      function seGetRecordId(r) {
+        return r?.changeId || r?.id || "";
+      }
+
+      function seGetRecordCategory(r) {
+        return r?.changeCategory || r?.category || "";
+      }
+
+      function seGetRecordWbs(r, level) {
+        return r?.[`wbsLevel${level}`] || r?.[`wbs${level}`] || "";
+      }
+
+      function seGetRecordRiskDescription(r) {
+        return r?.riskDescription || r?.riskDesc || "";
+      }
+
+      function seGetRecordDescription(r) {
+        return r?.description || "";
+      }
+
+      function seGetRecordDescriptionDetail(r) {
+        return r?.descriptionDetail || "";
+      }
+
+      function seGetRecordBimId(r) {
+        return r?.bimObjectId || r?.bimId || "";
+      }
+
+      function seGetRecordStatus(r) {
+        return (r?.status || "PENDING").toUpperCase();
+      }
+
       function seGenerateNextId() {
         if (seChangeRequests.length === 0) return "CR-001";
-        const nums = seChangeRequests.map((r) =>
-          parseInt(r.id.replace(/\D/g, ""), 10),
-        );
+        const nums = seChangeRequests.map((r) => {
+          const id = seGetRecordId(r);
+          return parseInt((id || "0").replace(/\D/g, ""), 10) || 0;
+        });
         const next = Math.max(...nums) + 1;
         return "CR-" + String(next).padStart(3, "0");
       }
@@ -6735,22 +6525,24 @@
           return;
         }
         tbody.innerHTML = rows
-          .map(
-            (r) => `
+          .map((r) => {
+            const recordId = seGetRecordId(r);
+            const status = seGetRecordStatus(r);
+            return `
               <tr>
-                <td><b style="color:#0f2d52;">${r.id}</b><div style="font-size:11px;color:#64748b;">${r.projectArea}</div></td>
-                <td>${r.changeDate}</td>
-                <td><div style="font-weight:600;">${r.submittedBy}</div></td>
-                <td><span class="badge badge-progress" style="font-size:11px;">${r.category}</span></td>
-                <td>${seGetRiskHTML(r.risk)}</td>
-                <td>${seGetStatusHTML(r.status)}</td>
+                <td><b style="color:#0f2d52;">${recordId}</b><div style="font-size:11px;color:#64748b;">${r.projectArea || "—"}</div></td>
+                <td>${r.changeDate || "—"}</td>
+                <td><div style="font-weight:600;">${r.submittedBy || "—"}</div></td>
+                <td><span class="badge badge-progress" style="font-size:11px;">${seGetRecordCategory(r) || "—"}</span></td>
+                <td>${seGetRiskHTML(r.risk || 0)}</td>
+                <td>${seGetStatusHTML(status)}</td>
                 <td style="text-align:center; white-space:nowrap;">
-                  <button class="btn-edit-table" onclick="seOpenViewModal('${r.id}')">👁️ Lihat</button>
-                  <button class="btn-edit-table" onclick="seOpenEditModal('${r.id}')">✏️ Edit</button>
-                  <button class="btn-edit-table delete-btn" onclick="seOpenDeleteModal('${r.id}')">🗑️ Hapus</button>
+                  <button class="btn-edit-table" onclick="seOpenViewModal('${recordId}')">👁️ Lihat</button>
+                  <button class="btn-edit-table" onclick="seOpenEditModal('${recordId}')">✏️ Edit</button>
+                  <button class="btn-edit-table delete-btn" onclick="seOpenDeleteModal('${recordId}')">🗑️ Hapus</button>
                 </td>
-              </tr>`,
-          )
+              </tr>`;
+          })
           .join("");
       }
 
@@ -6851,7 +6643,7 @@
       }
 
       function seOpenEditModal(id) {
-        const r = seChangeRequests.find((x) => x.id === id);
+        const r = seChangeRequests.find((x) => seGetRecordId(x) === id);
         if (!r) return;
         seEditingId = id;
         document.getElementById("seFormModalTitle").innerText =
@@ -6865,6 +6657,83 @@
 
       function seCloseFormModal() {
         document.getElementById("seFormModal").classList.remove("show");
+      }
+
+      function seToggleTable(type) {
+        const isChecked = document.getElementById(`se-chk-${type}`).checked;
+        const container = document.getElementById(`se-table-${type}`);
+        const tbody = document.getElementById(`se-dyn-${type}`);
+        if (!container || !tbody) return;
+        container.style.display = isChecked ? "block" : "none";
+        if (!isChecked) {
+          tbody.innerHTML = "";
+          return;
+        }
+        if (tbody.children.length === 0) {
+          seAddDynamicRow(type);
+        }
+      }
+
+      function seAddDynamicRow(type) {
+        const tbody = document.getElementById(`se-dyn-${type}`);
+        if (!tbody) return;
+        const tr = document.createElement("tr");
+        if (type === "cost") {
+          tr.innerHTML = `
+            <td><input type="text" class="se-dyn-val" data-key="item" placeholder="Contoh: Besi D16" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="sifat" style="width:100%;"><option value="Penambahan (+)">Penambahan (+)</option><option value="Pengurangan (-)">Pengurangan (-)</option></select></td>
+            <td><input type="number" step="any" class="se-dyn-val" data-key="kuantitas" placeholder="0" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="satuan" placeholder="Btg / m3" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="justifikasi" placeholder="Alasan perubahan" style="width:100%;" /></td>
+            <td><button type="button" onclick="this.closest('tr').remove()">X</button></td>`;
+        } else if (type === "time") {
+          tr.innerHTML = `
+            <td><input type="text" class="se-dyn-val" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="sifat" style="width:100%;"><option value="Penundaan">Penundaan (Delay)</option><option value="Percepatan">Percepatan (Crash Program)</option></select></td>
+            <td><input type="number" step="any" class="se-dyn-val" data-key="waktu" placeholder="0" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="satuan" style="width:100%;"><option value="Hari">Hari</option><option value="Jam">Jam</option><option value="Minggu">Minggu</option></select></td>
+            <td><input type="text" class="se-dyn-val" data-key="justifikasi" placeholder="Alasan hambatan" style="width:100%;" /></td>
+            <td><button type="button" onclick="this.closest('tr').remove()">X</button></td>`;
+        } else if (type === "scope") {
+          tr.innerHTML = `
+            <td><input type="text" class="se-dyn-val" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="sifat" style="width:100%;"><option value="Pekerjaan Baru (New Item)">Pekerjaan Baru (New Item)</option><option value="Perubahan (Major Change)">Perubahan (Major Change)</option><option value="Peniadaan (Reduction)">Peniadaan (Reduction)</option></select></td>
+            <td><input type="number" step="any" class="se-dyn-val" data-key="kuantitas" placeholder="0" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="satuan" placeholder="m / ls" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="dokumen" placeholder="No. Sketsa / RFI" style="width:100%;" /></td>
+            <td><button type="button" onclick="this.closest('tr').remove()">X</button></td>`;
+        } else if (type === "quality") {
+          tr.innerHTML = `
+            <td><input type="text" class="se-dyn-val" data-key="item" placeholder="Contoh: Pipa Air Bersih" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="spekAwal" placeholder="Merk A (Kontrak)" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="spekBaru" placeholder="Merk B (Aktual)" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="mutu" style="width:100%;"><option value="Setara (Equivalent)">Setara (Equivalent)</option><option value="Lebih Baik (Upgrade)">Lebih Baik (Upgrade)</option><option value="Turun Mutu (Downgrade)">Turun Mutu (Downgrade)</option></select></td>
+            <td><input type="text" class="se-dyn-val" data-key="justifikasi" placeholder="Contoh: Stok Kosong" style="width:100%;" /></td>
+            <td><button type="button" onclick="this.closest('tr').remove()">X</button></td>`;
+        } else if (type === "safety") {
+          tr.innerHTML = `
+            <td><input type="text" class="se-dyn-val" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" style="width:100%;" /></td>
+            <td><select class="se-dyn-val" data-key="sifat" style="width:100%;"><option value="Bahaya Baru">Bahaya Baru</option><option value="Peningkatan Risiko Lama">Peningkatan Risiko Lama</option></select></td>
+            <td><input type="text" class="se-dyn-val" data-key="kebutuhan" placeholder="Contoh: Gondola / Body Harness" style="width:100%;" /></td>
+            <td><input type="number" step="any" class="se-dyn-val" data-key="kuantitas" placeholder="0" style="width:100%;" /></td>
+            <td><input type="text" class="se-dyn-val" data-key="satuan" placeholder="Unit / Pcs" style="width:100%;" /></td>
+            <td><button type="button" onclick="this.closest('tr').remove()">X</button></td>`;
+        }
+        tbody.appendChild(tr);
+      }
+
+      function seExtractDynamicTableData(type) {
+        const tbody = document.getElementById(`se-dyn-${type}`);
+        if (!tbody || tbody.children.length === 0) return null;
+        return JSON.stringify(
+          Array.from(tbody.querySelectorAll("tr")).map((row) => {
+            const rowObj = {};
+            row.querySelectorAll(".se-dyn-val").forEach((input) => {
+              rowObj[input.dataset.key] = input.value;
+            });
+            return rowObj;
+          }),
+        );
       }
 
       function seResetForm() {
@@ -6908,6 +6777,20 @@
         const varSel = document.getElementById("se-riskVariable");
         if (varSel)
           varSel.innerHTML = '<option value="">Pilih Variabel Risiko</option>';
+        document.querySelectorAll('input[name="se-ownerRequest"]').forEach((el) => {
+          el.checked = false;
+        });
+        document.querySelectorAll('input[name="se-changeDrivers"]').forEach((el) => {
+          el.checked = false;
+        });
+        ["cost", "time", "scope", "quality", "safety"].forEach((type) => {
+          const chk = document.getElementById(`se-chk-${type}`);
+          const container = document.getElementById(`se-table-${type}`);
+          const tbody = document.getElementById(`se-dyn-${type}`);
+          if (chk) chk.checked = false;
+          if (container) container.style.display = "none";
+          if (tbody) tbody.innerHTML = "";
+        });
         // Reset evidence upload
         const evUpload = document.getElementById("se-evidenceUpload");
         if (evUpload) evUpload.value = "";
@@ -6917,24 +6800,24 @@
       }
 
       function sePopulateForm(r) {
-        document.getElementById("se-changeId").value = r.id;
-        document.getElementById("se-changeDate").value = r.changeDate;
-        document.getElementById("se-submittedBy").value = r.submittedBy;
-        document.getElementById("se-wbs4").value = r.wbs4 || "";
+        document.getElementById("se-changeId").value = seGetRecordId(r);
+        document.getElementById("se-changeDate").value = r.changeDate || "";
+        document.getElementById("se-submittedBy").value = r.submittedBy || "";
+        document.getElementById("se-wbs4").value = seGetRecordWbs(r, 4) || "";
 
         populateWBS5();
 
-        document.getElementById("se-wbs5").value = r.wbs5 || "";
+        document.getElementById("se-wbs5").value = seGetRecordWbs(r, 5) || "";
 
         populateWBS6();
 
-        document.getElementById("se-wbs6").value = r.wbs6 || "";
-        document.getElementById("se-category").value = r.category;
-        document.getElementById("se-priority").value = r.priority;
-        document.getElementById("se-risk").value = r.risk;
-        document.getElementById("se-projectArea").value = r.projectArea;
-        document.getElementById("se-location").value = r.location;
-        document.getElementById("se-bimId").value = r.bimId;
+        document.getElementById("se-wbs6").value = seGetRecordWbs(r, 6) || "";
+        document.getElementById("se-category").value = seGetRecordCategory(r) || "";
+        document.getElementById("se-priority").value = r.priority || "";
+        document.getElementById("se-risk").value = r.risk || "";
+        document.getElementById("se-projectArea").value = r.projectArea || "";
+        document.getElementById("se-location").value = r.location || "";
+        document.getElementById("se-bimId").value = seGetRecordBimId(r) || "";
 
         // Cascading risk: set category, populate variables, set variable, update description
         const catSel = document.getElementById("se-riskCategory");
@@ -6957,18 +6840,72 @@
         }
         seUpdateRiskDescription();
 
-        document.getElementById("se-description").value = r.description || "";
-        document.getElementById("se-changeType").value = r.changeType;
-        document.getElementById("se-siteCondition").value = r.siteCondition;
-        document.getElementById("se-ownerRequest").value = r.ownerRequest;
-        document.getElementById("se-materialChange").value = r.materialChange;
-        document.getElementById("se-methodChange").value = r.methodChange;
-        document.getElementById("se-scheduleChange").value = r.scheduleChange;
-        document.getElementById("se-safetyChange").value = r.safetyChange;
-        document.getElementById("se-impactArea").value = r.impactArea;
+        document.getElementById("se-description").value = seGetRecordDescription(r) || "";
+        const changeTypeEl = document.getElementById("se-changeType");
+        if (changeTypeEl) changeTypeEl.value = r.changeType || "";
+        const siteConditionEl = document.getElementById("se-siteCondition");
+        if (siteConditionEl) siteConditionEl.value = r.siteCondition || "";
+        const materialChangeEl = document.getElementById("se-materialChange");
+        if (materialChangeEl) materialChangeEl.value = r.materialChange || "";
+        const methodChangeEl = document.getElementById("se-methodChange");
+        if (methodChangeEl) methodChangeEl.value = r.methodChange || "";
+        const scheduleChangeEl = document.getElementById("se-scheduleChange");
+        if (scheduleChangeEl) scheduleChangeEl.value = r.scheduleChange || "";
+        const safetyChangeEl = document.getElementById("se-safetyChange");
+        if (safetyChangeEl) safetyChangeEl.value = r.safetyChange || "";
+        const impactAreaEl = document.getElementById("se-impactArea");
+        if (impactAreaEl) impactAreaEl.value = r.impactArea || "";
         document.getElementById("se-descriptionDetail").value =
-          r.descriptionDetail;
-        document.getElementById("se-status").value = r.status;
+          seGetRecordDescriptionDetail(r) || "";
+        const ownerRequestValue = r.ownerRequest || "";
+        document.querySelectorAll('input[name="se-ownerRequest"]').forEach((el) => {
+          el.checked = el.value === ownerRequestValue;
+        });
+        const changeDrivers = String(r.changeDrivers || "")
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        document.querySelectorAll('input[name="se-changeDrivers"]').forEach((el) => {
+          el.checked = changeDrivers.includes(el.value);
+        });
+        const impactMap = {
+          cost: "impactCost",
+          time: "impactTime",
+          scope: "impactScope",
+          quality: "impactQuality",
+          safety: "impactSafety",
+        };
+        Object.entries(impactMap).forEach(([type, key]) => {
+          const raw = r[key];
+          const chk = document.getElementById(`se-chk-${type}`);
+          const container = document.getElementById(`se-table-${type}`);
+          const tbody = document.getElementById(`se-dyn-${type}`);
+          if (!chk || !container || !tbody) return;
+          if (raw) {
+            chk.checked = true;
+            container.style.display = "block";
+            try {
+              const rows = typeof raw === "string" ? JSON.parse(raw) : raw;
+              tbody.innerHTML = "";
+              rows.forEach(() => seAddDynamicRow(type));
+              const inputs = Array.from(tbody.querySelectorAll(".se-dyn-val"));
+              rows.forEach((row, index) => {
+                const rowInputs = inputs.slice(index * Object.keys(row).length, (index + 1) * Object.keys(row).length);
+                rowInputs.forEach((input) => {
+                  const key = input.dataset.key;
+                  input.value = row[key] || "";
+                });
+              });
+            } catch (error) {
+              tbody.innerHTML = "";
+            }
+          } else {
+            chk.checked = false;
+            container.style.display = "none";
+            tbody.innerHTML = "";
+          }
+        });
+        document.getElementById("se-status").value = seGetRecordStatus(r) || "PENDING";
         // Evidence: restore stored file metadata display
         seCurrentEvidenceFiles = r.evidenceFiles || [];
         const evGallery = document.getElementById("se-evidenceGallery");
@@ -7024,18 +6961,30 @@
         // New items were processed by seHandleEvidenceUpload and pushed into seCurrentEvidenceFiles
         const allEvidenceFiles = [...seCurrentEvidenceFiles];
 
+        const ownerRequestValue = document.querySelector('input[name="se-ownerRequest"]:checked')?.value || "Tidak";
+        const changeDrivers = Array.from(
+          document.querySelectorAll('input[name="se-changeDrivers"]:checked'),
+        ).map((el) => el.value);
+
+        const recordId = getVal("se-changeId");
         const data = {
-          id: getVal("se-changeId"),
+          id: recordId,
+          changeId: recordId,
           changeDate: getVal("se-changeDate"),
           submittedBy: getVal("se-submittedBy"),
+          wbsLevel4: getVal("se-wbs4"),
+          wbsLevel5: getVal("se-wbs5"),
+          wbsLevel6: getVal("se-wbs6"),
           wbs4: getVal("se-wbs4"),
           wbs5: getVal("se-wbs5"),
           wbs6: getVal("se-wbs6"),
+          changeCategory: getVal("se-category"),
           category: getVal("se-category"),
           priority: getVal("se-priority"),
           risk: getVal("se-risk"),
           projectArea: getVal("se-projectArea"),
           location: getVal("se-location"),
+          bimObjectId: getVal("se-bimId"),
           bimId: getVal("se-bimId"),
           riskCategory: getVal("se-riskCategory"),
           riskVariable: riskVariableTitle,
@@ -7044,18 +6993,19 @@
           description: getVal("se-description"),
           changeType: getVal("se-changeType"),
           siteCondition: getVal("se-siteCondition"),
-          ownerRequest: getVal("se-ownerRequest"),
-          materialChange: getVal("se-materialChange"),
-          methodChange: getVal("se-methodChange"),
-          scheduleChange: getVal("se-scheduleChange"),
-          safetyChange: getVal("se-safetyChange"),
-          impactArea: getVal("se-impactArea"),
+          ownerRequest: ownerRequestValue,
+          changeDrivers: changeDrivers.join(", "),
+          impactCost: seExtractDynamicTableData("cost"),
+          impactTime: seExtractDynamicTableData("time"),
+          impactScope: seExtractDynamicTableData("scope"),
+          impactQuality: seExtractDynamicTableData("quality"),
+          impactSafety: seExtractDynamicTableData("safety"),
           descriptionDetail: getVal("se-descriptionDetail"),
           status: getVal("se-status"),
           evidenceFiles: allEvidenceFiles,
         };
         if (seEditingId) {
-          const idx = seChangeRequests.findIndex((x) => x.id === seEditingId);
+          const idx = seChangeRequests.findIndex((x) => seGetRecordId(x) === seEditingId);
           if (idx > -1) seChangeRequests[idx] = data;
         } else {
           seChangeRequests.unshift(data);
@@ -7069,11 +7019,12 @@
 
       // ---- VIEW MODAL ----
       function seOpenViewModal(id) {
-        const r = seChangeRequests.find((x) => x.id === id);
+        const r = seChangeRequests.find((x) => seGetRecordId(x) === id);
         if (!r) return;
-        seViewingId = id;
-        document.getElementById("seViewTitle").innerText = "📄 Detail: " + r.id;
-        const isLocked = r.status === "APPROVED";
+        const recordId = seGetRecordId(r);
+        seViewingId = recordId;
+        document.getElementById("seViewTitle").innerText = "📄 Detail: " + recordId;
+        const isLocked = seGetRecordStatus(r) === "APPROVED";
 
         // Build evidence HTML
         let evidenceHTML = "";
@@ -7110,46 +7061,48 @@
               ${isLocked ? `<div style="background:#dcfce7;color:#166534;padding:12px 16px;border-left:5px solid #166534;border-radius:8px;font-weight:600;margin-bottom:20px;">🔒 STATUS APPROVED — Data terkunci (Read-Only)</div>` : ""}
               <p class="se-section-label">Langkah 1 — Identifikasi Perubahan</p>
               <div class="view-grid">
-                <div class="view-field"><label>WBS-Paket Pekerjaan</label><div class="view-value">${r.wbs4 || "—"}</div></div>
-                <div class="view-field"><label>WBS-Aktivitas</label><div class="view-value">${r.wbs5 || "—"}</div></div>
-                <div class="view-field"><label>WBS-Sumber Daya</label><div class="view-value">${r.wbs6 || "—"}</div></div>
-                <div class="view-field"><label>Kategori Perubahan</label><div class="view-value">${r.category}</div></div>
-                <div class="view-field"><label>Priority</label><div class="view-value">${r.priority}/5</div></div>
-                <div class="view-field"><label>Risk</label><div class="view-value">${seGetRiskHTML(r.risk)}</div></div>
+                <div class="view-field"><label>WBS-Paket Pekerjaan</label><div class="view-value">${seGetRecordWbs(r, 4) || "—"}</div></div>
+                <div class="view-field"><label>WBS-Aktivitas</label><div class="view-value">${seGetRecordWbs(r, 5) || "—"}</div></div>
+                <div class="view-field"><label>WBS-Sumber Daya</label><div class="view-value">${seGetRecordWbs(r, 6) || "—"}</div></div>
+                <div class="view-field"><label>Kategori Perubahan</label><div class="view-value">${seGetRecordCategory(r) || "—"}</div></div>
+                <div class="view-field"><label>Priority</label><div class="view-value">${r.priority || "—"}/5</div></div>
+                <div class="view-field"><label>Risk</label><div class="view-value">${seGetRiskHTML(r.risk || 0)}</div></div>
               </div>
               <hr class="se-section-divider">
               <div class="view-grid">
-                <div class="view-field"><label>Change ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${r.id}</div></div>
-                <div class="view-field"><label>Date</label><div class="view-value">${r.changeDate}</div></div>
-                <div class="view-field"><label>Submitted By</label><div class="view-value">${r.submittedBy}</div></div>
-                <div class="view-field"><label>Project Area</label><div class="view-value">${r.projectArea}</div></div>
-                <div class="view-field"><label>Location</label><div class="view-value">${r.location}</div></div>
-                <div class="view-field"><label>BIM Object ID</label><div class="view-value">${r.bimId}</div></div>
+                <div class="view-field"><label>Change ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${recordId}</div></div>
+                <div class="view-field"><label>Date</label><div class="view-value">${r.changeDate || "—"}</div></div>
+                <div class="view-field"><label>Submitted By</label><div class="view-value">${r.submittedBy || "—"}</div></div>
+                <div class="view-field"><label>Project Area</label><div class="view-value">${r.projectArea || "—"}</div></div>
+                <div class="view-field"><label>Location</label><div class="view-value">${r.location || "—"}</div></div>
+                <div class="view-field"><label>BIM Object ID</label><div class="view-value">${seGetRecordBimId(r) || "—"}</div></div>
                 <div class="view-field"><label>Kategori Risiko</label><div class="view-value">${r.riskCategory || "—"}</div></div>
               <div class="view-field"><label>Variabel Risiko</label><div class="view-value">${r.riskVariable || "—"}</div></div>
-                <div class="view-field"><label>Status</label><div class="view-value">${seGetStatusHTML(r.status)}</div></div>
+                <div class="view-field"><label>Status</label><div class="view-value">${seGetStatusHTML(seGetRecordStatus(r))}</div></div>
               </div>
               <div class="view-field" style="margin-top:12px;">
               <label>Deskripsi Risiko</label>
-              <div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;border:1px solid #e2e8f0;color:#475569;">${r.riskDescription || "—"}</div>
+              <div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;border:1px solid #e2e8f0;color:#475569;">${seGetRecordRiskDescription(r) || "—"}</div>
             </div>
-            <div class="view-field" style="margin-top:12px;"><label>Description</label><div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;">${r.description}</div></div>
+            <div class="view-field" style="margin-top:12px;"><label>Description</label><div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;">${seGetRecordDescription(r) || "—"}</div></div>
 
             <p class="se-section-label" style="margin-top:20px;">📎 Evidence</p>
             ${evidenceHTML}
 
               <p class="se-section-label" style="margin-top:20px;">Langkah 2 — Register Change Request</p>
               <div class="view-grid">
-                <div class="view-field"><label>Change Type</label><div class="view-value">${r.changeType}</div></div>
-                <div class="view-field"><label>Site Condition</label><div class="view-value">${r.siteCondition}</div></div>
+                <div class="view-field"><label>Change Type</label><div class="view-value">${r.changeType || "—"}</div></div>
+                <div class="view-field"><label>Site Condition</label><div class="view-value">${r.siteCondition || "—"}</div></div>
                 <div class="view-field"><label>Owner Request</label><div class="view-value">${r.ownerRequest || "—"}</div></div>
-                <div class="view-field"><label>Material Change</label><div class="view-value">${r.materialChange}</div></div>
-                <div class="view-field"><label>Method Change</label><div class="view-value">${r.methodChange}</div></div>
-                <div class="view-field"><label>Schedule Change</label><div class="view-value">${r.scheduleChange}</div></div>
-                <div class="view-field"><label>Safety Change</label><div class="view-value">${r.safetyChange}</div></div>
-                <div class="view-field"><label>Impact Area</label><div class="view-value">${r.impactArea}</div></div>
+                <div class="view-field"><label>Material Change</label><div class="view-value">${r.materialChange || "—"}</div></div>
+                <div class="view-field"><label>Method Change</label><div class="view-value">${r.methodChange || "—"}</div></div>
+                <div class="view-field"><label>Schedule Change</label><div class="view-value">${r.scheduleChange || "—"}</div></div>
+                <div class="view-field"><label>Safety Change</label><div class="view-value">${r.safetyChange || "—"}</div></div>
+                <div class="view-field"><label>Impact Area</label><div class="view-value">${r.impactArea || "—"}</div></div>
               </div>
-              <div class="view-field" style="margin-top:12px;"><label>Description Detail</label><div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;">${r.descriptionDetail}</div></div>
+              <div class="view-field" style="margin-top:12px;"><label>Description Detail</label><div class="view-value" style="background:#f8fafc;padding:12px 16px;border-radius:10px;line-height:1.6;">${seGetRecordDescriptionDetail(r) || "—"}</div></div>
+              <div class="view-field" style="margin-top:12px;"><label>Owner Request</label><div class="view-value">${r.ownerRequest || "—"}</div></div>
+              <div class="view-field" style="margin-top:12px;"><label>Akar Penyebab Utama</label><div class="view-value">${r.changeDrivers || "—"}</div></div>
             `;
         document.getElementById("seEditFromViewBtn").style.display = isLocked
           ? "none"
@@ -7177,7 +7130,7 @@
       function seConfirmDelete() {
         if (!sePendingDeleteId) return;
         seChangeRequests = seChangeRequests.filter(
-          (r) => r.id !== sePendingDeleteId,
+          (r) => seGetRecordId(r) !== sePendingDeleteId,
         );
         seCloseDeleteModal();
         seUpdateKPI();
@@ -7893,8 +7846,8 @@
           const activitiesList = document.getElementById("recentActivitiesList");
           
           try {
-              // Tembak file PHP yang sama dengan melempar parameter project_id
-              const response = await fetch(`get_dashboard_data_stats.php?project_id=${projectId}`);
+              // Gunakan endpoint yang sama dan parameter project_id secara konsisten
+              const response = await fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId || '')}`);
               const result = await response.json();
 
               if (result.status === "success") {
@@ -7983,13 +7936,11 @@
        * @param {string} projectId - ID Proyek pilihan untuk filter (opsional)
        */
       function loadDashboardStats(projectId = '') {
-        // 1. Tentukan URL endpoint API (tambahkan parameter query jika memfilter proyek tertentu)
-        let url = 'get_dashboard_data_stats.php';
+        let url = 'api_get_dashboard_stats.php';
         if (projectId) {
-          url += `?projectId=${encodeURIComponent(projectId)}`;
+          url += `?project_id=${encodeURIComponent(projectId)}`;
         }
 
-        // 2. Lakukan request data ke backend PHP
         fetch(url)
           .then(response => {
             if (!response.ok) {
@@ -8000,42 +7951,45 @@
           .then(res => {
             if (res.status === 'success') {
               
-              // --- Bagian A: Update Konter Ringkasan Keputusan (Decision Summary) ---
-              const stats = res.stats || {};
-              document.getElementById('pmdUnderReview').innerText   = stats.under_review || 0;
-              document.getElementById('pmdNeedMitigation').innerText = stats.need_mitigation || 0;
-              document.getElementById('pmdApproved').innerText       = stats.approved || 0;
-              document.getElementById('pmdRejected').innerText       = stats.rejected || 0;
+              // 1. SINKRONISASI KONTER RINGKASAN KEPUTUSAN
+              // Data dari PHP dibungkus di dalam objek "data"
+              const stats = res.data || {};
+              document.getElementById('pmdUnderReview').innerText   = stats.under_review ?? 0;
+              document.getElementById('pmdNeedMitigation').innerText = stats.need_mitigation ?? 0;
+              document.getElementById('pmdApproved').innerText       = stats.approved ?? 0;
+              document.getElementById('pmdRejected').innerText       = stats.rejected ?? 0;
 
-              // --- Bagian B: Render Aktivitas Perubahan Terbaru (Recent Change Activities) ---
+              // 2. SINKRONISASI RENDERING LINIMASA (RECENT ACTIVITIES)
               const timelineContainer = document.getElementById('pmdTimeline');
-              timelineContainer.innerHTML = ''; // Kosongkan kontainer lama
+              timelineContainer.innerHTML = ''; // Kosongkan data dummy lama
 
-              const activities = res.recent_activities || [];
+              const activities = stats.recent_activities || [];
               if (activities.length === 0) {
                 timelineContainer.innerHTML = `
                   <p style="color: #64748b; font-size: 13px; margin: 0; padding: 10px 0;">
-                    Belum ada aktivitas perubahan terbaru pada proyek ini.
+                    Belum ada aktivitas perubahan terbaru.
                   </p>`;
                 return;
               }
 
-              // Looping data aktivitas dan bentuk elemen DOM sesuai dengan grid layout CSS Anda
+              // Loop data menggunakan key JSON yang dikirim dari server
               activities.forEach(act => {
                 const item = document.createElement('div');
-                item.className = 'pmd-timeline-item'; // Mengikuti struktur grid CSS admin.html
+                item.className = 'pmd-timeline-item'; 
 
-                // Tentukan kelas warna badge berdasarkan status aktivitas terkini
-                const badgeClass = getBadgeStatusClass(act.status);
+                // Tentukan warna badge secara dinamis berdasarkan status aktivitas
+                const currentStatus = act.status || 'Under Review';
+                const badgeClass = getBadgeStatusClass(currentStatus);
 
                 item.innerHTML = `
-                  <div class="pmd-timeline-date">${act.date}</div>
+                  <div class="pmd-timeline-date">${act.changeDate}</div>
                   <div>
-                    <strong>${act.change_id}: ${act.title}</strong>
-                    <p>Proyek: <em>${act.project_name}</em></p>
-                    <p>Oleh: ${act.sender} (${act.role})</p>
+                    <strong>${act.changeId}: Kategori ${act.changeCategory}</strong>
+                    <p style="margin: 4px 0 0; color: #64748b; font-size: 12px;">
+                      Oleh: ${act.submittedBy}
+                    </p>
                     <div style="margin-top: 8px;">
-                      <span class="badge ${badgeClass}">${act.status}</span>
+                      <span class="badge ${badgeClass}">${currentStatus}</span>
                     </div>
                   </div>
                 `;
@@ -8048,25 +8002,357 @@
           })
           .catch(error => {
             console.error('Kesalahan Sistem:', error);
+            // Jika server error/gagal terkoneksi, ubah teks pemuat menjadi pesan gagal
+            document.getElementById('pmdTimeline').innerHTML = `
+              <p style="color: #ef4444; font-size: 13px; margin: 0; padding: 10px 0;">
+                Gagal memuat data aktivitas.
+              </p>`;
           });
       }
 
       /**
-       * Fungsi pembantu untuk memetakan nama status ke class badge yang sesuai
+       * Fungsi pembantu pencocokan class badge CSS
        */
       function getBadgeStatusClass(status) {
         switch (status?.toLowerCase()) {
-          case 'under review':     return 'info';
-          case 'need mitigation': return 'medium';
-          case 'approved':        return 'low';
-          case 'rejected':        return 'high';
-          default:                return 'info';
+          case 'under review':   case 'pending': return 'info';
+          case 'need mitigation':                return 'medium';
+          case 'approved':                       return 'low';
+          case 'rejected':                       return 'high';
+          default:                               return 'info';
         }
       }
 
       // Panggil fungsi secara otomatis saat halaman admin selesai dimuat pertama kali
       document.addEventListener('DOMContentLoaded', function() {
         loadDashboardStats(); // Memuat data keseluruhan (global/all projects) secara default
+      });
+
+      // ==========================================================
+      // FUNGSI UPDATE DATA (EDIT CHANGE REQUEST)
+      // ==========================================================
+      function executeDatabaseUpdate() {
+          const formData = new FormData();
+
+          // 1. DATA UTAMA
+          // Pastikan ID di HTML Admin persis sama dengan yang ada di sini
+          formData.append('changeId', document.getElementById('editChangeId').value);
+          formData.append('changeDate', document.getElementById('editChangeDate').value);
+          formData.append('wbsLevel4', document.getElementById('editWbs4').value);
+          formData.append('wbsLevel5', document.getElementById('editWbs5').value);
+          formData.append('wbsLevel6', document.getElementById('editWbs6').value);
+          formData.append('changeCategory', document.getElementById('editCategory').value);
+          formData.append('priority', document.getElementById('editPriority').value);
+          formData.append('risk', document.getElementById('editRisk').value);
+          formData.append('projectArea', document.getElementById('editProjectArea').value);
+          formData.append('location', document.getElementById('editLocation').value);
+          formData.append('bimObjectId', document.getElementById('editBimObjectId').value);
+          formData.append('riskCategory', document.getElementById('editRiskCategory').value);
+          formData.append('riskVariable', document.getElementById('editRiskVariable').value);
+          formData.append('description', document.getElementById('editDescription').value);
+          formData.append('descriptionDetail', document.getElementById('editDescriptionDetail').value);
+
+          // 2. CHECKBOX & RADIO
+          const checkedOwner = document.querySelector('input[name="editOwnerRequest"]:checked');
+          formData.append('ownerRequest', checkedOwner ? checkedOwner.value : 'Tidak');
+
+          const driverCheckboxes = document.querySelectorAll('input[name="editChangeDrivers"]:checked');
+          if (driverCheckboxes.length > 0) {
+              driverCheckboxes.forEach(cb => formData.append('changeDrivers[]', cb.value));
+          }
+
+          // 3. FUNGSI SCRAPER PINTAR (Menggunakan Class .input-col)
+          function scrapeTableToJson(tableId, type) {
+              const table = document.getElementById(tableId);
+              if (!table) return '[]';
+
+              const rows = table.querySelectorAll('tbody tr');
+              const items = [];
+
+              rows.forEach(row => {
+                  const el1 = row.querySelector('.input-col-1');
+                  const el2 = row.querySelector('.input-col-2');
+                  const el3 = row.querySelector('.input-col-3');
+                  const el4 = row.querySelector('.input-col-4');
+                  const el5 = row.querySelector('.input-col-5');
+
+                  if (el1 && el2) {
+                      const val1 = el1.value.trim();
+                      const val2 = el2.value.trim();
+                      const val3 = el3 ? el3.value.trim() : '';
+                      const val4 = el4 ? el4.value.trim() : '';
+                      const val5 = el5 ? el5.value.trim() : '';
+
+                      if (val1 === "") return; // Abaikan baris jika kolom pertama kosong
+
+                      let obj = {};
+                      if (type === 'cost') obj = { item: val1, sifat: val2, kuantitas: val3, satuan: val4, justifikasi: val5 };
+                      else if (type === 'time') obj = { aktivitas: val1, sifat: val2, waktu: val3, satuan: val4, justifikasi: val5 };
+                      else if (type === 'scope') obj = { lingkup: val1, sifat: val2, kuantitas: val3, satuan: val4, dokumenAcuan: val5 };
+                      else if (type === 'quality') obj = { item: val1, spesifikasiAwal: val2, spesifikasiBaru: val3, tingkatMutu: val4, justifikasi: val5 };
+                      else if (type === 'safety') obj = { aktivitas: val1, sifat: val2, kebutuhan: val3, kuantitas: val4, satuan: val5 };
+                      items.push(obj);
+                  }
+              });
+              return JSON.stringify(items);
+          }
+
+          // Deteksi checkbox yang dicentang untuk membuka tabel dinamis
+          const costChecked = document.getElementById('edit-chk-cost')?.checked;
+          const timeChecked = document.getElementById('edit-chk-time')?.checked;
+          const scopeChecked = document.getElementById('edit-chk-scope')?.checked;
+          const qualityChecked = document.getElementById('edit-chk-quality')?.checked;
+          const safetyChecked = document.getElementById('edit-chk-safety')?.checked;
+
+          formData.append('impactCost', costChecked ? scrapeTableToJson('edit-dyn-cost', 'cost') : '[]');
+          formData.append('impactTime', timeChecked ? scrapeTableToJson('edit-dyn-time', 'time') : '[]');
+          formData.append('impactScope', scopeChecked ? scrapeTableToJson('edit-dyn-scope', 'scope') : '[]');
+          formData.append('impactQuality', qualityChecked ? scrapeTableToJson('edit-dyn-quality', 'quality') : '[]');
+          formData.append('impactSafety', safetyChecked ? scrapeTableToJson('edit-dyn-safety', 'safety') : '[]');
+
+          // 4. DATA LAMPIRAN
+          const fileInput = document.getElementById('editPhoto');
+          if (fileInput && fileInput.files.length > 0) {
+              for (let i = 0; i < fileInput.files.length; i++) {
+                  formData.append('photo[]', fileInput.files[i]);
+              }
+          }
+
+          // 5. FETCH KE UPDATE_DATA.PHP
+          // Opsional: Ubah teks tombol submit menjadi 'Menyimpan...' agar UI interaktif
+          const btnSubmit = document.getElementById('btnSubmitEdit');
+          if (btnSubmit) {
+              btnSubmit.innerText = "Menyimpan...";
+              btnSubmit.disabled = true;
+          }
+
+          fetch('update_data.php', { method: 'POST', body: formData })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.status === 'success') {
+                      alert(data.message || "Perubahan Berhasil Disimpan!");
+                      
+                      // PENYESUAIAN UNTUK ADMIN.HTML: 
+                      // 1. Refresh data secara global tanpa mereload halaman
+                      if (typeof loadDashboardStats === "function") {
+                          loadDashboardStats(); 
+                      }
+                      
+                      // 2. Tutup Modal Edit (Sesuaikan dengan nama ID modal Anda)
+                      const modal = document.getElementById('pmFormModal') || document.getElementById('editModal');
+                      if (modal) {
+                          modal.classList.remove('show');
+                      }
+                  } else {
+                      alert("Error: " + data.message);
+                  }
+              })
+              .catch(err => {
+                  console.error(err);
+                  alert("Terjadi masalah pada koneksi server.");
+              })
+              .finally(() => {
+                  // Kembalikan tombol ke keadaan semula
+                  if (btnSubmit) {
+                      btnSubmit.innerText = "Simpan Perubahan";
+                      btnSubmit.disabled = false;
+                  }
+              });
+      }
+
+      // ==========================================================
+      // FUNGSI TAMBAH BARIS TABEL DINAMIS
+      // ==========================================================
+      function addRowForEdit(type) {
+          const tbody = document.querySelector(`#edit-dyn-${type} tbody`);
+          if (!tbody) {
+              console.warn(`Tabel dengan ID #edit-dyn-${type} tidak ditemukan.`);
+              return;
+          }
+
+          const newRow = document.createElement('tr');
+          let colsHtml = '';
+
+          if (type === 'cost') {
+              colsHtml = `
+                  <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Besi D16" required></td>
+                  <td>
+                      <select class="input-col-2" data-key="sifat" required>
+                          <option value="Penambahan (+)">Penambahan (+)</option>
+                          <option value="Pengurangan (-)">Pengurangan (-)</option>
+                      </select>
+                  </td>
+                  <td><input type="number" step="any" class="input-col-3" data-key="kuantitas" placeholder="0" required></td>
+                  <td><input type="text" class="input-col-4" data-key="satuan" placeholder="Btg / m3" required></td>
+                  <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan perubahan" required></td>
+              `;
+          } else if (type === 'time') {
+              colsHtml = `
+                  <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" required></td>
+                  <td>
+                      <select class="input-col-2" data-key="sifat" required>
+                          <option value="Penundaan">Penundaan (Delay)</option>
+                          <option value="Percepatan">Percepatan (Crash Program)</option>
+                      </select>
+                  </td>
+                  <td><input type="number" step="any" class="input-col-3" data-key="waktu" placeholder="0" required></td>
+                  <td>
+                      <select class="input-col-4" data-key="satuan" required>
+                          <option value="Hari">Hari</option>
+                          <option value="Jam">Jam</option>
+                          <option value="Minggu">Minggu</option>
+                      </select>
+                  </td>
+                  <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan hambatan" required></td>
+              `;
+          } else if (type === 'scope') {
+              colsHtml = `
+                  <td><input type="text" class="input-col-1" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" required></td>
+                  <td>
+                      <select class="input-col-2" data-key="sifat" required>
+                          <option value="Pekerjaan Baru (New Item)">Pekerjaan Baru (New Item)</option>
+                          <option value="Perubahan (Major Change)">Perubahan (Major Change)</option>
+                          <option value="Peniadaan (Reduction)">Peniadaan (Reduction)</option>
+                      </select>
+                  </td>
+                  <td><input type="number" step="any" class="input-col-3" data-key="kuantitas" placeholder="0" required></td>
+                  <td><input type="text" class="input-col-4" data-key="satuan" placeholder="m / ls" required></td>
+                  <td><input type="text" class="input-col-5" data-key="dokumen" placeholder="No. Sketsa / RFI" required></td>
+              `;
+          } else if (type === 'quality') {
+              colsHtml = `
+                  <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Pipa Air Bersih" required></td>
+                  <td><input type="text" class="input-col-2" data-key="spekAwal" placeholder="Merk A (Kontrak)" required></td>
+                  <td><input type="text" class="input-col-3" data-key="spekBaru" placeholder="Merk B (Aktual)" required></td>
+                  <td>
+                      <select class="input-col-4" data-key="mutu" required>
+                          <option value="Setara (Equivalent)">Setara (Equivalent)</option>
+                          <option value="Lebih Baik (Upgrade)">Lebih Baik (Upgrade)</option>
+                          <option value="Turun Mutu (Downgrade)">Turun Mutu (Downgrade)</option>
+                      </select>
+                  </td>
+                  <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Contoh: Stok Kosong" required></td>
+              `;
+          } else if (type === 'safety') {
+              colsHtml = `
+                  <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" required></td>
+                  <td>
+                      <select class="input-col-2" data-key="sifat" required>
+                          <option value="Bahaya Baru">Bahaya Baru</option>
+                          <option value="Peningkatan Risiko Lama">Peningkatan Risiko Lama</option>
+                      </select>
+                  </td>
+                  <td><input type="text" class="input-col-3" data-key="kebutuhan" placeholder="Contoh: Gondola / Body Harness" required></td>
+                  <td><input type="number" step="any" class="input-col-4" data-key="kuantitas" placeholder="0" required></td>
+                  <td><input type="text" class="input-col-5" data-key="satuan" placeholder="Unit / Pcs" required></td>
+              `;
+          }
+
+          newRow.innerHTML = colsHtml + `<td style="text-align:center;"><button type="button" class="btn-remove-row" style="background:#ef4444; color:white; border:none; border-radius:4px; padding:4px 8px; cursor:pointer;" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>`;
+          tbody.appendChild(newRow);
+      }
+
+      // ==========================================================
+      // FUNGSI MEMUAT DATA REGISTRI PROYEK (ADMIN VIEW)
+      // ==========================================================
+      function loadProjectRegistry() {
+          const tbody = document.getElementById('projectTable');
+          if (tbody) {
+              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Memuat data proyek dari database...</td></tr>';
+          }
+
+          fetch('api_get_projects.php?view_as=Admin')
+              .then(response => response.json())
+              .then(res => {
+                  if (res.status === 'success') {
+                      
+                      // 1. SINKRONISASI NAMA HEADER (Persis seperti fungsi PM Anda)
+                      if (res.user_name) {
+                          const nameDisplay = document.getElementById("userFullName");
+                          if (nameDisplay) nameDisplay.innerText = res.user_name;
+                          
+                          const words = res.user_name.trim().split(/\s+/);
+                          let initial = "";
+                          if (words.length > 0 && words[0]) initial += words[0].charAt(0).toUpperCase();
+                          if (words.length > 1 && words[1]) initial += words[1].charAt(0).toUpperCase();
+                          if (!initial) initial = "AD"; // Fallback inisial jika kosong
+                          
+                          const initialDisplay = document.getElementById("userInitial");
+                          if (initialDisplay) initialDisplay.innerText = initial;
+                      }
+
+                      // 2. RENDER TABEL PROYEK
+                      renderProjectTable(res.data);
+
+                  } else if (res.message === "Akses ditolak. Silakan login.") {
+                      localStorage.removeItem("isLoggedIn");
+                      window.location.replace("login.html");
+                  } else {
+                      if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Error: ${res.message}</td></tr>`;
+                  }
+              })
+              .catch(error => {
+                  console.error("Error fetching projects:", error);
+                  if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Koneksi terputus ke server.</td></tr>';
+              });
+      }
+
+      // ==========================================================
+      // FUNGSI RENDER BARIS TABEL (Membaca key dari api_get_projects.php)
+      // ==========================================================
+      function renderProjectTable(projects) {
+          const tbody = document.getElementById('projectTable');
+          if (!tbody) return;
+          
+          tbody.innerHTML = ''; // Kosongkan dummy HTML
+
+          if (projects.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">Belum ada data proyek di database.</td></tr>';
+              return;
+          }
+
+          projects.forEach(prj => {
+              // Mapping kolom berdasarkan output query SQL di PHP Anda
+              const id = prj.project_id || '-';
+              const name = prj.project_name || '-';
+              
+              // Membaca subquery (site_engineer_name) dari backend
+              const engineer = prj.site_engineer_name || '<span style="color:#94a3b8; font-style:italic;">Belum di-assign</span>'; 
+              
+              // Asumsi kolom status dan progress berasal dari p.* (tabel projects)
+              const status = prj.status || 'Pending';
+              const progress = prj.progress || 0;
+
+              // Penentuan class badge warna berdasarkan status
+              let badgeClass = 'badge-pending';
+              if (status.toLowerCase() === 'completed') badgeClass = 'badge-completed';
+              else if (status.toLowerCase() === 'in progress') badgeClass = 'badge-progress';
+
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                  <td style="font-weight: 600; color: #0f2d52">${id}</td>
+                  <td>${name}</td>
+                  <td>${engineer}</td>
+                  <td><span class="badge ${badgeClass}">${status}</span></td>
+                  <td><strong>${progress}%</strong></td>
+                  <td>
+                      <button class="action-btn" style="color: #0f2d52" 
+                          onclick="openProjectDashboardModal('${id}', '${name}', '${status}', ${progress})">
+                          👁️ Lihat
+                      </button>
+                      <button class="action-btn edit" onclick="editProject('${id}')">✏️ Edit</button>
+                      <button class="action-btn delete" onclick="deleteProject('${id}', this)">🗑️ Delete</button>
+                  </td>
+              `;
+              tbody.appendChild(tr);
+          });
+      }
+
+      // ==========================================================
+      // JALANKAN OTOMATIS SAAT HALAMAN ADMIN SELESAI DIMUAT
+      // ==========================================================
+      document.addEventListener("DOMContentLoaded", () => {
+          loadProjectRegistry(); // Eksekusi pembuatan tabel
       });
     </script>
   </body>

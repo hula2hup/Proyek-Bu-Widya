@@ -71,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'bimObjectId'       => $_POST['bimObjectId'] ?? null,
         'riskCategory'      => $_POST['riskCategory'] ?? null,
         'riskVariable'      => $_POST['riskVariable'] ?? null,
+        'riskDescription'      => $_POST['riskDescription'] ?? null,
         'description'       => $_POST['description'] ?? null,
         'ownerRequest'      => $_POST['ownerRequest'] ?? null,
         'changeDrivers'     => $changeDrivers, 
@@ -88,13 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "INSERT INTO change_requests (
                 changeId, changeDate, submittedBy, wbsLevel4, wbsLevel5, 
                 wbsLevel6, changeCategory, priority, risk, projectArea, 
-                location, bimObjectId, riskCategory, riskVariable, description, 
+                location, bimObjectId, riskCategory, riskVariable, riskDescription, description, 
                 ownerRequest, changeDrivers, impactCost, impactTime, 
                 impactScope, impactQuality, impactSafety, descriptionDetail, photoEvidence, status
             ) VALUES (
                 :changeId, :changeDate, :submittedBy, :wbsLevel4, :wbsLevel5, 
                 :wbsLevel6, :changeCategory, :priority, :risk, :projectArea, 
-                :location, :bimObjectId, :riskCategory, :riskVariable, :description, 
+                :location, :bimObjectId, :riskCategory, :riskVariable, :riskDescription, :description, 
                 :ownerRequest, :changeDrivers, :impactCost, :impactTime, 
                 :impactScope, :impactQuality, :impactSafety, :descriptionDetail, :photoEvidence, :status
             )";

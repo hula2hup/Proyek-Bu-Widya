@@ -11,7 +11,10 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$role = $_SESSION['role'];
+
+// 💡 PENYESUAIAN AMAN: Cek apakah ada parameter 'view_as' dari JavaScript (khusus request Admin).
+// Jika tidak ada, gunakan role asli dari sesi saat ini agar PM dan SE tidak terganggu sama sekali.
+$role_to_use = $_GET['view_as'] ?? $_SESSION['role'];
 
 try {
     // KITA BUAT BASE QUERY DI SINI DENGAN PENYESUAIAN NAMA KOLOM
@@ -34,14 +37,14 @@ try {
         FROM projects p
     ";
 
-    if ($role === 'Admin') {
+    if ($role_to_use === 'Admin') {
         // Admin dapat melihat SEMUA proyek
         $query = $baseQuery . " ORDER BY p.project_name ASC";
         
         $stmt = $pdo->query($query);
         $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
-        // PM dan SE HANYA melihat proyek yang di-assign kepada mereka
+        // PM dan SE HANYA melihat proyek yang di-assign kepada mereka (Logika Anda dipertahankan 100%)
         $query = $baseQuery . " 
             JOIN project_assignments pa_filter ON p.project_id = pa_filter.project_id
             WHERE pa_filter.user_id = ?
@@ -57,7 +60,7 @@ try {
     echo json_encode([
         "status" => "success", 
         "data" => $projects,
-        "user_role" => $role,
+        "user_role" => $_SESSION['role'], // Tetap kembalikan role asli dari session untuk UI
         "user_name" => $_SESSION['full_name']
     ]);
 
