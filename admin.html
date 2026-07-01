@@ -8553,50 +8553,61 @@
           tbody.appendChild(newRow);
       }
 
+    
       // ==========================================================
-      // FUNGSI MEMUAT DATA REGISTRI PROYEK (ADMIN VIEW)
-      // ==========================================================
-      function loadProjectRegistry() {
-          const tbody = document.getElementById('projectTable');
-          if (tbody) {
-              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Memuat data proyek dari database...</td></tr>';
-          }
+// FUNGSI MEMUAT DATA REGISTRI PROYEK DAN UPDATE KARTU STATISTIK
+// ==========================================================
+function loadProjectRegistry() {
+    const tbody = document.getElementById('projectTable');
+    if (tbody) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Memuat data proyek dari database...</td></tr>';
+    }
 
-          fetch('api_get_projects.php?view_as=Admin')
-              .then(response => response.json())
-              .then(res => {
-                  if (res.status === 'success') {
-                      
-                      // 1. SINKRONISASI NAMA HEADER (Persis seperti fungsi PM Anda)
-                      if (res.user_name) {
-                          const nameDisplay = document.getElementById("userFullName");
-                          if (nameDisplay) nameDisplay.innerText = res.user_name;
-                          
-                          const words = res.user_name.trim().split(/\s+/);
-                          let initial = "";
-                          if (words.length > 0 && words[0]) initial += words[0].charAt(0).toUpperCase();
-                          if (words.length > 1 && words[1]) initial += words[1].charAt(0).toUpperCase();
-                          if (!initial) initial = "AD"; // Fallback inisial jika kosong
-                          
-                          const initialDisplay = document.getElementById("userInitial");
-                          if (initialDisplay) initialDisplay.innerText = initial;
-                      }
+    // Panggil API dengan parameter bypass Admin agar menarik seluruh proyek
+    fetch('api_get_projects.php?view_as=Admin')
+        .then(response => response.json())
+        .then(res => {
+            if (res.status === 'success') {
+                const allProjects = res.data || [];
 
-                      // 2. RENDER TABEL PROYEK
-                      renderProjectTable(res.data);
+                // 📊 1. HITUNG STATISTIK DARI DATABASE (Kalkulasi Otomatis)
+                const totalCount = allProjects.length;
+                const inProgressCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'in progress').length;
+                const pendingCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'pending').length;
+                const completedCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'completed').length;
 
-                  } else if (res.message === "Akses ditolak. Silakan login.") {
-                      localStorage.removeItem("isLoggedIn");
-                      window.location.replace("login.html");
-                  } else {
-                      if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Error: ${res.message}</td></tr>`;
-                  }
-              })
-              .catch(error => {
-                  console.error("Error fetching projects:", error);
-                  if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Koneksi terputus ke server.</td></tr>';
-              });
-      }
+                // 🚀 2. SINKRONKAN NILAI KE CARD METRIC ATAS
+                if (document.getElementById('totalProjects')) 
+                    document.getElementById('totalProjects').innerText = totalCount;
+                if (document.getElementById('inProgressProjects')) 
+                    document.getElementById('inProgressProjects').innerText = inProgressCount;
+                if (document.getElementById('pendingProjects')) 
+                    document.getElementById('pendingProjects').innerText = pendingCount;
+                if (document.getElementById('completedProjects')) 
+                    document.getElementById('completedProjects').innerText = completedCount;
+
+                // 3. SINKRONISASI NAMA HEADER ADMIN
+                if (res.user_name) {
+                    const nameDisplay = document.getElementById("userFullName");
+                    if (nameDisplay) nameDisplay.innerText = res.user_name;
+                }
+
+                // 4. RENDER DATA KE TABEL REGISTRY
+                renderProjectTable(allProjects);
+
+            } else if (res.message === "Akses ditolak. Silakan login.") {
+                localStorage.removeItem("isLoggedIn");
+                window.location.replace("login.html");
+            } else {
+                if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Error: ${res.message}</td></tr>`;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching projects:", error);
+            if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Koneksi terputus ke server.</td></tr>';
+        });
+}
+      
 
       // ==========================================================
       // FUNGSI RENDER BARIS TABEL (Membaca key dari api_get_projects.php)
