@@ -2207,7 +2207,7 @@
           <h2 style="font-size: 18px; color: #475569; margin-bottom: 20px">
             Pilih Project untuk Di-review:
           </h2>
-          <div class="project-selection-grid">
+          <div id="projectSelectionGrid" class="project-selection-grid">
             <div
               class="proj-card"
               onclick="selectProjectForReview('ALL', 'Semua Project')"
@@ -5865,18 +5865,76 @@
       // Variabel global untuk menyimpan project yang sedang aktif dilihat
       let currentReviewProject = "ALL";
 
-      // Update Angka Badge pada Menu Utama
+      // Update Angka Badge pada Menu Utama (dinamis berdasarkan kartu proyek)
       function updateProjectCounts() {
-        document.getElementById("count-all").innerText = crData.length;
-        document.getElementById("count-prj001").innerText = crData.filter(
-          (c) => c.projectId === "PRJ-001",
-        ).length;
-        document.getElementById("count-prj002").innerText = crData.filter(
-          (c) => c.projectId === "PRJ-002",
-        ).length;
-        document.getElementById("count-prj003").innerText = crData.filter(
-          (c) => c.projectId === "PRJ-003",
-        ).length;
+        // Update total
+        const totalEl = document.querySelector('#projectSelectionGrid .badge-count span[data-project="ALL"]');
+        const total = crData.length;
+        if (totalEl) totalEl.innerText = total;
+
+        // Update per-project badges rendered by renderProjectSelection
+        document.querySelectorAll('#projectSelectionGrid .proj-count').forEach((el) => {
+          const pid = el.getAttribute('data-project');
+          if (!pid) return;
+          if (pid === 'ALL') {
+            el.innerText = total;
+          } else {
+            const cnt = crData.filter((c) => c.projectId === pid).length;
+            el.innerText = cnt;
+          }
+        });
+      }
+
+      // Render dynamic project selection cards
+      function renderProjectSelection(projects) {
+        const grid = document.getElementById('projectSelectionGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        // Helper to create a card node
+        function createCard(iconText, title, desc, projectId) {
+          const card = document.createElement('div');
+          card.className = 'proj-card';
+          card.addEventListener('click', () => selectProjectForReview(projectId, projectId === 'ALL' ? 'Semua Project' : `${projectId} - ${title}`));
+
+          const icon = document.createElement('div');
+          icon.className = 'proj-card-icon';
+          icon.textContent = iconText;
+
+          const h3 = document.createElement('h3');
+          h3.textContent = projectId === 'ALL' ? 'Semua Project' : projectId;
+
+          const p = document.createElement('p');
+          p.textContent = projectId === 'ALL' ? 'Tinjau seluruh pengajuan CR dari semua proyek yang berjalan saat ini.' : desc || '';
+
+          const badge = document.createElement('div');
+          badge.className = 'badge-count';
+          const span = document.createElement('span');
+          span.className = 'proj-count';
+          span.setAttribute('data-project', projectId);
+          span.innerText = projectId === 'ALL' ? (crData.length || 0) : (crData.filter((c) => c.projectId === projectId).length || 0);
+          badge.appendChild(span);
+          badge.appendChild(document.createTextNode(' Pending CR'));
+
+          card.appendChild(icon);
+          card.appendChild(h3);
+          card.appendChild(p);
+          card.appendChild(badge);
+
+          return card;
+        }
+
+        // ALL card
+        grid.appendChild(createCard('📁', 'Semua Project', '', 'ALL'));
+
+        // Project-specific cards
+        projects.forEach((prj) => {
+          const id = prj.project_id || prj.id || prj.projectId || '';
+          const name = prj.project_name || prj.name || '';
+          // choose icon by simple heuristic
+          const icon = id.toLowerCase().includes('prj') ? '🏗️' : '📌';
+          grid.appendChild(createCard(icon, name, name, id));
+        });
       }
 
       // Menampilkan Menu Grid Project
@@ -8589,6 +8647,8 @@
               `;
               tbody.appendChild(tr);
           });
+              // Render project selection cards too (if function available)
+              if (typeof renderProjectSelection === 'function') renderProjectSelection(projects);
       }
 
       // ==========================================================
