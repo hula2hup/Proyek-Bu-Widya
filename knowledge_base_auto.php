@@ -53,22 +53,12 @@ function kb_find_repository_match(PDO $pdo, array $cr) {
 
 function kb_build_lesson_description(array $cr, array $repo) {
     $parts = [];
-    $parts[] = 'Change Request: ' . ($cr['changeId'] ?? '-');
-    $parts[] = 'WBS: ' . ($cr['wbsLevel5'] ?? $repo['wbs_kode']);
-    $parts[] = 'Risiko: ' . ($repo['risk_kode'] ?? '-') . ' - ' . ($repo['risk_nama'] ?? '-');
 
     if (!empty($cr['description'])) {
-        $parts[] = 'Ringkasan CR: ' . $cr['description'];
+        $parts[] = $cr['description'];
     }
     if (!empty($cr['descriptionDetail'])) {
-        $parts[] = 'Catatan lapangan: ' . $cr['descriptionDetail'];
-    }
-
-    $parts[] = 'Insight: ' . ($repo['insight'] ?? '-');
-    $parts[] = 'Saran: ' . ($repo['saran'] ?? '-');
-
-    if (!empty($cr['approvalNotes'])) {
-        $parts[] = 'Catatan PM: ' . $cr['approvalNotes'];
+        $parts[] = $cr['descriptionDetail'];
     }
 
     return implode("\n\n", $parts);
@@ -88,6 +78,9 @@ function kb_build_actual_impact(array $cr) {
     }
     if (!empty($cr['impactCost'])) {
         $parts[] = 'Estimasi dampak biaya: ' . $cr['impactCost'];
+    }
+    if (!empty($cr['impactScope'])) {
+        $parts[] = 'Estimasi dampak lingkup: ' . $cr['impactScope'];
     }
     if (!empty($cr['impactQuality'])) {
         $parts[] = 'Dampak mutu: ' . $cr['impactQuality'];
@@ -220,4 +213,3 @@ function kb_sync_approved_lessons(PDO $pdo) {
 
     return ['created' => $created, 'skipped' => $skipped];
 }
-

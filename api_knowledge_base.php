@@ -123,6 +123,13 @@ try {
             kb.documentFile,
             kb.actual_impact,
             kb.applied_solution,
+            cr.impactCost AS cr_impact_cost,
+            cr.impactTime AS cr_impact_time,
+            cr.impactScope AS cr_impact_scope,
+            cr.impactQuality AS cr_impact_quality,
+            cr.impactSafety AS cr_impact_safety,
+            cr.timeImpact AS cr_time_impact,
+            cr.costImpact AS cr_cost_impact,
             kr.wbs_kode,
             kr.wbs_nama,
             kr.risk_kode,
@@ -131,6 +138,7 @@ try {
             kr.insight,
             kr.saran
         FROM knowledge_base kb
+        LEFT JOIN change_requests cr ON cr.changeId = kb.changeRequestLink
         LEFT JOIN knowledge_repository kr ON kr.id = kb.repository_reference_id
         ORDER BY kb.changeDate DESC, kb.docId DESC
     ");

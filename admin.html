@@ -1351,6 +1351,104 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
       }
+      .kb-detail-stack {
+        display: grid;
+        gap: 12px;
+      }
+      .kb-detail-card {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+      .kb-detail-card strong {
+        color: #1e3a5f;
+        font-size: 12px;
+        line-height: 1.45;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kb-detail-card p {
+        margin: 0;
+        color: #0f172a;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.65;
+      }
+      .kb-impact-panel {
+        display: grid;
+        gap: 14px;
+      }
+      .kb-impact-panel > div {
+        min-width: 0;
+        overflow-x: auto;
+      }
+      .kb-impact-summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .kb-impact-metric {
+        padding: 14px 16px;
+        border: 1px solid #dbeafe;
+        border-radius: 10px;
+        background: #f8fbff;
+      }
+      .kb-impact-metric span {
+        display: block;
+        margin-bottom: 6px;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+      .kb-impact-metric b {
+        color: #0f2d52;
+        font-size: 15px;
+      }
+      .kb-impact-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+      .kb-impact-table th,
+      .kb-impact-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #edf2f7;
+        text-align: left;
+        vertical-align: top;
+      }
+      .kb-impact-table th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kb-impact-table tr:last-child td {
+        border-bottom: 0;
+      }
+      .kb-impact-table td.is-number,
+      .kb-impact-table th.is-number {
+        text-align: right;
+      }
+      @media (max-width: 760px) {
+        .kb-detail-card,
+        .kb-impact-summary {
+          grid-template-columns: 1fr;
+        }
+      }
       .se-detail-form-card {
         border: 1px solid #e2e8f0;
         border-radius: 14px;
@@ -2755,8 +2853,8 @@
                     line-height: 1.5;
                   "
                 >
-                  Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Potensi
-                  terjadinya clash MEP sangat tinggi pada zona ini.
+                  Rekomendasi akan ditampilkan berdasarkan hasil pencocokan
+                  Change Request dengan data Knowledge Base di database.
                 </p>
               </div>
             </div>
@@ -8539,69 +8637,7 @@
       // KNOWLEDGE BASE MODULE (ALGORITMA & CRUD)
       // =========================================
 
-      const kbSeedDatabase = [
-        {
-          id: "KM-001",
-          date: "2026-04-12",
-          title: "SOP Pengawasan Pengecoran Lantai Jembatan",
-          category: "Standardization",
-          author: "Galuh Rizkiya",
-          status: "PUBLISHED",
-          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang.",
-          imageUrl: "jembatan.jpg",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-004", "CR-015"],
-          relatedRisks: [
-            "R3.6 - Perubahan mix design",
-            "R4.4 - Kebutuhan rework",
-          ],
-        },
-        {
-          id: "KM-002",
-          date: "2026-05-20",
-          title: "Mitigasi Clash MEP vs Balok Struktur Utama",
-          category: "Lesson Learned",
-          author: "Tim Engineer IMS",
-          status: "PUBLISHED",
-          desc: "Catatan lesson learned mengenai seringnya clash antara rute pipa plumbing dengan dimensi balok pracetak. Solusi: Overlay wajib 3D BIM sebelum persetujuan shop drawing.",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-008"],
-          relatedRisks: [
-            "R1.3 - Kondisi lapangan berubah",
-            "R5.2 - Material tidak sesuai spesifikasi",
-          ],
-        },
-        {
-          id: "KM-003",
-          date: "2026-06-02",
-          title: "Pedoman Evaluasi Kapasitas Parkir Kampus",
-          category: "Standardization",
-          author: "Galuh Rizkiya",
-          status: "PUBLISHED",
-          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing.",
-          imageUrl: "parkirmotor.jpg",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-010", "CR-011"],
-          relatedRisks: [
-            "R8.3 - Perubahan akses dan ruang kerja",
-            "R8.5 - Gangguan sosial masyarakat",
-          ],
-        },
-        {
-          id: "KM-004",
-          date: "2026-06-15",
-          title: "Family Pipa PPRC 3 inch (Revit)",
-          category: "BIM Object",
-          author: "Dedi Kurnia",
-          status: "DRAFT",
-          desc: "Library Revit 2025 untuk komponen pipa PPRC lengkap dengan parameter routing preferences lokal.",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-008"],
-          relatedRisks: ["R5.4 - Perubahan vendor atau submittal"],
-        },
-      ];
-
-      let kbDatabase = [...kbSeedDatabase];
+      let kbDatabase = [];
 
       let kbCurrentTab = "all";
       let kbEditingId = null;
@@ -8642,6 +8678,15 @@
             saran: row.saran || "",
           },
           actualImpact: row.actual_impact || "",
+          crImpact: {
+            cost: row.cr_impact_cost ?? "",
+            time: row.cr_impact_time ?? "",
+            scope: row.cr_impact_scope ?? "",
+            quality: row.cr_impact_quality ?? "",
+            safety: row.cr_impact_safety ?? "",
+            actualTime: row.cr_time_impact ?? "",
+            actualCost: row.cr_cost_impact ?? "",
+          },
           appliedSolution: row.applied_solution || "",
           documentFile: row.documentFile || "",
         };
@@ -8661,14 +8706,14 @@
 
           if (result.status === "success") {
             const docs = (result.data || []).map(kbNormalizeApiDoc);
-            kbDatabase = docs.length ? docs : [...kbSeedDatabase];
+            kbDatabase = docs;
           } else {
             console.error("Gagal memuat Knowledge Base:", result.message);
-            if (!kbDatabase.length) kbDatabase = [...kbSeedDatabase];
+            kbDatabase = [];
           }
         } catch (error) {
           console.error("Error memuat Knowledge Base:", error);
-          if (!kbDatabase.length) kbDatabase = [...kbSeedDatabase];
+          kbDatabase = [];
         } finally {
           kbIsLoading = false;
           kbUpdateKPI();
@@ -8881,6 +8926,230 @@
         }
       }
 
+      function kbFormatRupiah(value) {
+        const number = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+        if (!Number.isFinite(number)) return kbSafeText(value || "-");
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0,
+        }).format(number);
+      }
+
+      function kbParseJsonArray(raw) {
+        if (!raw || typeof raw !== "string") return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function kbRenderDescriptionHTML(desc) {
+        const rawDesc = String(desc || "");
+        const compactDesc = rawDesc.replace(/\s+/g, " ").trim();
+        const extractGeneratedValue = (label, nextLabels) => {
+          const nextPattern = nextLabels.map((item) => item.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+          const regex = new RegExp(`${label}:\\s*([\\s\\S]*?)(?=\\s+(?:${nextPattern}):|$)`, "i");
+          const match = compactDesc.match(regex);
+          return match ? match[1].trim() : "";
+        };
+        const generatedSummary = extractGeneratedValue("Ringkasan CR", [
+          "Catatan lapangan",
+          "Insight",
+          "Saran",
+          "Catatan PM",
+        ]);
+        const generatedFieldNote = extractGeneratedValue("Catatan lapangan", [
+          "Insight",
+          "Saran",
+          "Catatan PM",
+        ]);
+        const sections = rawDesc
+          .split(/\n{2,}/)
+          .map((part) => part.trim())
+          .filter(Boolean);
+        const hiddenLabels = new Set([
+          "change request",
+          "wbs",
+          "risiko",
+          "insight",
+          "saran",
+          "catatan pm",
+        ]);
+        let displaySections = sections
+          .map((section) => {
+            const match = section.match(/^([^:\n]{2,40}):\s*([\s\S]*)$/);
+            if (!match) return { label: "Deskripsi", value: section };
+
+            const label = match[1].trim();
+            if (hiddenLabels.has(label.toLowerCase())) return null;
+
+            return {
+              label: label.replace(/^Ringkasan CR$/i, "Deskripsi").replace(/^Catatan lapangan$/i, "Catatan"),
+              value: match[2].trim(),
+            };
+          })
+          .filter((item) => item && item.value);
+
+        if (!displaySections.length && (generatedSummary || generatedFieldNote)) {
+          displaySections = [
+            generatedSummary ? { label: "Deskripsi", value: generatedSummary } : null,
+            generatedFieldNote ? { label: "Catatan", value: generatedFieldNote } : null,
+          ].filter(Boolean);
+        }
+
+        if (!displaySections.length) {
+          return `<div class="kb-detail-card"><strong>Deskripsi</strong><p>-</p></div>`;
+        }
+
+        return `
+          <div class="kb-detail-stack">
+            ${displaySections
+              .map(
+                ({ label, value }) => `
+                  <div class="kb-detail-card">
+                    <strong>${kbSafeText(label)}</strong>
+                    <p>${kbSafeText(value)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      function kbGetObjectValue(row, column) {
+        const value = row[column.key] ?? (column.altKey ? row[column.altKey] : undefined);
+        return value === null || value === undefined || value === "" ? "-" : value;
+      }
+
+      function kbRenderImpactTable(title, rawJson, columns) {
+        const rows = kbParseJsonArray(rawJson);
+        if (!rows.length) return "";
+
+        return `
+          <div>
+            <label style="margin-bottom:8px;">${kbSafeText(title)}</label>
+          <table class="kb-impact-table">
+            <thead>
+              <tr>
+                  ${columns
+                    .map((col) => `<th class="${col.numeric ? "is-number" : ""}">${kbSafeText(col.label)}</th>`)
+                    .join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (row) => `
+                    <tr>
+                        ${columns
+                          .map((col) => `<td class="${col.numeric ? "is-number" : ""}">${kbSafeText(kbGetObjectValue(row, col))}</td>`)
+                          .join("")}
+                    </tr>
+                  `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+          </div>
+        `;
+      }
+
+      function kbRenderImpactHTML(actualImpact, crImpact = {}) {
+        const lines = String(actualImpact || "")
+          .split(/\n{2,}/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        const getLineValue = (label) => {
+          const found = lines.find((line) => line.toLowerCase().startsWith(label.toLowerCase() + ":"));
+          return found ? found.slice(found.indexOf(":") + 1).trim() : "";
+        };
+
+        const actualTime = getLineValue("Dampak waktu aktual") || (crImpact.actualTime !== "" ? `${crImpact.actualTime} hari` : "");
+        const actualCost = getLineValue("Dampak biaya aktual") || (crImpact.actualCost !== "" ? crImpact.actualCost : "");
+        const estimatedCost = getLineValue("Estimasi dampak biaya") || crImpact.cost || "";
+        const estimatedTime = getLineValue("Estimasi dampak waktu") || crImpact.time || "";
+        const estimatedScope = getLineValue("Estimasi dampak lingkup") || crImpact.scope || "";
+        const qualityImpact = getLineValue("Dampak mutu") || crImpact.quality || "";
+        const safetyImpact = getLineValue("Dampak K3") || crImpact.safety || "";
+        const impactTables = [
+          kbRenderImpactTable("Estimasi Dampak Biaya", estimatedCost, [
+            { key: "item", label: "Item" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Estimasi Dampak Waktu", estimatedTime, [
+            { key: "aktivitas", label: "Aktivitas" },
+            { key: "sifat", label: "Sifat" },
+            { key: "waktu", label: "Waktu", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Estimasi Dampak Lingkup", estimatedScope, [
+            { key: "lingkup", label: "Lingkup" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "dokumenAcuan", altKey: "dokumen", label: "Dokumen Acuan" },
+          ]),
+          kbRenderImpactTable("Dampak Mutu", qualityImpact, [
+            { key: "item", label: "Item" },
+            { key: "spesifikasiAwal", altKey: "spekAwal", label: "Spesifikasi Awal" },
+            { key: "spesifikasiBaru", altKey: "spekBaru", label: "Spesifikasi Baru" },
+            { key: "tingkatMutu", altKey: "mutu", label: "Tingkat Mutu" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Dampak Keselamatan", safetyImpact, [
+            { key: "aktivitas", label: "Aktivitas" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kebutuhan", label: "Kebutuhan" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+          ]),
+        ].filter(Boolean).join("");
+        const remaining = lines.filter(
+          (line) =>
+            !line.toLowerCase().startsWith("dampak waktu aktual:") &&
+            !line.toLowerCase().startsWith("dampak biaya aktual:") &&
+            !line.toLowerCase().startsWith("estimasi dampak biaya:") &&
+            !line.toLowerCase().startsWith("estimasi dampak waktu:") &&
+            !line.toLowerCase().startsWith("estimasi dampak lingkup:") &&
+            !line.toLowerCase().startsWith("dampak mutu:") &&
+            !line.toLowerCase().startsWith("dampak k3:"),
+        );
+
+        return `
+          <div class="kb-impact-panel">
+            <div class="kb-impact-summary">
+              <div class="kb-impact-metric">
+                <span>Dampak Waktu Aktual</span>
+                <b>${kbSafeText(actualTime || "-")}</b>
+              </div>
+              <div class="kb-impact-metric">
+                <span>Dampak Biaya Aktual</span>
+                <b>${actualCost !== "" ? kbFormatRupiah(actualCost) : "-"}</b>
+              </div>
+            </div>
+            ${
+              impactTables
+            }
+            ${
+              remaining.length
+                ? `<div class="kb-detail-stack">${remaining
+                    .map((line) => `<div class="kb-detail-card"><strong>Dampak Lain</strong><p>${kbSafeText(line)}</p></div>`)
+                    .join("")}</div>`
+                : ""
+            }
+          </div>
+        `;
+      }
+
       // -- VIEW LOGIC --
       function kbOpenViewModal(id) {
         const doc = kbDatabase.find((x) => x.id === id);
@@ -8945,7 +9214,7 @@
             </div>
             <div class="view-field" style="margin-top:16px;">
               <label>Dampak Aktual / Estimasi</label>
-              <div class="view-value" style="white-space:pre-wrap; line-height:1.6;">${kbSafeText(doc.actualImpact || "-")}</div>
+              ${kbRenderImpactHTML(doc.actualImpact, doc.crImpact)}
             </div>
           `;
         }
@@ -8968,9 +9237,7 @@
           </div>
           <div class="view-field" style="margin-top:16px;">
             <label>Deskripsi / Abstrak Singkat</label>
-           <div class="view-value" style="background:#f8fafc; padding:16px; border-radius:10px; line-height:1.6; border: 1px solid #e2e8f0; white-space:pre-wrap;">
-              ${kbSafeText(doc.desc)}
-            </div>
+            ${kbRenderDescriptionHTML(doc.desc)}
           </div>
           ${mappingSectionHTML}
           ${autoLessonSectionHTML}
