@@ -30,8 +30,33 @@ try {
     exit();
 }
 
+function ensureProjectAccess(PDO $pdo, string $projectId): void {
+    if ($projectId === '' || $_SESSION['role'] === 'Admin') {
+        return;
+    }
+
+    $stmt = $pdo->prepare("
+        SELECT COUNT(*) 
+        FROM project_assignments 
+        WHERE project_id = :project_id 
+          AND user_id = :user_id 
+          AND role_assigned = :role
+    ");
+    $stmt->execute([
+        'project_id' => $projectId,
+        'user_id' => $_SESSION['user_id'],
+        'role' => $_SESSION['role']
+    ]);
+
+    if ((int)$stmt->fetchColumn() === 0) {
+        echo json_encode(["status" => "error", "message" => "Project tidak ter-assign ke user ini."]);
+        exit();
+    }
+}
+
 // Ambil Project ID jika dikirim dari frontend (opsional untuk mendukung global/all projects view)
 $projectId = $_GET['project_id'] ?? $_GET['projectId'] ?? '';
+ensureProjectAccess($pdo, $projectId);
 
 // Siapkan parameter array untuk PDO binding secara dinamis
 $params = [];
@@ -74,8 +99,21 @@ try {
             MAX(cr.changeCategory) as changeCategory, 
             MAX(cr.status) as status, 
             MAX(cr.risk) as risk,
-            MAX(cr.riskVariable) as riskVariable
+            MAX(cr.projectArea) as projectArea,
+            MAX(cr.wbsLevel4) as wbsLevel4,
+            MAX(cr.wbsLevel5) as wbsLevel5,
+            MAX(cr.wbsLevel6) as wbsLevel6,
+            MAX(cr.riskCategory) as riskCategory,
+            MAX(cr.riskVariable) as riskVariable,
+            MAX(cr.riskDescription) as riskDescription,
+            MAX(kr.risk_kategori) as risk_kategori,
+            MAX(kr.risk_nama) as risk_nama,
+            MAX(kr.insight) as insight,
+            MAX(kr.saran) as saran
         FROM change_requests cr
+        LEFT JOIN knowledge_repository kr 
+            ON TRIM(cr.riskVariable) COLLATE utf8mb4_unicode_ci = TRIM(kr.risk_kode) COLLATE utf8mb4_unicode_ci
+            AND SUBSTRING(TRIM(cr.wbsLevel5), 1, 7) COLLATE utf8mb4_unicode_ci = TRIM(kr.wbs_kode) COLLATE utf8mb4_unicode_ci
         $whereRecent
         GROUP BY cr.changeId
         ORDER BY MAX(cr.changeDate) DESC 
@@ -93,7 +131,10 @@ try {
             MAX(cr.submittedBy) as submittedBy, 
             MAX(cr.changeDate) as changeDate,
             MAX(cr.risk) as risk,
+            MAX(cr.projectArea) as projectArea,
             MAX(cr.riskVariable) as riskVariable,
+            MAX(cr.riskCategory) as riskCategory,
+            MAX(cr.riskDescription) as riskDescription,
             MAX(cr.description) as description,
             MAX(cr.wbsLevel4) as wbsLevel4,
             MAX(cr.wbsLevel5) as wbsLevel5,
@@ -101,6 +142,8 @@ try {
             MAX(cr.costImpact) as costImpact,
             MAX(cr.timeImpact) as timeImpact,
             MAX(cr.status) as status,
+            MAX(kr.risk_kategori) as risk_kategori,
+            MAX(kr.risk_nama) as risk_nama,
             MAX(kr.insight) as insight,
             MAX(kr.saran) as saran,
             MAX(cr.bimObjectId) as bimObjectId

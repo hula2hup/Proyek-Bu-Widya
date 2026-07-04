@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $reviewId      = $_POST['reviewId'] ?? '';
     $approvalDate  = $_POST['approvalDate'] ?? '';
     $approvalNotes = $_POST['approvalNotes'] ?? '';
+    $costImpactRaw = $_POST['costImpact'] ?? '0';
+    $timeImpactRaw = $_POST['timeImpact'] ?? '0';
     
     // Nilai dari dropdown ('PENDING', 'APPROVED', atau 'REJECTED') ditampung ke variabel $status
     $status        = $_POST['approvalDecision'] ?? ''; 
@@ -42,6 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(["status" => "error", "message" => "Status tidak valid. Gunakan PENDING, APPROVED, atau REJECTED."]);
             exit;
         }
+
+        $costImpact = is_numeric($costImpactRaw) ? (float)$costImpactRaw : 0;
+        $timeImpact = is_numeric($timeImpactRaw) ? (int)$timeImpactRaw : 0;
+        if ($costImpact < 0 || $timeImpact < 0) {
+            echo json_encode(["status" => "error", "message" => "Impact Analysis biaya dan waktu tidak boleh bernilai negatif."]);
+            exit;
+        }
         
         // Validasi format tanggal
         $dateTime = DateTime::createFromFormat('Y-m-d', $approvalDate);
@@ -57,6 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 SET reviewId = ?, 
                     approvalDate = ?, 
                     approvalNotes = ?,
+                    costImpact = ?,
+                    timeImpact = ?,
                     status = ?
                 WHERE changeId = ?";
                 
@@ -67,6 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $reviewId, 
             $approvalDate, 
             $approvalNotes, 
+            $costImpact,
+            $timeImpact,
             $status, // PENDING, APPROVED, atau REJECTED
             $changeId
         ]);

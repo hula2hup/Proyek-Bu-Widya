@@ -336,6 +336,47 @@
     .capsule-badge:hover::before {
       opacity: 1;
     }
+    .report-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .report-paper { background: #ffffff; border: 1px solid var(--line); border-radius: 8px; padding: 34px 38px; color: #111827; font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.65; min-height: 520px; }
+    .report-paper.empty { display: flex; align-items: center; justify-content: center; text-align: center; color: #64748b; font-family: Inter, "Segoe UI", Arial, sans-serif; font-size: 13px; background: #f8fafc; }
+    .report-letterhead { text-align: center; border-bottom: 3px double #111827; padding-bottom: 12px; margin-bottom: 20px; }
+    .report-letterhead h2, .report-letterhead p { margin: 0; }
+    .report-letterhead h2 { font-size: 17px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .report-meta { width: 100%; margin: 12px 0 20px; border-collapse: collapse; font-size: 14px; }
+    .report-meta td { border: 0; padding: 2px 0; vertical-align: top; }
+    .report-meta td:first-child { width: 94px; }
+    .report-title { text-align: center; text-decoration: underline; font-weight: 700; text-transform: uppercase; margin: 20px 0 12px; }
+    .report-section-title { font-weight: 700; margin: 14px 0 4px; }
+    .report-list { margin: 4px 0 0 18px; padding: 0; }
+    .report-signatures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 34px; text-align: center; font-family: "Times New Roman", Times, serif; }
+    .report-signature-box { min-height: 116px; display: flex; flex-direction: column; justify-content: space-between; }
+    .report-signature-name { border-top: 1px solid #111827; padding-top: 6px; font-weight: 700; }
+    .kb-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .kb-kpi-card { background: #ffffff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; border-left: 5px solid var(--primary); box-shadow: 0 10px 25px rgba(15,23,42,.03); }
+    .kb-kpi-card h3 { margin: 0 0 8px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    .kb-kpi-card .num { display: block; color: #0f172a; font-size: 30px; font-weight: 800; line-height: 1; }
+    .kb-kpi-card small { display: block; margin-top: 8px; color: var(--muted); font-size: 12px; }
+    .kb-toolbar { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; margin-bottom: 16px; }
+    .kb-tabs { display: flex; gap: 8px; border-bottom: 1px solid var(--line); margin-bottom: 16px; }
+    .kb-tab { padding: 10px 12px; color: var(--muted); font-size: 13px; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; }
+    .kb-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .kb-doc-title { font-weight: 800; color: #1e3a5f; }
+    .kb-doc-desc { margin-top: 4px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+    .kb-detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px; }
+    .kb-view-field label { color: #94a3b8; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .kb-view-value { margin-top: 5px; color: #0f172a; font-size: 13px; font-weight: 600; line-height: 1.55; }
+    .kb-detail-box { padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 12px; background: #f8fafc; line-height: 1.65; white-space: pre-wrap; }
+    .kb-pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .kb-impact-panel { display: grid; gap: 14px; margin-top: 8px; }
+    .kb-impact-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .kb-impact-metric { padding: 14px 16px; border: 1px solid #dbeafe; border-radius: 12px; background: #f8fbff; }
+    .kb-impact-metric span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .kb-impact-metric b { color: #0f2d52; font-size: 15px; }
+    .kb-impact-table-wrap { overflow-x: auto; }
+    .kb-impact-table { min-width: 680px; }
+    .kb-impact-table td.is-number, .kb-impact-table th.is-number { text-align: right; }
+    @media (max-width: 900px) { .kb-kpi-grid, .kb-detail-grid, .kb-impact-summary { grid-template-columns: 1fr; } }
+    @media print { .report-paper { border: 0; border-radius: 0; padding: 0; min-height: auto; box-shadow: none; } .card.report-card { border: 0; box-shadow: none; padding: 0; } }
   </style>
 </head>
 <body>
@@ -356,7 +397,8 @@
       <button class="active" onclick="showSection('dashboard', this)">📊 01. Dashboard Monitoring</button>
       <button onclick="showSection('approval', this)">⚖️ 02. Review & Approval</button>
       <button onclick="showSection('laporan', this)">📑 03. Laporan Akhir Proyek</button>
-      <button onclick="showSection('bim', this)">🏢 04. BIM & WBS Viewer</button>
+      <button onclick="showSection('knowledge-base', this)">📚 04. Knowledge Base</button>
+      <button onclick="showSection('bim', this)">🏢 05. BIM & WBS Viewer</button>
     </nav>
    <div class="aside-footer no-print">
       <button class="btn-print" onclick="window.print()" style="margin-bottom: 20px;">🖨️ Cetak / Simpan PDF</button>
@@ -404,10 +446,10 @@
           </div>
         </div>
         <div class="card metric" style="border-color: var(--primary)">
-          <h3>SPI (Schedule Perf.)</h3><div class="num">0.94</div><small>Indikasi sedikit keterlambatan</small>
+          <h3>SPI (Schedule Perf.)</h3><div class="num" id="cardSpi">-</div><small id="cardSpiNote">Berdasarkan Kurva S proyek aktif</small>
         </div>
         <div class="card metric" style="border-color: var(--success)">
-          <h3>Progress Fisik</h3><div class="num">68.5%</div><small>Berdasarkan Laporan Terakhir</small>
+          <h3>Progress Fisik</h3><div class="num" id="cardProgress">-</div><small>Berdasarkan laporan terakhir proyek aktif</small>
         </div>
       </div>
       <div class="card" style="margin-bottom: 20px;">
@@ -491,12 +533,27 @@
               <tr><td><b>Timestamp</b></td><td><span id="detailTime">Loading...</span></td></tr>
               <tr><td><b>BIM Object ID</b></td><td>Loading...</td></tr>
               <tr><td><b>WBS Mapping</b></td><td>Loading...</td></tr>
-              <tr><td><b>Impact Analysis</b></td><td>Biaya: Loading... | Waktu: Loading...</td></tr>
+              <tr>
+                <td><b>Impact Analysis</b></td>
+                <td>
+                  <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:end;">
+                    <div>
+                      <label for="pmCostImpact" style="margin-bottom:4px;">Biaya (Rp)</label>
+                      <input type="number" id="pmCostImpact" min="0" step="1000" placeholder="0" style="padding:8px 10px;font-size:12px;">
+                    </div>
+                    <div>
+                      <label for="pmTimeImpact" style="margin-bottom:4px;">Waktu (Hari)</label>
+                      <input type="number" id="pmTimeImpact" min="0" step="1" placeholder="0" style="padding:8px 10px;font-size:12px;">
+                    </div>
+                  </div>
+                  <div id="pmImpactSummary" style="font-size:11px;color:var(--muted);margin-top:6px;">Autofill dari database, dapat disesuaikan PM.</div>
+                </td>
+              </tr>
               <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Loading...</span></td></tr>
             </table>
             <div class="ai-box">
               <h4>✨ AI Recommendation Engine</h4>
-              <p style="font-size:12px;margin:0;color:#4c1d95;">Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Pengalihan pipa di zona ini sering menyebabkan benturan dengan kabel tray. Disarankan cek koordinasi MEP kembali.</p>
+              <p style="font-size:12px;margin:0;color:#4c1d95;">Rekomendasi akan ditampilkan berdasarkan pencocokan WBS, risiko, dan Knowledge Base proyek dari database.</p>
             </div>
           </div>
           <div class="card" style="border-left: 4px solid var(--primary)">
@@ -525,12 +582,13 @@
     <!-- SECTION 03: LAPORAN -->
     <section id="laporan" class="section">
       <div class="topbar"><div><h2>Kompilasi Laporan Akhir & Lesson Learned</h2><p>Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.</p></div></div>
-      <div class="card" style="margin-bottom:20px;">
-        <h3 style="display:flex;justify-content:space-between;">Draft Laporan Akhir Proyek<button class="btn secondary no-print">Generate Ringkasan Otomatis</button></h3>
-        <div style="background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:20px;font-size:13px;line-height:1.6;">
-          <p><b>Executive Summary:</b><br>Proyek Pembangunan Gedung (Tahap 1) telah mencapai progres aktual sebesar <strong>68.5%</strong>. Terdapat total 8 Change Request selama masa konstruksi yang didominasi oleh kondisi lapangan (clash MEP).</p>
-          <p><b>Kinerja Waktu & Biaya:</b><br>SPI rata-rata: 0.94. Percepatan waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2 hari.</p>
-          <p><b>Lesson Learned Terverifikasi:</b><br>Clash detection wajib disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing. Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.</p>
+      <div class="card report-card" style="margin-bottom:20px;">
+        <div class="report-toolbar">
+          <h3 style="margin:0;">Draft Laporan Akhir Proyek</h3>
+          <button class="btn secondary no-print" onclick="generateFinalReport()">Generate Ringkasan Otomatis</button>
+        </div>
+        <div id="finalReportDraft" class="report-paper empty">
+          Draft laporan masih kosong. Pilih proyek aktif, lalu klik Generate Ringkasan Otomatis untuk membuat dokumen siap cetak.
         </div>
       </div>
       <div class="card">
@@ -550,7 +608,69 @@
       </div>
     </section>
 
-    <!-- SECTION 04: BIM -->
+    <!-- SECTION 04: KNOWLEDGE BASE -->
+    <section id="knowledge-base" class="section">
+      <div class="topbar">
+        <div>
+          <h2>Knowledge Base Proyek</h2>
+          <p>Lesson learned dan referensi pengetahuan yang terhubung dengan Change Request pada proyek aktif.</p>
+        </div>
+      </div>
+
+      <div class="kb-kpi-grid">
+        <div class="kb-kpi-card">
+          <h3>Total Dokumen</h3>
+          <span class="num" id="pmKbTotal">0</span>
+          <small>Knowledge terkait proyek</small>
+        </div>
+        <div class="kb-kpi-card" style="border-left-color: var(--accent);">
+          <h3>Standardization</h3>
+          <span class="num" id="pmKbStd">0</span>
+          <small>SOP & pedoman</small>
+        </div>
+        <div class="kb-kpi-card" style="border-left-color: var(--warning);">
+          <h3>Lesson Learned</h3>
+          <span class="num" id="pmKbLesson">0</span>
+          <small>Pembelajaran CR</small>
+        </div>
+        <div class="kb-kpi-card" style="border-left-color: var(--danger);">
+          <h3>BIM Object</h3>
+          <span class="num" id="pmKbBim">0</span>
+          <small>Objek/komponen BIM</small>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kb-toolbar">
+          <h3 style="margin:0;">Direktori Pengetahuan</h3>
+          <input type="text" id="pmKbSearch" placeholder="Cari Doc ID, judul, kategori, CR..." style="max-width:320px;" oninput="pmKbApplyFilter()">
+        </div>
+        <div class="kb-tabs">
+          <div class="kb-tab active" onclick="pmKbSetTab('all', this)">Semua</div>
+          <div class="kb-tab" onclick="pmKbSetTab('Standardization', this)">Standardization</div>
+          <div class="kb-tab" onclick="pmKbSetTab('Lesson Learned', this)">Lesson Learned</div>
+          <div class="kb-tab" onclick="pmKbSetTab('BIM Object', this)">BIM Object</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Doc ID</th>
+              <th>Tanggal</th>
+              <th>Judul Dokumen</th>
+              <th>Kategori</th>
+              <th>Terkait CR</th>
+              <th>Status</th>
+              <th style="text-align:center;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="pmKbTableBody">
+            <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">Memuat Knowledge Base proyek...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SECTION 05: BIM -->
     <section id="bim" class="section">
       <div class="topbar"><div><h2>BIM & WBS Viewer (Read-Only)</h2><p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p></div></div>
       <div class="card" style="background:#1e293b;color:white;text-align:center;padding:60px 20px;border-radius:20px;">
@@ -608,6 +728,17 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL: KNOWLEDGE BASE DETAIL -->
+    <div id="pmKbModal" class="modal-overlay" onclick="closeModalOutside(event,'pmKbModal')">
+      <div class="modal-content" style="max-width:860px;">
+        <div class="modal-header">
+          <h3 id="pmKbModalTitle">Detail Knowledge Base</h3>
+          <button class="btn-close" onclick="closeModal('pmKbModal')">✖</button>
+        </div>
+        <div class="modal-body" id="pmKbModalBody"></div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -643,6 +774,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Variabel global untuk menyimpan data proyek yang aktif
 let activeProjects = [];
+let currentProjectId = '';
+let latestDashboardStats = null;
+let latestSCurveSummary = { progress: null, spi: null, delayDays: 0 };
+let sCurveChart = null;
+
+function escapeHtml(value) {
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+}
+
+function escapeAttr(value) {
+    return escapeHtml(value).replace(/\r?\n/g, "&#10;");
+}
 
 function fetchAssignedProjects() {
     fetch('api_get_projects.php')
@@ -742,30 +887,208 @@ function renderProjectDropdown(projects) {
     });
 
     // Event listener jika user mengganti proyek di dropdown
-    selector.addEventListener('change', function(e) {
+    selector.onchange = function(e) {
         const selectedProjectId = e.target.value;
         // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
         renderDashboardData(selectedProjectId); 
-    });
+    };
 }
 
 // Fungsi Utama untuk me-refresh data Dashboard berdasarkan Proyek yang dipilih
 function renderDashboardData(projectId) {
     console.log("Memuat data dashboard untuk proyek:", projectId);
+    if (currentProjectId !== projectId) {
+        currentProjectId = projectId;
+        clearFinalReportDraft();
+    }
     
     // 1. Jalankan fungsi pengambilan angka statistik card
     fetchDashboardStats(projectId);
+    fetchSCurveData(projectId);
+    if (document.getElementById("knowledge-base")?.classList.contains("active")) {
+        pmKbLoadData(projectId);
+    }
     
     // 2. Jalankan fungsi render tabel/grafik Anda yang sudah ada sebelumnya
     // (misal: fetchInboxRequests(projectId); atau sejenisnya)
 }
 
+function fetchSCurveData(projectId) {
+    const canvas = document.getElementById('sCurveChart');
+    if (!canvas || !projectId) return;
+
+    fetch(`api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`)
+        .then(response => response.json())
+        .then(res => {
+            if (res.status !== 'success') {
+                console.error("Gagal memuat Kurva S:", res.message);
+                renderSCurveChart([], [], []);
+                updateSCurveCards(null, null, 0);
+                return;
+            }
+
+            const rows = Array.isArray(res.curve_data) ? res.curve_data : [];
+            const delayDays = Number(res.total_delay_days || 0);
+            const labels = rows.map(row => `Mg ${row.periode_ke}`);
+            const plan = rows.map(row => row.rencana_kumulatif === null ? null : Number(row.rencana_kumulatif));
+            const actual = rows.map(row => row.realisasi_kumulatif === null ? null : Number(row.realisasi_kumulatif));
+
+            renderSCurveChart(labels, plan, actual);
+
+            const lastActualIndex = actual.map(v => v !== null && !Number.isNaN(v)).lastIndexOf(true);
+            if (lastActualIndex >= 0) {
+                const lastActual = actual[lastActualIndex];
+                const matchingPlan = plan[lastActualIndex] || 0;
+                const spi = matchingPlan > 0 ? lastActual / matchingPlan : null;
+                updateSCurveCards(lastActual, spi, delayDays);
+            } else {
+                updateSCurveCards(null, null, delayDays);
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching Kurva S:", error);
+            renderSCurveChart([], [], []);
+            updateSCurveCards(null, null, 0);
+        });
+}
+
+function renderSCurveChart(labels, plan, actual) {
+    const canvas = document.getElementById('sCurveChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    if (sCurveChart) sCurveChart.destroy();
+
+    sCurveChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels.length ? labels : ['Belum ada data'],
+        datasets: [
+          { label:'Rencana (Plan %)', data: plan.length ? plan : [0], borderColor:'#64748b', borderWidth:3, borderDash:[5,5], tension:0.4, pointBackgroundColor:'#64748b' },
+          { label:'Realisasi Aktual (Actual %)', data: actual.length ? actual : [0], borderColor:'#1d4ed8', backgroundColor:'rgba(29,78,216,0.1)', borderWidth:4, tension:0.4, fill:true, pointBackgroundColor:'#1d4ed8', pointRadius:5, pointHoverRadius:7, spanGaps:false }
+        ]
+      },
+      options: {
+        responsive:true, maintainAspectRatio:false,
+        plugins: { legend:{ position:'bottom', labels:{ font:{ family:'Inter', weight:'bold' } } }, tooltip:{ mode:'index', intersect:false } },
+        scales: {
+          y:{ beginAtZero:true, max:100, title:{ display:true, text:'Progress Fisik (%)', font:{ weight:'bold' } }, grid:{ color:'#e2e8f0' } },
+          x:{ grid:{ display:false } }
+        },
+        interaction:{ mode:'nearest', axis:'x', intersect:false }
+      }
+    });
+}
+
+function updateSCurveCards(progress, spi, delayDays = 0) {
+    const progressEl = document.getElementById("cardProgress");
+    const spiEl = document.getElementById("cardSpi");
+    const spiNoteEl = document.getElementById("cardSpiNote");
+    latestSCurveSummary = { progress, spi, delayDays: Number(delayDays || 0) };
+
+    if (progressEl) progressEl.innerText = progress === null ? '-' : `${progress.toFixed(1)}%`;
+    if (spiEl) spiEl.innerText = spi === null ? '-' : spi.toFixed(2);
+    if (spiNoteEl) {
+        if (spi === null) spiNoteEl.innerText = "Belum ada realisasi progres";
+        else if (spi >= 1) spiNoteEl.innerText = "Sesuai atau lebih cepat dari rencana";
+        else spiNoteEl.innerText = "Indikasi keterlambatan terhadap rencana";
+    }
+}
+
+function clearFinalReportDraft() {
+    const draft = document.getElementById("finalReportDraft");
+    if (!draft) return;
+    draft.className = "report-paper empty";
+    draft.innerHTML = "Draft laporan masih kosong. Pilih proyek aktif, lalu klik Generate Ringkasan Otomatis untuk membuat dokumen siap cetak.";
+}
+
+function getActiveProject() {
+    const selector = document.getElementById("projectDropdown");
+    const selectedId = currentProjectId || selector?.value || activeProjects[0]?.project_id || "";
+    return activeProjects.find(project => project.project_id === selectedId) || activeProjects[0] || null;
+}
+
+function formatReportDate(date = new Date()) {
+    return date.toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+}
+
+function reportPercent(value) {
+    return value === null || value === undefined || Number.isNaN(Number(value)) ? "-" : `${Number(value).toFixed(1)}%`;
+}
+
+function reportSpi(value) {
+    return value === null || value === undefined || Number.isNaN(Number(value)) ? "-" : Number(value).toFixed(2);
+}
+
+function getMostFrequent(items, getter, fallback = "-") {
+    const counter = new Map();
+    items.forEach(item => {
+        const raw = getter(item);
+        const value = raw && String(raw).trim() ? String(raw).trim() : "";
+        if (!value) return;
+        counter.set(value, (counter.get(value) || 0) + 1);
+    });
+    return [...counter.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || fallback;
+}
+
+function generateFinalReport() {
+    const draft = document.getElementById("finalReportDraft");
+    const project = getActiveProject();
+    if (!draft || !project) return;
+
+    const stats = latestDashboardStats || {};
+    const recentActivities = Array.isArray(stats.recent_activities) ? stats.recent_activities : [];
+    const pendingRequests = Array.isArray(stats.pending_requests) ? stats.pending_requests : [];
+    const allActivities = [...recentActivities, ...pendingRequests];
+
+    const pmName = document.getElementById("userFullName")?.innerText || project.project_manager_name || "Project Manager";
+    const seName = project.site_engineer_name || "Site Engineer";
+    const adminName = "Admin/MK";
+    const projectId = project.project_id || "-";
+    const projectName = project.project_name || "-";
+    const projectStatus = project.status || project.project_status || "-";
+    const totalChanges = Number(project.total_changes ?? 0);
+    const underReview = Number(stats.under_review ?? 0);
+    const needMitigation = Number(stats.need_mitigation ?? 0);
+    const approved = Number(stats.approved ?? project.approved_changes ?? 0);
+    const rejected = Number(stats.rejected ?? 0);
+    const progress = reportPercent(latestSCurveSummary.progress);
+    const spi = reportSpi(latestSCurveSummary.spi);
+    const delayDays = Number(latestSCurveSummary.delayDays || 0);
+    const riskFocus = getMostFrequent(allActivities, item => item.risk_kategori || item.riskCategory || item.riskVariable, "Belum ada risiko dominan");
+    const wbsFocus = getMostFrequent(allActivities, item => item.wbsLevel5 || item.wbsLevel4, "Belum ada WBS dominan");
+    const lessonSource = allActivities.find(item => item.insight || item.saran || item.riskDescription) || {};
+    const insight = lessonSource.insight || lessonSource.riskDescription || "Belum terdapat lesson learned terverifikasi dari Knowledge Repository untuk proyek ini.";
+    const recommendation = lessonSource.saran || "Lakukan pemantauan berkala terhadap WBS kritis, validasi risiko sebelum persetujuan perubahan, dan dokumentasikan keputusan PM sebagai referensi Knowledge Base.";
+    const today = formatReportDate();
+    const reportNo = `LAP/${projectId.replace(/[^A-Z0-9]/gi, "")}/${new Date().getFullYear()}`;
+
+    draft.className = "report-paper";
+    draft.innerHTML = `
+      <div class="report-letterhead"><h2>Laporan Akhir Proyek dan Lesson Learned</h2><p>Sistem Integrasi BIM - WBS - Change Risk Management</p></div>
+      <table class="report-meta"><tr><td>Nomor</td><td>: ${escapeHtml(reportNo)}</td></tr><tr><td>Lampiran</td><td>: Ringkasan kinerja proyek dan rekapitulasi change request</td></tr><tr><td>Perihal</td><td>: Penyampaian Laporan Akhir Proyek ${escapeHtml(projectName)}</td></tr></table>
+      <p>Kepada Yth.<br><strong>Manajemen Proyek / Admin MK</strong><br>di Tempat</p>
+      <p>Dengan hormat,</p>
+      <p>Bersama ini kami sampaikan laporan akhir proyek untuk <strong>${escapeHtml(projectName)}</strong> (${escapeHtml(projectId)}). Laporan ini disusun berdasarkan data historis pelaksanaan, evaluasi change request, pemetaan WBS, penilaian risiko, dan pembelajaran yang tersimpan pada Knowledge Base.</p>
+      <div class="report-title">Ringkasan Laporan Akhir Proyek</div>
+      <div class="report-section-title">A. Identitas dan Status Proyek</div>
+      <table class="report-meta"><tr><td>Project ID</td><td>: ${escapeHtml(projectId)}</td></tr><tr><td>Nama Proyek</td><td>: ${escapeHtml(projectName)}</td></tr><tr><td>Status</td><td>: ${escapeHtml(projectStatus)}</td></tr><tr><td>Project Manager</td><td>: ${escapeHtml(pmName)}</td></tr><tr><td>Site Engineer</td><td>: ${escapeHtml(seName)}</td></tr></table>
+      <div class="report-section-title">B. Kinerja Waktu dan Progres</div><p>Progres fisik terakhir tercatat sebesar <strong>${escapeHtml(progress)}</strong> dengan nilai SPI sebesar <strong>${escapeHtml(spi)}</strong>. Total dampak waktu dari change request yang telah disetujui tercatat sebesar <strong>${escapeHtml(delayDays)} hari</strong>. Nilai ini menjadi dasar evaluasi pengendalian jadwal dan prioritas tindak lanjut pada periode penutupan proyek.</p>
+      <div class="report-section-title">C. Rekapitulasi Change Request</div><ul class="report-list"><li>Total change request tercatat: <strong>${escapeHtml(totalChanges)}</strong></li><li>Dalam peninjauan PM: <strong>${escapeHtml(underReview)}</strong></li><li>Membutuhkan mitigasi risiko: <strong>${escapeHtml(needMitigation)}</strong></li><li>Disetujui: <strong>${escapeHtml(approved)}</strong></li><li>Ditolak: <strong>${escapeHtml(rejected)}</strong></li></ul>
+      <div class="report-section-title">D. WBS dan Risiko Dominan</div><p>Area WBS yang paling sering muncul dalam aktivitas perubahan adalah <strong>${escapeHtml(wbsFocus)}</strong>. Fokus risiko dominan yang perlu menjadi perhatian adalah <strong>${escapeHtml(riskFocus)}</strong>. Informasi ini digunakan sebagai acuan pengendalian ulang terhadap paket pekerjaan, aktivitas, sumber daya, serta keputusan persetujuan perubahan.</p>
+      <div class="report-section-title">E. Lesson Learned dan Rekomendasi</div><p><strong>Lesson Learned:</strong> ${escapeHtml(insight)}</p><p><strong>Rekomendasi:</strong> ${escapeHtml(recommendation)}</p>
+      <p>Demikian laporan ini disampaikan untuk menjadi dokumen penutupan, dasar evaluasi kinerja, dan referensi pengambilan keputusan pada proyek berikutnya. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.</p>
+      <p style="text-align:right;margin-top:26px;">${escapeHtml(today)}</p>
+      <div class="report-signatures"><div class="report-signature-box"><div>Disusun oleh,<br>Site Engineer</div><div class="report-signature-name">${escapeHtml(seName)}</div></div><div class="report-signature-box"><div>Diperiksa oleh,<br>Admin/MK</div><div class="report-signature-name">${escapeHtml(adminName)}</div></div><div class="report-signature-box"><div>Disetujui oleh,<br>Project Manager</div><div class="report-signature-name">${escapeHtml(pmName)}</div></div></div>
+    `;
+}
 // FUNGSI BARU: Mengambil angka statistik Under Review & Need Mitigation dari PHP
 function fetchDashboardStats(projectId) {
     fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`)
         .then(response => response.json())
         .then(res => {
             if (res.status === 'success') {
+                latestDashboardStats = res.data || null;
                 
                 // === Bagian A: Update Card Angka Utama (Atas) ===
                 const countReviewEl = document.getElementById("countUnderReview");
@@ -924,11 +1247,11 @@ function fetchDashboardStats(projectId) {
                                     <strong style="color:#0f172a; display:block;">${act.changeId} - ${act.changeCategory}</strong>
                                     
                                     <div style="margin: 4px 0 8px 0; display: flex; flex-wrap: wrap;">
-                                        <div class="capsule-badge capsule-wbs" data-tooltip="${wbsText}">
-                                            🗂️ WBS ${act.wbsLevel5 ? act.wbsLevel5.substring(0, 7) : 'Info'}
+                                        <div class="capsule-badge capsule-wbs" data-tooltip="${escapeAttr(wbsText)}">
+                                            WBS ${escapeHtml(act.wbsLevel5 ? act.wbsLevel5.substring(0, 7) : 'Info')}
                                         </div>
-                                        <div class="capsule-badge capsule-risk" data-tooltip="${riskText}">
-                                            ⚠️ R${riskCodeShort}
+                                        <div class="capsule-badge capsule-risk" data-tooltip="${escapeAttr(riskText)}">
+                                            R${escapeHtml(riskCodeShort)}
                                         </div>
                                     </div>
 
@@ -978,10 +1301,14 @@ function fetchDashboardStats(projectId) {
                         costImpact: cr.costImpact,
                         timeImpact: cr.timeImpact,
                         wbsLevel5: cr.wbsLevel5,
+                        wbsLevel4: cr.wbsLevel4,
+                        wbsLevel6: cr.wbsLevel6,
                         changeDate: cr.changeDate,
 
                         // PASTIKAN BARIS INI ADA:
                         riskVariable: cr.riskVariable,
+                        riskCategory: cr.riskCategory || cr.risk_kategori,
+                        riskDescription: cr.riskDescription,
 
                         // 🌟 TAMBAHKAN BARIS INI:
                         bimObjectId: cr.bimObjectId,
@@ -991,7 +1318,8 @@ function fetchDashboardStats(projectId) {
                         
                         // 🌟 TAMBAHKAN DUA BARIS INI AGAR DATA DARI PHP TIDAK HILANG 🌟
                         insight: cr.insight || cr.insightText || '',
-                        saran: cr.saran || cr.saranText || ''
+                        saran: cr.saran || cr.saranText || '',
+                        projectId: cr.projectArea || cr.projectId || ''
                     };
                 });
 
@@ -1008,6 +1336,16 @@ function fetchDashboardStats(projectId) {
             }
         })
         .catch(error => console.error("Error fetching dashboard stats:", error));
+}
+
+function pmNormalizeNumber(value, fallback = 0) {
+    if (value === null || value === undefined || value === '') return fallback;
+    const numeric = Number(String(value).replace(/[^\d.-]/g, ''));
+    return Number.isFinite(numeric) ? numeric : fallback;
+}
+
+function pmFormatCurrency(value) {
+    return 'Rp ' + pmNormalizeNumber(value).toLocaleString('id-ID');
 }
 
 // Fungsi untuk membuka Detail View dan Mengisi Datanya secara Dinamis Tanpa Mengubah Struktur HTML
@@ -1037,6 +1375,11 @@ function openCrDetail(cr) {
     if (document.getElementById("detailTitle")) {
         document.getElementById("detailTitle").innerText = `Detail Pengajuan: ${data.changeId || data.id || '-'}`;
     }
+
+    const changeIdInput = document.getElementById("changeId");
+    if (changeIdInput) {
+        changeIdInput.value = data.changeId || data.id || '';
+    }
     
     // DISESUAIKAN: Menembak id="sender" sesuai dengan tag HTML eksisting Anda
     if (document.getElementById("sender")) {
@@ -1060,14 +1403,17 @@ function openCrDetail(cr) {
         detailTable.rows[3].cells[1].innerText = data.wbsLevel5 || '-';
         
         // Baris 5 (Index 4): Impact Analysis (Biaya & Waktu)
-        let costVal = data.costImpact;
-        let costFormatted = 'Rp 0';
-        if (costVal && !isNaN(costVal)) {
-            costFormatted = 'Rp ' + parseFloat(costVal).toLocaleString('id-ID');
-        } else {
-            costFormatted = costVal || 'Rp 0';
+        const costInput = document.getElementById("pmCostImpact");
+        const timeInput = document.getElementById("pmTimeImpact");
+        const impactSummary = document.getElementById("pmImpactSummary");
+        const costVal = pmNormalizeNumber(data.costImpact);
+        const timeVal = pmNormalizeNumber(data.timeImpact);
+
+        if (costInput) costInput.value = costVal;
+        if (timeInput) timeInput.value = timeVal;
+        if (impactSummary) {
+            impactSummary.innerHTML = `Autofill database: <b>+${pmFormatCurrency(costVal)}</b> | <b>+${timeVal} Hari</b>. Nilai dapat disesuaikan sebelum keputusan disahkan.`;
         }
-        detailTable.rows[4].cells[1].innerHTML = `Biaya: <span class="text-danger" style="font-weight:bold;">+${costFormatted}</span> | Waktu: <span style="color:var(--danger);font-weight:bold;">+${data.timeImpact || 0} Hari</span>`;
     }
 
     // 4. Update Badge Skala Risiko Detail
@@ -1275,6 +1621,153 @@ function closeCrDetail() {
   // ══════════════════════════════════════════
   const crDetailMap = {};
 
+  let pmKbDatabase = [];
+  let pmKbCurrentTab = "all";
+
+  function pmKbNormalizeDoc(row) {
+    const riskLabel = [row.risk_kode, row.risk_nama].filter(Boolean).join(" - ");
+    return {
+      id: row.docId || "-",
+      date: row.changeDate || "",
+      title: row.documentName || "-",
+      category: row.knowledgeCategory || "-",
+      author: row.submittedBy || "-",
+      status: row.validationStatus || "DRAFT",
+      desc: row.description || "",
+      cr: row.changeRequestLink || "-",
+      projectId: row.projectArea || "",
+      risk: riskLabel || row.riskVariableLink || "-",
+      insight: row.insight || "",
+      saran: row.applied_solution || row.saran || "",
+      actualImpact: row.actual_impact || "",
+      crImpact: {
+        cost: row.cr_impact_cost ?? "",
+        time: row.cr_impact_time ?? "",
+        scope: row.cr_impact_scope ?? "",
+        quality: row.cr_impact_quality ?? "",
+        safety: row.cr_impact_safety ?? "",
+        actualTime: row.cr_time_impact ?? "",
+        actualCost: row.cr_cost_impact ?? "",
+      },
+    };
+  }
+
+  function pmKbUpdateKpi() {
+    const setText = (id, value) => { const el = document.getElementById(id); if (el) el.innerText = value; };
+    setText("pmKbTotal", pmKbDatabase.length);
+    setText("pmKbStd", pmKbDatabase.filter(doc => doc.category === "Standardization").length);
+    setText("pmKbLesson", pmKbDatabase.filter(doc => doc.category === "Lesson Learned").length);
+    setText("pmKbBim", pmKbDatabase.filter(doc => doc.category === "BIM Object").length);
+  }
+
+  function pmKbStatusBadge(status) {
+    const normalized = String(status || "DRAFT").toUpperCase();
+    const cls = normalized === "PUBLISHED" ? "low" : normalized === "ARCHIVED" ? "high" : "medium";
+    return `<span class="badge ${cls}">${escapeHtml(normalized)}</span>`;
+  }
+
+  function pmKbRenderTable() {
+    const tbody = document.getElementById("pmKbTableBody");
+    if (!tbody) return;
+    const query = (document.getElementById("pmKbSearch")?.value || "").toLowerCase().trim();
+    const rows = pmKbDatabase.filter(doc => {
+      if (pmKbCurrentTab !== "all" && doc.category !== pmKbCurrentTab) return false;
+      if (!query) return true;
+      return [doc.id, doc.title, doc.category, doc.author, doc.cr, doc.risk].some(value => String(value || "").toLowerCase().includes(query));
+    });
+    if (!rows.length) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">Tidak ada Knowledge Base untuk proyek aktif ini.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = rows.map(doc => `
+      <tr class="hover-row">
+        <td><b>${escapeHtml(doc.id)}</b></td>
+        <td>${escapeHtml(doc.date || "-")}</td>
+        <td><div class="kb-doc-title">${escapeHtml(doc.title)}</div><div class="kb-doc-desc">${escapeHtml((doc.desc || "").replace(/\s+/g, " ").slice(0, 90))}${doc.desc && doc.desc.length > 90 ? "..." : ""}</div></td>
+        <td><span class="badge info">${escapeHtml(doc.category)}</span></td>
+        <td><span class="badge medium">${escapeHtml(doc.cr)}</span></td>
+        <td>${pmKbStatusBadge(doc.status)}</td>
+        <td style="text-align:center;"><button class="btn secondary" onclick="pmKbOpenView('${escapeAttr(doc.id)}')">Lihat</button></td>
+      </tr>
+    `).join("");
+  }
+
+  function pmKbSetTab(tab, el) {
+    pmKbCurrentTab = tab;
+    document.querySelectorAll("#knowledge-base .kb-tab").forEach(tabEl => tabEl.classList.remove("active"));
+    if (el) el.classList.add("active");
+    pmKbRenderTable();
+  }
+
+  function pmKbApplyFilter() {
+    pmKbRenderTable();
+  }
+
+  async function pmKbLoadData(projectId = currentProjectId) {
+    if (!projectId) return;
+    const tbody = document.getElementById("pmKbTableBody");
+    if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">Memuat Knowledge Base proyek...</td></tr>`;
+    try {
+      const response = await fetch(`api_pm_knowledge_base.php?project_id=${encodeURIComponent(projectId)}`);
+      const result = await response.json();
+      pmKbDatabase = result.status === "success" ? (result.data || []).map(pmKbNormalizeDoc) : [];
+      if (result.status !== "success") console.error("Gagal memuat Knowledge Base PM:", result.message);
+    } catch (error) {
+      pmKbDatabase = [];
+      console.error("Error Knowledge Base PM:", error);
+    }
+    pmKbUpdateKpi();
+    pmKbRenderTable();
+  }
+
+  function pmKbFormatRupiah(value) {
+    const number = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+    if (!Number.isFinite(number)) return escapeHtml(value || "-");
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(number);
+  }
+
+  function pmKbParseRows(raw) {
+    if (!raw || typeof raw !== "string") return [];
+    try { const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed : []; } catch (error) { return []; }
+  }
+
+  function pmKbObjValue(row, column) {
+    const value = row[column.key] ?? (column.altKey ? row[column.altKey] : undefined);
+    return value === null || value === undefined || value === "" ? "-" : value;
+  }
+
+  function pmKbImpactTable(title, raw, columns) {
+    const rows = pmKbParseRows(raw);
+    if (!rows.length) return "";
+    return `<div class="kb-impact-table-wrap"><label>${escapeHtml(title)}</label><table class="kb-impact-table"><thead><tr>${columns.map(col => `<th class="${col.numeric ? "is-number" : ""}">${escapeHtml(col.label)}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${columns.map(col => `<td class="${col.numeric ? "is-number" : ""}">${escapeHtml(pmKbObjValue(row, col))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+
+  function pmKbImpactHtml(doc) {
+    const lines = String(doc.actualImpact || "").split(/\n{2,}/).map(line => line.trim()).filter(Boolean);
+    const getLineValue = (label) => {
+      const found = lines.find(line => line.toLowerCase().startsWith(label.toLowerCase() + ":"));
+      return found ? found.slice(found.indexOf(":") + 1).trim() : "";
+    };
+    const actualTime = getLineValue("Dampak waktu aktual") || (doc.crImpact.actualTime !== "" ? `${doc.crImpact.actualTime} hari` : "");
+    const actualCost = getLineValue("Dampak biaya aktual") || (doc.crImpact.actualCost !== "" ? doc.crImpact.actualCost : "");
+    const tables = [
+      pmKbImpactTable("Estimasi Dampak Biaya", getLineValue("Estimasi dampak biaya") || doc.crImpact.cost || "", [{ key: "item", label: "Item" }, { key: "sifat", label: "Sifat" }, { key: "kuantitas", label: "Kuantitas", numeric: true }, { key: "satuan", label: "Satuan" }, { key: "justifikasi", label: "Justifikasi" }]),
+      pmKbImpactTable("Estimasi Dampak Waktu", getLineValue("Estimasi dampak waktu") || doc.crImpact.time || "", [{ key: "aktivitas", label: "Aktivitas" }, { key: "sifat", label: "Sifat" }, { key: "waktu", label: "Waktu", numeric: true }, { key: "satuan", label: "Satuan" }, { key: "justifikasi", label: "Justifikasi" }]),
+      pmKbImpactTable("Estimasi Dampak Lingkup", getLineValue("Estimasi dampak lingkup") || doc.crImpact.scope || "", [{ key: "lingkup", label: "Lingkup" }, { key: "sifat", label: "Sifat" }, { key: "kuantitas", label: "Kuantitas", numeric: true }, { key: "satuan", label: "Satuan" }, { key: "dokumenAcuan", altKey: "dokumen", label: "Dokumen Acuan" }]),
+      pmKbImpactTable("Dampak Mutu", getLineValue("Dampak mutu") || doc.crImpact.quality || "", [{ key: "item", label: "Item" }, { key: "spesifikasiAwal", altKey: "spekAwal", label: "Spesifikasi Awal" }, { key: "spesifikasiBaru", altKey: "spekBaru", label: "Spesifikasi Baru" }, { key: "tingkatMutu", altKey: "mutu", label: "Tingkat Mutu" }, { key: "justifikasi", label: "Justifikasi" }]),
+      pmKbImpactTable("Dampak Keselamatan", getLineValue("Dampak K3") || doc.crImpact.safety || "", [{ key: "aktivitas", label: "Aktivitas" }, { key: "sifat", label: "Sifat" }, { key: "kebutuhan", label: "Kebutuhan" }, { key: "kuantitas", label: "Kuantitas", numeric: true }, { key: "satuan", label: "Satuan" }]),
+    ].filter(Boolean).join("");
+    return `<div class="kb-impact-panel"><div class="kb-impact-summary"><div class="kb-impact-metric"><span>Dampak Waktu Aktual</span><b>${escapeHtml(actualTime || "-")}</b></div><div class="kb-impact-metric"><span>Dampak Biaya Aktual</span><b>${actualCost !== "" ? pmKbFormatRupiah(actualCost) : "-"}</b></div></div>${tables || `<div class="kb-detail-box">Belum ada rincian impact terstruktur.</div>`}</div>`;
+  }
+
+  function pmKbOpenView(docId) {
+    const doc = pmKbDatabase.find(item => item.id === docId);
+    if (!doc) return;
+    document.getElementById("pmKbModalTitle").innerText = `Detail Knowledge Base: ${doc.id}`;
+    document.getElementById("pmKbModalBody").innerHTML = `<div class="kb-detail-grid"><div class="kb-view-field"><label>Doc ID</label><div class="kb-view-value" style="color:var(--primary);">${escapeHtml(doc.id)}</div></div><div class="kb-view-field"><label>Tanggal Terbit</label><div class="kb-view-value">${escapeHtml(doc.date || "-")}</div></div><div class="kb-view-field"><label>Kategori</label><div class="kb-view-value">${escapeHtml(doc.category)}</div></div><div class="kb-view-field"><label>Status</label><div class="kb-view-value">${pmKbStatusBadge(doc.status)}</div></div><div class="kb-view-field"><label>Disusun Oleh</label><div class="kb-view-value">${escapeHtml(doc.author)}</div></div><div class="kb-view-field"><label>Project Area</label><div class="kb-view-value">${escapeHtml(doc.projectId || "-")}</div></div></div><hr style="border:0;border-top:1px solid var(--line);margin:8px 0 18px;"><div class="kb-view-field" style="margin-bottom:14px;"><label>Judul Dokumen</label><div class="kb-view-value" style="font-size:16px;color:#1e3a5f;">${escapeHtml(doc.title)}</div></div><div class="kb-view-field" style="margin-bottom:14px;"><label>Deskripsi</label><div class="kb-detail-box">${escapeHtml(doc.desc || "-")}</div></div><div class="card" style="box-shadow:none;margin-bottom:14px;"><div class="kb-detail-grid" style="margin-bottom:0;"><div class="kb-view-field"><label>Terkait CR</label><div class="kb-pill-row"><span class="badge medium">${escapeHtml(doc.cr)}</span></div></div><div class="kb-view-field"><label>Risiko</label><div class="kb-pill-row"><span class="badge high">${escapeHtml(doc.risk)}</span></div></div><div class="kb-view-field"><label>Proyek</label><div class="kb-pill-row"><span class="badge info">${escapeHtml(doc.projectId || "-")}</span></div></div></div></div><div class="grid cols-2" style="margin-bottom:14px;"><div class="kb-view-field"><label>Insight Repository</label><div class="kb-view-value">${escapeHtml(doc.insight || "-")}</div></div><div class="kb-view-field"><label>Saran / Catatan PM</label><div class="kb-view-value">${escapeHtml(doc.saran || "-")}</div></div></div><div class="kb-view-field"><label>Dampak Aktual / Estimasi</label>${pmKbImpactHtml(doc)}</div>`;
+    openModal("pmKbModal");
+  }
+
   // ══════════════════════════════════════════
   // NAVIGATION
   // ══════════════════════════════════════════
@@ -1282,6 +1775,7 @@ function closeCrDetail() {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     if (btn) { document.querySelectorAll('nav button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+    if (id === "knowledge-base") pmKbLoadData(currentProjectId || document.getElementById("projectDropdown")?.value || "");
     window.scrollTo({ top:0, behavior:'smooth' });
   }
 
@@ -1320,26 +1814,7 @@ function closeCrDetail() {
     renderPending(crData);
     renderRisk(riskData);
 
-    const ctx = document.getElementById('sCurveChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ['Mg 1','Mg 2','Mg 3','Mg 4','Mg 5','Mg 6','Mg 7','Mg 8','Mg 9','Mg 10','Mg 11','Mg 12'],
-        datasets: [
-          { label:'Rencana (Plan %)', data:[2,8,15,24,35,48,60,72,83,91,96,100], borderColor:'#64748b', borderWidth:3, borderDash:[5,5], tension:0.4, pointBackgroundColor:'#64748b' },
-          { label:'Realisasi Aktual (Actual %)', data:[2,7.5,14,22,33,45,55,68.5], borderColor:'#1d4ed8', backgroundColor:'rgba(29,78,216,0.1)', borderWidth:4, tension:0.4, fill:true, pointBackgroundColor:'#1d4ed8', pointRadius:5, pointHoverRadius:7 }
-        ]
-      },
-      options: {
-        responsive:true, maintainAspectRatio:false,
-        plugins: { legend:{ position:'bottom', labels:{ font:{ family:'Inter', weight:'bold' } } }, tooltip:{ mode:'index', intersect:false } },
-        scales: {
-          y:{ beginAtZero:true, max:100, title:{ display:true, text:'Progress Fisik (%)', font:{ weight:'bold' } }, grid:{ color:'#e2e8f0' } },
-          x:{ grid:{ display:false } }
-        },
-        interaction:{ mode:'nearest', axis:'x', intersect:false }
-      }
-    });
+    renderSCurveChart([], [], []);
   });
 
   // Jalankan otomatis saat dokumen HTML selesai dimuat
@@ -1389,6 +1864,8 @@ function closeCrDetail() {
     const approvalDate = document.getElementById('approvalDate').value;
     const decisionSelect = document.getElementById('decisionSelect').value;
     const approvalNotes = document.getElementById('approvalNotes').value;
+    const costImpact = document.getElementById('pmCostImpact')?.value ?? '0';
+    const timeImpact = document.getElementById('pmTimeImpact')?.value ?? '0';
 
     // 2. Validasi sederhana
     if (!decisionSelect) {
@@ -1401,6 +1878,10 @@ function closeCrDetail() {
         document.getElementById('approvalNotes').focus();
         return;
     }
+    if (Number(costImpact) < 0 || Number(timeImpact) < 0) {
+        alert("Impact Analysis biaya dan waktu tidak boleh bernilai negatif.");
+        return;
+    }
 
     // 3. Siapkan data untuk dikirim (FormData)
     const formData = new FormData();
@@ -1409,6 +1890,8 @@ function closeCrDetail() {
     formData.append('approvalDate', approvalDate);
     formData.append('approvalDecision', decisionSelect);
     formData.append('approvalNotes', approvalNotes);
+    formData.append('costImpact', costImpact || '0');
+    formData.append('timeImpact', timeImpact || '0');
 
     // 4. Ubah teks tombol menjadi loading (Opsional UI UX)
     const btnSubmit = document.querySelector('.btn.success');

@@ -17,6 +17,22 @@ if (empty($project_id)) {
 }
 
 try {
+    if (($_SESSION['role'] ?? '') !== 'Admin') {
+        $stmtAccess = $pdo->prepare("
+            SELECT COUNT(*)
+            FROM project_assignments
+            WHERE project_id = ?
+              AND user_id = ?
+              AND role_assigned = ?
+        ");
+        $stmtAccess->execute([$project_id, $_SESSION['user_id'], $_SESSION['role']]);
+
+        if ((int)$stmtAccess->fetchColumn() === 0) {
+            echo json_encode(["status" => "error", "message" => "Project tidak ter-assign ke user ini."]);
+            exit;
+        }
+    }
+
     // 1. Ambil data rencana vs realisasi berkala
     $stmtCurve = $pdo->prepare("
         SELECT periode_ke, tanggal_target, rencana_kumulatif, realisasi_kumulatif 

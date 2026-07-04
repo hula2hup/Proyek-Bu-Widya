@@ -1617,6 +1617,130 @@
         cursor: pointer;
         transition: 0.2s;
       }
+      .admin-report-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .admin-report-toolbar h2 {
+        margin: 0;
+      }
+      .admin-report-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-report-select {
+        min-width: 260px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: #f8fafc;
+        color: #0f172a;
+        font-weight: 700;
+        font-family: inherit;
+        font-size: 13px;
+      }
+      .admin-report-paper {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 34px 38px;
+        color: #111827;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 14px;
+        line-height: 1.65;
+        min-height: 520px;
+      }
+      .admin-report-paper.empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #64748b;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        font-size: 13px;
+        background: #f8fafc;
+      }
+      .admin-report-letterhead {
+        text-align: center;
+        border-bottom: 3px double #111827;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+      }
+      .admin-report-letterhead h2,
+      .admin-report-letterhead p {
+        margin: 0;
+      }
+      .admin-report-letterhead h2 {
+        font-size: 17px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .admin-report-meta {
+        width: 100%;
+        margin: 12px 0 20px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .admin-report-meta td {
+        border: 0;
+        padding: 2px 0;
+        vertical-align: top;
+      }
+      .admin-report-meta td:first-child {
+        width: 94px;
+      }
+      .admin-report-title {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 20px 0 12px;
+      }
+      .admin-report-section-title {
+        font-weight: 700;
+        margin: 14px 0 4px;
+      }
+      .admin-report-list {
+        margin: 4px 0 0 18px;
+        padding: 0;
+      }
+      .admin-report-signatures {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 34px;
+        text-align: center;
+        font-family: "Times New Roman", Times, serif;
+      }
+      .admin-report-signature-box {
+        min-height: 116px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .admin-report-signature-name {
+        border-top: 1px solid #111827;
+        padding-top: 6px;
+        font-weight: 700;
+      }
+      @media print {
+        .admin-report-paper {
+          border: 0;
+          border-radius: 0;
+          padding: 0;
+          min-height: auto;
+          box-shadow: none;
+        }
+        .card.admin-report-card {
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+        }
+      }
 
       /* Container pembungkus utama */
       .tag-input-wrapper {
@@ -3777,41 +3901,21 @@
             </p>
           </div>
         </div>
-        <div class="card" style="margin-bottom: 20px">
-          <div class="title">
-            <h2 style="display: flex; justify-content: space-between">
-              Draft Laporan Akhir Proyek<button class="btn secondary no-print">
+        <div class="card admin-report-card" style="margin-bottom: 20px">
+          <div class="admin-report-toolbar">
+            <h2>Draft Laporan Akhir Proyek</h2>
+            <div class="admin-report-actions no-print">
+              <select id="adminReportProjectSelect" class="admin-report-select">
+                <option value="">Memuat proyek...</option>
+              </select>
+              <button class="btn secondary" onclick="generateAdminFinalReport()">
                 Generate Ringkasan Otomatis
               </button>
-            </h2>
+            </div>
           </div>
-          <div
-            style="
-              background: #f8fafc;
-              border: 1px solid var(--line);
-              border-radius: 12px;
-              padding: 20px;
-              font-size: 13px;
-              line-height: 1.6;
-            "
-          >
-            <p>
-              <b>Executive Summary:</b><br />Proyek Pembangunan Gedung (Tahap 1)
-              telah mencapai progres aktual sebesar <strong>68.5%</strong>.
-              Terdapat total 8 Change Request selama masa konstruksi yang
-              didominasi oleh kondisi lapangan (clash MEP).
-            </p>
-            <p>
-              <b>Kinerja Waktu & Biaya:</b><br />SPI rata-rata: 0.94. Percepatan
-              waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil
-              memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2
-              hari.
-            </p>
-            <p>
-              <b>Lesson Learned Terverifikasi:</b><br />Clash detection wajib
-              disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing.
-              Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.
-            </p>
+          <div id="adminReportDraft" class="admin-report-paper empty">
+            Draft laporan masih kosong. Pilih proyek, lalu klik Generate
+            Ringkasan Otomatis untuk membuat dokumen siap cetak.
           </div>
         </div>
         <div class="card">
@@ -4038,6 +4142,9 @@
           .then(res => {
             if (res.status === 'success') {
               globalProjectsData = res.data; // Simpan ke variabel global
+              if (typeof populateAdminReportProjectDropdown === "function") {
+                populateAdminReportProjectDropdown(globalProjectsData);
+              }
               
               const tbody = document.getElementById('projectTableBody');
               tbody.innerHTML = ''; 
@@ -9410,6 +9517,256 @@
               container.insertAdjacentHTML("beforeend", activityItem);
           });
       }
+
+      const adminReportState = {
+        stats: null,
+        scurve: { progress: null, spi: null, delayDays: 0 },
+      };
+
+      function adminReportEscape(value) {
+        const div = document.createElement("div");
+        div.textContent = value ?? "";
+        return div.innerHTML;
+      }
+
+      function adminReportFormatDate(date = new Date()) {
+        return date.toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      function adminReportPercent(value) {
+        return value === null || value === undefined || Number.isNaN(Number(value))
+          ? "-"
+          : `${Number(value).toFixed(1)}%`;
+      }
+
+      function adminReportSpi(value) {
+        return value === null || value === undefined || Number.isNaN(Number(value))
+          ? "-"
+          : Number(value).toFixed(2);
+      }
+
+      function adminReportMostFrequent(items, getter, fallback = "-") {
+        const counter = new Map();
+        items.forEach((item) => {
+          const raw = getter(item);
+          const value = raw && String(raw).trim() ? String(raw).trim() : "";
+          if (!value) return;
+          counter.set(value, (counter.get(value) || 0) + 1);
+        });
+        return [...counter.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || fallback;
+      }
+
+      function clearAdminFinalReportDraft() {
+        const draft = document.getElementById("adminReportDraft");
+        if (!draft) return;
+        draft.className = "admin-report-paper empty";
+        draft.innerHTML =
+          "Draft laporan masih kosong. Pilih proyek, lalu klik Generate Ringkasan Otomatis untuk membuat dokumen siap cetak.";
+      }
+
+      function populateAdminReportProjectDropdown(projects = globalProjectsData) {
+        const select = document.getElementById("adminReportProjectSelect");
+        if (!select) return;
+
+        const projectList = Array.isArray(projects) ? projects : [];
+        if (projectList.length === 0) {
+          select.innerHTML = '<option value="">Tidak ada proyek</option>';
+          return;
+        }
+
+        const previousValue = select.value;
+        select.innerHTML = projectList
+          .map((project) => {
+            const id = project.project_id || "";
+            const name = project.project_name || "Tanpa Nama";
+            return `<option value="${adminReportEscape(id)}">${adminReportEscape(id)} - ${adminReportEscape(name)}</option>`;
+          })
+          .join("");
+
+        if (previousValue && projectList.some((project) => project.project_id === previousValue)) {
+          select.value = previousValue;
+        }
+
+        select.onchange = () => {
+          adminReportState.stats = null;
+          adminReportState.scurve = { progress: null, spi: null, delayDays: 0 };
+          clearAdminFinalReportDraft();
+        };
+      }
+
+      async function ensureAdminReportProjects() {
+        if (globalProjectsData && globalProjectsData.length > 0) {
+          populateAdminReportProjectDropdown(globalProjectsData);
+          return globalProjectsData;
+        }
+
+        const response = await fetch("api_get_projects.php?view_as=Admin");
+        const result = await response.json();
+        if (result.status === "success") {
+          globalProjectsData = result.data || [];
+          populateAdminReportProjectDropdown(globalProjectsData);
+          return globalProjectsData;
+        }
+        throw new Error(result.message || "Gagal memuat daftar proyek.");
+      }
+
+      async function fetchAdminReportSCurve(projectId) {
+        const response = await fetch(`api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`);
+        const result = await response.json();
+        if (result.status !== "success") {
+          throw new Error(result.message || "Gagal memuat Kurva S.");
+        }
+
+        const rows = Array.isArray(result.curve_data) ? result.curve_data : [];
+        const validRows = rows.filter((row) => row.realisasi_kumulatif !== null);
+        let progress = null;
+        let spi = null;
+
+        if (validRows.length > 0) {
+          const latest = validRows[validRows.length - 1];
+          const actual = Number(latest.realisasi_kumulatif || 0);
+          const plan = Number(latest.rencana_kumulatif || 0);
+          progress = actual;
+          spi = plan > 0 ? actual / plan : null;
+        }
+
+        adminReportState.scurve = {
+          progress,
+          spi,
+          delayDays: Number(result.total_delay_days || 0),
+        };
+        return adminReportState.scurve;
+      }
+
+      async function generateAdminFinalReport() {
+        const draft = document.getElementById("adminReportDraft");
+        const select = document.getElementById("adminReportProjectSelect");
+        if (!draft || !select) return;
+
+        try {
+          await ensureAdminReportProjects();
+          const projectId = select.value || globalProjectsData[0]?.project_id || "";
+          const project = globalProjectsData.find((item) => item.project_id === projectId);
+          if (!projectId || !project) {
+            clearAdminFinalReportDraft();
+            return;
+          }
+
+          draft.className = "admin-report-paper empty";
+          draft.innerHTML = "Menyusun laporan akhir proyek...";
+
+          const [statsResponse] = await Promise.all([
+            fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`).then((response) => response.json()),
+            fetchAdminReportSCurve(projectId),
+          ]);
+
+          if (statsResponse.status !== "success") {
+            throw new Error(statsResponse.message || "Gagal memuat statistik proyek.");
+          }
+
+          const stats = statsResponse.data || {};
+          adminReportState.stats = stats;
+
+          const recentActivities = Array.isArray(stats.recent_activities) ? stats.recent_activities : [];
+          const pendingRequests = Array.isArray(stats.pending_requests) ? stats.pending_requests : [];
+          const allActivities = [...recentActivities, ...pendingRequests];
+
+          const projectName = project.project_name || "-";
+          const projectStatus = project.status || project.project_status || "-";
+          const pmName = project.project_manager_name || "Project Manager";
+          const seName = project.site_engineer_name || "Site Engineer";
+          const adminName = document.getElementById("userFullName")?.innerText || "Administrator";
+          const totalChanges = Number(project.total_changes ?? 0);
+          const underReview = Number(stats.under_review ?? 0);
+          const needMitigation = Number(stats.need_mitigation ?? 0);
+          const approved = Number(stats.approved ?? project.approved_changes ?? 0);
+          const rejected = Number(stats.rejected ?? 0);
+          const progress = adminReportPercent(adminReportState.scurve.progress);
+          const spi = adminReportSpi(adminReportState.scurve.spi);
+          const delayDays = Number(adminReportState.scurve.delayDays || 0);
+          const riskFocus = adminReportMostFrequent(
+            allActivities,
+            (item) => item.risk_kategori || item.riskCategory || item.riskVariable,
+            "Belum ada risiko dominan"
+          );
+          const wbsFocus = adminReportMostFrequent(
+            allActivities,
+            (item) => item.wbsLevel5 || item.wbsLevel4,
+            "Belum ada WBS dominan"
+          );
+          const lessonSource = allActivities.find((item) => item.insight || item.saran || item.riskDescription) || {};
+          const insight =
+            lessonSource.insight ||
+            lessonSource.riskDescription ||
+            "Belum terdapat lesson learned terverifikasi dari Knowledge Repository untuk proyek ini.";
+          const recommendation =
+            lessonSource.saran ||
+            "Lakukan pemantauan berkala terhadap WBS kritis, validasi risiko sebelum persetujuan perubahan, dan dokumentasikan keputusan sebagai referensi Knowledge Base.";
+          const today = adminReportFormatDate();
+          const reportNo = `LAP/${String(projectId).replace(/[^A-Z0-9]/gi, "")}/${new Date().getFullYear()}`;
+
+          draft.className = "admin-report-paper";
+          draft.innerHTML = `
+            <div class="admin-report-letterhead">
+              <h2>Laporan Akhir Proyek dan Lesson Learned</h2>
+              <p>Sistem Integrasi BIM - WBS - Change Risk Management</p>
+            </div>
+            <table class="admin-report-meta">
+              <tr><td>Nomor</td><td>: ${adminReportEscape(reportNo)}</td></tr>
+              <tr><td>Lampiran</td><td>: Ringkasan kinerja proyek dan rekapitulasi change request</td></tr>
+              <tr><td>Perihal</td><td>: Penyampaian Laporan Akhir Proyek ${adminReportEscape(projectName)}</td></tr>
+            </table>
+            <p>Kepada Yth.<br><strong>Manajemen Proyek / Project Manager</strong><br>di Tempat</p>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan laporan akhir proyek untuk <strong>${adminReportEscape(projectName)}</strong> (${adminReportEscape(projectId)}). Laporan ini disusun berdasarkan data historis pelaksanaan, evaluasi change request, pemetaan WBS, penilaian risiko, dan pembelajaran yang tersimpan pada Knowledge Base.</p>
+            <div class="admin-report-title">Ringkasan Laporan Akhir Proyek</div>
+            <div class="admin-report-section-title">A. Identitas dan Status Proyek</div>
+            <table class="admin-report-meta">
+              <tr><td>Project ID</td><td>: ${adminReportEscape(projectId)}</td></tr>
+              <tr><td>Nama Proyek</td><td>: ${adminReportEscape(projectName)}</td></tr>
+              <tr><td>Status</td><td>: ${adminReportEscape(projectStatus)}</td></tr>
+              <tr><td>Project Manager</td><td>: ${adminReportEscape(pmName)}</td></tr>
+              <tr><td>Site Engineer</td><td>: ${adminReportEscape(seName)}</td></tr>
+            </table>
+            <div class="admin-report-section-title">B. Kinerja Waktu dan Progres</div>
+            <p>Progres fisik terakhir tercatat sebesar <strong>${adminReportEscape(progress)}</strong> dengan nilai SPI sebesar <strong>${adminReportEscape(spi)}</strong>. Total dampak waktu dari change request yang telah disetujui tercatat sebesar <strong>${adminReportEscape(delayDays)} hari</strong>. Nilai ini menjadi dasar evaluasi pengendalian jadwal dan prioritas tindak lanjut pada periode penutupan proyek.</p>
+            <div class="admin-report-section-title">C. Rekapitulasi Change Request</div>
+            <ul class="admin-report-list">
+              <li>Total change request tercatat: <strong>${adminReportEscape(totalChanges)}</strong></li>
+              <li>Dalam peninjauan PM: <strong>${adminReportEscape(underReview)}</strong></li>
+              <li>Membutuhkan mitigasi risiko: <strong>${adminReportEscape(needMitigation)}</strong></li>
+              <li>Disetujui: <strong>${adminReportEscape(approved)}</strong></li>
+              <li>Ditolak: <strong>${adminReportEscape(rejected)}</strong></li>
+            </ul>
+            <div class="admin-report-section-title">D. WBS dan Risiko Dominan</div>
+            <p>Area WBS yang paling sering muncul dalam aktivitas perubahan adalah <strong>${adminReportEscape(wbsFocus)}</strong>. Fokus risiko dominan yang perlu menjadi perhatian adalah <strong>${adminReportEscape(riskFocus)}</strong>. Informasi ini digunakan sebagai acuan pengendalian ulang terhadap paket pekerjaan, aktivitas, sumber daya, serta keputusan persetujuan perubahan.</p>
+            <div class="admin-report-section-title">E. Lesson Learned dan Rekomendasi</div>
+            <p><strong>Lesson Learned:</strong> ${adminReportEscape(insight)}</p>
+            <p><strong>Rekomendasi:</strong> ${adminReportEscape(recommendation)}</p>
+            <p>Demikian laporan ini disampaikan untuk menjadi dokumen penutupan, dasar evaluasi kinerja, dan referensi pengambilan keputusan pada proyek berikutnya. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.</p>
+            <p style="text-align:right;margin-top:26px;">${adminReportEscape(today)}</p>
+            <div class="admin-report-signatures">
+              <div class="admin-report-signature-box"><div>Disusun oleh,<br>Site Engineer</div><div class="admin-report-signature-name">${adminReportEscape(seName)}</div></div>
+              <div class="admin-report-signature-box"><div>Diperiksa oleh,<br>Admin/MK</div><div class="admin-report-signature-name">${adminReportEscape(adminName)}</div></div>
+              <div class="admin-report-signature-box"><div>Disetujui oleh,<br>Project Manager</div><div class="admin-report-signature-name">${adminReportEscape(pmName)}</div></div>
+            </div>
+          `;
+        } catch (error) {
+          console.error("Gagal generate laporan admin:", error);
+          draft.className = "admin-report-paper empty";
+          draft.innerHTML = "Gagal menyusun laporan. Pastikan proyek sudah dipilih dan data proyek tersedia.";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        ensureAdminReportProjects().catch((error) => {
+          console.error("Gagal memuat dropdown laporan admin:", error);
+        });
+      });
 
       /**
        * Memuat dan memperbarui komponen statistik dashboard (Decision Summary & Recent Activities)
