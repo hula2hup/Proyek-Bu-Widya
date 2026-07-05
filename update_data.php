@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 🛑 VALIDASI BACKEND: Cek status data saat ini di database sebelum eksekusi!
-    $stmtCheck = $pdo->prepare("SELECT status, photoEvidence FROM change_requests WHERE changeId = :changeId");
+    $stmtCheck = $pdo->prepare("SELECT status, submittedBy, photoEvidence FROM change_requests WHERE changeId = :changeId");
     $stmtCheck->execute(['changeId' => $changeId]);
     $currentData = $stmtCheck->fetch();
 
@@ -39,9 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // Proteksi utama: Jika status sudah APPROVED, tolak update apa pun dari luar!
+    // Proteksi utama: data APPROVED hanya bisa dioverride dari Admin.
     $currentStatus = strtoupper($currentData['status']);
-    if ($currentStatus === 'APPROVED') {
+    $isAdminOverrideApproved = ($_POST['adminOverrideApproved'] ?? '') === '1';
+    if ($currentStatus === 'APPROVED' && !$isAdminOverrideApproved) {
         echo json_encode(["status" => "error", "message" => "Akses ditolak. Data berstatus APPROVED tidak dapat dimodifikasi!"]);
         exit();
     }
@@ -79,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 4. QUERY UPDATE SQL
     $sql = "UPDATE change_requests SET 
                 changeDate        = :changeDate,
+                submittedBy       = :submittedBy,
                 wbsLevel4         = :wbsLevel4,
                 wbsLevel5         = :wbsLevel5,
                 wbsLevel6         = :wbsLevel6,
@@ -108,6 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($sql);
         $success = $stmt->execute([
             'changeDate'        => $_POST['changeDate'] ?? date('Y-m-d'),
+            'submittedBy'       => $_POST['submittedBy'] ?? $currentData['submittedBy'],
             'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
             'wbsLevel5'         => $_POST['wbsLevel5'] ?? null,
             'wbsLevel6'         => $_POST['wbsLevel6'] ?? null,
@@ -137,7 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($success) {
             echo json_encode([
                 "status" => "success", 
-                "message" => "Data change request berhasil diperbarui." . ($currentStatus === 'REJECTED' ? " Status dikembalikan ke PENDING untuk ditinjau ulang." : "")
+                "message" => "Data change request berhasil diperbarui." . ($currentStatus === 'REJECTED' ? " Status dikembalikan ke PENDING untuk ditinjau ulang." : "") . ($currentStatus === 'APPROVED' && $isAdminOverrideApproved ? " Override admin untuk status APPROVED berhasil diterapkan." : "")
             ]);
         } else {
             echo json_encode(["status" => "error", "message" => "Gagal mengeksekusi pembaruan data ke database."]);

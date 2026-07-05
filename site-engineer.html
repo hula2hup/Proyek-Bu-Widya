@@ -253,6 +253,89 @@
       .closed-card {
         border-left: 6px solid #10b981;
       }
+      .recent-activity-card {
+        background: #ffffff;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(15, 45, 82, 0.08);
+        padding: 24px;
+        margin-top: 24px;
+      }
+      .recent-activity-card h2 {
+        margin: 0 0 18px;
+        color: #0f2d52;
+        font-size: 20px;
+      }
+      .se-recent-list {
+        display: grid;
+        gap: 12px;
+      }
+      .se-recent-item {
+        display: grid;
+        grid-template-columns: minmax(86px, 130px) 1fr;
+        gap: 14px;
+        padding: 12px 0 12px 18px;
+        border-left: 2px solid #dbe4ef;
+        position: relative;
+      }
+      .se-recent-item::before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        position: absolute;
+        left: -8px;
+        top: 16px;
+        background: #2563eb;
+        border: 3px solid #fff;
+        box-shadow: 0 0 0 1px #2563eb;
+      }
+      .se-recent-date {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .se-recent-title {
+        color: #0f172a;
+        font-weight: 800;
+        margin-bottom: 6px;
+      }
+      .se-recent-meta {
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .recent-activity-pager {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 16px;
+        padding-top: 12px;
+        border-top: 1px solid #e2e8f0;
+      }
+      .recent-activity-page-info {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .recent-activity-nav {
+        display: inline-flex;
+        gap: 8px;
+      }
+      .recent-activity-nav button {
+        width: 32px;
+        height: 32px;
+        border: 1px solid #cbd5e1;
+        border-radius: 50%;
+        background: #fff;
+        color: #0f2d52;
+        cursor: pointer;
+        font-weight: 900;
+      }
+      .recent-activity-nav button:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
       .total-card span {
         color: #2563eb;
       }
@@ -391,6 +474,15 @@
       .submenu-item.active {
         color: #60a5fa;
         font-weight: 600;
+      }
+      .submenu-item.disabled,
+      .submenu-item.disabled:hover {
+        color: rgba(255, 255, 255, 0.35);
+        cursor: not-allowed;
+      }
+      #newChangePage.assignment-locked {
+        opacity: 0.65;
+        pointer-events: none;
       }
       .sidebar-footer {
         padding: 20px 25px;
@@ -1070,6 +1162,12 @@
             <p>Perubahan telah diselesaikan</p>
           </div>
         </div>
+        <div class="recent-activity-card">
+          <h2>Recent Change Activities</h2>
+          <div class="se-recent-list" id="seRecentActivitiesList">
+            <p style="color:#64748b;margin:0;">Memuat aktivitas perubahan...</p>
+          </div>
+        </div>
       </div>
 
       <div id="newChangePage" class="page">
@@ -1735,6 +1833,66 @@
 
       // Variabel global untuk menyimpan data proyek yang aktif
       let activeProjects = [];
+      let hasAssignedProject = null;
+      let assignmentLogoutPromptShown = false;
+
+      function performLogout() {
+          fetch('api_logout.php')
+            .finally(() => {
+                localStorage.clear();
+                window.location.replace("login.html");
+            });
+      }
+
+      function setNewChangeLocked(isLocked) {
+          const newChangeItem = document.querySelector(
+              ".submenu-item[onclick*='newChangePage']",
+          );
+          const newChangePage = document.getElementById("newChangePage");
+          const projectAreaInput = document.getElementById("projectArea");
+
+          if (newChangeItem) {
+              newChangeItem.classList.toggle("disabled", isLocked);
+              newChangeItem.title = isLocked
+                  ? "Hubungi administrator agar akun Anda di-assign ke project."
+                  : "";
+          }
+
+          if (newChangePage) {
+              newChangePage.classList.toggle("assignment-locked", isLocked);
+              newChangePage
+                  .querySelectorAll("input, select, textarea, button")
+                  .forEach((el) => {
+                      if (el.closest(".sidebar")) return;
+                      el.disabled = isLocked;
+                  });
+          }
+
+          if (projectAreaInput && isLocked) {
+              projectAreaInput.value = "Belum di-assign";
+              projectAreaInput.readOnly = true;
+              projectAreaInput.style.backgroundColor = "#fee2e2";
+              projectAreaInput.style.cursor = "not-allowed";
+          }
+      }
+
+      function promptUnassignedProjectLogout() {
+          setNewChangeLocked(true);
+          if (assignmentLogoutPromptShown) return;
+          assignmentLogoutPromptShown = true;
+
+          const shouldLogout = confirm(
+              "Akun Anda belum di-assign ke project mana pun. Hubungi administrator untuk dapat di-assign ke project.\n\nLogout sekarang?",
+          );
+          if (shouldLogout) {
+              performLogout();
+          } else if (typeof showPage === "function") {
+              showPage(
+                  "dashboardPage",
+                  document.querySelector(".menu-item[onclick*='dashboardPage']"),
+              );
+          }
+      }
 
       function fetchAssignedProjects() {
           fetch('api_get_projects.php')
@@ -1742,6 +1900,9 @@
               .then(res => {
                   // 2. Jika sukses dan user tersebut memang punya proyek
                   if (res.status === 'success' && res.data.length > 0) {
+                      activeProjects = res.data;
+                      hasAssignedProject = true;
+                      setNewChangeLocked(false);
                       
                       // Ambil data proyek pertama (index 0)
                       const assignedProject = res.data[0]; 
@@ -1762,10 +1923,16 @@
                           projectAreaInput.style.cursor = "not-allowed";
                       }
                   } else {
+                      activeProjects = [];
+                      hasAssignedProject = false;
                       console.warn("User ini tidak di-assign ke proyek mana pun.");
+                      promptUnassignedProjectLogout();
                   }
               })
               .catch(error => {
+                  activeProjects = [];
+                  hasAssignedProject = false;
+                  setNewChangeLocked(true);
                   console.error("Gagal menarik data proyek:", error);
               });
       }
@@ -2341,49 +2508,50 @@
   }
 
       const wbsData = {
+        // 1 Pekerjaan Persiapan
+        // 1.1 Mobilisasi & Demobilisasi
         "1.1.1 Program Mobilisasi": {
           "1.1.1.1 Mobilisasi Material": [
-            "Besi Beton",
-            "Agregat Base A",
-            "Agregat Base B",
-            "Beton Batching Plant",
+            "Besi beton",
+            "Agregate (Base A)",
+            "Agregate (Base B)",
+            "Beton (Batching plant)",
           ],
           "1.1.1.2 Mobilisasi Personil": [
-            "Tenaga Kerja",
+            "Tenaga kerja",
             "Operator",
             "Staf Proyek",
           ],
-          "1.1.1.3 Mobilisasi Alat Berat": [
+          "1.1.1.3 Mobilisasi Alat berat": [
             "Excavator",
             "Dump Truck",
             "Mobile Crane",
-            "Motor Grader",
-            "Vibro Roller",
-            "Water Tank",
+            "Motor grader",
+            "Vibro roller",
+            "Watertank",
           ],
         },
-
         "1.1.2 Program Demobilisasi": {
-          "1.1.2.1 Demobilisasi Personil": [
-            "Tenaga Kerja",
+          "1.1.2.1 Mobilisasi Personil": [
+            "Tenaga kerja",
             "Operator",
             "Staf Proyek",
           ],
-          "1.1.2.2 Demobilisasi Alat Berat": [
+          "1.1.2.2 Mobilisasi Alat berat": [
             "Excavator",
             "Dump Truck",
             "Mobile Crane",
-            "Motor Grader",
-            "Vibro Roller",
-            "Water Tank",
+            "Motor grader",
+            "Vibro roller",
+            "Watertank",
           ],
         },
-
+        // 1.2 Kantor Lapangan dan Fasilitasnya
         "1.2.1 Kantor Penyedia Jasa dan Fasilitasnya": {
-          "1.2.1.1 Pembuatan Kantor Proyek dan Fasilitasnya": [
+          "1.2.1.1 Pembuatan Kantor Proyek dan fasilitasnya": [
             "Kayu",
             "Triplek",
-            "Paku",
+            "Paku, dll.",
             "Mandor",
             "Tukang",
             "Pekerja",
@@ -2393,31 +2561,29 @@
           "1.2.1.2 Pembuatan Barak Pekerja": [
             "Kayu",
             "Triplek",
-            "Paku",
+            "Paku, dll.",
             "Mandor",
             "Tukang",
             "Pekerja",
             "Peralatan Tukang",
           ],
         },
-
         "1.2.2 Bengkel dan Gudang Penyedia Jasa": {
           "1.2.2.1 Pembuatan Gudang/Bengkel/Lainnya": [
             "Kayu",
             "Triplek",
-            "Paku",
+            "Paku, dll.",
             "Mandor",
             "Tukang",
             "Pekerja",
             "Peralatan Tukang",
           ],
         },
-
         "1.2.3 Kantor dan Akomodasi untuk Direksi Pekerjaan": {
           "1.2.3.1 Pembuatan Kantor Direksi Proyek": [
             "Kayu",
             "Triplek",
-            "Paku",
+            "Paku, dll.",
             "Mandor",
             "Tukang",
             "Pekerja",
@@ -2425,110 +2591,104 @@
             "Peralatan Tukang",
           ],
         },
-
+        // 1.3 Manajemen dan Keselamatan Lalu Lintas
         "1.3.1 Rencana Manajemen dan Keselamatan Lalu Lintas": {
-          "1.3.1.1 Pembuatan Rute Pengalihan Lalu Lintas": [
-            "Agregat Kelas A",
+          "1.3.1.1 Pembuatan Rute pengalihan lalu lintas": [
+            "Agregate kelas A",
             "Jembatan Bailey",
-            "Tenaga Flagman",
+            "Tenaga flagman",
             "Tukang",
             "Operator",
             "Motor Grader",
-            "Water Tank",
+            "Watertank",
           ],
         },
-
         "1.3.2 Uraian Perlengkapan Minimal Jalan Sementara": {
-          "1.3.2.1 Pengadaan Perlengkapan Minimal Jalan Sementara": [
-            "Concrete Barrier",
-            "Rambu Panah",
-            "Rambu Suar",
-            "Rambu Informasi Pengalihan",
-            "Rambu Peringatan",
-            "Marka Jalan Sementara",
-            "Alat Komunikasi",
+          "1.3.2.1 Pengadaan perlengkapan minimal jalan sementara": [
+            "Concrete barrier",
+            "Rambu panah",
+            "Rambu suar",
+            "Rambu informasi pengalihan",
+            "rambu peringatan",
+            "marka jalan sementara",
+            "Alat komunikasi lainnya",
           ],
         },
-
         "1.3.3 Pekerjaan Jalan atau Jembatan Sementara": {
-          "1.3.3.1 Pembuatan Jalan atau Jembatan Sementara": [
-            "Balok Kelapa",
-            "Jembatan Bailey",
+          "1.3.3.1 Pembuatan jalan atau jembatan sementara": [
+            "Balok kelapa",
+            "Jembatan bailey",
             "Papan",
             "Kawat",
-            "Paku",
-            "Operator Alat",
+            "Paku, dll.",
+            "Operator alat",
             "Tukang",
             "Excavator",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
-        "1.3.4 Pemeliharaan untuk Keselamatan Lalu Lintas": {
-          "1.3.4.1 Inspeksi Berkala": [
+        "1.3.4 Pemeliharaan untuk Keselamatan Lalu lintas": {
+          "1.3.4.1 Inspeksi berkala": [
             "Rambu K3",
             "Patroli K3",
             "Peralatan K3L",
           ],
         },
-
-        "1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan": {
-          "1.4.1.1 Survey Ulang Sebelum Pelaksanaan": [
-            "Pilox",
-            "Patok Kayu",
-            "Surveyor",
-            "Asisten Survey",
-            "Total Station",
-          ],
-        },
-
+        // 1.4 Kajian Teknis Lapangan
+        "1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan":
+          {
+            "1.4.1.1 Survey ulang sebelum pelaksanaan": [
+              "Pilox/Marka",
+              "Patok kayu",
+              "Surveyor",
+              "Asisten survey/fleet",
+              "Total station/theodolit",
+            ],
+          },
         "1.4.2 Pekerjaan Survei Pelaksanaan Rutin": {
-          "1.4.2.1 Survey Selama Pelaksanaan": [
-            "Pilox",
-            "Patok Kayu",
+          "1.4.2.1 Survey selama pelaksanaan": [
+            "Pilox/Marka",
+            "Patok kayu",
             "Surveyor",
-            "Asisten Survey",
-            "Total Station",
+            "Asisten survey/fleet",
+            "Total station/theodolit",
           ],
         },
-
         "1.4.3 Penetapan Titik Pengukuran": {
-          "1.4.3.1 Penetapan Titik Acuan BM": [
-            "Pilox",
-            "Patok Kayu",
+          "1.4.3.1 Penetapan titik acuan BM": [
+            "Pilox/Marka",
+            "Patok kayu",
             "Beton BM",
             "Surveyor",
-            "Asisten Survey",
-            "Total Station",
+            "Asisten survey/fleet",
+            "Total station/theodolit",
           ],
         },
-
         "1.4.4 Tenaga Ahli Rekayasa Lapangan": {
-          "1.4.4.1 Pembuatan Site Plan": ["Engineer"],
+          "1.4.4.1 Pembuatan site plan": ["Engineer"],
         },
-
+        // 1.5 Pengamanan Lingkungan Hidup
         "1.5.1 Upaya Pengelolaan Lingkungan": {
-          "1.5.1.1 Pembuatan Taman Proyek": ["Tukang"],
-          "1.5.1.2 Penerapan Denda Kerusakan Lingkungan": ["Pengawas"],
+          "1.5.1.1 Pembuatan taman proyek": ["Tukang"],
+          "1.5.1.2 Mengenakan denda bagi yang merusak lingkungan": [],
         },
-
-        "1.6.1 Pekerjaan Relokasi Utilitas dan Pelayanan yang Ada": {
-          "1.6.1.1 Pemindahan Kabel, Tiang Listrik, Pipa Air": [
+        // 1.6 Relokasi Eksisting utilitas
+        "1.6.1 Pekerjaan relokasi utilitas dan pelayanan yang ada": {
+          "1.6.1.1 Pemindahan kabel, tiang listrik, pipa air, dsb.": [
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "1.6.1.2 Pemindahan Kuburan": ["Tukang", "Peralatan Tukang"],
+          "1.6.1.2 Pemindahan kuburan": ["Tukang", "Peralatan tukang"],
         },
-
+        // 1.7 Keselamatan dan Kesehatan Kerja
         "1.7.1 Sistem Manajemen K3 Konstruksi": {
-          "1.7.1.1 Pembuatan Rencana Sistem Manajemen K3L Proyek": [
-            "Pengawas Sistem K3L",
-            "Safety Patrol",
+          "1.7.1.1 Pembuatan Rencana sistem manajemen K3L Proyek": [
+            "Pengawas sistem K3L proyek",
+            "Safety patrol",
           ],
         },
-
         "1.7.2 K3 Kantor Lapangan dan Fasilitasnya": {
-          "1.7.2.1 Pembuatan Kantor K3 dan Fasilitasnya": [
+          "1.7.2.1 Pembuatan kantor K3 dan fasilitasnya": [
             "Kayu",
             "Triplek",
             "Paku",
@@ -2538,397 +2698,403 @@
             "Peralatan Tukang",
           ],
         },
-
         "1.7.3 Manajemen Risiko": {
           "1.7.3.1 Identifikasi Risiko": [
             "Engineer/PM",
-            "Pengawas Sistem Mutu dan K3L",
+            "Pengawas sistem mutu & K3L proyek",
           ],
           "1.7.3.2 Penilaian Frekuensi dan Dampak Risiko": [
             "Engineer/PM",
-            "Pengawas Sistem Mutu dan K3L",
+            "Pengawas sistem mutu & K3L proyek",
           ],
           "1.7.3.3 Mitigasi Risiko": [
             "Engineer/PM",
-            "Pengawas Sistem Mutu dan K3L",
+            "Pengawas sistem mutu & K3L proyek",
           ],
           "1.7.3.4 Respon Risiko": [
             "Engineer/PM",
-            "Pengawas Sistem Mutu dan K3L",
+            "Pengawas sistem mutu & K3L proyek",
           ],
           "1.7.3.5 Monitoring Risiko": [
             "Engineer/PM",
-            "Pengawas Sistem Mutu dan K3L",
+            "Pengawas sistem mutu & K3L proyek",
           ],
         },
-
-        "1.8.1 Uji Karakteristik": {
-          "1.8.1.1 Uji Tanah, Meliputi Pengeboran, SPT, dan Laporan": [
-            "Alat Bor",
-            "Ahli Geoteknik",
-            "Laporan Hasil",
+        // 1.8 Pengujian Tanah
+        "1.8.1 Uji karakteristik": {
+          "1.8.1.1 Uji tanah, meliputi Pengeboran, SPT, laporan": [
+            "Alat bor",
+            "Ahli geoteknik",
+            "laporan hasil",
           ],
         },
-
-        "1.9.1 Rencana Jaminan dan Pengendalian Mutu Proyek": {
-          "1.9.1.1 Pembuatan Rencana Sistem Mutu Proyek (QC Plan)": [
+        // 1.9 Manajemen Mutu
+        "1.9.1 Rencana Jaminan & Pengendalian Mutu Proyek": {
+          "1.9.1.1 Pembuatan Rencana sistem Mutu Proyek (QC Plan)": [
             "Quality Control",
           ],
-          "1.9.1.2 Pembuatan Rencana Jaminan Mutu Proyek": [
+          "1.9.1.2 Pembuatan Rencana Jaminan mutu proyek": [
             "Quality Assurance",
           ],
         },
-
-        "1.9.2 Pengendalian Mutu Material dan Produk": {
-          "1.9.2.1 Tes Beton": ["Compressive Strength", "Mix Design"],
-          "1.9.2.2 Tes Besi": ["Bend Test", "Tensile Test"],
+        "1.9.2 Pengendalian Mutu Material & Produk": {
+          "1.9.2.1 Tes Beton": ["Compressiive stregth", "Mix design"],
+          "1.9.2.2 Tes Besi": ["Bend test", "Tensile test"],
         },
-
-        "1.9.3 Pengujian untuk Penyelesaian": {
-          "1.9.3.1 Tes Agregat dan Tanah": [
-            "Compaction Test",
-            "Density",
-            "Konsolidasi",
+        "1.9.3 Pengujian-Pengujian untuk Penyelesaian": {
+          "1.9.3.1 Tes Agregate & tanah": [
+            "compaction test",
+            "density",
+            "konsolidasi",
             "CBR",
-            "Sand Cone",
+            "Sand cone",
           ],
-          "1.9.3.2 Tes Aspal / Bituminous Test": [
-            "Asphalt Test",
-            "Aggregate Testing",
+          "1.9.3.2 Tes Aspal / Bituminous test": [
+            "Asphalt test",
+            "Aggregate testing",
           ],
         },
-
+        // 2 Pekerjaan Drainase
+        // 2.1 Drainase Penunjang (Luar
         "2.1.1 Selokan dan Saluran Air": {
-          "2.1.1.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+          "2.1.1.1 Pekerjaan lantai kerja": ["Lean concrete"],
+        },
+        // 2.1 konstruksi Jembatan)
+        "2.1.1 Selokan dan Saluran Air": {
+          "2.1.1.1 Pekerjaan lantai kerja": [
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.1.2 Pembuatan Selokan dan Saluran Air": [
+          "2.1.1.2 Pembuatan selokan & saluran air": [
             "Bata",
             "Semen",
             "Pasir",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
-        "2.1.2 Drainase Pasangan Batu dan Mortar": {
-          "2.1.2.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+        "2.1.2 Drainase pasangan batu & mortar": {
+          "2.1.2.1 Pekerjaan lantai kerja": [
+            "Lean concrete",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.2.2 Pemasangan Pasangan Batu dan Mortar": [
-            "Batu Belah",
+          "2.1.2.2 Pemasangan pasangan batu & mortar": [
+            "Batu belah",
             "Semen",
             "Pasir",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
         "2.1.3 Drainase Beton Precast": {
-          "2.1.3.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+          "2.1.3.1 Pekerjaan lantai kerja": [
+            "Lean concrete",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.3.2 Pemasangan Drainase Precast": [
-            "Drainase Precast",
+          "2.1.3.2 Pek. Pemasangan drainase precast": [
+            "Drainase precast",
             "Semen",
             "Pasir",
             "Mandor",
             "Tukang",
-            "Alat Angkut/Katrol",
-            "Peralatan Tukang",
+            "Alat angkut/katrol",
+            "Peralatan tukang",
           ],
         },
-
         "2.1.4 Drainase Beton Cast Insitu": {
-          "2.1.4.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+          "2.1.4.1 Pekerjaan lantai kerja": [
+            "Lean concrete",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.4.2 Pekerjaan Bekisting Drainase": [
+          "2.1.4.2 Pek. Bekisting drainase": [
             "Triplek",
             "Kayu",
-            "Paku",
+            "Paku, dll.",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.4.3 Pekerjaan Pembesian Drainase": [
+          "2.1.4.3 Pek. Pembesian drainase": [
             "Besi",
             "Bendrat",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.4.4 Pekerjaan Pengecoran Drainase": [
-            "Beton Readymix",
+          "2.1.4.4 Pek. Pengecoran drainase": [
+            "Beton readymix",
             "Mandor",
             "Tukang",
-            "Concrete Mixer",
+            "Concrete mixer",
             "Vibrator",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
-        "2.1.5 Drainase Porous": {
-          "2.1.5.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+        "2.1.4 Drainase Porous": {
+          "2.1.4.1 Pekerjaan lantai kerja": [
+            "Lean concrete",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.5.2 Pemasangan Drainase Porous": [
+          "2.1.4.2 Pek. Pemasangan drainase porous": [
             "Pipa PVC",
-            "Lem Plastik",
-            "Gergaji/Pemotong",
+            "Lem plastik",
+            "Gergaji/pemotong",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
-        "2.1.6 Gorong-Gorong Pipa dan Box Culvert": {
-          "2.1.6.1 Pekerjaan Lantai Kerja": [
-            "Lean Concrete",
+        "2.1.5 Gorong-gorong Pipa dan Kotak (Box culvert)": {
+          "2.1.3.1 Pekerjaan lantai kerja": [
+            "Lean concrete",
             "Mandor",
             "Tukang",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
-          "2.1.6.2 Pemasangan Gorong-Gorong Precast": [
-            "Gorong-Gorong Precast",
+          "2.1.3.2 Pek. Pemasangan drainase precast": [
+            "Gorong-gorong precast",
             "Semen",
             "Pasir",
             "Mandor",
             "Tukang",
-            "Alat Angkut/Katrol",
-            "Peralatan Tukang",
+            "Alat angkut/katrol",
+            "Peralatan tukang",
           ],
         },
-
+        // 2.2 Drainase Pada Konstruksi Jembatan
         "2.2.1 Drainase Lantai Jembatan": {
-          "2.2.1.1 Pemasangan Drainase Lantai Jembatan": [
+          "2.2.1.1 Pek. Pemasangan Drainase lantai jembatan": [
             "Pipa PVC",
-            "Lem Plastik",
+            "Lem plastik",
             "Mandor",
             "Tukang",
-            "Alat Pemotong/Gergaji",
+            "Alat pemotong/gergaji",
           ],
         },
-
-        "3.1.1 Pembersihan, Pengupasan dan Pemotongan Pohon": {
-          "3.1.1.1 Pelaksanaan Pembersihan dan Pemotongan Pohon": [
+        // 3 Pekerjaan Tanah
+        // 3.1 Land clearing
+        "3.1.1 Pembersihan, Pengupasan Dan Pemotongan Pohon": {
+          "3.1.1.1 Pelaksanaan pembersihan pengupasan & pemotong pohon": [
             "Mandor",
             "Pekerja",
-            "Chainsaw",
+            "Chainsaw/gergaji",
             "Cangkul",
-            "Arit/Sabit",
+            "Arit/sabit",
             "Excavator",
             "Bulldozer",
-            "Dump Truck",
+            "Dumptruck",
           ],
         },
-
-        "3.2.1 Galian Biasa (Common Excavation)": {
-          "3.2.1.1 Pemasangan Patok dan Bouwplank": [
+        // 3.2 Galian
+        "3.2.1 Galian Biasa (Common excavation)": {
+          "3.2.1.1 Pemasangan patok & bouwplank": [
             "Kayu",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.2.1.2 Galian Konvensional": ["Pekerja", "Mandor", "Alat Gali"],
-          "3.2.1.3 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
-          "3.2.1.4 Pembuangan Tanah": [
+          "3.2.1.2 Galian konvensional": [
             "Pekerja",
             "Mandor",
-            "Alat Gali",
-            "Gerobak/Troli",
+            "Alat gali (cangkul)",
+          ],
+          "3.2.2.3 Galian Mekanik": ["Operator", "Excavator", "Dumptruck"],
+          "3.2.1.4 Pembuangan tanah": [
+            "Pekerja",
+            "Mandor",
+            "Alat gali (cangkul)",
+            "Gerobak/troli",
           ],
         },
-
         "3.2.2 Galian Batu Lunak": {
-          "3.2.2.1 Pemasangan Patok dan Bouwplank": [
+          "3.2.2.1 Pemasangan patok & bouwplank": [
             "Kayu",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.2.2.2 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
-          "3.2.2.3 Pembuangan Tanah": ["Operator", "Excavator", "Dump Truck"],
+          "3.2.2.2 Galian Mekanik": ["Operator", "Excavator", "Dumptruck"],
+          "3.2.2.3 Pembuangan tanah": [
+            "Operator",
+            "Excavator",
+            "Dump truck",
+          ],
         },
-
         "3.2.3 Galian Batu": {
-          "3.2.3.1 Persiapan dan Pemasangan Patok": [
+          "3.2.2.1 Persiapan dan pemasangan patok": [
             "Kayu",
-            "Jaring Pelindung Baja",
-            "Ahli Peledak",
+            "Jaring pelindung baja",
+            "Ahli peledak",
             "Pekerja",
-            "Alat Bantu",
+            "Alat bantu",
           ],
-          "3.2.3.2 Pemasangan Bahan Peledak (Pengeboran)": [
-            "Bahan Peledak",
-            "Ahli Peledak",
+          "3.2.2.2 Pemasangan bahan peledak (pengeboran)": [
+            "Bahan peledak",
+            "Ahli peledak",
             "Pekerja",
-            "Alat Bor",
-            "Alat Bantu",
+            "Alat bor",
+            "Alat bantu",
           ],
-          "3.2.3.3 Peledakan Batu": [
-            "Bahan Peledak",
-            "Jaring Pelindung Baja",
-            "Ahli Peledak",
+          "3.2.2.3 Peledakan Batu": [
+            "Bahan peledak",
+            "Jaring pelindung baja",
+            "Ahli peledak",
             "Pekerja",
-            "Alat Bantu",
+            "Alat bantu",
           ],
-          "3.2.3.4 Pembuangan Batu": [
-            "Bongkahan Batu",
+          "3.2.2.3 Pembuangan Batu": [
+            "Bongkahan batu",
             "Operator",
             "Excavator",
-            "Dump Truck",
+            "Dump truck",
           ],
         },
-
         "3.2.4 Galian Perkerasan Beraspal": {
-          "3.2.4.1 Persiapan dan Pemasangan Patok": [
-            "Kayu/Pilox",
+          "3.2.2.1 Persiapan dan pemasangan patok": [
+            "Kayu/pilox",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.2.4.2 Galian Mekanik": [
+          "3.2.2.2 Galian Mekanik": [
             "Operator",
-            "Power Shovel/Excavator",
-            "Dump Truck",
+            "Power sovhel/ excavator",
+            "Dumptruck",
           ],
-          "3.2.4.3 Pembuangan Perkerasan Aspal": [
-            "Limbah Aspal",
+          "3.2.2.3 Pembuangan perkerasan aspal": [
+            "Limbah aspal",
             "Operator",
             "Excavator",
-            "Dump Truck",
+            "Dump truck",
           ],
         },
-
         "3.2.5 Galian Perkerasan Beton": {
-          "3.2.5.1 Persiapan dan Pemasangan Patok": [
-            "Kayu/Pilox",
+          "3.2.2.1 Persiapan dan pemasangan patok": [
+            "Kayu/pilox",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.2.5.2 Galian Mekanik": [
+          "3.2.2.2 Galian Mekanik": [
             "Operator",
-            "Power Shovel/Excavator",
-            "Dump Truck",
+            "Power sovhel/ excavator",
+            "Dumptruck",
           ],
-          "3.2.5.3 Pembuangan Perkerasan Beton": [
-            "Limbah Beton",
+          "3.2.2.3 Pembuangan perkerasan aspal": [
+            "Limbah beton",
             "Operator",
             "Excavator",
-            "Dump Truck",
+            "Dump truck",
           ],
         },
-
         "3.2.6 Galian Struktur": {
-          "3.2.6.1 Pemasangan Patok dan Bouwplank": [
+          "3.2.1.1 Pemasangan patok & bouwplank": [
             "Kayu",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.2.6.2 Galian Konvensional": ["Pekerja", "Mandor", "Alat Gali"],
-          "3.2.6.3 Galian Mekanik": ["Operator", "Excavator", "Dump Truck"],
-          "3.2.6.4 Pembuangan Tanah": [
+          "3.2.1.2 Galian konvensional": [
             "Pekerja",
             "Mandor",
-            "Alat Gali",
-            "Gerobak/Troli",
+            "Alat gali (cangkul)",
           ],
-        },
-
-        "3.3.1 Timbunan Kembali": {
-          "3.3.1.1 Pemasangan Patok dan Bouwplank": [
-            "Kayu",
-            "Pekerja",
-            "Alat Tukang",
-          ],
-          "3.3.1.2 Hamparan Tanah": [
-            "Tanah Existing",
+          "3.2.2.3 Galian Mekanik": ["Operator", "Excavator", "Dumptruck"],
+          "3.2.1.4 Pembuangan tanah": [
             "Pekerja",
             "Mandor",
-            "Alat Tukang",
+            "Alat gali (cangkul)",
+            "Gerobak/troli",
           ],
-          "3.3.1.3 Pemadatan": ["Pekerja", "Mandor", "Alat Tukang"],
         },
-
-        "3.3.2 Timbunan dari Luar (Borrow Area)": {
-          "3.3.2.1 Pemasangan Patok dan Bouwplank": [
+        // 3.3 Timbunan
+        "3.3.1 Timbunan kembali": {
+          "3.3.1.1 Pemasangan patok & bouwplank": [
             "Kayu",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "3.3.2.2 Hamparan Tanah": [
-            "Tanah Baru",
+          "3.3.1.2 Hamparan tanah": [
+            "Tanah eksisiting",
+            "Pekerja",
+            "Mandor",
+            "Alat tukang",
+          ],
+          "3.3.1.3 Pemadatan": ["Pekerja", "Mandor", "Alat tukang"],
+        },
+        "3.3.2 Timbunan dari luar (borrow area)": {
+          "3.3.2.1 Pemasangan patok & bouwplank": [
+            "Kayu",
+            "Pekerja",
+            "Alat tukang",
+          ],
+          "3.3.2.2 Hamparan tanah": [
+            "Tanah baru (dari luar)",
             "Pekerja",
             "Mandor",
             "Bulldozer",
-            "Dump Truck",
+            "Dump truck",
           ],
-          "3.3.2.3 Pemadatan": ["Tanah", "Pekerja", "Mandor", "Vibro Roller"],
+          "3.3.2.3 Pemadatan": [
+            "Tanah",
+            "Pekerja",
+            "Mandor",
+            "Vibro Roller",
+          ],
         },
-
+        // 3.4 Perbaikan Tanah
         "3.4.1 Pekerjaan Geotekstil": {
-          "3.4.1.1 Pemasangan Geotekstil": [
+          "3.4.1.1 Pek. Pemasangan geotekstile": [
             "Geotekstil",
             "Mandor",
             "Tukang",
-            "Mesin Jahit",
-            "Peralatan Tukang",
+            "Mesin jahit",
+            "Peralatan tukang",
           ],
-          "3.4.1.2 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+          "3.4.1.2 Pengendalian Mutu": ["QC inspector", "Peralatan bantu"],
         },
-
-        "3.4.2 Vacuum Consolidation Method (VCM)": {
-          "3.4.2.1 Pemasangan Perforated Vertical Drain (PVD)": [
+        "3.4.2 Pekerjaan Vacuum Consolidation Method (VCM)": {
+          "3.4.2.1 Pek. Pemasangan Perforated Vertical Drain (PVD)": [
             "Geomembrane",
             "PVD",
             "Pipa",
             "Mandor",
             "Tukang",
-            "VCM Instrument",
-            "Mesin Jahit",
-            "Peralatan Tukang",
+            "VCM instrumen (extensiometer, inclinometer, piezometer, vacuum gauge)",
+            "Mesin jahit",
+            "Peralatan tukang",
           ],
-          "3.4.2.2 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+          "3.4.2.2 Pengendalian Mutu": ["QC inspector", "Peralatan bantu"],
         },
-
         "3.4.3 Dynamic Compaction (DC)": {
-          "3.4.3.1 Perataan Tanah / Working Platform": [
-            "Tanah",
+          "3.4.3.1 Pek. Perataaan tanah/ working platform": [
+            "tanah (bila diperlukan)",
             "Operator",
             "Motor Grader",
           ],
-          "3.4.3.2 Pemadatan Tanah Dinamis": [
-            "Beban Beton/Baja",
+          "3.4.3.2 Pemadatan tanah dinamis": [
+            "Beban (beton/baja)",
             "Operator",
             "Pekerja",
-            "Crane Service",
+            "Crane service",
             "Sling",
-            "Pressure Meter Tester",
+            "Pressure Meter Tester (PMT)",
           ],
-          "3.4.3.3 Pengendalian Mutu": ["QC Inspector", "Peralatan Bantu"],
+          "3.4.3.3 Pengendalian Mutu": ["QC inspector", "Peralatan bantu"],
         },
-
-        "4.1.1 Pelebaran Perkerasan Jalan Aspal": {
-          "4.1.1.1 Pelaksanaan Pelebaran Perkerasan Jalan Aspal": [
-            "Agregat Base A",
-            "Agregat Base B",
-            "Agregat Kelas C",
-            "Campuran Hotmix",
+        // 4 Pelebaran Perkerasan dan Bahu Jalan
+        // 4.1 Pekerjaan pelebaran perkerasan
+        "4.1.1 Pek. Pelebaran perkerasan jalan aspal": {
+          "4.1.1.1 Pelaksanaan Pelebaran perkerasan jalan aspal": [
+            "Agregat Base A, B (sesuai spec.)",
+            "Agregat Kelas C (sesuai spec.)",
+            "Campuran hotmix (prime coat)",
             "Mandor",
             "Tukang",
             "Operator",
@@ -2939,26 +3105,25 @@
             "Water Tanker",
           ],
         },
-
-        "4.1.2 Pelebaran Perkerasan Jalan Beton": {
-          "4.1.2.1 Pelaksanaan Pelebaran Perkerasan Jalan Beton": [
-            "Beton Readymix",
-            "Lean Concrete",
+        "4.1.2 Pek. Pelebaran perkerasan jalan Beton": {
+          "4.1.1.2 Pelaksanaan Pelebaran perkerasan jalan Beton": [
+            "Beton Readymix (sesuai spec.)",
+            "Beton Lean concrete",
             "Kayu",
-            "Besi Tulangan",
+            "Besi tulangan",
             "Bendrat",
             "Mandor",
             "Tukang",
             "Operator",
-            "Truck Mixer",
-            "Concrete Paver",
+            "Truck mixer",
+            "Concrete paver",
           ],
         },
-
-        "4.2.1 Pelebaran Bahu Jalan": {
-          "4.2.1.1 Pelaksanaan Pelebaran Bahu Jalan": [
-            "Agregat Base A",
-            "Agregat Base B",
+        // 4.2 Pekerjaan bahu jalan
+        "4.2.1 Pek. Pelebaran Bahu Jalan": {
+          "4.2.1.1 Pelaksanaan Pelebaran bahu jalan": [
+            "Agregat Base A (sesuai spec.)",
+            "Agregat Base B (sesuai spec.)",
             "Mandor",
             "Tukang",
             "Operator",
@@ -2969,9 +3134,13 @@
             "Water Tanker",
           ],
         },
-
+        // 5 Perkerasan Berbutir & Perkerasan Beton Semen
+        // 5.1 Perkerasan berbutir
         "5.1.1 Lapis Pondasi Agregat": {
-          "5.1.1.1 Pengadaan Material": ["Agregat Base A", "Agregat Base B"],
+          "5.1.1.1 Pengadaan Material": [
+            "Agregat Base A (sesuai spec.)",
+            "Agregat Base B (sesuai spec.)",
+          ],
           "5.1.1.2 Penghamparan dan Pemadatan Lapis Pondasi Agregat": [
             "Pekerja",
             "Operator",
@@ -2982,85 +3151,83 @@
             "Water Tanker",
           ],
         },
-
         "5.1.2 Perkerasan Berbutir Tanpa Penutup Aspal": {
-          "5.1.2.1 Pengadaan Material": ["Agregat Kelas S"],
-          "5.1.2.2 Penghamparan dan Pemadatan Perkerasan Berbutir": [
-            "Pekerja",
-            "Operator",
-            "Wheel Loader",
-            "Dump Truck",
-            "Motor Grader",
-            "Tandem Roller",
-            "Water Tanker",
-          ],
+          "5.1.2.1 Pengadaan Material": ["Agregat kelas S (sesuai spec.)"],
+          "5.1.2.2 Penghamparan dan Pemadatan Perkerasan Berbutir Tanpa Penutup Aspal":
+            [
+              "Pekerja",
+              "Operator",
+              "Wheel Loader",
+              "Dump Truck",
+              "Motor Grader",
+              "Tandem Roller",
+              "Water Tanker",
+            ],
         },
-
+        // 5.2 Perkerasan Beton Semen
         "5.2.1 Lapisan Pondasi Semen Tanah": {
-          "5.2.1.1 Pelaksanaan Lapisan Pondasi Semen Tanah": [
-            "Semen",
-            "Tanah",
+          "5.2.1.1 Pelaksanaan lapisan pondasi semen tanah": [
+            "Semen (sesuai spec.)",
+            "Tanah (sesuai spec.)",
             "Air",
             "Pekerja",
             "Mandor",
-            "Concrete Mixer",
-            "Alat Bantu",
+            "Concrete mixer",
+            "Alat bantu",
           ],
         },
-
         "5.2.2 Lapisan Pondasi Agregat Semen (CBT dan CTSB)": {
-          "5.2.2.1 Pelaksanaan Lapisan Pondasi Agregat Semen": [
-            "Beton Readymix",
+          "5.2.2.1 Lapisan Pondasi Agregat Semen (CBT dan CTSB)": [
+            "Beton Readymix (sesuai spec.)",
             "Pekerja",
             "Mandor",
-            "Truck Mixer",
-            "Alat Bantu",
+            "Truck mixer",
+            "Alat bantu",
           ],
         },
-
         "5.2.3 Perkerasan Beton Semen": {
-          "5.2.3.1 Pembersihan Area": ["Pekerja", "Air Compressor"],
-          "5.2.3.2 Pemasangan Patok dan Bouwplank": [
+          "5.2.3.1 Pembersihan area": ["-", "Pekerja", "Air compressor"],
+          "5.2.3.2 Pemasangan patok & bouwplank": [
             "Kayu",
             "Pekerja",
-            "Alat Tukang",
+            "Alat tukang",
           ],
-          "5.2.3.3 Lean Concrete": [
+          "5.2.3.3 Lean concrete": [
             "Beton B-0",
             "Pekerja",
             "Mandor",
-            "Truck Mixer",
-            "Alat Bantu",
+            "Truck mixer",
+            "Alat bantu",
           ],
-          "5.2.3.4 Pemasangan Pembesian": [
-            "Besi Tulangan",
-            "Kawat Bendrat",
+          "5.2.3.4 Pasang Pembesian": [
+            "Besi (sesuai spec.)",
+            "Kawat bendrat",
             "Tukang Besi",
             "Kepala Tukang",
             "Pekerja",
             "Mandor",
-            "Bar Bender",
-            "Bar Cutter",
-            "Alat Bantu Tukang",
+            "Bar bender",
+            "Bar cutter",
+            "Alat bantu tukang",
           ],
-          "5.2.3.5 Pemasangan Bekisting": [
+          "5.2.3.5 Pasang Bekisting": [
             "Kayu",
             "Paku",
             "Tukang Kayu",
-            "Pekerja",
+            "Perkerja",
             "Mandor",
             "Gergaji Kayu",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "5.2.3.6 Membran Plastik": ["Pekerja", "Plastik Membran"],
+          "5.2.3.6 Membran plastik": ["Pekerja", "Plastik membran"],
           "5.2.3.7 Tulangan Dowel": [
-            "Besi Tulangan",
+            "Besi tulangan",
             "Bendrat",
-            "Tukang Besi",
-            "Alat Tukang",
+            "Tukang besi",
+            "Alat tukang",
           ],
           "5.2.3.8 Penghamparan Beton": [
-            "Beton Readymix",
+            "Beton Readymix (sesuai spec.)",
             "Pekerja",
             "Mandor",
             "Operator",
@@ -3068,155 +3235,151 @@
             "Bucket",
             "Vibrator",
           ],
-          "5.2.3.9 Perawatan / Curing Beton": [
+          "5.2.3.9 Perawatan/ Curing Beton": [
             "Curing Compound",
             "Pekerja",
             "Mandor",
             "Fog Spraying",
-            "Concrete Vibrator",
+            "Concrete vibrator",
           ],
-          "5.2.3.10 Joint Sealant": ["Material Sealant", "Pekerja"],
+          "5.2.3.10 Joint sealent": ["Material Sealent", "Pekerja"],
         },
-        "6.1.1 Prime coat / Tack coat": {
-          "6.1.1.1 Pembersihan area": ["Pekerja", "Air Compressor"],
+        // 6 Perkerasan Aspal
+        // 6.1 Asphal Mixing Plant (AMP)
+        "6.1.1 Lapisan Aspal Dasar": {
+          "6.1.1.1 Pembersihan area": ["-"],
+        },
+        "6.1.1 Prime coat/ Tack coat": {
+          "6.1.1.1 Pembersihan area": ["Pekerja", "Air compressor"],
           "6.1.1.2 Pembuatan dan Produksi Campuran Aspal": [
-            "Aspal Emulsi",
-            "Kerosene",
-            "Pekerja",
-            "Operator",
-            "Asphalt Mixing Plant",
+            "aspal emulsi",
+            "kerosene",
+            "pekerja/operator",
+            "Aspal Mixing Plant",
           ],
-          "6.1.1.3 Penghamparan Lapisan Pengikat & Perekat": [
-            "Campuran Hotmix (Prime Coat)",
+          "6.1.1.3 Penghamparan Lapisan pengikat & perekat": [
+            "Campuran hotmix (prime coat)",
             "Mandor",
             "Tukang",
-            "Asphalt Sprayer",
-            "Asphalt Distributor",
+            "Asphalt Sprayer/Distributor",
           ],
         },
-
         "6.1.2 Lapisan Aspal Atas": {
           "6.1.2.1 Pembuatan dan Produksi Campuran Aspal": [
             "Agregat 5-10",
             "Agregat 10-20",
-            "Aspal Emulsi",
+            "Aspal emulsi",
             "Filler",
-            "Stripping Anti Age",
+            "Stripping anti age",
             "Mandor",
             "Tukang",
-            "Asphalt Mixing Plant",
+            "Aspal Mixing Plant",
           ],
-          "6.1.2.2 Penghamparan Campuran Lapisan Atas": [
-            "Aspal Agregat",
+          "6.1.2.2 Penghamparan Campuran Lapisan atas": [
+            "Aspal agregat",
             "Mandor",
             "Tukang",
-            "Dump Truck",
-            "Asphalt Finisher",
-            "Tandem Roller",
-            "Tyre Roller",
-            "Water Tank",
+            "Dump truck",
+            "Asphalt finisher",
+            "Tandem roller",
+            "tyre roller",
+            "watertank",
           ],
-          "6.1.2.3 Pemeliharaan dan Pembukaan Bagi Lalu Lintas": [
-            "Material Bantu K3",
-            "Pekerja",
-            "Safety Patrol",
+          "6.1.2.3 Pemeliharaan dan Pembukaan Bagi Lalu Lintas..": [
+            "Material bantu K3",
+            "Pekerja/safety patrol",
           ],
           "6.1.2.4 Pengendalian Mutu dan Pemeriksaan di Lapangan": [
-            "Ekstraksi Cone Test",
+            "Ekstraksi cone test",
             "QC",
           ],
         },
-
+        // 6.2 Non Asphal Mixing Plant (Non-AMP)
         "6.2.1 Lapisan Penetrasi Macadam": {
-          "6.2.1.1 Material": ["Aspal Emulsi"],
-          "6.2.1.2 Peralatan": ["Asphalt Mixing Plant", "Fleet Paver"],
-          "6.2.1.3 Pelaksanaan": [
-            "Aspal Emulsi",
+          "6.6.2.1 Material": ["aspal emulsi"],
+          "6.6.2.2 Peralatan": ["Aspal Mixing Plant+Fleet paver"],
+          "6.6.2.3 Pelaksanaan": [
+            "aspal emulsi",
             "Mandor",
             "Tukang",
-            "Asphalt Mixing Plant",
-            "Asphalt Sprayer",
+            "Aspal Mixing Plant",
+            "Aspal Sprayer",
           ],
-          "6.2.1.4 Pengendalian Mutu dan Pengujian di Lapangan": [
-            "Aspal Tester",
+          "6.6.2.4 Pengendalian Mutu dan Pengujian di Lapangan": [
+            "Aspal tester",
             "QC",
           ],
         },
-
         "6.2.2 Laburan Aspal Satu Lapis (Burtu)": {
-          "6.2.2.1 Material": ["Aspal Emulsi"],
-          "6.2.2.2 Peralatan": ["Asphalt Mixing Plant", "Asphalt Sprayer"],
-          "6.2.2.3 Pelaksanaan Pekerjaan": ["Pekerja"],
-          "6.2.2.4 Pengendalian Mutu dan Pengujian Lapangan": [
-            "Aspal Tester",
+          "6.2.1.1 Material": ["aspal emulsi"],
+          "6.2.1.2 Peralatan": ["Aspal Mixing Plant", "Aspal sprayer"],
+          "6.2.1.3 Pelaksanaan Pekerjaan": ["pekerja"],
+          "6.2.1.4 Pengendalian Mutu dan Pengujian Lapangan": [
+            "Aspal tester",
             "QC",
           ],
         },
-
         "6.2.3 Laburan Aspal Dua Lapis (Burda)": {
-          "6.2.3.1 Material": ["Aspal Emulsi"],
-          "6.2.3.2 Peralatan": ["Asphalt Mixing Plant", "Asphalt Sprayer"],
-          "6.2.3.3 Pelaksanaan Pekerjaan": ["Pekerja"],
-          "6.2.3.4 Pengendalian Mutu dan Pengujian Lapangan": [
-            "Aspal Tester",
+          "6.2.1.1 Material": ["aspal emulsi"],
+          "6.2.1.2 Peralatan": ["Aspal Mixing Plant", "Aspal sprayer"],
+          "6.2.1.3 Pelaksanaan Pekerjaan": ["pekerja"],
+          "6.2.1.4 Pengendalian Mutu dan Pengujian Lapangan": [
+            "Aspal tester",
             "QC",
           ],
         },
-
+        // 7 Pekerjaan Struktur
+        // 7.1 Struktur Bawah
         "7.1.1 Tiang Pancang Kayu": {
-          "7.1.1.1 Tiang Pancang Kayu": [
-            "Kayu (Dolken)",
+          "7.1.1.1 Tiang pancang kayu": [
+            "Kayu (dolken)",
             "Pekerja",
             "Mandor",
-            "Palu",
-            "Hammer Jack",
-            "Bandul",
+            "Palu/hammer jack/bandul",
             "Excavator",
           ],
         },
-
         "7.1.2 Tiang Pancang Beton Pracetak": {
           "7.1.2.1 Pemancangan": [
-            "Tiang Pancang Beton Precast",
+            "Tiang pancang beton precast",
             "Pekerja",
             "Mandor",
-            "Jack In Pile",
+            "Jack in Pile",
             "Drop Hammer",
             "Diesel Hammer",
-            "Hydraulic Hammer",
+            "Hydrolic Hammer",
             "Vibratory Pile Driver",
             "Mobile Crane",
           ],
           "7.1.2.2 Penyambungan Tiang": [
-            "Baja Las",
+            "Baja las",
             "Pekerja",
             "Mandor",
             "Alat Las",
           ],
-          "7.1.2.3 Final Set / Kalendering": ["Pekerja", "Pensil", "Kertas"],
+          "7.1.2.3 Final Set/Kalendering": ["Pekerja", "Pensil", "Kertas"],
         },
-
         "7.1.3 Tiang Pancang Baja Struktur": {
-          "7.1.3.1 Pemancangan Tiang Baja": [
-            "Tiang Pancang Baja",
+          "7.1.3.1 Pemancangan tiang baja": [
+            "Tiang pancang baja",
             "Pekerja",
             "Mandor",
-            "Jack In Pile",
+            "Jack in Pile",
             "Drop Hammer",
             "Diesel Hammer",
-            "Hydraulic Hammer",
+            "Hydrolic Hammer",
             "Vibratory Pile Driver",
             "Mobile Crane",
+            "Tiang Pancang",
           ],
           "7.1.3.2 Penyambungan Tiang": [
-            "Material Las",
+            "Material las",
             "Pekerja",
             "Mandor",
             "Alat Las",
           ],
-          "7.1.3.3 Final Set / Kalendering": ["Pekerja", "Pensil", "Kertas"],
+          "7.1.3.3 Final Set/Kalendering": ["Pekerja", "Pensil", "Kertas"],
         },
-
         "7.1.4 Tiang Bor Beton Cor Langsung di Tempat": {
           "7.1.4.1 Pembuatan Sumur Test": [
             "Beton Ready Mix",
@@ -3227,10 +3390,10 @@
             "Self Jetting",
             "Hole Puncher",
             "Pipa Casing",
-            "Pompa Submersible",
+            "Pompa Submarsible",
             "Generator",
           ],
-          "7.1.4.2 Pengeboran (Wash Drilling / Dry Drilling)": [
+          "7.1.4.2 Pengeboran (Wash Drilling/Dry Drilling)": [
             "Air",
             "Beton Ready Mix",
             "Besi",
@@ -3239,19 +3402,18 @@
             "Mesin Bore Pile",
           ],
           "7.1.4.3 Pemasangan Casing": [
-            "Casing Baja",
+            "Casing baja",
             "Pekerja",
             "Pipa Casing",
             "Vibro Hammer",
           ],
-          "7.1.4.4 Pengeboran dengan Cairan Slurry": [
-            "Cairan Bentonite",
-            "Polimer",
+          "7.1.4.4 Pengeboran dengan menggunakan cairan slurry": [
+            "Cairan Bentonite/Polimer",
             "Pekerja",
             "Mandor",
-            "Bentonite Pump",
+            "Bentonite pump",
           ],
-          "7.1.4.5 Pembersihan Lubang Bor": [
+          "7.1.4.5 Pembersihan lubang bor": [
             "Fluida Pengeboran",
             "Pekerja",
             "Cleaning Bucket",
@@ -3259,13 +3421,13 @@
             "Excavator",
             "Dump Truck",
           ],
-          "7.1.4.6 Fabrikasi Besi Pondasi Tiang": [
+          "7.1.4.6 Fabrikasi besi pondasi tiang": [
             "Besi Beton",
             "Bendrat",
             "Pekerja",
             "Mandor",
-            "Bar Bender",
-            "Bar Cutter",
+            "Bar bender",
+            "Bar cutter",
           ],
           "7.1.4.7 Pemasangan Penulangan Bored Pile": [
             "Besi Beton",
@@ -3273,47 +3435,48 @@
             "Mandor",
             "Crawler Crane",
           ],
-          "7.1.4.8 Pembersihan Ulang dengan Alat Penyedot": [
+          "7.1.4.8 Pembersihan ulang dengan alat penyedot": [
             "Pekerja",
             "Cleaning Bucket",
           ],
-          "7.1.4.9 Pemasangan Pipa Tremie untuk Pengecoran": [
+          "7.1.4.9 Pemasangan pipa tremie untuk pengecoran": [
             "Pekerja",
             "Mandor",
             "Pipa Tremie",
             "Crawler Crane",
           ],
-          "7.1.4.10 Pengecoran Beton Tiang Bor": [
+          "7.1.4.10 Pengecoran beton tiang bor": [
             "Beton Ready Mix",
             "Mandor",
             "Pekerja",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
           ],
-          "7.1.4.11 Penarikan Casing": ["Pekerja", "Mandor", "Crawler Crane"],
+          "7.1.4.11 Penarikan casing": [
+            "Pekerja",
+            "Mandor",
+            "Crawler Crane",
+          ],
         },
-
         "7.1.5 Pondasi Sumuran": {
           "7.1.5.1 Pengadaan Material": [
             "Besi Beton",
             "Batu",
             "Beton Ready Mix",
           ],
-          "7.1.5.2 Pelaksanaan": ["Mandor", "Pekerja", "Alat Bantu Tukang"],
+          "7.1.5.2 Pelaksanaan": ["Mandor", "Pekerja", "Alat bantu tukang"],
         },
-
         "7.1.6 Pasangan Batu Kosong dan Bronjong": {
-          "7.1.6.1 Pengadaan Material": ["Batu Belah", "Besi Bronjong"],
-          "7.1.6.2 Pelaksanaan": [
+          "7.1.7.1 Pengadaan Material": ["Batu belah", "Besi bronjong"],
+          "7.1.7.2 Pelaksanaan": [
             "Mandor",
             "Pekerja",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
             "Troli",
           ],
         },
-
-        "7.1.7 Pek. Pile Cap (Beton Cast Insitu)": {
-          "7.1.7.1 Pek. Baja Tulangan (Pembesian)": [
+        "7.1.7 Pek. Pile cap (Beton cast insitu)": {
+          "7.1.8.1 Pek. Baja Tulangan (pembesian)": [
             "Besi",
             "Kawat Beton",
             "Pekerja",
@@ -3323,20 +3486,20 @@
             "Bar Cutter",
             "Bar Bender",
           ],
-          "7.1.7.2 Pek. Bekisting": [
+          "7.1.8.2 Pek. Bekisting": [
             "Kayu",
             "Paku",
-            "Besi Rangka Hollow",
-            "Tukang Las",
-            "Pekerja",
+            "Besi rangka hollow",
+            "Tukang las",
+            "Perkerja",
             "Tukang Kayu",
             "Kepala Tukang",
             "Mandor",
             "Gergaji Kayu",
             "Palu",
-            "Alat Las",
+            "Alat las",
           ],
-          "7.1.7.3 Beton Campuran Konvensional": [
+          "7.1.8.3 Beton campuran konvensional": [
             "Semen",
             "Agregat",
             "Pasir",
@@ -3344,37 +3507,38 @@
             "Mandor",
             "Tukang",
             "Timbangan",
-            "Beton Molen",
+            "Beton molen",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
-          "7.1.7.4 Beton Readymix": [
-            "Beton Readymix",
+          "7.1.8.4 Beton Readymix": [
+            "Beton readymix",
             "Pekerja",
             "Mandor",
             "Operator",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
-          "7.1.7.5 Pengerjaan Akhir / Curing": [
+          "7.1.8.5 Pengerjaan Akhir /Curing": [
             "Curing Compound",
             "Pekerja",
             "Fog Spraying Concrete",
           ],
-          "7.1.7.6 Pengendalian Mutu di Lapangan": [
-            "Beton Campuran",
+          "7.1.8.6 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
+          "7.1.8.6 Slump test": ["Tukang", "Abhram cone"],
+          "7.1.8.6 Tes kubus": [
+            "Beton campuran",
             "Tukang",
-            "Abhram Cone",
-            "Cetakan Kubus",
+            "cetakan kubus",
           ],
         },
-
-        "7.2.1 Pek. Abutmen / Kolom / Pier Head (Beton Cast Insitu)": {
-          "7.2.1.1 Pek. Baja Tulangan (Pembesian)": [
+        // 7.2 Struktur Atas Beton
+        "7.2.1 Pek. Abutmen/kolom/pier head (Beton cast insitu)": {
+          "7.2.1.1 Pek. Baja Tulangan (pembesian)": [
             "Besi",
             "Kawat Beton",
             "Pekerja",
@@ -3387,17 +3551,17 @@
           "7.2.1.2 Pek. Bekisting": [
             "Kayu",
             "Paku",
-            "Besi Rangka Hollow",
-            "Tukang Las",
-            "Pekerja",
+            "Besi rangka hollow",
+            "Tukang las",
+            "Perkerja",
             "Tukang Kayu",
             "Kepala Tukang",
             "Mandor",
             "Gergaji Kayu",
             "Palu",
-            "Alat Las",
+            "Alat las",
           ],
-          "7.2.1.3 Beton Campuran Konvensional": [
+          "7.2.1.3 Beton campuran konvensional": [
             "Semen",
             "Agregat",
             "Pasir",
@@ -3405,105 +3569,105 @@
             "Mandor",
             "Tukang",
             "Timbangan",
-            "Beton Molen",
+            "Beton molen",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
           "7.2.1.4 Beton Readymix": [
-            "Beton Readymix",
+            "Beton readymix",
             "Pekerja",
             "Mandor",
             "Operator",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
-          "7.2.1.5 Pengerjaan Akhir / Curing": [
+          "7.2.1.5 Pengerjaan Akhir /Curing": [
             "Curing Compound",
             "Pekerja",
             "Fog Spraying Concrete",
           ],
-          "7.2.1.6 Pengendalian Mutu di Lapangan": [
-            "Beton Campuran",
+          "7.2.1.6 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
+          "7.2.1.6 Slump test": ["Tukang", "Abhram cone"],
+          "7.2.1.6 Tes kubus": [
+            "Beton campuran",
             "Tukang",
-            "Abhram Cone",
-            "Cetakan Kubus",
+            "cetakan kubus",
           ],
           "7.2.1.7 Sambungan Ekspansi (Expansion Joint)": [
-            "Expansion Joint",
+            "Expansion joint",
             "Tukang",
             "Pekerja",
-            "Alat Bantu",
+            "Alat bantu",
           ],
         },
-
         "7.2.2 Elastomer Bearing Pad": {
-          "7.2.2.1 Pengadaan Material": ["Bearing Pad"],
-          "7.2.2.2 Pemasangan Perletakan (Bearing Pad)": [
+          "7.2.2.1 Pengadaan Material": ["Bearing pad"],
+          "7.2.2.2 Pemasangan perletakan (bearing pad)": [
             "Mandor",
             "Tukang",
-            "Alat Bantu",
+            "Alat bantu",
           ],
         },
-
-        "7.2.3 Pek. Girder (Beton Pracetak Pre-Tension)": {
-          "7.2.3.1 Pengadaan Material": ["Beton Ready Mix", "Mortar Grouting"],
+        "7.2.3 Pek. Girder (Beton Pracetak pre-tension)": {
+          "7.2.3.1 Pengadaan Material": [
+            "Beton Ready Mix",
+            "Mortar grouting",
+          ],
           "7.2.3.2 Instalasi PC Strand": [
             "Steel Strand",
             "Tukang",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "7.2.3.3 Stressing Girder": [
+          "7.2.3.3 Stressing girder": [
             "Steel Strand",
             "Tukang",
-            "Jack Stressing",
+            "Jack stressing",
           ],
-          "7.2.3.4 Pengecoran Girder": [
+          "7.2.3.4 Pengecoran girder": [
             "Beton Ready Mix",
             "Pekerja",
             "Mandor",
             "Operator Alat Berat",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
         },
-
-        "7.2.4 Pek. Girder (Beton Pracetak Post-Tension)": {
+        "7.2.4 Pek. Girder (Beton Pracetak post- tension)": {
           "7.2.4.1 Setting Girder": [
-            "Beton Pracetak Girder",
+            "Beton pracetak girder",
             "Sleeper",
             "Operator",
             "Pekerja",
             "Truck Tronton",
-            "Crawler Crane",
+            "Crawler crane",
           ],
           "7.2.4.2 Instalasi PC Strand": [
-            "Steel Strand",
-            "Casing",
+            "Steel Strand & casing",
             "Tukang",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "7.2.4.3 Instalasi Epoxy Bonding di Sambungan Antar Girder": [
-            "Epoxy Bonding",
+          "7.2.4.3 Instalasi Epoxy bonding disambungan antar girder": [
+            "Epoxy bonding",
             "Tukang",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "7.2.4.4 Stressing Girder Jembatan": [
-            "Steel Strand Wedges",
+          "7.2.4.4 Stressing girder jembatan": [
+            "Steel Strand wedges",
             "Tukang",
-            "Jack Stressing",
+            "Jack stressing",
           ],
-          "7.2.4.5 Pemotongan Kelebihan Strand": [
+          "7.2.4.5 Pemotongan kelebihan strand": [
             "Tukang",
-            "Pemotong Strand Baja",
-            "Alat Bantu Tukang",
+            "Pemotong strand baja",
+            "Alat bantu tukang",
           ],
-          "7.2.4.6 Grouting Tendon Girder": [
+          "7.2.4.6 Grouting tendon girder": [
             "Material Grouting",
             "Mandor",
             "Tukang",
@@ -3512,232 +3676,220 @@
             "Grout Mixer",
           ],
         },
-
         "7.2.5 Pengangkutan dan Penyimpanan Beton Pracetak": {
-          "7.2.5.1 Pengangkutan (Delivery) Unit Beton Pracetak": [
-            "Unit Beton Pracetak",
+          "7.2.5.1 Pengangkutan (delivery) unit-unit beton pracetak": [
+            "Unit beton pracetak (girder, diapragm)",
             "Operator",
             "Pekerja",
             "Truck Tronton",
           ],
-          "7.2.5.2 Penyimpanan Unit Beton Pracetak": [
-            "Girder Beton Pracetak",
+          "7.2.5.2 Penyimpanan unit-unit beton pracetak": [
+            "Girder beton pracetak",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Crane Service",
+            "Crane service",
             "Sling",
           ],
         },
-
-        "7.2.6 Pemasangan (Erection) dengan Metode Double Crane": {
-          "7.2.6.1 Persiapan Material, Tenaga Kerja dan Alat": [
-            "Girder Beton Pracetak",
+        "7.2.6 Pemasangan (Erection) dengan metode double crane": {
+          "7.2.6.1 Persiapan material, tenaga kerja dan alat": [
+            "Girder beton pracetak",
             "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
-          "7.2.6.2 Penempatan Crane pada Dua Sisi Jembatan": [
+          "7.2.6.2 Penempatan crane pada dua sisi jembatan yang berbeda": [
             "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
-          "7.2.6.3 Pemasangan (Erection) dengan Metode Double Crane": [
-            "Girder Beton Pracetak",
+          "7.2.6.3 Pemasangan (Erection) dengan metode double crane": [
+            "Girder beton pracetak",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
-          "7.2.6.4 Penempatan Girder pada Bearing Pad": [
-            "Girder Beton Pracetak",
-            "Bearing Pad",
+          "7.2.6.4 Penempatan girder pada bearing pad": [
+            "Girder beton pracetak",
+            "Bearing pad",
             "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
           "7.2.6.5 Pek. Finishing": [
             "Material Grouting",
-            "Material Pengelasan",
+            "Material pengelasan",
             "Pekerja",
-            "Alat Las",
-            "Alat Bantu",
+            "Alat las",
+            "Alat bantu",
           ],
         },
-
-        "7.2.7 Pemasangan (Erection) dengan Metode Balance Cantilever": {
-          "7.2.7.1 Persiapan Material, Tenaga Kerja dan Alat": [
-            "Girder Beton Pracetak",
+        "7.2.7 Pemasangan (Erection) dengan metode Balance cantilever": {
+          "7.2.7.1 Persiapan material, tenaga kerja dan alat": [
+            "Girder beton pracetak",
             "Operator",
             "Pekerja",
-            "Balance Cantilever (1 Set)",
+            "Balance cantilever (1 set)",
           ],
-          "7.2.7.2 Setting Alat Balance Cantilever pada Ujung Perletakan": [
+          "7.2.7.2 Setting alat balance cantilever pada ujung perletakan": [
             "Operator",
             "Pekerja",
-            "Sling Wire Rope",
+            "Sling wire rope",
             "Shackle",
-            "Trailler",
-            "Boogie",
+            "Trailler/Boogie",
             "Crane",
           ],
-          "7.2.7.3 Pemasangan (Erection) dengan Metode Balance Cantilever": [
-            "Girder Beton Pracetak",
-            "Link Set Steel Beam",
-            "Counter Weight",
+          "7.2.7.3 Pemasangan (Erection) dengan metode Balance cantilever":
+            [
+              "Girder beton pracetak",
+              "Link set steel beam",
+              "Counter weight",
+              "Operator",
+              "Rigger",
+              "Pekerja",
+              "Sling wire rope",
+              "Shackle",
+              "Trailler/Boogie",
+              "Crane",
+            ],
+          "7.2.7.4 Penempatan girder pada bearing pad": [
+            "Girder beton pracetak",
+            "Bearing pad",
             "Operator",
-            "Rigger",
-            "Pekerja",
-            "Sling Wire Rope",
-            "Shackle",
-            "Trailler",
-            "Boogie",
-            "Crane",
-          ],
-          "7.2.7.4 Penempatan Girder pada Bearing Pad": [
-            "Girder Beton Pracetak",
-            "Bearing Pad",
-            "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
           "7.2.7.5 Pek. Finishing": [
             "Material Grouting",
-            "Material Pengelasan",
+            "Material pengelasan",
             "Pekerja",
-            "Alat Las",
-            "Alat Bantu",
+            "Alat las",
+            "Alat bantu",
           ],
         },
-
-        "7.2.8 Pemasangan (Erection) dengan Metode Launching Gantry": {
-          "7.2.8.1 Persiapan Material, Tenaga Kerja dan Alat": [
-            "Girder Beton Pracetak",
+        "7.2.8 Pemasangan (Erection) dengan metode Launching gantry": {
+          "7.2.8.1 Persiapan material, tenaga kerja dan alat": [
+            "Girder beton pracetak",
             "Operator",
             "Pekerja",
-            "Launching Gantry (1 Set)",
+            "Launching gantry (1 set)",
           ],
-          "7.2.8.2 Setting Alat Launching Gantry pada Ujung Perletakan": [
+          "7.2.8.2 Setting alat launching gantry pada ujung perletakan": [
             "Operator",
             "Pekerja",
-            "Trailler",
-            "Boogie",
+            "Trailler/Boogie",
             "Crane",
-            "Sling Wire Rope",
-            "Jack Hidrolik",
+            "Sling wire rope",
+            "Jack hidrolik",
             "Chain Block",
           ],
-          "7.2.8.3 Pemasangan (Erection) dengan Metode Launching Gantry": [
-            "Girder Beton Pracetak",
-            "Beam Peluncur",
-            "Roller",
+          "7.2.8.3 Pemasangan (Erection) dengan metode Launching gantry": [
+            "Girder beton pracetak",
+            "Beam peluncur",
+            "roller",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Trailler",
-            "Boogie",
+            "Trailler/Boogie",
             "Crane",
-            "Sling Wire Rope",
-            "Jack Hidrolik",
+            "Sling wire rope",
+            "Jack hidrolik",
             "Chain Block",
           ],
-          "7.2.8.4 Penempatan Girder pada Bearing Pad": [
-            "Girder Beton Pracetak",
-            "Bearing Pad",
+          "7.2.8.4 Penempatan girder pada bearing pad": [
+            "Girder beton pracetak",
+            "Bearing pad",
             "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
           "7.2.8.5 Pek. Finishing": [
             "Material Grouting",
-            "Material Pengelasan",
+            "Material pengelasan",
             "Pekerja",
-            "Alat Las",
-            "Alat Bantu",
+            "Alat las",
+            "Alat bantu",
           ],
         },
-
-        "7.2.9 Pemasangan (Erection) dengan Metode Temporary Tower": {
-          "7.2.9.1 Persiapan Material, Tenaga Kerja dan Alat": [
-            "Girder Beton Pracetak",
+        "7.2.9 Pemasangan (Erection) dengan metode Temporary tower": {
+          "7.2.9.1 Persiapan material, tenaga kerja dan alat": [
+            "Girder beton pracetak",
             "Operator",
             "Pekerja",
-            "Launching Gantry (1 Set)",
+            "Launching gantry (1 set)",
           ],
-          "7.2.9.2 Setting Alat Temporary Tower pada Ujung Perletakan": [
+          "7.2.9.2 Setting alat temporary tower pada ujung perletakan": [
             "Operator",
             "Pekerja",
-            "Trailler",
-            "Boogie",
+            "Trailler/Boogie",
             "Crane",
-            "Sling Wire Rope",
+            "Sling wire rope",
             "Hanger",
             "Chain Block",
           ],
-          "7.2.9.3 Pemasangan (Erection) dengan Metode Temporary Tower": [
-            "Girder Beton Pracetak",
-            "Temporary Steel Tower",
+          "7.2.9.3 Pemasangan (Erection) dengan metode Temporary tower": [
+            "Girder beton pracetak",
+            "temporary Steel Tower",
             "Steel Girder",
             "Steel Connection",
-            "Cable Stayed",
+            "Cabel stayed",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Trailler",
-            "Boogie",
+            "Trailler/Boogie",
             "Crane",
-            "Sling Wire Rope",
+            "Sling wire rope",
             "Hanger",
             "Chain Block",
           ],
-          "7.2.9.4 Penempatan Girder pada Bearing Pad": [
-            "Girder Beton Pracetak",
-            "Bearing Pad",
+          "7.2.9.4 Penempatan girder pada bearing pad": [
+            "Girder beton pracetak",
+            "Bearing pad",
             "Operator",
-            "Crane Service (2 Unit)",
+            "Crane service (2 unit)",
             "Sling",
           ],
           "7.2.9.5 Pek. Finishing": [
             "Material Grouting",
-            "Material Pengelasan",
+            "Material pengelasan",
             "Pekerja",
-            "Alat Las",
-            "Alat Bantu",
+            "Alat las",
+            "Alat bantu",
           ],
         },
-
         "7.2.10 Pekerjaan Diafragma": {
           "7.2.10.1 Setting Diafragma": [
-            "Beton Pracetak Diafragma",
+            "Beton pracetak diafragma",
             "Sleeper",
             "Operator",
             "Pekerja",
             "Truck Tronton",
-            "Crawler Crane",
+            "Crawler crane",
           ],
           "7.2.10.2 Instalasi PC Strand": [
-            "Steel Strand",
-            "Casing",
+            "Steel Strand & casing",
             "Tukang",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "7.2.10.3 Instalasi Epoxy Bonding di Sambungan Antar Girder": [
-            "Epoxy Bonding",
+          "7.2.10.3 Instalasi Epoxy bonding disambungan antar girder": [
+            "Epoxy bonding",
             "Tukang",
-            "Alat Bantu Tukang",
+            "Alat bantu tukang",
           ],
-          "7.2.10.4 Stressing Girder Jembatan": [
-            "Steel Strand Wedges",
+          "7.2.10.4 Stressing girder jembatan": [
+            "Steel Strand wedges",
             "Tukang",
-            "Jack Stressing",
+            "Jack stressing",
           ],
-          "7.2.10.5 Pemotongan Kelebihan Strand": [
+          "7.2.10.5 Pemotongan kelebihan strand": [
             "Tukang",
-            "Pemotong Strand Baja",
-            "Alat Bantu Tukang",
+            "Pemotong strand baja",
+            "Alat bantu tukang",
           ],
-          "7.2.10.6 Grouting Tendon Girder": [
+          "7.2.10.6 Grouting tendon girder": [
             "Material Grouting",
             "Mandor",
             "Tukang",
@@ -3746,25 +3898,24 @@
             "Grout Mixer",
           ],
           "7.2.10.7 Pelaksanaan Pemasangan Segmental Balok Diafragma": [
-            "Unit Beton Pracetak Diafragma",
+            "Unit beton pracetak diafragma",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Crane Service",
+            "Crane service",
             "Sling",
           ],
         },
-
-        "7.2.11 Pekerjaan Pelat Lantai": {
-          "7.2.11.1 Pelaksanaan Pemasangan Lantai Pracetak": [
-            "Beton Pracetak Lantai",
+        "7.2.11 Pekerjaan Pelat lantai": {
+          "7.2.11.1 Pelaksanaan Pemasangan Lantai pracetak": [
+            "Beton pracetak lantai",
             "Operator",
             "Rigger",
             "Pekerja",
-            "Crane Service",
+            "Crane service",
             "Sling",
           ],
-          "7.2.11.2 Grouting Lantai Pracetak": [
+          "7.2.11.2 Grouting lantai pracetak": [
             "Material Grouting",
             "Mandor",
             "Tukang",
@@ -3772,7 +3923,7 @@
             "Stang Grouting",
             "Grout Mixer",
           ],
-          "7.2.11.3 Pek. Baja Tulangan (Pembesian) Lantai": [
+          "7.2.11.3 Pek. Baja Tulangan (pembesian) lantai": [
             "Besi",
             "Kawat Beton",
             "Pekerja",
@@ -3782,15 +3933,15 @@
             "Bar Cutter",
             "Bar Bender",
           ],
-          "7.2.11.4 Pek. Bekisting Lantai": [
-            "Pelat",
-            "Besi Rangka Hollow",
-            "Tukang Las",
-            "Pekerja",
+          "7.2.11.4 Pek. Bekisting lantai": [
+            "pelat",
+            "Besi rangka hollow",
+            "Tukang las",
+            "Perkerja",
             "Mandor",
-            "Alat Las",
+            "Alat las",
           ],
-          "7.2.11.5 Beton Campuran Konvensional": [
+          "7.2.11.5 Beton campuran konvensional": [
             "Semen",
             "Agregat",
             "Pasir",
@@ -3798,75 +3949,74 @@
             "Mandor",
             "Tukang",
             "Timbangan",
-            "Beton Molen",
+            "Beton molen",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
           "7.2.11.6 Beton Readymix": [
-            "Beton Readymix",
+            "Beton readymix",
             "Pekerja",
             "Mandor",
             "Operator",
             "Concrete Pump",
-            "Truck Mixer",
+            "Truck mixer",
             "Bucket",
             "Vibrator",
           ],
-          "7.2.11.7 Pengerjaan Akhir / Curing": [
+          "7.2.11.7 Pengerjaan Akhir /Curing": [
             "Curing Compound",
             "Pekerja",
             "Fog Spraying Concrete",
           ],
-          "7.2.11.8 Pengendalian Mutu di Lapangan": [
-            "Beton Campuran",
+          "7.2.11.8 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
+          "7.2.11.8 Slump test": ["Tukang", "Abhram cone"],
+          "7.2.11.8 Tes kubus": [
+            "Beton campuran",
             "Tukang",
-            "Abhram Cone",
-            "Cetakan Kubus",
+            "cetakan kubus",
           ],
         },
-
+        // 7.3 Pekerjaan asesoris Jembatan
         "7.3.1 Sandaran (Railing)": {
-          "7.3.1.1 Pembuatan Sandaran (Railing)": [
-            "Railing Besi",
+          "7.3.1.1 Pembuatan sandaran (railing)": [
+            "railing besi",
             "Tukang Las",
             "Kepala Tukang",
             "Mandor",
-            "Peralatan Las",
+            "Peralatan las",
           ],
           "7.3.1.2 Pengecatan Railing": [
-            "Cat Besi",
-            "Tukang Cat",
+            "Cat besi",
+            "Tukang cat",
             "Mandor",
-            "Peralatan Bantu",
+            "Peralatan bantu",
           ],
         },
-
         "7.3.2 Papan Nama Jembatan": {
-          "7.3.2.1 Pembuatan Papan Nama Jembatan": [
-            "Papan Nama",
-            "Peralatan Tukang",
+          "7.3.2.1 Pembuatan papan nama jembatan": [
+            "Papan nama",
+            "Peralatan tukang",
           ],
         },
-
         "7.3.3 Pek. Marka dan Lampu": {
-          "7.3.3.1 Pembuatan Marka Jalan": [
-            "Cat Marka",
-            "Tukang Cat",
+          "7.3.3.1 Pembuatan marka jalan": [
+            "Cat marka",
+            "Tukang cat",
             "Mandor",
-            "Peralatan Bantu",
+            "Peralatan bantu",
           ],
-          "7.3.3.2 Pembuatan Lampu Jalan": [
-            "Tiang",
-            "Lampu",
+          "7.3.3.2 Pembuatan lampu jalan": [
+            "Tiang & lampu",
             "Tukang",
             "Mandor",
-            "Mobile Crane",
-            "Peralatan Bantu",
+            "Mobile crane",
+            "Peralatan bantu",
           ],
         },
-
+        // 8 Fasilitas Pelayanan Tol
+        // 8.1 Plaza Tol
         "8.1.1 Pembangunan Gerbang Tol": {
           "8.1.1.1 Lantai Pulau Gerbang Tol": [
             "Beton Readymix",
@@ -3876,44 +4026,42 @@
             "Kerb Beton",
             "Mandor",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
           "8.1.1.2 Struktur Gerbang Tol": [
-            "Struktur Baja",
-            "Besi Support",
+            "Struktur baja",
+            "Besi support",
             "Mandor",
             "Pekerja",
-            "Mesin Las",
-            "Peralatan Tukang",
+            "Mesin las",
+            "peralatan tukang",
           ],
           "8.1.1.3 Dinding Gerbang Tol": [
-            "Aluminium Composite Panel",
-            "Rangka Hollow",
+            "Alumunium composit panel",
+            "Rangka hollow",
             "Mandor",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
           "8.1.1.4 Kusen, Pintu dan Jendela Gerbang Tol": [
-            "Kusen Pintu Aluminium",
-            "Kusen Jendela Aluminium",
-            "Aksesoris Pintu",
-            "Aksesoris Jendela",
-            "Tukang Aluminium",
-            "Peralatan Tukang",
+            "Kusen pintu/jendela alumunium",
+            "Assesoris pintu/jendela",
+            "Tukang Alumunium",
+            "peralatan tukang",
           ],
           "8.1.1.5 Atap dan Langit-Langit Gerbang Tol": [
-            "Rangka Atap",
+            "Rangka atap",
             "Atap Genteng Metal",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
           "8.1.1.6 Mechanical, Elektrikal & Plumbing Gerbang Tol": [
             "Generator Set",
-            "Panel Listrik",
-            "Lampu dan Aksesoris",
-            "Kabel Listrik",
-            "Pipa Air Bersih",
-            "Pipa Air Kotor",
+            "Panel listrik",
+            "Lampu dan assesoris",
+            "Kabel listrik",
+            "Pipa air bersih",
+            "Pipa air kotor",
             "AC",
             "Septictank",
             "Tukang MEP",
@@ -3922,48 +4070,50 @@
             "Peralatan MEP",
           ],
         },
-
         "8.1.2 Peralatan Gerbang Tol": {
-          "8.1.2.1 Portal Pembatas (Barrier Gate)": [
-            "Portal Pembatas Jalan",
+          "8.1.2.1 Portal pembatas (Barrier gate)": [
+            "Portal pembatas jalan",
             "Pekerja",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
           "8.1.2.2 Mesin Transaksi Pembayaran Tol": [
-            "Mesin Transaksi Manual",
-            "Mesin Transaksi Elektronik",
+            "Mesin transaksi manual",
+            "Mesin transaksi elektronik",
             "Spesialis",
-            "Peralatan Bantu",
+            "Peralatan bantu",
           ],
-          "8.1.2.3 Speaker / Radio / Telephone": [
-            "Speaker dan Aksesoris",
-            "Radio dan Aksesoris",
-            "Telephone dan Aksesoris",
+          "8.1.2.3 Speaker / Radio / Telephon": [
+            "Speaker dan asesoris",
+            "Radio dan asesoris",
+            "Telephone dan asesoris",
             "Spesialis",
-            "Peralatan Bantu",
+            "Peralatan bantu",
           ],
-          "8.1.2.4 CCTV": ["CCTV dan Aksesoris", "Tukang MEP", "Peralatan MEP"],
-          "8.1.2.5 Rambu-Rambu Petunjuk": [
+          "8.1.2.4 CCTV": [
+            "CCTV dan asesoris",
+            "Tukang MEP",
+            "Peralatan MEP",
+          ],
+          "8.1.2.5 Rambu Rambu Petunjuk": [
             "Rambu Nama Gerbang Tol",
-            "Rambu Pengatur Lalu Lintas",
+            "Rambu-rambu pengatur lalu lintas",
             "Pekerja",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
-        "8.2.1 Pekerjaan Lapangan (Diluar Gedung Kantor)": {
+        // 8.2 Kantor dan Fasilitas Tol
+        "8.2.1 Pekerjaan Lapangan (diluar gedung kantor)": {
           "8.2.1.1 Pasangan Batu": [
             "Semen",
             "Pasir",
             "Air",
             "Batu",
             "Mandor",
-            "Peralatan Tukang",
+            "Peralatan tukang",
           ],
         },
-
         "8.2.2 Pembangunan Kantor": {
-          "8.2.2.1 Lantai Gedung Kantor": [
+          "8.2.2.1 Lantai gedung kantor": [
             "Beton Readymix",
             "Bekisting",
             "Pembesian",
@@ -3971,26 +4121,25 @@
             "Kerb Beton",
             "Mandor",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
-          "8.2.2.2 Struktur Gedung Kantor": [
-            "Struktur Baja",
-            "Besi Support",
+          "8.2.2.2 Struktur gedung kantor": [
+            "Struktur baja",
+            "Besi support",
             "Mandor",
             "Pekerja",
-            "Mesin Las",
-            "Peralatan Tukang",
+            "Mesin las",
+            "peralatan tukang",
           ],
-          "8.2.2.3 Dinding Gedung Kantor": [
-            "Batu Bata",
-            "Bata Ringan",
-            "Semen",
-            "Pasir",
-            "Air",
+          "8.2.2.3 Dinding gedung kantor": [
+            "Batu bata/bata ringan",
+            "semen",
+            "pasir",
+            "air",
             "Keramik",
             "Mandor",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
           "8.2.2.4 Dinding Partisi": [
             "Gypsum",
@@ -3998,37 +4147,35 @@
             "Besi",
             "Mandor",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
-          "8.2.2.5 Kusen, Pintu dan Jendela Gedung Kantor": [
-            "Kusen Pintu Aluminium",
-            "Kusen Jendela Aluminium",
-            "Aksesoris Pintu",
-            "Aksesoris Jendela",
-            "Tukang Aluminium",
-            "Peralatan Tukang",
+          "8.2.2.5 Kusen, Pintu dan Jendela Gedung kantor": [
+            "Kusen pintu/jendela alumunium",
+            "Assesoris pintu/jendela",
+            "Tukang Alumunium",
+            "peralatan tukang",
           ],
-          "8.2.2.6 Atap dan Langit-Langit Gedung Kantor": [
-            "Rangka Atap",
+          "8.2.2.6 Atap dan Langit-Langit gedung kantor": [
+            "Rangka atap",
             "Atap Genteng Metal",
             "Pekerja",
-            "Peralatan Tukang",
+            "peralatan tukang",
           ],
           "8.2.2.7 Pek. Pengecatan": [
             "Cat Dinding",
             "Cat Plafond",
             "Cat Kusen Kayu",
             "Cat Rangka Atap",
-            "Tukang Cat",
-            "Peralatan Tukang",
+            "Tukang cat",
+            "peralatan tukang",
           ],
-          "8.2.2.8 Mechanical, Elektrikal & Plumbing Gedung Kantor": [
+          "8.2.2.8 Mechanical, Elektrikal & Plumbing Gedung kantor": [
             "Generator Set",
-            "Panel Listrik",
-            "Lampu dan Aksesoris",
-            "Kabel Listrik",
-            "Pipa Air Bersih",
-            "Pipa Air Kotor",
+            "Panel listrik",
+            "Lampu dan assesoris",
+            "Kabel listrik",
+            "Pipa air bersih",
+            "Pipa air kotor",
             "AC",
             "Septictank",
             "Tukang MEP",
@@ -4037,37 +4184,35 @@
             "Peralatan MEP",
           ],
         },
-
+        // 9 Pekerjaan Pengembalian Kondisi Pekerjaan Minor
+        // 9.1 Pengembalian Kondisi Pekerjaan Minor
         "9.1.1 Pengembalian Kondisi Perkerasan Lama": {
-          "9.1.1.1 Inspeksi Rutin Kondisi Perkerasan": [
+          "9.1.1.1 Inspeksi rutin kondisi perkerasan": [
             "Petugas K3L",
-            "QC Inspektor",
-            "Alat Tulis",
-            "Dokumentasi",
+            "Qc inspektor",
+            "Alat tulis/ Dokumentasi",
           ],
-          "9.1.1.2 Perbaikan Kondisi Perkerasan Lama": [
-            "Aspal Emulsi",
-            "Campuran Aspal Panas",
+          "9.1.1.2 Perbaikan kondisi Perkerasan Lama": [
+            "Aspal emulsi",
+            "Campuran aspal panas",
             "Pekerja",
-            "Jack Hammer",
-            "Aspal Sprayer",
+            "Jack hammer",
+            "Aspal sprayer",
           ],
         },
-
         "9.1.2 Pengembalian Kondisi Bahu Jalan Lama pada Perkerasan Berpenutup Aspal":
           {
-            "9.1.2.1 Inspeksi Rutin Kondisi Bahu Jalan": [
+            "9.1.2.1 Inspeksi rutin kondisi bahu jalan": [
               "Petugas K3L",
-              "QC Inspektor",
-              "Alat Tulis",
-              "Dokumentasi",
+              "Qc inspektor",
+              "Alat tulis/ Dokumentasi",
             ],
-            "9.1.2.2 Perbaikan Kondisi Bahu Jalan": [
+            "9.1.2.2 Perbaikan kondisi bahu jalan": [
               "Agregat",
               "Aspal",
               "Mandor",
               "Pekerja",
-              "Asphalt Mixing Plant",
+              "Aspal Mixing plant",
               "Wheel Loader",
               "Dump Truck",
               "Motor Grader",
@@ -4075,48 +4220,43 @@
               "Water Tanker",
             ],
           },
-
         "9.1.3 Pengembalian Kondisi Selokan, Saluran Air, Galian, Timbunan dan Penghijauan":
           {
-            "9.1.3.1 Inspeksi Rutin Kondisi Bahu Jalan": [
+            "9.1.3.1 Inspeksi rutin kondisi bahu jalan": [
               "Petugas K3L",
-              "QC Inspektor",
-              "Alat Tulis",
-              "Dokumentasi",
+              "Qc inspektor",
+              "Alat tulis/ Dokumentasi",
             ],
-            "9.1.3.2 Perbaikan Kondisi Selokan, Drainase, Galian, Timbunan dan Penghijauan":
+            "9.1.3.2 Perbaikan kondisi selokan, drainase, galian, timbunan, penghijauan":
               [
                 "Tanah",
                 "Semen",
                 "Pasir",
                 "Batu",
-                "Kayu",
-                "Pohon",
+                "Kayu/Pohon",
                 "Mandor",
                 "Pekerja",
-                "Alat Bantu Tukang",
+                "Alat bantu tukang",
               ],
           },
-
         "9.1.4 Perlengkapan Jalan dan Pengatur Lalu Lintas": {
-          "9.1.4.1 Inspeksi Rutin Kondisi Perlengkapan Jalan dan Pengatur Lalu Lintas":
-            ["Petugas K3L", "QC Inspektor", "Alat Tulis", "Dokumentasi"],
-          "9.1.4.2 Perbaikan Perlengkapan Jalan dan Pengatur Lalu Lintas": [
-            "Peralatan K3",
-            "Rambu",
-            "Safety Patrol",
+          "9.1.4.1 Inspeksi rutin kondisi perlengkapan jalan dan pengatur lalu lintas":
+            ["Petugas K3L", "Qc inspektor", "Alat tulis/ Dokumentasi"],
+          "9.1.4.2 Perbaikan perlengkapan jalan dan pengatur lalu lintas": [
+            "Peralatan K3 (rambu, dsb)",
+            "Safety patrol",
           ],
         },
-
-        "9.2.1 Pemeliharaan Rutin Perkerasan, Bahu Jalan, Drainase, Perlengkapan Jalan dan Jembatan":
+        // 9.2 Pemeliharaan Rutin Jalan & Jembatan
+        "9.2.1 Pemeliharaan Rutin Perkerasan, Bahu jalan, Drainase, Perlengkapan jalan dan jembatan":
           {
             "9.2.1.1 Pemeliharaan Rutin Jembatan": [
-              "Campuran Aspal",
+              "Campuran aspal",
               "Beton Ready Mix",
-              "QC Inspektor",
+              "Qc inspektor",
               "Pekerja",
               "Mandor",
-              "Alat Bantu Tukang",
+              "Alat bantu tukang",
             ],
           },
       };
@@ -4207,32 +4347,32 @@
           {
             code: "R1.1",
             title: "Perubahan urutan erection girder",
-            desc: "Terjadi perubahan urutan erection girder/segmen precast pada aktivitas jalur kritis.",
+            desc: "Perubahan urutan erection girder/segmen pracetak pada jalur kritis.",
           },
           {
             code: "R1.2",
             title: "Area kerja tidak siap",
-            desc: "Area kerja, akses alat angkut, atau staging berubah/tidak siap sesuai rencana metode kerja.",
+            desc: "Area kerja, akses alat angkat, atau staging lalu lintas tidak siap sesuai rencana metode pelaksanaan.",
           },
           {
             code: "R1.3",
             title: "Kondisi lapangan berubah",
-            desc: "Kondisi aktual lapangan berubah atau berbeda dari asumsi shop drawing dan metode pelaksanaan.",
+            desc: "Ketidaksesuaian shop drawing/ metode pelaksanaan dengan kondisi aktual lapangan sehingga memerlukan perubahan desain atau metode.",
           },
           {
             code: "R1.4",
             title: "Revisi persetujuan dokumen",
-            desc: "Terjadi revisi atau tambahan proses persetujuan method statement, shop drawing, dan inspeksi awal.",
+            desc: "Keterlambatan persetujuan method statement, shop drawing,  dan inspeksi awal pekerjaan.",
           },
           {
             code: "R1.5",
             title: "Perubahan lingkup pekerjaan",
-            desc: "Lingkup pekerjaan atau urutan pekerjaan berubah akibat kebutuhan owner atau kondisi lapangan baru.",
+            desc: "Perubahan lingkup pekerjaan / urutan pekerjaan karena kebutuhan owner atau kondisi lapangan baru.",
           },
           {
             code: "R1.6",
             title: "Deviasi aktivitas kritis",
-            desc: "Deviasi pada aktivitas kritis mulai muncul, tetapi sistem identifikasi risiko/KRI belum menyesuaikan.",
+            desc: "Keterlambatan identifikasi deviasi risiko/ KRI dan loss event pada aktivitas kritis.",
           },
           {
             code: "R1.7",
@@ -4244,143 +4384,114 @@
           {
             code: "R2.1",
             title: "Interface pekerjaan tidak sinkron",
-            desc: "Batas pekerjaan, interface, atau koordinasi antarpaket berubah/tidak sinkron.",
+            desc: "Interface antarpaket pekerjaan bawah, atas, oprit, drainase, traffic management, dan utilitas tidak sinkron.",
           },
           {
             code: "R2.2",
             title: "Keterlambatan pekerjaan pendahulu",
-            desc: "Paket pekerjaan pendahulu seperti fondasi, pier, pier head, atau bearing seat mengalami keterlambatan.",
+            desc: "Keterlambatan pekerjaan fondasi, pier, pier head, atau bearing seat menahan dimulainya erection girder. ",
           },
           {
             code: "R2.3",
             title: "Variation order",
-            desc: "Terjadi perubahan kuantitas, desain, kondisi tak terduga, atau variation order.",
+            desc: "Pekerjaan tambah atau variation order akibat perubahan kuantitas, desain, atau kondisi tak terduga. ",
           },
           {
             code: "R2.4",
             title: "Utilitas dan lahan belum siap",
-            desc: "Status utilitas, right-of-way, atau kesiapan lahan berubah dan belum selesai.",
+            desc: "Relokasi utilitas atau right-of-way belum selesai",
           },
           {
             code: "R2.5",
             title: "Perubahan perizinan",
-            desc: "Kebutuhan perizinan kerja, pembukaan lahan, traffic management, atau izin lintas seksi berubah.",
+            desc: "Perizinan/approval pembukaan lahan, traffic management, atau pekerjaan di atas jalan/sungai/rel belum selesai.",
           },
           {
             code: "R2.6",
             title: "Paket girder kritis",
-            desc: "Paket penyediaan dan pemasangan girder menjadi beban kerja besar dan sangat sensitif terhadap keterlambatan.",
+            desc: "Paket penyediaan dan pemasangan Gelagar PC-I menjadi paket bernilai besar dan sensitif terhadap keterlambatan pengadaan, transportasi, erection, serta approval.",
           },
           {
             code: "R2.7",
             title: "Addendum paket pekerjaan",
-            desc: "Terjadi addendum paket pekerjaan, perubahan mobilisasi, manajemen lalu lintas, atau perencanaan komponen precast.",
+            desc: "Perubahan paket pekerjaan melalui addendum pada item mobilisasi, manajemen lalu lintas, dan pekerjaan komponen pracetak berpotensi mengubah baseline waktu serta kebutuhan koordinasi antarpaket.",
           },
         ],
         "Metode Kerja": [
           {
             code: "R3.1",
             title: "Perubahan kapasitas lifting",
-            desc: "Berat komponen, kapasitas alat, akses, atau konfigurasi lifting/launching berubah dari rencana awal.",
+            desc: "Metode lifting/ launching tidak sesuai kapasitas alat, radius kerja, atau berat komponen pracetak.",
           },
           {
             code: "R3.2",
             title: "Perubahan temporary works",
-            desc: "Desain temporary works, bracing, lifting point, atau shoring mengalami perubahan/revisi.",
+            desc: "Method statement tidak lengkap untuk pekerjaan transportasi, lifting, alignment, grouting, stressing, dan closure pour.  ",
           },
           {
             code: "R3.3",
             title: "Perubahan metode pelaksanaan",
-            desc: "Metode alignment, leveling, bekisting, transport, lifting, grouting, atau stressing berubah.",
+            desc: "Kegagalan alignment/fit-up segmen/girder saat trial erection menyebabkan adjustment dan perubahan urutan kerja.",
           },
           {
             code: "R3.4",
             title: "Perubahan metode erection",
             desc: "Metode lifting, upending, rotasi, atau posisi erection girder berubah dan belum tervalidasi.",
           },
-          {
-            code: "R3.5",
-            title: "Ketidaksesuaian jadwal produksi",
-            desc: "Jadwal produksi, casting, curing, atau kebutuhan erection berubah sehingga tidak selaras.",
-          },
-          {
-            code: "R3.6",
-            title: "Perubahan mix design",
-            desc: "Mix design, metode batching, pengecoran, atau detail sambungan mengalami perubahan.",
-          },
-          {
-            code: "R3.7",
-            title: "Perubahan handling material",
-            desc: "Lokasi stok, rute handling, alat handling, atau metode penyimpanan material precast berubah.",
-          },
         ],
         Aktivitas: [
           {
             code: "R4.1",
             title: "Perubahan jadwal fabrikasi",
-            desc: "Jadwal fabrikasi, kapasitas produksi, mould, atau supply girder precast berubah.",
+            desc: "Keterlambatan fabrikasi girder/box girder pracetak di precast yard/factory.",
           },
           {
             code: "R4.2",
             title: "Perubahan transportasi",
-            desc: "Rute pengiriman, akses transportasi, izin angkut, atau kondisi lalu lintas berubah.",
+            desc: "Keterlambatan pengiriman girder/segmen dari pabrik ke lokasi akibat transport route, izin angkut, atau logistik.",
           },
           {
             code: "R4.3",
             title: "Perubahan urutan erection",
-            desc: "Hold point, urutan erection, koordinasi traffic, atau jadwal inspeksi berubah.",
+            desc: "Keterlambatan aktivitas erection girder/segmen karena hold point, alat, cuaca, atau koordinasi traffic.",
           },
-          {
-            code: "R4.4",
-            title: "Kebutuhan rework",
-            desc: "Hasil pekerjaan menunjukkan deviasi mutu sehingga muncul kebutuhan rework.",
-          },
+
           {
             code: "R4.5",
             title: "Perubahan inspeksi dan approval",
-            desc: "Rencana inspeksi, pengujian, atau approval tiap tahap berubah atau tidak sinkron.",
+            desc: "Keterlambatan inspeksi, pengujian, dan approval setiap tahap pekerjaan kritis.",
           },
           {
             code: "R4.6",
             title: "Perubahan data lapangan",
-            desc: "Data elevasi, benchmark, camber, atau kondisi as-built lapangan berubah atau berbeda dari rencana.",
+            desc: "Rework pembesian cantilever slab jembatan girder karena besi ekstra terpasang kurang panjang dari shop drawing, sehingga diperlukan penyambungan/overlap tambahan.",
           },
           {
             code: "R4.7",
             title: "Perubahan gambar dan material",
-            desc: "Gambar kerja, kebutuhan material, data kuantitas, atau kesiapan item on-site berubah.",
+            desc: "Pekerjaan fisik lapangan terlambat terhadap item material on site, proses opname/back-up lambat, dan produk belum selesai sempurna sehingga cash-in dan produktivitas menurun.",
           },
         ],
         "Sumber Daya Material": [
           {
             code: "R5.1",
             title: "Perubahan kebutuhan material utama",
-            desc: "Kebutuhan material utama meningkat atau berubah dari rencana awal.",
+            desc: "Kekurangan material utama pracetak seperti semen, agregat, baja tulangan, strand, duct, grout, bearing, dan expansion joint.",
           },
           {
             code: "R5.2",
             title: "Material tidak sesuai spesifikasi",
-            desc: "Mutu, dimensi, finishing, atau spesifikasi material berubah atau tidak memenuhi persyaratan.",
-          },
-          {
-            code: "R5.3",
-            title: "Fluktuasi harga material",
-            desc: "Harga material mengalami fluktuasi sehingga biaya dan pengadaan perlu disesuaikan.",
-          },
-          {
-            code: "R5.4",
-            title: "Perubahan vendor atau submittal",
-            desc: "Spesifikasi material, vendor, submittal, atau sampel material mengalami perubahan atau revisi.",
+            desc: "Material/komponen pracetak ditolak karena mutu, dimensi, finishing, atau spesifikasi tidak sesuai.",
           },
           {
             code: "R5.5",
             title: "Perubahan long lead item",
-            desc: "Kebutuhan long lead item seperti expansion joint, bearing, atau aksesori finishing muncul atau berubah.",
+            desc: "Long-lead items seperti bearing, expansion joint, post-tensioning accessories, dan lifting inserts terlambat.",
           },
           {
             code: "R5.6",
             title: "Material reject atau fabrikasi ulang",
-            desc: "Hasil produksi material menunjukkan cacat, mismatch, atau ketidaksesuaian sehingga perlu reject atau fabrikasi ulang.",
+            desc: "Material beton precast pecah/patah saat bongkar muat sehingga ditolak/reject dan harus dikembalikan ke plant, menyebabkan waktu penggantian dan tambahan handling.",
           },
           {
             code: "R5.7",
@@ -4392,116 +4503,75 @@
           {
             code: "R6.1",
             title: "Breakdown alat",
-            desc: "Kondisi alat berubah dari siap operasi menjadi breakdown atau tidak andal.",
+            desc: "Breakdown crane, launcher, gantry, trailer, stressing jack, batching plant, atau alat lifting khusus.",
           },
-          {
-            code: "R6.2",
-            title: "Kapasitas alat tidak sesuai",
-            desc: "Berat girder, radius angkat, kondisi tanah, atau ruang kerja berubah sehingga kapasitas alat tidak lagi sesuai.",
-          },
+
           {
             code: "R6.3",
             title: "Keterlambatan mobilisasi alat",
-            desc: "Jadwal mobilisasi atau demobilisasi alat berat maupun alat khusus berubah atau terlambat.",
+            desc: "Keterlambatan mobilisasi/demobilisasi alat berat dan peralatan khusus erection.",
           },
-          {
-            code: "R6.4",
-            title: "Produktivitas alat menurun",
-            desc: "Cycle time, akses kerja, antrian alat, atau koordinasi operasi berubah sehingga produktivitas alat turun.",
-          },
+
           {
             code: "R6.5",
             title: "Keterbatasan sparepart dan operator",
-            desc: "Ketersediaan spare part, operator, maintenance, atau backup equipment berubah atau tidak mencukupi.",
+            desc: "Keterbatasan spare part, operator, maintenance, atau backup equipment.",
           },
           {
             code: "R6.6",
             title: "Perubahan layout area kerja",
-            desc: "Layout kerja, ruang manuver, atau kondisi area alat berat berubah menjadi lebih sempit atau berisiko.",
-          },
-          {
-            code: "R6.7",
-            title: "Gangguan lingkungan akibat alat",
-            desc: "Terjadi perubahan kondisi operasi alat yang memicu tumpahan limbah B3 atau gangguan lingkungan.",
+            desc: "Manuver alat berat seperti excavator, crane, grader, smooth drum, sheepfoot, bulldozer, dump truck, dan base finisher berpotensi menimbulkan insiden yang menghentikan aktivitas kritis.",
           },
         ],
         "Sumber Daya Tenaga Kerja": [
           {
             code: "R7.1",
             title: "Ketersediaan tenaga kerja berkurang",
-            desc: "Ketersediaan tenaga kerja terampil berubah atau berkurang.",
+            desc: "Kekurangan tenaga kerja terampil untuk stressing, grouting, erection, alignment, dan finishing pracetak.",
           },
           {
             code: "R7.2",
             title: "Produktivitas tenaga kerja menurun",
-            desc: "Produktivitas tenaga kerja berubah atau menurun pada aktivitas jalur kritis.",
+            desc: "Produktivitas pekerja rendah pada aktivitas jalur kritis.",
           },
           {
             code: "R7.3",
             title: "Perubahan kompetensi personel",
-            desc: "Komposisi tim, personel kunci, atau kompetensi kontraktor berubah atau tidak sesuai kebutuhan.",
+            desc: "Kurang pengalaman/kompetensi manajerial dan teknis kontraktor dalam pekerjaan jembatan pracetak.",
           },
-          {
-            code: "R7.4",
-            title: "Peningkatan lembur dan fatigue",
-            desc: "Target waktu berubah menjadi lebih ketat sehingga jam lembur meningkat dan memicu fatigue.",
-          },
+
           {
             code: "R7.5",
             title: "Koordinasi stakeholder tidak efektif",
-            desc: "Struktur komunikasi, koordinasi stakeholder, atau alur informasi proyek berubah atau tidak efektif.",
-          },
-          {
-            code: "R7.6",
-            title: "Perubahan sistem pengelolaan risiko",
-            desc: "Sistem pengelolaan risiko produksi atau finishing berubah atau tidak menyesuaikan kondisi aktual.",
-          },
-          {
-            code: "R7.7",
-            title: "Pengawasan pekerjaan melemah",
-            desc: "Pengawasan, penerapan prosedur, atau kontrol kesesuaian shop drawing berubah atau melemah.",
+            desc: "Komunikasi dan koordinasi antartim owner, konsultan, kontraktor, precaster, supplier, dan operator tidak efektif.",
           },
         ],
         Lingkungan: [
           {
             code: "R8.1",
             title: "Cuaca ekstrem",
-            desc: "Kondisi cuaca berubah menjadi ekstrem, hujan lebat, panas, atau angin kencang.",
+            desc: "Cuaca ekstrem/hujan lebat menghambat akses, lifting, pengecoran, curing, dan pekerjaan di ketinggian.",
           },
           {
             code: "R8.2",
             title: "Perubahan kondisi hidrologi",
-            desc: "Muka air sungai, pasang-surut, banjir, atau kondisi hidrologi berubah.",
+            desc: "Banjir, pasang surut, muka air sungai, atau kondisi hidrologi mengganggu pekerjaan pondasi, pier, dan erection di atas air.",
           },
           {
             code: "R8.3",
             title: "Perubahan akses dan ruang kerja",
-            desc: "Ruang kerja, akses logistik, kepadatan lalu lintas, atau kondisi area urban berubah.",
+            desc: "Keterbatasan ruang kerja, kemacetan, dan site logistics pada area urban/eksisting. ",
           },
           {
             code: "R8.4",
             title: "Perubahan regulasi lingkungan",
-            desc: "Aturan lingkungan, izin, kepatuhan kerja, atau kawasan sensitif mengalami perubahan atau pembatasan.",
+            desc: "Pembatasan lingkungan, izin, dan kepatuhan kerja di sungai/jalan/rel/area sensitif menimbulkan perubahan metode.",
           },
-          {
-            code: "R8.5",
-            title: "Gangguan sosial masyarakat",
-            desc: "Kondisi sosial masyarakat, lalu lintas, akses warga, atau utilitas publik berubah dan menimbulkan gangguan.",
-          },
+
           {
             code: "R8.6",
             title: "Perubahan kondisi tanah",
-            desc: "Curah hujan tinggi mengubah kondisi tanah, infiltrasi air, kuat geser, atau kestabilan lereng.",
-          },
-          {
-            code: "R8.7",
-            title: "Gangguan drainase",
-            desc: "Kondisi drainase berubah, tersumbat, atau tidak mampu menampung aliran air.",
-          },
-          {
-            code: "R8.8",
-            title: "Gangguan akses material",
-            desc: "Akses quarry, rute angkutan material, kondisi jalan, debu, atau akses warga berubah sehingga memicu keluhan.",
+            desc: "Curah hujan tinggi menyebabkan infiltrasi air, penurunan kuat geser, longsoran galian/slope, retakan/deformasi lereng, dan kebutuhan bronjong/saluran tambahan.",
           },
         ],
       };
@@ -4740,10 +4810,96 @@
         .getElementById("submittedBy")
         .value.toUpperCase();
 
+      function resetNewChangeFormAfterSubmit() {
+        const newChangePage = document.getElementById("newChangePage");
+        if (!newChangePage) return;
+
+        newChangePage
+          .querySelectorAll("input, select, textarea")
+          .forEach((field) => {
+            if (
+              ["changeId", "submittedBy", "projectArea", "changeDate"].includes(
+                field.id,
+              )
+            ) {
+              return;
+            }
+
+            if (field.type === "checkbox" || field.type === "radio") {
+              field.checked = false;
+            } else if (field.type === "file") {
+              field.value = "";
+            } else {
+              field.value = "";
+            }
+          });
+
+        ["cost", "time", "scope", "quality", "safety"].forEach((type) => {
+          const checkbox = document.getElementById(`chk-${type}`);
+          const container = document.getElementById(`table-${type}`);
+          const tbody = document.querySelector(`#dyn-${type} tbody`);
+          if (checkbox) checkbox.checked = false;
+          if (container) container.style.display = "none";
+          if (tbody) tbody.innerHTML = "";
+        });
+
+        const gallery = document.getElementById("gallery");
+        const preview = document.getElementById("preview");
+        const placeholder = document.getElementById("placeholder");
+        const riskStatus = document.getElementById("riskStatus");
+        const riskDescription = document.getElementById("riskDescription");
+        const changeDate = document.getElementById("changeDate");
+        const projectAreaInput = document.getElementById("projectArea");
+
+        if (gallery) gallery.innerHTML = "";
+        if (preview) preview.removeAttribute("src");
+        if (placeholder) placeholder.style.display = "block";
+        if (riskStatus) {
+          riskStatus.className = "risk-status risk-safe";
+          riskStatus.textContent = "Belum Dipilih";
+        }
+        if (riskDescription) riskDescription.value = "Pilih variabel risiko";
+        if (changeDate) {
+          changeDate.value = new Date().toISOString().split("T")[0];
+        }
+        if (typeof setLoggedUserToForm === "function") setLoggedUserToForm();
+        if (activeProjects.length > 0 && projectAreaInput) {
+          projectAreaInput.value = activeProjects[0].project_id;
+          projectAreaInput.readOnly = true;
+          projectAreaInput.style.backgroundColor = "#e9ecef";
+          projectAreaInput.style.cursor = "not-allowed";
+        }
+
+        document.getElementById("identify").style.display = "block";
+        document.getElementById("register").style.display = "none";
+        document.getElementById("step2-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("active");
+      }
+
       function submitCR(event) {
         // 1. Mencegah form melakukan refresh otomatis (Ini sangat penting!)
         if (event) {
             event.preventDefault(); 
+        }
+
+        if (hasAssignedProject !== true) {
+            if (hasAssignedProject === null) {
+                alert("Data assignment project masih dimuat. Coba lagi sebentar.");
+                return;
+            }
+            promptUnassignedProjectLogout();
+            return;
+        }
+
+        const requiredFields = document.querySelectorAll(
+          "#identify input[required], #identify select[required], #identify textarea[required], #register input[required], #register select[required], #register textarea[required]",
+        );
+        for (let field of requiredFields) {
+          if (!field.disabled && (!field.value || field.value.trim() === "")) {
+            alert("Semua field pada Change Request wajib diisi.");
+            field.focus();
+            return;
+          }
         }
         
         // 1. Inisialisasi FormData (mendukung pengiriman teks & upload file sekaligus)
@@ -4813,11 +4969,15 @@
             alert("Change Request berhasil disimpan ke database!");
             
             // 6. Setelah sukses, Anda bisa melakukan tindakan tambahan seperti mereset form, memperbarui tampilan, atau mengambil data terbaru untuk dashboard.
-            fetchDashboardData();
-            generateAutoChangeId(); // <--- TAMBAHKAN INI agar ID langsung berubah jadi nomor baru (misal CR-002 ke CR-003)
-            document.getElementById('crForm').reset();
-            // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
-            showPage('historyPage'); 
+            try {
+              fetchDashboardData();
+              resetNewChangeFormAfterSubmit();
+              generateAutoChangeId();
+              // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
+              showPage('historyPage'); 
+            } catch (uiError) {
+              console.error("Data tersimpan, tetapi UI gagal di-reset:", uiError);
+            }
             
             // Anda juga bisa memanggil fungsi renderTables() atau updateDashboard() 
             // untuk memperbarui tampilan dashboard jika datanya di-load dinamis.
@@ -4829,19 +4989,6 @@
           console.error('Error:', error);
           alert("Terjadi kesalahan sistem saat mengirim data.");
         });
-        
-        const fields = document.querySelectorAll(
-          "#register input[required], #register select[required], #register textarea[required]",
-        );
-
-        for (let field of fields) {
-          if (!field.value.trim()) {
-            alert("Semua field pada Change Request wajib diisi.");
-            field.focus();
-            return;
-          }
-        }
-        saveChange();
       }
 
       function saveChange() {
@@ -4936,6 +5083,12 @@
       }
 
       function showPage(pageId, el) {
+        if (pageId === "newChangePage" && hasAssignedProject === false) {
+          promptUnassignedProjectLogout();
+          pageId = "dashboardPage";
+          el = document.querySelector(".menu-item[onclick*='dashboardPage']");
+        }
+
         document.querySelectorAll(".page").forEach((page) => {
           page.classList.remove("active");
         });
@@ -5095,11 +5248,7 @@
           "Apakah Anda yakin ingin keluar dari sistem?",
         );
         if (confirmLogout) {
-          fetch('api_logout.php')
-            .then(() => {
-                localStorage.clear(); // Bersihkan localStorage frontend
-                window.location.replace("login.html");
-            });
+          performLogout();
         }
       }
 
@@ -5117,6 +5266,94 @@
     
       // 1. Variabel global untuk menyimpan data dari database
       let changeRequestsFromDB = [];
+      const seRecentActivityPagerState = {};
+      const SE_RECENT_ACTIVITY_PAGE_SIZE = 5;
+
+      function seEscapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function seRenderRecentActivities(page = 0) {
+        const container = document.getElementById("seRecentActivitiesList");
+        if (!container) return;
+
+        const activities = Array.isArray(changeRequestsFromDB)
+          ? [...changeRequestsFromDB]
+          : [];
+
+        activities.sort((a, b) => {
+          const dateA = new Date(a.changeDate || a.change_date || 0).getTime();
+          const dateB = new Date(b.changeDate || b.change_date || 0).getTime();
+          return dateB - dateA;
+        });
+
+        if (activities.length === 0) {
+          container.innerHTML =
+            '<p style="color:#64748b;margin:0;">Belum ada aktivitas perubahan.</p>';
+          return;
+        }
+
+        const totalPages = Math.max(
+          1,
+          Math.ceil(activities.length / SE_RECENT_ACTIVITY_PAGE_SIZE),
+        );
+        const safePage = Math.min(Math.max(page, 0), totalPages - 1);
+        seRecentActivityPagerState.page = safePage;
+
+        const start = safePage * SE_RECENT_ACTIVITY_PAGE_SIZE;
+        const end = Math.min(
+          start + SE_RECENT_ACTIVITY_PAGE_SIZE,
+          activities.length,
+        );
+        const items = activities.slice(start, end);
+
+        container.innerHTML = items
+          .map((item) => {
+            const id = item.changeId || item.change_id || "-";
+            const date = item.changeDate || item.change_date || "-";
+            const category = item.changeCategory || "-";
+            const status = (item.status || "PENDING").toUpperCase();
+            const wbs = item.wbsLevel5 || item.wbsLevel4 || "-";
+            const risk = item.riskVariable || item.riskCategory || "-";
+
+            return `
+              <div class="se-recent-item">
+                <div class="se-recent-date">${seEscapeHtml(date)}</div>
+                <div>
+                  <div class="se-recent-title">${seEscapeHtml(id)} - ${seEscapeHtml(category)}</div>
+                  <div class="se-recent-meta">
+                    WBS: ${seEscapeHtml(wbs)}<br>
+                    <strong>${seEscapeHtml(status)}</strong> • Risiko: ${seEscapeHtml(risk)}
+                  </div>
+                </div>
+              </div>`;
+          })
+          .join("");
+
+        if (activities.length > SE_RECENT_ACTIVITY_PAGE_SIZE) {
+          container.insertAdjacentHTML(
+            "beforeend",
+            `
+            <div class="recent-activity-pager">
+              <span class="recent-activity-page-info">${start + 1}-${end} dari ${activities.length}</span>
+              <span class="recent-activity-nav">
+                <button type="button" onclick="seChangeRecentActivityPage(-1)" ${safePage === 0 ? "disabled" : ""} aria-label="Aktivitas sebelumnya">&lt;</button>
+                <button type="button" onclick="seChangeRecentActivityPage(1)" ${safePage >= totalPages - 1 ? "disabled" : ""} aria-label="Aktivitas berikutnya">&gt;</button>
+              </span>
+            </div>
+          `,
+          );
+        }
+      }
+
+      function seChangeRecentActivityPage(direction) {
+        seRenderRecentActivities((seRecentActivityPagerState.page || 0) + direction);
+      }
 
       // 2. Fungsi utama Fetch Data dari Database
       async function fetchDashboardData() {
@@ -5136,6 +5373,7 @@
                   // Panggil fungsi pembantu untuk update UI dashboard dan Tabel
                   updateDashboardWithRealData();
                   renderTablesWithRealData();
+                  seRenderRecentActivities(0);
               } else {
                   console.error("Gagal memuat data dari database:", result.message);
               }

@@ -150,6 +150,17 @@
     .timeline-date { font-weight: 700; color: #0f172a; font-size: 14px; }
     .timeline-item strong { display: block; margin-bottom: 6px; color: #0f172a; font-size: 14px; }
     .timeline-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .recent-activity-pager {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
+    }
+    .recent-activity-page-info { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .recent-activity-nav { display: inline-flex; gap: 8px; }
+    .recent-activity-nav button {
+      width: 32px; height: 32px; border: 1px solid var(--line); border-radius: 50%;
+      background: white; color: var(--primary); cursor: pointer; font-weight: 900;
+    }
+    .recent-activity-nav button:disabled { opacity: .4; cursor: not-allowed; }
     .chart-container { position: relative; height: 280px; width: 100%; }
     .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 6px; }
@@ -789,6 +800,105 @@ function escapeAttr(value) {
     return escapeHtml(value).replace(/\r?\n/g, "&#10;");
 }
 
+const pmRecentActivityPager = {
+    page: 0,
+    activities: []
+};
+const PM_RECENT_ACTIVITY_PAGE_SIZE = 5;
+
+function renderPmRecentActivities(activities, page = 0) {
+    const activitiesContainer = document.getElementById("recentActivitiesList");
+    if (!activitiesContainer) return;
+
+    const safeActivities = Array.isArray(activities) ? activities : [];
+    pmRecentActivityPager.activities = safeActivities;
+
+    if (safeActivities.length === 0) {
+        activitiesContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; font-style:italic; padding: 20px 0;">Belum ada aktivitas Change Request di proyek ini.</p>';
+        return;
+    }
+
+    const totalPages = Math.max(1, Math.ceil(safeActivities.length / PM_RECENT_ACTIVITY_PAGE_SIZE));
+    const safePage = Math.min(Math.max(page, 0), totalPages - 1);
+    pmRecentActivityPager.page = safePage;
+    const start = safePage * PM_RECENT_ACTIVITY_PAGE_SIZE;
+    const end = Math.min(start + PM_RECENT_ACTIVITY_PAGE_SIZE, safeActivities.length);
+    const pageItems = safeActivities.slice(start, end);
+
+    let today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    activitiesContainer.innerHTML = pageItems.map(act => {
+        const status = String(act.status || "PENDING").toUpperCase();
+        let statusBadge = `<span style="color:#d97706; font-weight:bold;">[PENDING]</span>`;
+        if (status === 'APPROVED') {
+            statusBadge = `<span style="color:#16a34a; font-weight:bold;">[APPROVED]</span>`;
+        } else if (status === 'REJECTED') {
+            statusBadge = `<span style="color:#dc2626; font-weight:bold;">[REJECTED]</span>`;
+        }
+
+        let dateObj = new Date(act.changeDate);
+        let formattedDate = isNaN(dateObj) ? (act.changeDate || "-") : dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+
+        let relativeLabel = "Baru saja";
+        if (!isNaN(dateObj)) {
+            let compareDate = new Date(dateObj);
+            compareDate.setHours(0, 0, 0, 0);
+            let diffTime = today.getTime() - compareDate.getTime();
+            let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) relativeLabel = "Hari ini";
+            else if (diffDays === 1) relativeLabel = "Kemarin";
+            else if (diffDays > 1) relativeLabel = `${diffDays} hari yang lalu`;
+        }
+
+        let wbsText = `WBS Level 4 (Paket Pekerjaan):\n${act.wbsLevel4 || '-'}\n\nWBS Level 5 (Aktivitas):\n${act.wbsLevel5 || '-'}\n\nWBS Level 6 (Sumber Daya):\n${act.wbsLevel6 || '-'}`;
+        let riskText = `Level 1 (Kategori): ${act.risk_kategori || '-'}\nLevel 2 (Variabel): ${act.risk_nama || '-'}\n\nInsight:\n${act.insight || 'Tidak ada data'}\n\nSaran:\n${act.saran || 'Tidak ada data'}`;
+        let riskCodeShort = act.riskVariable ? act.riskVariable.replace(/[^\d.]/g, '') : '0';
+
+        return `
+        <div class="timeline-item" style="align-items: flex-start;">
+            <div class="timeline-date" style="white-space:nowrap; margin-right:15px; display:flex; flex-direction:column; justify-content:flex-start; line-height:1.3; min-width:95px;">
+                <span style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:2px;">${escapeHtml(relativeLabel)}</span>
+                <span style="font-size:11px; color:#64748b;">${escapeHtml(formattedDate)}</span>
+            </div>
+            <div style="flex: 1;">
+                <strong style="color:#0f172a; display:block;">${escapeHtml(act.changeId)} - ${escapeHtml(act.changeCategory)}</strong>
+                <div style="margin: 4px 0 8px 0; display: flex; flex-wrap: wrap;">
+                    <div class="capsule-badge capsule-wbs" data-tooltip="${escapeAttr(wbsText)}">
+                        WBS ${escapeHtml(act.wbsLevel5 ? act.wbsLevel5.substring(0, 7) : 'Info')}
+                    </div>
+                    <div class="capsule-badge capsule-risk" data-tooltip="${escapeAttr(riskText)}">
+                        R${escapeHtml(riskCodeShort)}
+                    </div>
+                </div>
+                <p style="font-size:12px; color:#475569; line-height:1.4; margin:0;">
+                    ${statusBadge} • <b>${escapeHtml(act.submittedBy || "-")}</b> (Site Engineer)
+                </p>
+            </div>
+        </div>`;
+    }).join('');
+
+    if (safeActivities.length > PM_RECENT_ACTIVITY_PAGE_SIZE) {
+        activitiesContainer.insertAdjacentHTML("beforeend", `
+            <div class="recent-activity-pager">
+                <span class="recent-activity-page-info">${start + 1}-${end} dari ${safeActivities.length}</span>
+                <span class="recent-activity-nav">
+                    <button type="button" onclick="changePmRecentActivityPage(-1)" ${safePage === 0 ? "disabled" : ""} aria-label="Aktivitas sebelumnya">&lt;</button>
+                    <button type="button" onclick="changePmRecentActivityPage(1)" ${safePage >= totalPages - 1 ? "disabled" : ""} aria-label="Aktivitas berikutnya">&gt;</button>
+                </span>
+            </div>
+        `);
+    }
+}
+
+function changePmRecentActivityPage(direction) {
+    renderPmRecentActivities(
+        pmRecentActivityPager.activities,
+        (pmRecentActivityPager.page || 0) + direction
+    );
+}
+
 function fetchAssignedProjects() {
     fetch('api_get_projects.php')
         .then(response => response.json())
@@ -1194,75 +1304,7 @@ function fetchDashboardStats(projectId) {
                 // === Bagian C: Update Daftar Recent Change Activities ===
                 const activitiesContainer = document.getElementById("recentActivitiesList");
                 if (activitiesContainer) {
-                    const activities = res.data.recent_activities;
-                    
-                    if (activities.length === 0) {
-                        activitiesContainer.innerHTML = '<p style="text-align:center; color:#94a3b8; font-style:italic; padding: 20px 0;">Belum ada aktivitas Change Request di proyek ini.</p>';
-                    } else {
-                        let today = new Date();
-                        today.setHours(0, 0, 0, 0);
-
-                        activitiesContainer.innerHTML = activities.map(act => {
-                            // Status Badge Bawaan
-                            let statusBadge = `<span style="color:#d97706; font-weight:bold;">[PENDING]</span>`;
-                            if (act.status.toUpperCase() === 'APPROVED') {
-                                statusBadge = `<span style="color:#16a34a; font-weight:bold;">[APPROVED]</span>`;
-                            } else if (act.status.toUpperCase() === 'REJECTED') {
-                                statusBadge = `<span style="color:#dc2626; font-weight:bold;">[REJECTED]</span>`;
-                            }
-
-                            // Pengolahan Tanggal
-                            let dateObj = new Date(act.changeDate);
-                            let formattedDate = isNaN(dateObj) ? act.changeDate : dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-
-                            // Logika Waktu Relatif
-                            let relativeLabel = "Baru saja";
-                            if (!isNaN(dateObj)) {
-                                let compareDate = new Date(dateObj);
-                                compareDate.setHours(0, 0, 0, 0);
-                                let diffTime = today.getTime() - compareDate.getTime();
-                                let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-                                if (diffDays === 0) relativeLabel = "Hari ini";
-                                else if (diffDays === 1) relativeLabel = "Kemarin";
-                                else if (diffDays > 1) relativeLabel = `${diffDays} hari yang lalu`;
-                            }
-
-                            // 1. Penyusunan teks tooltip untuk kapsul WBS
-                            let wbsText = `WBS Level 4 (Paket Pekerjaan):\n${act.wbsLevel4 || '-'}\n\nWBS Level 5 (Aktivitas):\n${act.wbsLevel5 || '-'}\n\nWBS Level 6 (Sumber Daya):\n${act.wbsLevel6 || '-'}`;
-                            
-                            // 2. Penyusunan teks tooltip untuk kapsul RISIKO beserta kolom Insight & Saran dari Knowledge Repository
-                            let riskText = `Level 1 (Kategori): ${act.risk_kategori || '-'}\nLevel 2 (Variabel): ${act.risk_nama || '-'}\n\n💡 Insight:\n${act.insight || 'Tidak ada data'}\n\n🛠️ Saran:\n${act.saran || 'Tidak ada data'}`;
-
-                            // Ambil dari riskVariable (regex /[^\d.]/g akan menyisakan angka dan titik saja, misal dari "R1.2" menjadi "1.2")
-                            let riskCodeShort = act.riskVariable ? act.riskVariable.replace(/[^\d.]/g, '') : '0';
-
-                            return `
-                            <div class="timeline-item" style="align-items: flex-start;">
-                                <div class="timeline-date" style="white-space:nowrap; margin-right:15px; display:flex; flex-direction:column; justify-content:flex-start; line-height:1.3; min-width:95px;">
-                                    <span style="font-size:13px; font-weight:700; color:#0f172a; margin-bottom:2px;">${relativeLabel}</span>
-                                    <span style="font-size:11px; color:#64748b;">${formattedDate}</span>
-                                </div>
-                                <div style="flex: 1;">
-                                    <strong style="color:#0f172a; display:block;">${act.changeId} - ${act.changeCategory}</strong>
-                                    
-                                    <div style="margin: 4px 0 8px 0; display: flex; flex-wrap: wrap;">
-                                        <div class="capsule-badge capsule-wbs" data-tooltip="${escapeAttr(wbsText)}">
-                                            WBS ${escapeHtml(act.wbsLevel5 ? act.wbsLevel5.substring(0, 7) : 'Info')}
-                                        </div>
-                                        <div class="capsule-badge capsule-risk" data-tooltip="${escapeAttr(riskText)}">
-                                            R${escapeHtml(riskCodeShort)}
-                                        </div>
-                                    </div>
-
-                                    <p style="font-size:12px; color:#475569; line-height:1.4; margin:0;">
-                                        ${statusBadge} • <b>${act.submittedBy}</b> (Site Engineer)
-                                    </p>
-                                </div>
-                            </div>
-                            `;
-                        }).join('');
-                    }
+                    renderPmRecentActivities(res.data.recent_activities || [], 0);
                 }
 
                 // Petakan data dari database agar sesuai dengan format objek "crData" eksisting Anda
