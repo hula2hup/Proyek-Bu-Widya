@@ -110,6 +110,8 @@
         background: #f8fafc;
         color: #475569;
       }
+      #wbsLevel2,
+      #wbsLevel3,
       #wbsLevel4,
       #wbsLevel5,
       #wbsLevel6 {
@@ -1189,6 +1191,20 @@
           <div id="identify" class="form-card">
             <div class="form-grid wbs-grid">
               <div class="form-group">
+                <label>WBS-Rumpun Pekerjaan</label>
+                <select id="wbsLevel2">
+                  <option value="">Pilih Rumpun Pekerjaan</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>WBS-Jenis Pekerjaan</label>
+                <select id="wbsLevel3">
+                  <option value="">Pilih Jenis Pekerjaan</option>
+                </select>
+              </div>
+
+              <div class="form-group">
                 <label>WBS-Paket Pekerjaan</label>
                 <select id="wbsLevel4" required>
                   <option value="">Pilih Paket Pekerjaan</option>
@@ -1217,6 +1233,9 @@
                   <option>Method</option>
                   <option>Material</option>
                   <option>Schedule</option>
+                  <option>Failure</option>
+                  <option>Econ-Reg</option>
+                  <option>Stakeholder</option>
                 </select>
               </div>
 
@@ -1399,7 +1418,7 @@
             </div>
 
             <div class="full-width">
-              <label>Description</label>
+              <label>Risk Response Planning</label>
               <textarea
                 rows="5"
                 placeholder="Jelaskan perubahan yang terjadi..."
@@ -1968,7 +1987,8 @@
           }
 
           const status = (selectedChange.status || "PENDING").toUpperCase();
-          const isReadOnly = (status === "APPROVED");
+          const isRejected = status === "REJECTED";
+          const isReadOnly = (status === "APPROVED" || isRejected);
           const disabledAttr = isReadOnly ? "disabled" : "";
           const readonlyAttr = isReadOnly ? "readonly" : "";
 
@@ -2085,8 +2105,10 @@
           // --- RENDER HTML UTAMA ---
           document.getElementById("editFormContainer").innerHTML = `
               ${isReadOnly ? `
-                  <div style="background:#e2f0d9; color:#385723; padding:15px; margin-bottom:20px; border-left:5px solid #385723; font-weight:600; border-radius:4px;">
-                      🔒 STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.
+                  <div style="background:${isRejected ? '#fee2e2' : '#e2f0d9'}; color:${isRejected ? '#991b1b' : '#385723'}; padding:15px; margin-bottom:20px; border-left:5px solid ${isRejected ? '#dc2626' : '#385723'}; font-weight:600; border-radius:4px;">
+                      ${isRejected
+                        ? 'STATUS REJECTED: Data pengajuan ini terkunci (Read-Only). Gunakan tombol Ajukan Ulang untuk membuat Change Request baru dengan isian yang sama.'
+                        : 'STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.'}
                   </div>
               ` : `
                   <div style="background:#fff3cd; color:#856404; padding:15px; margin-bottom:20px; border-left:5px solid #856404; font-weight:600; border-radius:4px;">
@@ -2099,6 +2121,8 @@
                       <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #0f2d52; padding-bottom:5px;">Langkah 1: Identifikasi Perubahan</h3>
                       
                       <div class="form-grid wbs-grid">
+                          <div class="form-group"><label>WBS-Rumpun Pekerjaan</label><select id="editWbs2" ${disabledAttr}></select></div>
+                          <div class="form-group"><label>WBS-Jenis Pekerjaan</label><select id="editWbs3" ${disabledAttr}></select></div>
                           <div class="form-group"><label>WBS-Paket Pekerjaan</label><select id="editWbs4" ${disabledAttr}></select></div>
                           <div class="form-group"><label>WBS-Aktivitas</label><select id="editWbs5" ${disabledAttr}></select></div>
                           <div class="form-group"><label>WBS-Sumber Daya</label><select id="editWbs6" ${disabledAttr}></select></div>
@@ -2231,24 +2255,20 @@
 
                   <div style="margin-top:25px; text-align:right;">
                       <button type="button" class="btn-back" onclick="showPage('historyPage')" style="margin-right:10px;">Kembali</button>
+                      ${isRejected ? `<button type="button" class="btn-submit" onclick="resubmitRejectedChange('${selectedChange.change_id || selectedChange.changeId || ""}')" style="margin-right:10px; background:#f59e0b;">Ajukan Ulang</button>` : ''}
                       ${!isReadOnly ? `<button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">💾 Simpan Perubahan</button>` : ''}
                   </div>
               </form>
           `;
 
+          const editWbs2 = document.getElementById('editWbs2');
+          const editWbs3 = document.getElementById('editWbs3');
           const editWbs4 = document.getElementById('editWbs4');
           const editWbs5 = document.getElementById('editWbs5');
           const editWbs6 = document.getElementById('editWbs6');
 
           if (editWbs4 && editWbs5 && editWbs6 && typeof syncWbsSelects === 'function') {
-            editWbs4.addEventListener('change', () => {
-              populateWbsOptions(editWbs5, Object.keys(wbsData[editWbs4.value] || {}), 'Pilih Aktivitas');
-              populateWbsOptions(editWbs6, [], 'Pilih Sumber Daya');
-            });
-
-            editWbs5.addEventListener('change', () => {
-              populateWbsOptions(editWbs6, wbsData[editWbs4.value]?.[editWbs5.value] || [], 'Pilih Sumber Daya');
-            });
+            attachWbsCascade(editWbs2, editWbs3, editWbs4, editWbs5, editWbs6);
 
             const editRiskCategoryEl = document.getElementById('editRiskCategory');
             const editRiskVariableEl = document.getElementById('editRiskVariable');
@@ -2311,6 +2331,8 @@
               selectedChange.wbsLevel4,
               selectedChange.wbsLevel5,
               selectedChange.wbsLevel6,
+              editWbs2,
+              editWbs3,
             );
           }
 
@@ -4261,42 +4283,78 @@
           },
       };
 
-      // Menyesuaikan script dropdown WBS sebagai simulasi
-      const level4 = document.getElementById("wbsLevel4");
-      const level5 = document.getElementById("wbsLevel5");
-      const level6 = document.getElementById("wbsLevel6");
+      const wbsLevel2Labels = {
+        "1": "1 Pekerjaan Persiapan",
+        "2": "2 Pekerjaan Drainase",
+        "3": "3 Pekerjaan Tanah",
+        "4": "4 Pelebaran Perkerasan dan Bahu Jalan",
+        "5": "5 Perkerasan Berbutir & Perkerasan Beton Semen",
+        "6": "6 Perkerasan Aspal",
+        "7": "7 Pekerjaan Struktur",
+        "8": "8 Fasilitas Pelayanan Tol",
+        "9": "9 Pekerjaan Pengembalian Kondisi Pekerjaan Minor",
+      };
 
-      Object.keys(wbsData).forEach((key) => {
-        const option = document.createElement("option");
-        option.value = key;
-        option.textContent = key;
-        level4.appendChild(option);
-      });
+      const wbsLevel3Labels = {
+        "1.1": "1.1 Mobilisasi & Demobilisasi",
+        "1.2": "1.2 Kantor Lapangan dan Fasilitasnya",
+        "1.3": "1.3 Manajemen dan Keselamatan Lalu Lintas",
+        "1.4": "1.4 Kajian Teknis Lapangan",
+        "1.5": "1.5 Pengamanan Lingkungan Hidup",
+        "1.6": "1.6 Relokasi Eksisting utilitas",
+        "1.7": "1.7 Keselamatan dan Kesehatan Kerja",
+        "1.8": "1.8 Pengujian Tanah",
+        "1.9": "1.9 Manajemen Mutu",
+        "2.1": "2.1 Drainase Penunjang / konstruksi Jembatan",
+        "2.2": "2.2 Drainase Pada Konstruksi Jembatan",
+        "3.1": "3.1 Land clearing",
+        "3.2": "3.2 Galian",
+        "3.3": "3.3 Timbunan",
+        "3.4": "3.4 Perbaikan Tanah",
+        "4.1": "4.1 Pekerjaan pelebaran perkerasan",
+        "4.2": "4.2 Pekerjaan bahu jalan",
+        "5.1": "5.1 Perkerasan berbutir",
+        "5.2": "5.2 Perkerasan Beton Semen",
+        "6.1": "6.1 Asphal Mixing Plant (AMP)",
+        "6.2": "6.2 Non Asphal Mixing Plant (Non-AMP)",
+        "7.1": "7.1 Struktur Bawah",
+        "7.2": "7.2 Struktur Atas Beton",
+        "7.3": "7.3 Pekerjaan asesoris Jembatan",
+        "8.1": "8.1 Plaza Tol",
+        "8.2": "8.2 Kantor dan Fasilitas Tol",
+        "9.1": "9.1 Pengembalian Kondisi Pekerjaan Minor",
+        "9.2": "9.2 Pemeliharaan Rutin Jalan & Jembatan",
+      };
 
-      level4.addEventListener("change", () => {
-        level5.innerHTML = '<option value="">Pilih Aktivitas</option>';
-        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
-        if (!level4.value) return;
-        Object.keys(wbsData[level4.value]).forEach((key) => {
-          const option = document.createElement("option");
-          option.value = key;
-          option.textContent = key;
-          level5.appendChild(option);
+      function getWbsCode(value, depth) {
+        const match = String(value || "").match(/^\d+(?:\.\d+)*/);
+        if (!match) return "";
+        return match[0].split(".").slice(0, depth).join(".");
+      }
+
+      function getWbsLevel2Options() {
+        return [...new Set(Object.keys(wbsData).map((item) => getWbsCode(item, 1)).filter(Boolean))];
+      }
+
+      function getWbsLevel3Options(level2Code = "") {
+        return [...new Set(
+          Object.keys(wbsData)
+            .filter((item) => !level2Code || getWbsCode(item, 1) === level2Code)
+            .map((item) => getWbsCode(item, 2))
+            .filter(Boolean),
+        )];
+      }
+
+      function getWbsLevel4Options(level2Code = "", level3Code = "") {
+        return Object.keys(wbsData).filter((item) => {
+          const itemLevel2 = getWbsCode(item, 1);
+          const itemLevel3 = getWbsCode(item, 2);
+          return (!level2Code || itemLevel2 === level2Code) && (!level3Code || itemLevel3 === level3Code);
         });
-      });
+      }
 
-      level5.addEventListener("change", () => {
-        level6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
-        if (!level5.value) return;
-        wbsData[level4.value][level5.value].forEach((item) => {
-          const option = document.createElement("option");
-          option.value = item;
-          option.textContent = item;
-          level6.appendChild(option);
-        });
-      });
-
-      function populateWbsOptions(select, items, placeholder) {
+      function populateWbsOptions(select, items, placeholder, labelMap = {}) {
+        if (!select) return;
         select.innerHTML = "";
         const placeholderOption = document.createElement("option");
         placeholderOption.value = "";
@@ -4305,13 +4363,30 @@
         items.forEach((item) => {
           const option = document.createElement("option");
           option.value = item;
-          option.textContent = item;
+          option.textContent = labelMap[item] || item;
           select.appendChild(option);
         });
       }
 
-      function syncWbsSelects(level4Select, level5Select, level6Select, selected4, selected5, selected6) {
-        populateWbsOptions(level4Select, Object.keys(wbsData), "Pilih Paket Pekerjaan");
+      function syncWbsSelects(level4Select, level5Select, level6Select, selected4, selected5, selected6, level2Select = null, level3Select = null) {
+        const selected2 = getWbsCode(selected4, 1);
+        const selected3 = getWbsCode(selected4, 2);
+
+        if (level2Select) {
+          populateWbsOptions(level2Select, getWbsLevel2Options(), "Pilih Rumpun Pekerjaan", wbsLevel2Labels);
+          level2Select.value = selected2;
+        }
+
+        if (level3Select) {
+          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select?.value || selected2), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          level3Select.value = selected3;
+        }
+
+        populateWbsOptions(
+          level4Select,
+          getWbsLevel4Options(level2Select?.value || selected2, level3Select?.value || selected3),
+          "Pilih Paket Pekerjaan",
+        );
         if (selected4 && wbsData[selected4]) {
           level4Select.value = selected4;
         } else {
@@ -4337,6 +4412,42 @@
           level6Select.value = "";
         }
       }
+
+      function attachWbsCascade(level2Select, level3Select, level4Select, level5Select, level6Select) {
+        if (!level4Select || !level5Select || !level6Select) return;
+
+        syncWbsSelects(level4Select, level5Select, level6Select, "", "", "", level2Select, level3Select);
+
+        level2Select?.addEventListener("change", () => {
+          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select.value), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          populateWbsOptions(level4Select, [], "Pilih Paket Pekerjaan");
+          populateWbsOptions(level5Select, [], "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+        });
+
+        level3Select?.addEventListener("change", () => {
+          populateWbsOptions(level4Select, getWbsLevel4Options(level2Select?.value || "", level3Select.value), "Pilih Paket Pekerjaan");
+          populateWbsOptions(level5Select, [], "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+        });
+
+        level4Select.addEventListener("change", () => {
+          populateWbsOptions(level5Select, Object.keys(wbsData[level4Select.value] || {}), "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+        });
+
+        level5Select.addEventListener("change", () => {
+          populateWbsOptions(level6Select, wbsData[level4Select.value]?.[level5Select.value] || [], "Pilih Sumber Daya");
+        });
+      }
+
+      attachWbsCascade(
+        document.getElementById("wbsLevel2"),
+        document.getElementById("wbsLevel3"),
+        document.getElementById("wbsLevel4"),
+        document.getElementById("wbsLevel5"),
+        document.getElementById("wbsLevel6"),
+      );
 
       function closeInfo() {
         document.getElementById("infoModal").style.display = "none";
@@ -4869,11 +4980,211 @@
           projectAreaInput.style.backgroundColor = "#e9ecef";
           projectAreaInput.style.cursor = "not-allowed";
         }
+        syncWbsSelects(
+          document.getElementById("wbsLevel4"),
+          document.getElementById("wbsLevel5"),
+          document.getElementById("wbsLevel6"),
+          "",
+          "",
+          "",
+          document.getElementById("wbsLevel2"),
+          document.getElementById("wbsLevel3"),
+        );
 
         document.getElementById("identify").style.display = "block";
         document.getElementById("register").style.display = "none";
         document.getElementById("step2-indicator").classList.remove("active");
         document.getElementById("step1-indicator").classList.add("active");
+      }
+
+      function parseImpactRows(dataJson) {
+        if (!dataJson || dataJson === "[]") return [];
+        try {
+          const rows = typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
+          return Array.isArray(rows) ? rows : [];
+        } catch (error) {
+          console.warn("Gagal membaca data impact area:", error);
+          return [];
+        }
+      }
+
+      function pickRowValue(row, aliases) {
+        for (const key of aliases) {
+          if (row && row[key] !== undefined && row[key] !== null) {
+            return row[key];
+          }
+        }
+        return "";
+      }
+
+      function setFieldValue(id, value) {
+        const field = document.getElementById(id);
+        if (field) field.value = value ?? "";
+      }
+
+      function setSelectValue(select, value) {
+        if (!select) return;
+        const safeValue = value ?? "";
+        if (safeValue && !Array.from(select.options).some((option) => option.value === safeValue)) {
+          select.add(new Option(safeValue, safeValue));
+        }
+        select.value = safeValue;
+      }
+
+      function fillImpactRows(type, rows, aliasesByKey) {
+        const checkbox = document.getElementById(`chk-${type}`);
+        const container = document.getElementById(`table-${type}`);
+        const tbody = document.querySelector(`#dyn-${type} tbody`);
+        if (!checkbox || !container || !tbody) return;
+
+        tbody.innerHTML = "";
+        checkbox.checked = rows.length > 0;
+        container.style.display = rows.length > 0 ? "block" : "none";
+
+        rows.forEach((row) => {
+          addRow(type);
+          const newRow = tbody.lastElementChild;
+          if (!newRow) return;
+
+          newRow.querySelectorAll(".dyn-val").forEach((field) => {
+            const aliases = aliasesByKey[field.dataset.key] || [field.dataset.key];
+            const value = pickRowValue(row, aliases);
+            if (field.tagName === "SELECT") {
+              setSelectValue(field, value);
+            } else {
+              field.value = value ?? "";
+            }
+          });
+        });
+      }
+
+      async function resubmitRejectedChange(id) {
+        const sourceChange = changeRequestsFromDB.find((item) => (item.change_id || item.changeId) === id);
+        if (!sourceChange) {
+          alert("Data Change Request tidak ditemukan.");
+          return;
+        }
+
+        if ((sourceChange.status || "").toUpperCase() !== "REJECTED") {
+          alert("Hanya Change Request berstatus REJECTED yang dapat diajukan ulang.");
+          return;
+        }
+
+        if (hasAssignedProject !== true) {
+          promptUnassignedProjectLogout();
+          return;
+        }
+
+        const proceed = confirm(
+          `Ajukan ulang ${id}? Form New Change akan diisi otomatis dari data sebelumnya dengan Change ID terbaru.`,
+        );
+        if (!proceed) return;
+
+        resetNewChangeFormAfterSubmit();
+        await generateAutoChangeId();
+
+        setFieldValue("changeDate", new Date().toISOString().split("T")[0]);
+        setFieldValue("changeCategory", sourceChange.changeCategory);
+        setFieldValue("priority", sourceChange.priority);
+        setFieldValue("risk", sourceChange.risk);
+        document.getElementById("risk")?.dispatchEvent(new Event("input"));
+        setFieldValue("location", sourceChange.location);
+        setFieldValue("bimObjectId", sourceChange.bimObjectId);
+        setFieldValue("description", sourceChange.description);
+        setFieldValue("descriptionDetail", sourceChange.descriptionDetail);
+
+        if (activeProjects.length > 0) {
+          setFieldValue("projectArea", activeProjects[0].project_id);
+        } else {
+          setFieldValue("projectArea", sourceChange.projectArea);
+        }
+
+        const wbs4 = document.getElementById("wbsLevel4");
+        const wbs5 = document.getElementById("wbsLevel5");
+        const wbs6 = document.getElementById("wbsLevel6");
+        const wbs2 = document.getElementById("wbsLevel2");
+        const wbs3 = document.getElementById("wbsLevel3");
+        if (wbs4 && wbs5 && wbs6) {
+          syncWbsSelects(
+            wbs4,
+            wbs5,
+            wbs6,
+            sourceChange.wbsLevel4,
+            sourceChange.wbsLevel5,
+            sourceChange.wbsLevel6,
+            wbs2,
+            wbs3,
+          );
+        }
+
+        const riskCategorySelect = document.getElementById("riskCategory");
+        const riskVariableSelect = document.getElementById("riskVariable");
+        setSelectValue(riskCategorySelect, sourceChange.riskCategory);
+        loadRisk();
+        setSelectValue(riskVariableSelect, sourceChange.riskVariable);
+        updateRisk();
+        if (!document.getElementById("riskDescription")?.value) {
+          setFieldValue("riskDescription", sourceChange.riskDescription);
+        }
+
+        const ownerValue = sourceChange.ownerRequest || "Tidak";
+        const ownerRadio = document.querySelector(`input[name="ownerRequest"][value="${ownerValue}"]`);
+        if (ownerRadio) ownerRadio.checked = true;
+
+        const drivers = Array.isArray(sourceChange.changeDrivers)
+          ? sourceChange.changeDrivers
+          : String(sourceChange.changeDrivers || "")
+              .split(",")
+              .map((item) => item.trim())
+              .filter(Boolean);
+        document.querySelectorAll('input[name="changeDrivers"]').forEach((checkbox) => {
+          checkbox.checked = drivers.includes(checkbox.value);
+        });
+
+        fillImpactRows("cost", parseImpactRows(sourceChange.impactCost), {
+          item: ["item"],
+          sifat: ["sifat"],
+          kuantitas: ["kuantitas"],
+          satuan: ["satuan"],
+          justifikasi: ["justifikasi"],
+        });
+        fillImpactRows("time", parseImpactRows(sourceChange.impactTime), {
+          aktivitas: ["aktivitas"],
+          sifat: ["sifat"],
+          waktu: ["waktu"],
+          satuan: ["satuan"],
+          justifikasi: ["justifikasi"],
+        });
+        fillImpactRows("scope", parseImpactRows(sourceChange.impactScope), {
+          lingkup: ["lingkup"],
+          sifat: ["sifat"],
+          kuantitas: ["kuantitas"],
+          satuan: ["satuan"],
+          dokumen: ["dokumen", "dokumenAcuan"],
+        });
+        fillImpactRows("quality", parseImpactRows(sourceChange.impactQuality), {
+          item: ["item"],
+          spekAwal: ["spekAwal", "spesifikasiAwal"],
+          spekBaru: ["spekBaru", "spesifikasiBaru"],
+          mutu: ["mutu", "tingkatMutu"],
+          justifikasi: ["justifikasi"],
+        });
+        fillImpactRows("safety", parseImpactRows(sourceChange.impactSafety), {
+          aktivitas: ["aktivitas"],
+          sifat: ["sifat"],
+          kebutuhan: ["kebutuhan"],
+          kuantitas: ["kuantitas"],
+          satuan: ["satuan"],
+        });
+
+        showPage("newChangePage", document.querySelector(".submenu-item[onclick*='newChangePage']"));
+        document.getElementById("identify").style.display = "block";
+        document.getElementById("register").style.display = "none";
+        document.getElementById("step2-indicator").classList.remove("active");
+        document.getElementById("step1-indicator").classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+
+        alert("Form New Change sudah terisi dari data REJECTED. Change ID sudah dibuat terbaru; silakan melakukan penyuntingan dan unggah bukti ulang sebelum submit.");
       }
 
       function submitCR(event) {
@@ -5502,6 +5813,7 @@
                             <button class="btn-edit-table" onclick="editChange('${id}')">
                                 👁️ Lihat
                             </button>
+                            ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ''}
                         </td>
                     </tr>`;
             }
@@ -5520,6 +5832,7 @@
                           <button class="btn-edit-table" onclick="editChange('${id}')">
                                 👁️ Lihat
                           </button>
+                          ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ''}
                         </td>
                     </tr>`;
             }

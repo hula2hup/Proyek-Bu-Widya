@@ -1313,6 +1313,8 @@
         cursor: pointer;
         font-weight: 800;
       }
+      #se-wbs2,
+      #se-wbs3,
       #se-wbs4,
       #se-wbs5,
       #se-wbs6,
@@ -3314,6 +3316,18 @@
               </div>
               <div class="se-form-grid">
                 <div class="se-form-group">
+                  <label>WBS-Rumpun Pekerjaan</label>
+                  <select id="se-wbs2">
+                    <option value="">Pilih Rumpun Pekerjaan</option>
+                  </select>
+                </div>
+                <div class="se-form-group">
+                  <label>WBS-Jenis Pekerjaan</label>
+                  <select id="se-wbs3">
+                    <option value="">Pilih Jenis Pekerjaan</option>
+                  </select>
+                </div>
+                <div class="se-form-group">
                   <label>WBS-Paket Pekerjaan</label>
                   <select id="se-wbs4">
                     <option value="">Pilih Paket Pekerjaan</option>
@@ -4229,7 +4243,6 @@
           </div>
 
           <div class="form-grid">
-            <!--
             <div class="form-group">
               <label>Level 2 - Rumpun Pekerjaan</label>
               <select id="level2">
@@ -4242,7 +4255,6 @@
                 <option value="">-- Pilih Jenis Pekerjaan --</option>
               </select>
             </div>
-            -->
             <div class="form-group">
               <label>Level 4 - Paket Pekerjaan</label>
               <select id="level4">
@@ -6838,53 +6850,175 @@
           },
       };
 
+      const wbsLevel2Labels = {
+        "1": "1 Pekerjaan Persiapan",
+        "2": "2 Pekerjaan Drainase",
+        "3": "3 Pekerjaan Tanah",
+        "4": "4 Pelebaran Perkerasan dan Bahu Jalan",
+        "5": "5 Perkerasan Berbutir & Perkerasan Beton Semen",
+        "6": "6 Perkerasan Aspal",
+        "7": "7 Pekerjaan Struktur",
+        "8": "8 Fasilitas Pelayanan Tol",
+        "9": "9 Pekerjaan Pengembalian Kondisi Pekerjaan Minor",
+      };
+
+      const wbsLevel3Labels = {
+        "1.1": "1.1 Mobilisasi & Demobilisasi",
+        "1.2": "1.2 Kantor Lapangan dan Fasilitasnya",
+        "1.3": "1.3 Manajemen dan Keselamatan Lalu Lintas",
+        "1.4": "1.4 Kajian Teknis Lapangan",
+        "1.5": "1.5 Pengamanan Lingkungan Hidup",
+        "1.6": "1.6 Relokasi Eksisting utilitas",
+        "1.7": "1.7 Keselamatan dan Kesehatan Kerja",
+        "1.8": "1.8 Pengujian Tanah",
+        "1.9": "1.9 Manajemen Mutu",
+        "2.1": "2.1 Drainase Penunjang / konstruksi Jembatan",
+        "2.2": "2.2 Drainase Pada Konstruksi Jembatan",
+        "3.1": "3.1 Land clearing",
+        "3.2": "3.2 Galian",
+        "3.3": "3.3 Timbunan",
+        "3.4": "3.4 Perbaikan Tanah",
+        "4.1": "4.1 Pekerjaan pelebaran perkerasan",
+        "4.2": "4.2 Pekerjaan bahu jalan",
+        "5.1": "5.1 Perkerasan berbutir",
+        "5.2": "5.2 Perkerasan Beton Semen",
+        "6.1": "6.1 Asphal Mixing Plant (AMP)",
+        "6.2": "6.2 Non Asphal Mixing Plant (Non-AMP)",
+        "7.1": "7.1 Struktur Bawah",
+        "7.2": "7.2 Struktur Atas Beton",
+        "7.3": "7.3 Pekerjaan asesoris Jembatan",
+        "8.1": "8.1 Plaza Tol",
+        "8.2": "8.2 Kantor dan Fasilitas Tol",
+        "9.1": "9.1 Pengembalian Kondisi Pekerjaan Minor",
+        "9.2": "9.2 Pemeliharaan Rutin Jalan & Jembatan",
+      };
+
+      function getWbsCode(value, depth) {
+        const match = String(value || "").match(/^\d+(?:\.\d+)*/);
+        if (!match) return "";
+        return match[0].split(".").slice(0, depth).join(".");
+      }
+
+      function getWbsLevel2Options() {
+        return [...new Set(Object.keys(wbsData).map((item) => getWbsCode(item, 1)).filter(Boolean))];
+      }
+
+      function getWbsLevel3Options(level2Code = "") {
+        return [...new Set(
+          Object.keys(wbsData)
+            .filter((item) => !level2Code || getWbsCode(item, 1) === level2Code)
+            .map((item) => getWbsCode(item, 2))
+            .filter(Boolean),
+        )];
+      }
+
+      function getWbsLevel4Options(level2Code = "", level3Code = "") {
+        return Object.keys(wbsData).filter((item) => {
+          const itemLevel2 = getWbsCode(item, 1);
+          const itemLevel3 = getWbsCode(item, 2);
+          return (!level2Code || itemLevel2 === level2Code) && (!level3Code || itemLevel3 === level3Code);
+        });
+      }
+
+      function populateWbsOptions(select, items, placeholder, labelMap = {}) {
+        if (!select) return;
+        select.innerHTML = "";
+        const placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.textContent = placeholder;
+        select.appendChild(placeholderOption);
+        items.forEach((item) => {
+          const option = document.createElement("option");
+          option.value = item;
+          option.textContent = labelMap[item] || item;
+          select.appendChild(option);
+        });
+      }
+
+      function syncWbsSelects(level4Select, level5Select, level6Select, selected4, selected5, selected6, level2Select = null, level3Select = null) {
+        const selected2 = getWbsCode(selected4, 1);
+        const selected3 = getWbsCode(selected4, 2);
+
+        if (level2Select) {
+          populateWbsOptions(level2Select, getWbsLevel2Options(), "Pilih Rumpun Pekerjaan", wbsLevel2Labels);
+          level2Select.value = selected2;
+        }
+
+        if (level3Select) {
+          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select?.value || selected2), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          level3Select.value = selected3;
+        }
+
+        populateWbsOptions(
+          level4Select,
+          getWbsLevel4Options(level2Select?.value || selected2, level3Select?.value || selected3),
+          "Pilih Paket Pekerjaan",
+        );
+        level4Select.value = selected4 && wbsData[selected4] ? selected4 : "";
+        level4Select.dispatchEvent(new Event("change"));
+
+        level5Select.value = selected5 && wbsData[level4Select.value]?.[selected5] ? selected5 : "";
+        level5Select.dispatchEvent(new Event("change"));
+
+        level6Select.value = selected6 && wbsData[level4Select.value]?.[level5Select.value]?.includes(selected6) ? selected6 : "";
+      }
+
+      function attachWbsCascade(level2Select, level3Select, level4Select, level5Select, level6Select, onComplete = null) {
+        if (!level4Select || !level5Select || !level6Select) return;
+
+        syncWbsSelects(level4Select, level5Select, level6Select, "", "", "", level2Select, level3Select);
+
+        level2Select?.addEventListener("change", () => {
+          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select.value), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          populateWbsOptions(level4Select, [], "Pilih Paket Pekerjaan");
+          populateWbsOptions(level5Select, [], "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+          if (onComplete) onComplete();
+        });
+
+        level3Select?.addEventListener("change", () => {
+          populateWbsOptions(level4Select, getWbsLevel4Options(level2Select?.value || "", level3Select.value), "Pilih Paket Pekerjaan");
+          populateWbsOptions(level5Select, [], "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+          if (onComplete) onComplete();
+        });
+
+        level4Select.addEventListener("change", () => {
+          populateWbsOptions(level5Select, Object.keys(wbsData[level4Select.value] || {}), "Pilih Aktivitas");
+          populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
+          if (onComplete) onComplete();
+        });
+
+        level5Select.addEventListener("change", () => {
+          populateWbsOptions(level6Select, wbsData[level4Select.value]?.[level5Select.value] || [], "Pilih Sumber Daya");
+          if (onComplete) onComplete();
+        });
+
+        level6Select.addEventListener("change", () => {
+          if (onComplete) onComplete();
+        });
+      }
+
+      const level2 = document.getElementById("level2");
+      const level3 = document.getElementById("level3");
       const level4 = document.getElementById("level4");
       const level5 = document.getElementById("level5");
       const level6 = document.getElementById("level6");
       const detailResult = document.getElementById("detailResult");
 
-      Object.keys(wbsData).forEach((item) => {
-        level4.innerHTML += `<option value="${item}">${item}</option>`;
-      });
-
-      level4.addEventListener("change", function () {
-        level5.innerHTML = '<option value="">-- Pilih Aktivitas --</option>';
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML =
-          "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-
-        const selectedL4 = this.value;
-
-        if (selectedL4) {
-          Object.keys(wbsData[selectedL4]).forEach((item) => {
-            level5.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level5.addEventListener("change", function () {
-        level6.innerHTML = '<option value="">-- Pilih Sumber Daya --</option>';
-        detailResult.innerHTML =
-          "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
-
-        const selectedL4 = level4.value;
-        const selectedL5 = this.value;
-
-        if (selectedL5) {
-          // Mengambil array langsung di level terdalam (level 6)
-          wbsData[selectedL4][selectedL5].forEach((item) => {
-            level6.innerHTML += `<option value="${item}">${item}</option>`;
-          });
-        }
-      });
-
-      level6.addEventListener("change", function () {
-        if (!this.value) {
+      function updateWbsMappingDetail() {
+        if (!level6?.value) {
           detailResult.innerHTML =
             "Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu *dropdown* di atas.";
           return;
         }
         detailResult.innerHTML = `
+                      <strong>Level 2 (Rumpun Pekerjaan):</strong><br>
+                      ${wbsLevel2Labels[level2.value] || level2.value}
+                      <br><br>
+                      <strong>Level 3 (Jenis Pekerjaan):</strong><br>
+                      ${wbsLevel3Labels[level3.value] || level3.value}
+                      <br><br>
                       <strong>Level 4 (Paket Pekerjaan):</strong><br>
                       ${level4.value}
                       <br><br>
@@ -6892,9 +7026,11 @@
                       ${level5.value}
                       <br><br>
                       <strong>Level 6 (Sumber Daya):</strong><br>
-                      ${this.value}
+                      ${level6.value}
                     `;
-      });
+      }
+
+      attachWbsCascade(level2, level3, level4, level5, level6, updateWbsMappingDetail);
 
       const modal = document.getElementById("projectModal");
       function openModal() {
@@ -8350,41 +8486,22 @@
       // ========================
 
       function initializeWBS() {
+        const wbs2 = document.getElementById("se-wbs2");
+        const wbs3 = document.getElementById("se-wbs3");
         const wbs4 = document.getElementById("se-wbs4");
+        const wbs5 = document.getElementById("se-wbs5");
+        const wbs6 = document.getElementById("se-wbs6");
 
-        if (!wbs4) return;
-
-        wbs4.innerHTML = '<option value="">Pilih Paket Pekerjaan</option>';
-
-        Object.keys(wbsData).forEach((item) => {
-          wbs4.innerHTML += `
-                      <option value="${item}">
-                        ${item}
-                      </option>
-                    `;
-        });
+        attachWbsCascade(wbs2, wbs3, wbs4, wbs5, wbs6);
       }
 
       function populateWBS5() {
-        const wbs4 = document.getElementById("se-wbs4").value;
-
-        const wbs5 = document.getElementById("se-wbs5");
-
-        const wbs6 = document.getElementById("se-wbs6");
-
-        wbs5.innerHTML = '<option value="">Pilih Aktivitas</option>';
-
-        wbs6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
-
-        if (!wbsData[wbs4]) return;
-
-        Object.keys(wbsData[wbs4]).forEach((item) => {
-          wbs5.innerHTML += `
-                      <option value="${item}">
-                        ${item}
-                      </option>
-                    `;
-        });
+        populateWbsOptions(
+          document.getElementById("se-wbs5"),
+          Object.keys(wbsData[document.getElementById("se-wbs4")?.value] || {}),
+          "Pilih Aktivitas",
+        );
+        populateWbsOptions(document.getElementById("se-wbs6"), [], "Pilih Sumber Daya");
       }
 
       function populateWBS6() {
@@ -8394,17 +8511,7 @@
 
         const wbs6 = document.getElementById("se-wbs6");
 
-        wbs6.innerHTML = '<option value="">Pilih Sumber Daya</option>';
-
-        if (!wbsData[wbs4]?.[wbs5]) return;
-
-        wbsData[wbs4][wbs5].forEach((item) => {
-          wbs6.innerHTML += `
-                      <option value="${item}">
-                        ${item}
-                      </option>
-                    `;
-        });
+        populateWbsOptions(wbs6, wbsData[wbs4]?.[wbs5] || [], "Pilih Sumber Daya");
       }
 
       document
@@ -8671,6 +8778,8 @@
 
       function seResetForm() {
         [
+          "se-wbs2",
+          "se-wbs3",
           "se-wbs4",
           "se-wbs5",
           "se-wbs6",
@@ -8734,6 +8843,16 @@
         const evGallery = document.getElementById("se-evidenceGallery");
         if (evGallery) evGallery.innerHTML = "";
         seCurrentEvidenceFiles = [];
+        syncWbsSelects(
+          document.getElementById("se-wbs4"),
+          document.getElementById("se-wbs5"),
+          document.getElementById("se-wbs6"),
+          "",
+          "",
+          "",
+          document.getElementById("se-wbs2"),
+          document.getElementById("se-wbs3"),
+        );
       }
 
       function sePopulateForm(r) {
@@ -8741,15 +8860,16 @@
         document.getElementById("se-changeDate").value =
           r.rawChangeDate || r.changeDate || "";
         document.getElementById("se-submittedBy").value = r.submittedBy || "";
-        document.getElementById("se-wbs4").value = seGetRecordWbs(r, 4) || "";
-
-        populateWBS5();
-
-        document.getElementById("se-wbs5").value = seGetRecordWbs(r, 5) || "";
-
-        populateWBS6();
-
-        document.getElementById("se-wbs6").value = seGetRecordWbs(r, 6) || "";
+        syncWbsSelects(
+          document.getElementById("se-wbs4"),
+          document.getElementById("se-wbs5"),
+          document.getElementById("se-wbs6"),
+          seGetRecordWbs(r, 4) || "",
+          seGetRecordWbs(r, 5) || "",
+          seGetRecordWbs(r, 6) || "",
+          document.getElementById("se-wbs2"),
+          document.getElementById("se-wbs3"),
+        );
         document.getElementById("se-category").value =
           seGetRecordCategory(r) || "";
         document.getElementById("se-priority").value = r.priority || "";
