@@ -4,18 +4,29 @@ header('Content-Type: application/json');
 require 'db_user.php'; 
 
 try {
-    // 2. Cari reviewId terakhir yang menggunakan format 'REV-PM-'
+    // Tentukan role/type dari parameter query (default: PM)
+    $type = $_GET['type'] ?? 'PM'; // Bisa 'PM' atau 'ADM'
+    
+    // Validasi type untuk keamanan
+    if (!in_array($type, ['PM', 'ADM'])) {
+        $type = 'PM';
+    }
+    
+    $prefix = "REV-" . $type . "-";
+    
+    // 2. Cari reviewId terakhir yang menggunakan format sesuai type
     $query = "SELECT reviewId FROM change_requests 
-              WHERE reviewId LIKE 'REV-PM-%' 
+              WHERE reviewId LIKE :prefix 
               ORDER BY reviewId DESC LIMIT 1";
               
-    $stmt = $pdo->query($query);
-    $row = $stmt->fetch(PDO::FETCH_ASSOC); // Mengambil data dengan gaya PDO
+    $stmt = $pdo->prepare($query);
+    $stmt->execute(['prefix' => $prefix . '%']);
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    $nextId = "REV-PM-01"; // Default jika database masih kosong
+    $nextId = $prefix . "01"; // Default jika database masih kosong
 
     if ($row) {
-        $lastId = $row['reviewId']; // Contoh: "REV-PM-02"
+        $lastId = $row['reviewId']; // Contoh: "REV-PM-02" atau "REV-ADM-05"
         
         // 3. Ambil angka di paling belakang (pecah berdasarkan karakter '-')
         $parts = explode('-', $lastId);
@@ -25,7 +36,7 @@ try {
         $nextNumber = $lastNumber + 1;
         $paddedNumber = str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
         
-        $nextId = "REV-PM-" . $paddedNumber;
+        $nextId = $prefix . $paddedNumber;
     }
 
     echo json_encode(["status" => "success", "nextReviewId" => $nextId]);

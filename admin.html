@@ -809,6 +809,51 @@
         background: #fee2e2;
         color: #991b1b;
       }
+      .cr-id-cell {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .cr-status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex: 0 0 10px;
+        margin-top: 4px;
+        border: 2px solid #ffffff;
+        box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.14);
+      }
+      .cr-status-dot.pending {
+        background: #f59e0b;
+      }
+      .cr-status-dot.approved {
+        background: #16a34a;
+      }
+      .cr-status-dot.rejected {
+        background: #dc2626;
+      }
+      .change-table tbody tr.se-status-pending td:first-child b::before,
+      .change-table tbody tr.se-status-approved td:first-child b::before,
+      .change-table tbody tr.se-status-rejected td:first-child b::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 2px solid #ffffff;
+        box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.14);
+        vertical-align: middle;
+      }
+      .change-table tbody tr.se-status-pending td:first-child b::before {
+        background: #f59e0b;
+      }
+      .change-table tbody tr.se-status-approved td:first-child b::before {
+        background: #16a34a;
+      }
+      .change-table tbody tr.se-status-rejected td:first-child b::before {
+        background: #dc2626;
+      }
       .risk-visual {
         display: flex;
         align-items: center;
@@ -1116,6 +1161,126 @@
         white-space: nowrap;
         text-overflow: ellipsis;
       }
+      .se-form-group input[type="checkbox"],
+      .se-form-group input[type="radio"],
+      .se-detail-form-card input[type="checkbox"],
+      .se-detail-form-card input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        min-width: 16px;
+        padding: 0;
+        margin: 0;
+        flex: 0 0 16px;
+        border-radius: initial;
+      }
+      #seFormModal .se-section-label {
+        margin-top: 26px;
+        border-bottom-color: #dbeafe;
+      }
+      #seFormModal .se-form-group > div:has(input[type="radio"]),
+      #seFormModal .se-form-group > div:has(input[type="checkbox"]) {
+        gap: 10px !important;
+      }
+      #seFormModal .se-form-group label:has(input[type="radio"]),
+      #seFormModal .se-form-group label:has(input[type="checkbox"]) {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 9px !important;
+        width: fit-content;
+        min-height: 28px;
+        margin: 0;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.35;
+      }
+      #seFormModal input[type="checkbox"],
+      #seFormModal input[type="radio"] {
+        accent-color: #2563eb;
+      }
+      #seFormModal .se-form-group > div[style*="background: #f8fafc"] {
+        padding: 12px 14px !important;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px !important;
+        background: #f8fafc !important;
+      }
+      #seFormModal div[id^="se-table-"] {
+        margin-top: 14px !important;
+        padding: 14px 16px !important;
+        border-left: 4px solid #2563eb !important;
+        border-radius: 0 12px 12px 0;
+        background: #fbfdff;
+      }
+      #seFormModal div[id^="se-table-"] > label {
+        display: block;
+        margin-bottom: 10px;
+        color: #0f172a;
+        font-size: 15px;
+      }
+      #seFormModal div[id^="se-table-"] table {
+        width: 100% !important;
+        border-collapse: separate !important;
+        border-spacing: 0;
+        table-layout: fixed;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        background: #ffffff;
+      }
+      #seFormModal div[id^="se-table-"] th {
+        padding: 10px 12px !important;
+        border-bottom: 1px solid #dbe4ef !important;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      #seFormModal div[id^="se-table-"] td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #eef2f7;
+        vertical-align: middle;
+      }
+      #seFormModal div[id^="se-table-"] tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      #seFormModal div[id^="se-table-"] input,
+      #seFormModal div[id^="se-table-"] select {
+        width: 100% !important;
+        height: 38px;
+        min-width: 0;
+        padding: 8px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #0f172a;
+        font-family: inherit;
+        font-size: 13px;
+        outline: none;
+      }
+      #seFormModal div[id^="se-table-"] input:focus,
+      #seFormModal div[id^="se-table-"] select:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      #seFormModal div[id^="se-table-"] .btn-secondary {
+        margin-top: 12px !important;
+        border-radius: 10px;
+        background: #eef4fb;
+        color: #1e3a5f;
+        box-shadow: none;
+      }
+      #seFormModal div[id^="se-table-"] button[onclick*="remove"] {
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 8px;
+        background: #fee2e2;
+        color: #991b1b;
+        cursor: pointer;
+        font-weight: 800;
+      }
       #se-wbs4,
       #se-wbs5,
       #se-wbs6,
@@ -1185,6 +1350,192 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 16px;
+      }
+      .kb-detail-stack {
+        display: grid;
+        gap: 12px;
+      }
+      .kb-detail-card {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 14px;
+        padding: 14px 16px;
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #2563eb;
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      }
+      .kb-detail-card strong {
+        color: #1e3a5f;
+        font-size: 12px;
+        line-height: 1.45;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kb-detail-card p {
+        margin: 0;
+        color: #0f172a;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.65;
+      }
+      .kb-impact-panel {
+        display: grid;
+        gap: 14px;
+      }
+      .kb-impact-panel > div {
+        min-width: 0;
+        overflow-x: auto;
+      }
+      .kb-impact-summary {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .kb-impact-metric {
+        padding: 14px 16px;
+        border: 1px solid #dbeafe;
+        border-radius: 10px;
+        background: #f8fbff;
+      }
+      .kb-impact-metric span {
+        display: block;
+        margin-bottom: 6px;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+      .kb-impact-metric b {
+        color: #0f2d52;
+        font-size: 15px;
+      }
+      .kb-impact-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 12px;
+      }
+      .kb-impact-table th,
+      .kb-impact-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #edf2f7;
+        text-align: left;
+        vertical-align: top;
+      }
+      .kb-impact-table th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .kb-impact-table tr:last-child td {
+        border-bottom: 0;
+      }
+      .kb-impact-table td.is-number,
+      .kb-impact-table th.is-number {
+        text-align: right;
+      }
+      @media (max-width: 760px) {
+        .kb-detail-card,
+        .kb-impact-summary {
+          grid-template-columns: 1fr;
+        }
+      }
+      .se-detail-form-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 18px;
+        margin-bottom: 18px;
+        background: #ffffff;
+      }
+      .se-detail-readonly {
+        min-height: 24px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #0f172a;
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 500;
+      }
+      .se-detail-readonly.muted {
+        color: #94a3b8;
+        font-style: italic;
+      }
+      .se-choice-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .se-choice-pill {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 24px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .se-choice-pill.is-selected {
+        color: #0f2d52;
+      }
+      .se-choice-box {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #94a3b8;
+        background: #fff;
+        flex: 0 0 16px;
+      }
+      .se-choice-pill.radio .se-choice-box {
+        border-radius: 50%;
+      }
+      .se-choice-pill.checkbox .se-choice-box {
+        border-radius: 4px;
+      }
+      .se-choice-pill.is-selected .se-choice-box {
+        border-color: #2563eb;
+        background: #2563eb;
+        box-shadow: inset 0 0 0 3px #ffffff;
+      }
+      .se-impact-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 13px;
+      }
+      .se-impact-table th,
+      .se-impact-table td {
+        border-bottom: 1px solid #e2e8f0;
+        padding: 10px 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .se-impact-table th {
+        color: #64748b;
+        background: #f8fafc;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .se-impact-section {
+        border-left: 4px solid #2563eb;
+        padding: 12px 14px;
+        margin-top: 12px;
+        background: #fbfdff;
+        border-radius: 10px;
       }
 
       /* SORTING & TOOLTIP */
@@ -1265,6 +1616,130 @@
         background-color: #f8fafc;
         cursor: pointer;
         transition: 0.2s;
+      }
+      .admin-report-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .admin-report-toolbar h2 {
+        margin: 0;
+      }
+      .admin-report-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .admin-report-select {
+        min-width: 260px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 10px 12px;
+        background: #f8fafc;
+        color: #0f172a;
+        font-weight: 700;
+        font-family: inherit;
+        font-size: 13px;
+      }
+      .admin-report-paper {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 34px 38px;
+        color: #111827;
+        font-family: "Times New Roman", Times, serif;
+        font-size: 14px;
+        line-height: 1.65;
+        min-height: 520px;
+      }
+      .admin-report-paper.empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #64748b;
+        font-family: Inter, "Segoe UI", Arial, sans-serif;
+        font-size: 13px;
+        background: #f8fafc;
+      }
+      .admin-report-letterhead {
+        text-align: center;
+        border-bottom: 3px double #111827;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+      }
+      .admin-report-letterhead h2,
+      .admin-report-letterhead p {
+        margin: 0;
+      }
+      .admin-report-letterhead h2 {
+        font-size: 17px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .admin-report-meta {
+        width: 100%;
+        margin: 12px 0 20px;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      .admin-report-meta td {
+        border: 0;
+        padding: 2px 0;
+        vertical-align: top;
+      }
+      .admin-report-meta td:first-child {
+        width: 94px;
+      }
+      .admin-report-title {
+        text-align: center;
+        text-decoration: underline;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin: 20px 0 12px;
+      }
+      .admin-report-section-title {
+        font-weight: 700;
+        margin: 14px 0 4px;
+      }
+      .admin-report-list {
+        margin: 4px 0 0 18px;
+        padding: 0;
+      }
+      .admin-report-signatures {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        margin-top: 34px;
+        text-align: center;
+        font-family: "Times New Roman", Times, serif;
+      }
+      .admin-report-signature-box {
+        min-height: 116px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .admin-report-signature-name {
+        border-top: 1px solid #111827;
+        padding-top: 6px;
+        font-weight: 700;
+      }
+      @media print {
+        .admin-report-paper {
+          border: 0;
+          border-radius: 0;
+          padding: 0;
+          min-height: auto;
+          box-shadow: none;
+        }
+        .card.admin-report-card {
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+        }
       }
 
       /* Container pembungkus utama */
@@ -1637,19 +2112,19 @@
         <div class="kpi-grid">
           <div class="kpi-card border-blue">
             <h3>Total Projects</h3>
-            <span id="totalProjects">3</span>
+            <span id="totalProjects">...</span>
           </div>
           <div class="kpi-card border-green">
             <h3>Completed</h3>
-            <span id="completedProjects">1</span>
+            <span id="completedProjects">...</span>
           </div>
           <div class="kpi-card border-yellow">
             <h3>In Progress</h3>
-            <span id="progressProjects">1</span>
+            <span id="progressProjects">...</span>
           </div>
           <div class="kpi-card border-red">
             <h3>Pending</h3>
-            <span id="pendingProjects">1</span>
+            <span id="pendingProjects">...</span>
           </div>
         </div>
         <div class="table-section">
@@ -2233,55 +2708,7 @@
                 ini.
               </p>
               <div class="badge-count">
-                <span id="count-all">0</span> Pending CR
-              </div>
-            </div>
-            <div
-              class="proj-card"
-              onclick="
-                selectProjectForReview(
-                  'PRJ-001',
-                  'PRJ-001 - Gedung Sekolah Tahap 1',
-                )
-              "
-            >
-              <div class="proj-card-icon">🏫</div>
-              <h3>PRJ-001</h3>
-              <p>Gedung Sekolah Tahap 1</p>
-              <div class="badge-count">
-                <span id="count-prj001">0</span> Pending CR
-              </div>
-            </div>
-            <div
-              class="proj-card"
-              onclick="
-                selectProjectForReview(
-                  'PRJ-002',
-                  'PRJ-002 - Renovasi Jalan Protokol',
-                )
-              "
-            >
-              <div class="proj-card-icon">🛣️</div>
-              <h3>PRJ-002</h3>
-              <p>Renovasi Jalan Protokol</p>
-              <div class="badge-count">
-                <span id="count-prj002">0</span> Pending CR
-              </div>
-            </div>
-            <div
-              class="proj-card"
-              onclick="
-                selectProjectForReview(
-                  'PRJ-003',
-                  'PRJ-003 - Pembangunan Jembatan',
-                )
-              "
-            >
-              <div class="proj-card-icon">🌉</div>
-              <h3>PRJ-003</h3>
-              <p>Pembangunan Jembatan</p>
-              <div class="badge-count">
-                <span id="count-prj003">0</span> Pending CR
+                <span id="count-all">0</span> Change Request(s)
               </div>
             </div>
           </div>
@@ -2394,9 +2821,9 @@
                           <span class="tt-icon">ⓘ</span>
                           <div class="tt-box">
                             <b style="color: #1d4ed8">Skala Risiko</b
-                            ><br /><br />1–20 = Sangat Rendah<br />21–40 =
-                            Rendah<br />41–60 = Sedang<br />61–80 = Tinggi<br />81–100
-                            = Sangat Tinggi
+                            ><br /><br />1–2 = Aman<br />3–4 =
+                            Rendah<br />5–6 = Sedang<br />7–8 = Tinggi<br />9–10
+                            = Kritis
                           </div>
                         </div>
                         <button
@@ -2449,9 +2876,9 @@
 
           <div
             class="form-grid"
-            style="grid-template-columns: 1.1fr 0.9fr; gap: 24px"
+            style="grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;"
           >
-            <div class="card" style="padding: 30px">
+            <div class="card" style="padding: 30px; height: 100%; display: flex; flex-direction: column;">
               <h3
                 id="detailTitle"
                 style="
@@ -2509,6 +2936,14 @@
                 </tr>
                 <tr>
                   <td style="border: none; padding: 10px 0">
+                    <b>WBS Mapping</b>
+                  </td>
+                  <td style="border: none; padding: 10px 0" id="detailWbsMapping">
+                    1.2.1.2 Pembuatan Barak Pekerja
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none; padding: 10px 0">
                     <b>Impact Analysis</b>
                   </td>
                   <td style="border: none; padding: 10px 0">
@@ -2556,15 +2991,15 @@
                     line-height: 1.5;
                   "
                 >
-                  Berdasarkan <strong>Knowledge Base (KM-003)</strong>: Potensi
-                  terjadinya clash MEP sangat tinggi pada zona ini.
+                  Rekomendasi akan ditampilkan berdasarkan hasil pencocokan
+                  Change Request dengan data Knowledge Base di database.
                 </p>
               </div>
             </div>
 
             <div
               class="card"
-              style="padding: 30px; border-left: 5px solid #1e3a5f"
+              style="padding: 30px; border-left: 5px solid #1e3a5f; display: flex; flex-direction: column; height: 100%;"
             >
               <h3
                 style="
@@ -2578,25 +3013,25 @@
               </h3>
               <div class="form-group" style="margin-bottom: 16px">
                 <label>Review ID</label
-                ><input type="text" value="REV-PM-01" readonly />
+                ><input type="text" id="approvalReviewId" value="REV-PM-01" readonly />
               </div>
               <div class="form-group" style="margin-bottom: 16px">
                 <label>Tanggal Keputusan</label
-                ><input type="date" value="2026-06-07" />
+                ><input type="date" id="approvalDate" />
               </div>
               <div class="form-group" style="margin-bottom: 16px">
                 <label>Keputusan (Approval Decision)</label>
                 <select id="decisionSelect" style="font-weight: bold">
                   <option value="">-- Pilih Keputusan --</option>
-                  <option value="approve">🟢 Approved</option>
-                  <option value="cond">🟡 Approved with Condition</option>
-                  <option value="revise">🟠 Revise & Resubmit</option>
-                  <option value="reject">🔴 Rejected</option>
+                  <option value="approved">🟢 Approved</option>
+                  <option value="pending">🟡 Pending</option>
+                  <option value="rejected">🔴 Rejected</option>
                 </select>
               </div>
-              <div class="form-group" style="margin-bottom: 24px">
+              <div class="form-group" style="margin-bottom: 24px; flex-grow: 1;">
                 <label>Approval Notes / Instruksi PM</label>
                 <textarea
+                  id="approvalNotes"
                   placeholder="Berikan arahan untuk mitigasi risiko atau alasan keputusan..."
                   style="
                     padding: 12px;
@@ -2606,12 +3041,14 @@
                     width: 100%;
                     box-sizing: border-box;
                     font-family: inherit;
+                    height: 100%;
                   "
                 ></textarea>
               </div>
               <button
                 class="btn-primary"
-                style="width: 100%; justify-content: center; padding: 14px"
+                style="width: 100%; justify-content: center; padding: 14px; margin-top: auto;"
+                onclick="submitApprovalDecision()"
               >
                 Sahkan Keputusan Perubahan
               </button>
@@ -3754,6 +4191,9 @@
                 placeholder="🔍 Cari ID, Judul, Kategori..."
                 oninput="kbApplyFilter()"
               />
+              <button class="btn-secondary" onclick="kbSyncAutoLessons()">
+                Sinkronkan Lesson Learned
+              </button>
               <button class="btn-primary" onclick="kbOpenAddModal()">
                 ➕ Tambah Dokumen
               </button>
@@ -3943,41 +4383,21 @@
             </p>
           </div>
         </div>
-        <div class="card" style="margin-bottom: 20px">
-          <div class="title">
-            <h2 style="display: flex; justify-content: space-between">
-              Draft Laporan Akhir Proyek<button class="btn secondary no-print">
+        <div class="card admin-report-card" style="margin-bottom: 20px">
+          <div class="admin-report-toolbar">
+            <h2>Draft Laporan Akhir Proyek</h2>
+            <div class="admin-report-actions no-print">
+              <select id="adminReportProjectSelect" class="admin-report-select">
+                <option value="">Memuat proyek...</option>
+              </select>
+              <button class="btn secondary" onclick="generateAdminFinalReport()">
                 Generate Ringkasan Otomatis
               </button>
-            </h2>
+            </div>
           </div>
-          <div
-            style="
-              background: #f8fafc;
-              border: 1px solid var(--line);
-              border-radius: 12px;
-              padding: 20px;
-              font-size: 13px;
-              line-height: 1.6;
-            "
-          >
-            <p>
-              <b>Executive Summary:</b><br />Proyek Pembangunan Gedung (Tahap 1)
-              telah mencapai progres aktual sebesar <strong>68.5%</strong>.
-              Terdapat total 8 Change Request selama masa konstruksi yang
-              didominasi oleh kondisi lapangan (clash MEP).
-            </p>
-            <p>
-              <b>Kinerja Waktu & Biaya:</b><br />SPI rata-rata: 0.94. Percepatan
-              waktu dilakukan dengan integrasi sistem BIM-WBS yang berhasil
-              memotong waktu siklus persetujuan dari rata-rata 7 hari menjadi 2
-              hari.
-            </p>
-            <p>
-              <b>Lesson Learned Terverifikasi:</b><br />Clash detection wajib
-              disahkan melalui model BIM 3D sebelum persetujuan Shop Drawing.
-              Pengetahuan ini telah di-push ke <i>Knowledge Base Repository</i>.
-            </p>
+          <div id="adminReportDraft" class="admin-report-paper empty">
+            Draft laporan masih kosong. Pilih proyek, lalu klik Generate
+            Ringkasan Otomatis untuk membuat dokumen siap cetak.
           </div>
         </div>
         <div class="card">
@@ -4094,10 +4514,106 @@
           .forEach((i) => i.classList.remove("active"));
         clickedElement.classList.add("active");
 
-        // Jika masuk tab Project Manager, reset ke tampilan Pilihan Project
+        // Jika masuk tab Project Manager, fetch CR data dan tampilkan grid project
         if (sectionId === "project-manager") {
-          showProjectSelection();
+          loadChangeRequests();
         }
+      }
+
+      function normalizeCrStatus(status) {
+        const normalized = String(status || "PENDING").trim().toUpperCase();
+        return ["APPROVED", "REJECTED", "PENDING"].includes(normalized)
+          ? normalized
+          : "PENDING";
+      }
+
+      function getCrStatusMeta(status) {
+        const normalized = normalizeCrStatus(status);
+        const meta = {
+          PENDING: { value: "pending", label: "Pending", dotClass: "pending" },
+          APPROVED: { value: "approved", label: "Approved", dotClass: "approved" },
+          REJECTED: { value: "rejected", label: "Rejected", dotClass: "rejected" },
+        };
+        return meta[normalized];
+      }
+
+      function getTodayInputDate() {
+        const today = new Date();
+        const offsetToday = new Date(today.getTime() - today.getTimezoneOffset() * 60000);
+        return offsetToday.toISOString().slice(0, 10);
+      }
+
+      // Fungsi untuk load Change Requests dari database dan populate crData
+      function loadChangeRequests() {
+        fetch('api_get_change_requests.php')
+          .then(response => response.json())
+          .then(res => {
+            if (res.status === 'success') {
+              // Petakan data dari API ke format crData yang sesuai
+              crData.length = 0; // Kosongkan array lama
+              
+              res.data.forEach(cr => {
+                // Konversi waktu ke format yang sesuai
+                let dateObj = new Date(cr.waktuTs * 1000);
+                let waktuFormatted = isNaN(dateObj) ? '-' : dateObj.toLocaleDateString('id-ID', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
+                
+                // Hitung risk score
+                let riskVal = parseInt(cr.risikoScore) || 0;
+                let riskLabel = 'Aman';
+                let riskClass = 'info';
+                
+                if (riskVal >= 9) { riskLabel = 'Kritis'; riskClass = 'very-high'; }
+                else if (riskVal >= 7) { riskLabel = 'Tinggi'; riskClass = 'high'; }
+                else if (riskVal >= 5) { riskLabel = 'Sedang'; riskClass = 'medium'; }
+                else if (riskVal >= 3) { riskLabel = 'Rendah'; riskClass = 'low'; }
+                const status = normalizeCrStatus(cr.approvalDecision || cr.status);
+                
+                // Push data ke crData dengan semua field yang diperlukan
+                crData.push({
+                  id: cr.id,
+                  projectId: cr.projectId,
+                  desc: cr.desc || 'Perubahan WBS',
+                  sender: cr.sender || '-',
+                  role: cr.role || 'Site Engineer',
+                  waktu: waktuFormatted,
+                  waktuTs: cr.waktuTs,
+                  risikoScore: riskVal,
+                  risikoLabel: riskLabel,
+                  risikoClass: riskClass,
+                  status,
+                  photoEvidence: cr.photoEvidence || '',
+                  // Fields untuk detail view
+                  bimObjectId: cr.bimObjectId || '-',
+                  wbsLevel5: cr.wbsLevel5 || '-',
+                  costImpact: cr.costImpact || 0,
+                  timeImpact: cr.timeImpact || 0,
+                  // Fields untuk AI Recommendation Engine
+                  riskVariable: cr.riskVariable || '-',
+                  insight: cr.insight || cr.insightText || 'Data pembelajaran belum tersedia.',
+                  saran: cr.saran || cr.saranText || 'Menunggu validasi ulang dari sistem.'
+                });
+              });
+              
+              // Update tampilan
+              updateProjectCounts();
+              showProjectSelection();
+              
+              console.log(`Berhasil load ${crData.length} Change Request(s)`);
+            } else {
+              console.error('Gagal load CR:', res.message);
+              showProjectSelection();
+            }
+          })
+          .catch(error => {
+            console.error('Error loading change requests:', error);
+            showProjectSelection();
+          });
       }
 
       let globalProjectsData = []; // Untuk menyimpan data mentah dari database
@@ -4108,9 +4624,18 @@
           .then((res) => {
             if (res.status === "success") {
               globalProjectsData = res.data; // Simpan ke variabel global
+<<<<<<< HEAD
 
               const tbody = document.getElementById("projectTableBody");
               tbody.innerHTML = "";
+=======
+              if (typeof populateAdminReportProjectDropdown === "function") {
+                populateAdminReportProjectDropdown(globalProjectsData);
+              }
+              
+              const tbody = document.getElementById('projectTableBody');
+              tbody.innerHTML = ''; 
+>>>>>>> f332868457e282c6464b7e884fa97383b6688602
 
               let grandTotalChanges = 0;
               let grandOpenChanges = 0;
@@ -6261,6 +6786,7 @@
                 stats.rejected || 0;
 
               // -- KPI Cards (Hitung ulang berdasar stats) --
+<<<<<<< HEAD
               // Asumsi Pending = Under Review + Need Mitigation
               const pendingCount =
                 (stats.under_review || 0) + (stats.need_mitigation || 0);
@@ -6268,6 +6794,13 @@
               document.getElementById("pmdHighRisk").innerText =
                 stats.need_mitigation || 0;
 
+=======
+              const pendingCount = Number(stats.under_review || 0);
+              const highRiskCount = Number(stats.need_mitigation || 0);
+              document.getElementById("pmdPending").innerText = pendingCount;
+              document.getElementById("pmdHighRisk").innerText = highRiskCount;
+              
+>>>>>>> f332868457e282c6464b7e884fa97383b6688602
               // Mempertahankan nilai statis SPI karena belum ada di skema DB (sesuai eksisting)
               document.getElementById("pmdSpi").innerText = (1.0).toFixed(2);
 
@@ -6454,7 +6987,7 @@
       // ==========================================
       // LOGIKA REVIEW & APPROVAL PM (NEW FLOW)
       // ==========================================
-      const crData = [];
+      let crData = [];
 
       // Variabel global untuk menyimpan project yang sedang aktif dilihat
       let currentReviewProject = "ALL";
@@ -6523,7 +7056,11 @@
               ? crData.length || 0
               : crData.filter((c) => c.projectId === projectId).length || 0;
           badge.appendChild(span);
+<<<<<<< HEAD
           badge.appendChild(document.createTextNode(" Pending CR"));
+=======
+          badge.appendChild(document.createTextNode(' Change Request(s)'));
+>>>>>>> f332868457e282c6464b7e884fa97383b6688602
 
           card.appendChild(icon);
           card.appendChild(h3);
@@ -6549,6 +7086,10 @@
       // Menampilkan Menu Grid Project
       function showProjectSelection() {
         updateProjectCounts();
+        // Render project cards dengan data dari globalProjectsData
+        if (globalProjectsData && globalProjectsData.length > 0) {
+          renderProjectSelection(globalProjectsData);
+        }
         document.getElementById("projectSelectionView").style.display = "block";
         document.getElementById("approvalInbox").style.display = "none";
         document.getElementById("approvalDetailView").style.display = "none";
@@ -6659,84 +7200,223 @@
           return;
         }
         tbody.innerHTML = rows
-          .map(
-            (r) => `
+          .map((r) => {
+            // Gunakan r.waktu yang sudah di-format dari loadChangeRequests
+            let waktuFormatted = r.waktu || "-";
+            let risikoLabel = r.risikoLabel || "Aman";
+            let risikoClass = r.risikoClass || "info";
+            const score = r.risikoScore || 0;
+            const statusMeta = getCrStatusMeta(r.status);
+
+            return `
               <tr class="hover-row">
-                <td><b>${r.id}</b><div style="font-size:11px;color:#64748b;margin-top:4px;">${r.projectId}</div></td>
-                <td>${r.desc}</td>
+                <td>
+                  <div class="cr-id-cell">
+                    <span class="cr-status-dot ${statusMeta.dotClass}" title="${statusMeta.label}"></span>
+                    <div><b>${r.id}</b><div style="font-size:11px;color:#64748b;margin-top:4px;">${r.projectId}</div></div>
+                  </div>
+                </td>
+                <td>${r.desc || "-"}</td>
                 <td><div style="font-weight:700;">${r.sender}</div><div style="font-size:11px;color:#64748b;">${r.role}</div></td>
-                <td>${r.waktu}</td>
-                <td><span class="badge ${r.risikoClass}">${r.risikoLabel} (${r.risikoScore})</span></td>
+                <td>${waktuFormatted}</td>
+                <td><span class="badge ${risikoClass}">${risikoLabel} (${score})</span></td>
                 <td style="text-align:center;"><button class="btn-primary" style="padding: 8px 14px; font-size: 12px;" onclick="openCrDetail('${r.id}')">Tinjau Detail</button></td>
-              </tr>`,
-          )
+              </tr>`;
+          })
           .join("");
       }
 
-      // Map untuk membuka Detail
-      const crDetailMap = {
-        "CR-008": {
-          proj: "PRJ-001",
-          sender: "Budi Setiawan (Site Engineer)",
-          time: "07 Jun 2026, 09:15",
-          risk: "high",
-          riskText: "Tinggi",
-        },
-        "CR-009": {
-          proj: "PRJ-001",
-          sender: "Ani Wijaya (Arsitek Senior)",
-          time: "06 Jun 2026, 14:20",
-          risk: "medium",
-          riskText: "Sedang",
-        },
-        "CR-010": {
-          proj: "PRJ-002",
-          sender: "Dedi Kurnia (MEP Coordinator)",
-          time: "05 Jun 2026, 10:05",
-          risk: "low",
-          riskText: "Rendah",
-        },
-        "CR-011": {
-          proj: "PRJ-002",
-          sender: "Brian Nugraha (Site Engineer)",
-          time: "03 Jun 2026, 08:30",
-          risk: "medium",
-          riskText: "Sedang",
-        },
-        "CR-004": {
-          proj: "PRJ-003",
-          sender: "Lia Susanti (Quantity Surveyor)",
-          time: "01 Jun 2026, 11:30",
-          risk: "very-high",
-          riskText: "Sangat Tinggi",
-        },
-        "CR-015": {
-          proj: "PRJ-003",
-          sender: "Galuh Rizkiya (Site Engineer)",
-          time: "04 Jun 2026, 16:00",
-          risk: "high",
-          riskText: "Tinggi",
-        },
-      };
-
-      function openCrDetail(id) {
-        const d = crDetailMap[id];
-        if (!d) return;
-        document.getElementById("detailTitle").innerText =
-          "Detail Pengajuan: " + id;
-        document.getElementById("detailProject").innerText = d.proj;
-        document.getElementById("detailSender").innerText = d.sender;
-        document.getElementById("detailTime").innerText = d.time;
-        document.getElementById("detailRiskBadge").innerText = d.riskText;
-        document.getElementById("detailRiskBadge").className =
-          "badge " + d.risk;
+      // Fungsi untuk membuka Detail CR dengan data dari crData
+      function openCrDetail(crId) {
+        // Cari data CR dari array crData berdasarkan ID
+        const data = crData.find(item => item.id === crId);
+        
+        if (!data) {
+          console.error("Data CR tidak ditemukan untuk ID:", crId);
+          return;
+        }
+        
+        // 1. Tukar visibilitas
         document.getElementById("approvalInbox").style.display = "none";
         document.getElementById("approvalDetailView").style.display = "block";
+        
+        // 2. Isi data teks dasar
+        if (document.getElementById("detailTitle")) {
+          document.getElementById("detailTitle").innerText = `Detail Pengajuan: ${data.id}`;
+        }
+        
+        if (document.getElementById("detailProject")) {
+          document.getElementById("detailProject").innerText = data.projectId || '-';
+        }
+        
+        if (document.getElementById("detailSender")) {
+          document.getElementById("detailSender").innerText = `${data.sender} (${data.role})`;
+        }
+        
+        if (document.getElementById("detailTime")) {
+          document.getElementById("detailTime").innerText = data.waktu || '-';
+        }
+
+        const approvalDateInput = document.getElementById("approvalDate");
+        if (approvalDateInput) {
+          approvalDateInput.value = getTodayInputDate();
+        }
+
+        const decisionSelect = document.getElementById("decisionSelect");
+        if (decisionSelect) {
+          decisionSelect.value = getCrStatusMeta(data.status).value;
+        }
+        
+        // 3. Isi detail table rows: Row 3: BIM Object ID, Row 4: WBS Mapping, Row 5: Impact Analysis, Row 6: Risk Assessment
+        const detailTable = document.querySelector("#approvalDetailView .card table");
+        if (detailTable && detailTable.rows.length >= 7) {
+          // Row 3: BIM Object ID
+          if (detailTable.rows[3].cells.length > 1) {
+            detailTable.rows[3].cells[1].innerText = data.bimObjectId || 'BIM-GUID-PIPE-010';
+          }
+          
+          // Row 4: WBS Mapping
+          if (detailTable.rows[4].cells.length > 1) {
+            detailTable.rows[4].cells[1].innerText = data.wbsLevel5 || '-';
+          }
+          
+          // Row 5: Impact Analysis
+          if (detailTable.rows[5].cells.length > 1) {
+            let costFormatted = 'Rp 0';
+            if (data.costImpact && !isNaN(data.costImpact)) {
+              costFormatted = 'Rp ' + parseFloat(data.costImpact / 1000000).toLocaleString('id-ID') + ' Jt';
+            }
+            detailTable.rows[5].cells[1].innerHTML = `Biaya: <span style="color:#ef4444;font-weight:bold;">+${costFormatted}</span> | Waktu: <span style="color:#ef4444;font-weight:bold;">+${data.timeImpact || 0} Hari</span>`;
+          }
+          
+          // Row 6: Risk Badge
+          if (detailTable.rows[6].cells.length > 1) {
+            const riskCell = detailTable.rows[6].cells[1];
+            const riskBadge = riskCell.querySelector('#detailRiskBadge') || riskCell.querySelector('.badge');
+            if (riskBadge) {
+              riskBadge.innerText = `${data.risikoLabel} (${data.risikoScore})`;
+              riskBadge.className = `badge ${data.risikoClass}`;
+            }
+          }
+        }
+        
+        // 4. Generate dan Populate Review ID dengan format REV-ADM-xx dari database
+        const reviewIdInput = document.querySelector("#approvalDetailView input[readonly][value*='REV']");
+        if (reviewIdInput) {
+          // Fetch next review ID dari API dengan type ADM untuk Admin
+          fetch('get_next_review_id.php?type=ADM')
+            .then(response => response.json())
+            .then(res => {
+              if (res.status === 'success') {
+                reviewIdInput.value = res.nextReviewId;
+              } else {
+                console.error('Error getting next review ID:', res.message);
+                // Fallback ke format default jika API gagal
+                reviewIdInput.value = 'REV-ADM-01';
+              }
+            })
+            .catch(error => {
+              console.error('Error fetching review ID:', error);
+              // Fallback ke format default jika API gagal
+              reviewIdInput.value = 'REV-ADM-01';
+            });
+        }
+        
+        // 5. Update AI Recommendation Engine sesuai project-manager.html pattern
+        const aiBoxParagraph = document.querySelector("#approvalDetailView .ai-box p");
+        if (aiBoxParagraph) {
+          let wbsStr = data.wbsLevel5 || '';
+          let wbsCode = wbsStr ? wbsStr.substring(0, 7) : 'Umum';
+          
+          // Ambil kode riskVariable, berikan fallback '-' jika kosong
+          let riskCode = data.riskVariable || '-';
+          
+          // Ambil insight & saran dari properti objek data
+          let insightText = data.insight ? data.insight : 'Data pembelajaran belum tersedia.';
+          let saranText = data.saran ? data.saran : 'Menunggu validasi ulang dari sistem.';
+          
+          // Tampilkan ke komponen AI Engine HTML
+          aiBoxParagraph.innerHTML = `Berdasarkan pembelajaran histori proyek pada elemen <strong>WBS (${wbsCode})</strong> dan <strong>kode risiko ${riskCode}</strong>:<br><br><strong>Insight:</strong> ${insightText} <br><br><strong>Rekomendasi:</strong> ${saranText}`;
+        }
       }
 
       function closeCrDetail() {
         document.getElementById("approvalDetailView").style.display = "none";
         document.getElementById("approvalInbox").style.display = "block";
+      }
+
+      // Fungsi untuk submit approval decision ke save_approval.php
+      function submitApprovalDecision() {
+        // 1. Kumpulkan data dari form
+        const reviewId = document.getElementById("approvalReviewId")?.value || '';
+        const approvalDate = document.getElementById("approvalDate")?.value || '';
+        const approvalDecision = document.getElementById("decisionSelect")?.value || '';
+        const approvalNotes = document.getElementById("approvalNotes")?.value || '';
+        
+        // Cari changeId dari crData yang sedang ditampilkan
+        const detailTitle = document.getElementById("detailTitle")?.innerText || '';
+        const changeIdMatch = detailTitle.match(/CR-\d+/);
+        const changeId = changeIdMatch ? changeIdMatch[0] : '';
+        
+        // 2. Validasi data
+        if (!changeId) {
+          alert('Error: CR ID tidak ditemukan. Silakan buka detail CR terlebih dahulu.');
+          return;
+        }
+        
+        if (!reviewId) {
+          alert('Error: Review ID tidak ada.');
+          return;
+        }
+        
+        if (!approvalDecision) {
+          alert('Error: Pilih Keputusan (Pending/Approved/Rejected).');
+          return;
+        }
+        
+        if (!approvalDate) {
+          alert('Error: Isi Tanggal Keputusan.');
+          return;
+        }
+        
+        // 3. Konversi decision value ke status yang sesuai dengan database
+        let statusValue = approvalDecision.toUpperCase();
+        if (!['PENDING', 'APPROVED', 'REJECTED'].includes(statusValue)) {
+          alert('Error: Status keputusan tidak valid.');
+          return;
+        }
+        
+        // 4. Siapkan FormData
+        const formData = new FormData();
+        formData.append('changeId', changeId);
+        formData.append('reviewId', reviewId);
+        formData.append('approvalDate', approvalDate);
+        formData.append('approvalNotes', approvalNotes);
+        formData.append('approvalDecision', statusValue);
+        
+        // 5. Kirim ke save_approval.php
+        fetch('save_approval.php', {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.json())
+          .then(res => {
+            if (res.status === 'success') {
+              alert('✓ Keputusan perubahan berhasil disimpan!');
+              // Reset form dan kembali ke daftar
+              document.getElementById("decisionSelect").value = '';
+              document.getElementById("approvalNotes").value = '';
+              closeCrDetail();
+              // Refresh data CR
+              loadChangeRequests();
+            } else {
+              alert('Error: ' + (res.message || 'Gagal menyimpan keputusan.'));
+            }
+          })
+          .catch(error => {
+            console.error('Error submitting approval:', error);
+            alert('Error: ' + error.message);
+          });
       }
 
       // Saat pertama kali file dibuka, pastikan angka project update
@@ -6811,7 +7491,13 @@
       }
 
       function seGetRecordRiskDescription(r) {
-        return r?.riskDescription || r?.riskDesc || "";
+        if (r?.riskDescription || r?.riskDesc) return r.riskDescription || r.riskDesc;
+        const category = r?.riskCategory || "";
+        const variable = r?.riskVariable || "";
+        const matched = riskData?.[category]?.find(
+          (item) => item.code === variable || item.title === variable,
+        );
+        return matched?.desc || "";
       }
 
       function seGetRecordDescription(r) {
@@ -6827,7 +7513,95 @@
       }
 
       function seGetRecordStatus(r) {
-        return (r?.status || "PENDING").toUpperCase();
+        return typeof normalizeCrStatus === "function"
+          ? normalizeCrStatus(r?.status)
+          : (r?.status || "PENDING").toUpperCase();
+      }
+
+      function seGetRecordRisk(r) {
+        return Number(r?.risk ?? r?.risikoScore ?? 0) || 0;
+      }
+
+      function seFormatDateForDisplay(timestampSeconds, fallbackDate) {
+        if (timestampSeconds) {
+          const dateObj = new Date(Number(timestampSeconds) * 1000);
+          if (!isNaN(dateObj)) {
+            return dateObj.toLocaleDateString("id-ID", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            });
+          }
+        }
+        if (!fallbackDate) return "";
+        const dateObj = new Date(fallbackDate);
+        if (isNaN(dateObj)) return fallbackDate;
+        return dateObj.toLocaleDateString("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      }
+
+      function mapApiChangeRequestToSeRecord(cr) {
+        const id = cr.id || cr.changeId || "";
+        const status = seGetRecordStatus(cr);
+        const risk = seGetRecordRisk(cr);
+        return {
+          ...cr,
+          id,
+          changeId: id,
+          changeDate: seFormatDateForDisplay(cr.waktuTs, cr.changeDate),
+          rawChangeDate: (cr.changeDate || "").slice(0, 10),
+          submittedBy: cr.submittedBy || cr.sender || "",
+          changeCategory: cr.changeCategory || cr.category || "",
+          category: cr.changeCategory || cr.category || "",
+          projectArea: cr.projectId || cr.projectArea || "",
+          description: cr.description || cr.desc || "",
+          risk,
+          risikoScore: risk,
+          status,
+          bimObjectId: cr.bimObjectId || "",
+          wbsLevel4: cr.wbsLevel4 || "",
+          wbsLevel5: cr.wbsLevel5 || "",
+          wbsLevel6: cr.wbsLevel6 || "",
+          riskCategory: cr.riskCategory || "",
+          riskVariable: cr.riskVariable || "",
+          riskDescription: cr.riskDescription || "",
+          ownerRequest: cr.ownerRequest || "",
+          changeDrivers: cr.changeDrivers || "",
+          impactCost: cr.impactCost || "",
+          impactTime: cr.impactTime || "",
+          impactScope: cr.impactScope || "",
+          impactQuality: cr.impactQuality || "",
+          impactSafety: cr.impactSafety || "",
+        };
+      }
+
+      function loadSeChangeRequests() {
+        const tbody = document.getElementById("seTableBody");
+        if (tbody) {
+          tbody.innerHTML = `<tr class="no-data-row"><td colspan="7">Memuat data Change Request...</td></tr>`;
+        }
+
+        fetch("api_get_change_requests.php")
+          .then((response) => response.json())
+          .then((res) => {
+            if (res.status === "success") {
+              seChangeRequests = (res.data || []).map(mapApiChangeRequestToSeRecord);
+            } else {
+              console.error("Gagal load Change Request Site Engineer:", res.message);
+              seChangeRequests = [];
+            }
+          })
+          .catch((error) => {
+            console.error("Error loading Site Engineer change requests:", error);
+            seChangeRequests = [];
+          })
+          .finally(() => {
+            seUpdateKPI();
+            seRenderTable();
+          });
       }
 
       function seGenerateNextId() {
@@ -6908,12 +7682,12 @@
       function seUpdateKPI() {
         const total = seChangeRequests.length;
         const open = seChangeRequests.filter(
-          (r) => r.status === "PENDING",
+          (r) => seGetRecordStatus(r) === "PENDING",
         ).length;
         const closed = seChangeRequests.filter(
-          (r) => r.status === "APPROVED" || r.status === "REJECTED",
+          (r) => ["APPROVED", "REJECTED"].includes(seGetRecordStatus(r)),
         ).length;
-        const high = seChangeRequests.filter((r) => Number(r.risk) >= 7).length;
+        const high = seChangeRequests.filter((r) => seGetRecordRisk(r) >= 7).length;
         document.getElementById("se-total").innerText = total;
         document.getElementById("se-open").innerText = open;
         document.getElementById("se-highrisk").innerText = high;
@@ -7264,14 +8038,15 @@
           .toLowerCase()
           .trim();
         let rows = seChangeRequests.filter((r) => {
-          if (seCurrentTab !== "all" && r.status !== seCurrentTab) return false;
+          const status = seGetRecordStatus(r);
+          if (seCurrentTab !== "all" && status !== seCurrentTab) return false;
           if (!query) return true;
           return (
-            r.id.toLowerCase().includes(query) ||
-            r.submittedBy.toLowerCase().includes(query) ||
-            r.category.toLowerCase().includes(query) ||
-            r.projectArea.toLowerCase().includes(query) ||
-            r.description.toLowerCase().includes(query)
+            seGetRecordId(r).toLowerCase().includes(query) ||
+            (r.submittedBy || "").toLowerCase().includes(query) ||
+            (seGetRecordCategory(r) || "").toLowerCase().includes(query) ||
+            (r.projectArea || "").toLowerCase().includes(query) ||
+            (seGetRecordDescription(r) || "").toLowerCase().includes(query)
           );
         });
 
@@ -7286,12 +8061,12 @@
             const recordId = seGetRecordId(r);
             const status = seGetRecordStatus(r);
             return `
-              <tr>
+              <tr class="se-status-${status.toLowerCase()}">
                 <td><b style="color:#0f2d52;">${recordId}</b><div style="font-size:11px;color:#64748b;">${r.projectArea || "—"}</div></td>
                 <td>${r.changeDate || "—"}</td>
                 <td><div style="font-weight:600;">${r.submittedBy || "—"}</div></td>
                 <td><span class="badge badge-progress" style="font-size:11px;">${seGetRecordCategory(r) || "—"}</span></td>
-                <td>${seGetRiskHTML(r.risk || 0)}</td>
+                <td>${seGetRiskHTML(seGetRecordRisk(r))}</td>
                 <td>${seGetStatusHTML(status)}</td>
                 <td style="text-align:center; white-space:nowrap;">
                   <button class="btn-edit-table" onclick="seOpenViewModal('${recordId}')">👁️ Lihat</button>
@@ -7722,7 +8497,7 @@
 
       function sePopulateForm(r) {
         document.getElementById("se-changeId").value = seGetRecordId(r);
-        document.getElementById("se-changeDate").value = r.changeDate || "";
+        document.getElementById("se-changeDate").value = r.rawChangeDate || r.changeDate || "";
         document.getElementById("se-submittedBy").value = r.submittedBy || "";
         document.getElementById("se-wbs4").value = seGetRecordWbs(r, 4) || "";
 
@@ -7904,6 +8679,7 @@
           id: recordId,
           changeId: recordId,
           changeDate: getVal("se-changeDate"),
+          rawChangeDate: getVal("se-changeDate"),
           submittedBy: getVal("se-submittedBy"),
           wbsLevel4: getVal("se-wbs4"),
           wbsLevel5: getVal("se-wbs5"),
@@ -7950,6 +8726,213 @@
         seRenderTable();
         // Also update CR count badge on project manager if project exists
         updateProjectCounts();
+      }
+
+      function seSafeText(value, fallback = "-") {
+        const text = value === null || value === undefined || value === "" ? fallback : String(value);
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function seParseJsonRows(raw) {
+        if (raw === null || raw === undefined || raw === "" || raw === "[]" || raw === "null") return [];
+        if (Array.isArray(raw)) return raw;
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function seReadonlyField(label, value, extraClass = "") {
+        const isEmpty = value === null || value === undefined || value === "";
+        return `
+          <div class="se-form-group">
+            <label>${label}</label>
+            <div class="se-detail-readonly ${isEmpty ? "muted" : ""} ${extraClass}">${seSafeText(value)}</div>
+          </div>`;
+      }
+
+      function seChoicePill(type, label, selected) {
+        return `
+          <div class="se-choice-pill ${type} ${selected ? "is-selected" : ""}">
+            <span class="se-choice-box"></span>
+            <span>${label}</span>
+          </div>`;
+      }
+
+      function seNormalizeToken(value) {
+        return String(value || "").trim().toLowerCase();
+      }
+
+      function seOwnerMatches(value, expected) {
+        return seNormalizeToken(value) === seNormalizeToken(expected);
+      }
+
+      function seDriverSet(value) {
+        return new Set(
+          String(value || "")
+            .split(",")
+            .map((item) => seNormalizeToken(item))
+            .filter(Boolean),
+        );
+      }
+
+      function seRenderImpactTable(title, rows, columns) {
+        if (!rows.length) return "";
+        const header = columns.map((col) => `<th>${col.label}</th>`).join("");
+        const body = rows
+          .map((row) => `
+            <tr>
+              ${columns.map((col) => `<td>${seSafeText(row[col.key] ?? row[col.altKey] ?? "")}</td>`).join("")}
+            </tr>`)
+          .join("");
+        return `
+          <div class="se-impact-section">
+            <strong>${title}</strong>
+            <table class="se-impact-table">
+              <thead><tr>${header}</tr></thead>
+              <tbody>${body}</tbody>
+            </table>
+          </div>`;
+      }
+
+      function seBuildChangeDetailView(r, id, isLocked, recordId) {
+        let evidenceHTML = "";
+        const evidenceFiles = r.evidenceFiles || [];
+        if (evidenceFiles.length > 0) {
+          evidenceHTML = '<div class="se-evidence-view-gallery">';
+          evidenceFiles.forEach((ef, idx) => {
+            const fileName = seSafeText(ef.name || "Lampiran");
+            const isPdf = ef.type === "application/pdf" || (ef.name || "").toLowerCase().endsWith(".pdf");
+            evidenceHTML += isPdf
+              ? `<div class="se-evidence-view-item"><div class="se-evidence-view-pdf" onclick="seViewEvidencePdf('${idx}','${id}')"><span>File</span><span>${fileName}</span></div></div>`
+              : `<div class="se-evidence-view-item"><img src="${ef.dataUrl}" alt="${fileName}" onclick="seViewEvidenceImage('${ef.dataUrl}','${fileName}')" /><span>${fileName}</span></div>`;
+          });
+          evidenceHTML += "</div>";
+        } else if (r.photoEvidence) {
+          evidenceHTML = '<div class="se-evidence-view-gallery">';
+          String(r.photoEvidence).split(",").map((file) => file.trim()).filter(Boolean).forEach((file) => {
+            const safeFile = seSafeText(file);
+            const isPdf = file.toLowerCase().endsWith(".pdf");
+            evidenceHTML += isPdf
+              ? `<a href="uploads/${safeFile}" target="_blank" class="se-evidence-view-pdf">File ${safeFile}</a>`
+              : `<div class="se-evidence-view-item"><img src="uploads/${safeFile}" alt="${safeFile}" /><span>${safeFile}</span></div>`;
+          });
+          evidenceHTML += "</div>";
+        } else {
+          evidenceHTML = '<p style="color:#94a3b8; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
+        }
+
+        const drivers = seDriverSet(r.changeDrivers);
+        const impactCostRows = seParseJsonRows(r.impactCost);
+        const impactTimeRows = seParseJsonRows(r.impactTime);
+        const impactScopeRows = seParseJsonRows(r.impactScope);
+        const impactQualityRows = seParseJsonRows(r.impactQuality);
+        const impactSafetyRows = seParseJsonRows(r.impactSafety);
+        const impactHtml = [
+          seRenderImpactTable("Rincian Kebutuhan Material/Jasa (COST)", impactCostRows, [
+            { key: "item", label: "Item / Material" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas" },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          seRenderImpactTable("Rincian Perubahan Waktu (TIME)", impactTimeRows, [
+            { key: "aktivitas", label: "Aktivitas Terdampak" },
+            { key: "sifat", label: "Sifat" },
+            { key: "waktu", label: "Waktu" },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          seRenderImpactTable("Rincian Perubahan Lingkup (SCOPE)", impactScopeRows, [
+            { key: "lingkup", label: "Lingkup Pekerjaan" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas" },
+            { key: "satuan", label: "Satuan" },
+            { key: "dokumenAcuan", altKey: "dokumen", label: "Dokumen Acuan" },
+          ]),
+          seRenderImpactTable("Rincian Perubahan Kualitas (QUALITY)", impactQualityRows, [
+            { key: "item", label: "Item Terdampak" },
+            { key: "spesifikasiAwal", altKey: "spekAwal", label: "Spesifikasi Awal" },
+            { key: "spesifikasiBaru", altKey: "spekBaru", label: "Spesifikasi Baru" },
+            { key: "tingkatMutu", altKey: "mutu", label: "Tingkat Mutu" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          seRenderImpactTable("Rincian Kebutuhan Keselamatan (SAFETY)", impactSafetyRows, [
+            { key: "aktivitas", label: "Aktivitas Berisiko" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kebutuhan", label: "Kebutuhan" },
+            { key: "kuantitas", label: "Kuantitas" },
+            { key: "satuan", label: "Satuan" },
+          ]),
+        ].join("");
+
+        return `
+          ${isLocked ? `<div style="background:#dcfce7;color:#166534;padding:12px 16px;border-left:5px solid #166534;border-radius:8px;font-weight:600;margin-bottom:18px;">STATUS APPROVED - Data terkunci (Read-Only)</div>` : ""}
+          <div class="se-detail-form-card">
+            <p class="se-section-label">Langkah 1 - Identifikasi Perubahan</p>
+            <div class="se-form-grid">
+              ${seReadonlyField("WBS-Paket Pekerjaan", seGetRecordWbs(r, 4))}
+              ${seReadonlyField("WBS-Aktivitas", seGetRecordWbs(r, 5))}
+              ${seReadonlyField("WBS-Sumber Daya", seGetRecordWbs(r, 6))}
+              ${seReadonlyField("Kategori Perubahan", seGetRecordCategory(r))}
+              ${seReadonlyField("Priority (1 - 5)", r.priority)}
+              <div class="se-form-group"><label>Risk (1 - 10)</label><div class="se-detail-readonly">${seGetRiskHTML(seGetRecordRisk(r))}</div></div>
+            </div>
+            <hr class="se-section-divider">
+            <div class="se-form-grid">
+              ${seReadonlyField("Change ID", recordId)}
+              ${seReadonlyField("Date", r.changeDate)}
+              ${seReadonlyField("Submitted By", r.submittedBy)}
+              ${seReadonlyField("Project Area", r.projectArea)}
+              ${seReadonlyField("Location", r.location)}
+              ${seReadonlyField("BIM Object ID", seGetRecordBimId(r))}
+              ${seReadonlyField("Kategori Risiko", r.riskCategory)}
+              ${seReadonlyField("Variabel Risiko", r.riskVariable)}
+              <div class="se-form-group"><label>Status</label><div class="se-detail-readonly">${seGetStatusHTML(seGetRecordStatus(r))}</div></div>
+            </div>
+            <div class="se-form-group" style="margin-top:12px;"><label>Deskripsi Risiko</label><div class="se-detail-readonly">${seSafeText(seGetRecordRiskDescription(r))}</div></div>
+            <div class="se-form-group" style="margin-top:12px;"><label>Description (Brief Object)</label><div class="se-detail-readonly">${seSafeText(seGetRecordDescription(r))}</div></div>
+            <p class="se-section-label" style="margin-top:20px;">Evidence</p>
+            ${evidenceHTML}
+          </div>
+          <div class="se-detail-form-card">
+            <p class="se-section-label">Langkah 2 - Register Change Request</p>
+            <div class="se-form-grid-2">
+              <div class="se-form-group">
+                <label>Apakah ini atas Permintaan Owner / Konsultan?</label>
+                <div class="se-choice-list">
+                  ${seChoicePill("radio", "Ya (Potensi VO)", seOwnerMatches(r.ownerRequest, "Ya"))}
+                  ${seChoicePill("radio", "Tidak (Internal/Kontraktor)", seOwnerMatches(r.ownerRequest, "Tidak"))}
+                </div>
+              </div>
+              <div class="se-form-group">
+                <label>Akar Penyebab Utama</label>
+                <div class="se-choice-list">
+                  ${seChoicePill("checkbox", "Kesalahan Desain / Gambar Kontrak", drivers.has("desain"))}
+                  ${seChoicePill("checkbox", "Kondisi Lapangan Aktual (Site Condition)", drivers.has("lapangan"))}
+                  ${seChoicePill("checkbox", "Kelangkaan Material / Suplai", drivers.has("material"))}
+                  ${seChoicePill("checkbox", "Usulan Optimasi Metode", drivers.has("metode"))}
+                </div>
+              </div>
+            </div>
+            <p class="se-section-label" style="margin-top:18px;">Parameter yang Terdampak</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              ${seChoicePill("checkbox", "Cost", impactCostRows.length > 0)}
+              ${seChoicePill("checkbox", "Time", impactTimeRows.length > 0)}
+              ${seChoicePill("checkbox", "Scope", impactScopeRows.length > 0)}
+              ${seChoicePill("checkbox", "Quality", impactQualityRows.length > 0)}
+              ${seChoicePill("checkbox", "Safety", impactSafetyRows.length > 0)}
+            </div>
+            ${impactHtml || '<p style="color:#94a3b8; font-style:italic; font-size:13px; margin-top:12px;">Tidak ada rincian parameter terdampak.</p>'}
+            <div class="se-form-group" style="margin-top:16px;"><label>Justifikasi Teknis & Narasi Lapangan</label><div class="se-detail-readonly">${seSafeText(seGetRecordDescriptionDetail(r))}</div></div>
+          </div>`;
       }
 
       // ---- VIEW MODAL ----
@@ -8040,6 +9023,8 @@
               <div class="view-field" style="margin-top:12px;"><label>Owner Request</label><div class="view-value">${r.ownerRequest || "—"}</div></div>
               <div class="view-field" style="margin-top:12px;"><label>Akar Penyebab Utama</label><div class="view-value">${r.changeDrivers || "—"}</div></div>
             `;
+        document.getElementById("seViewBody").innerHTML =
+          seBuildChangeDetailView(r, id, isLocked, recordId);
         document.getElementById("seEditFromViewBtn").style.display = isLocked
           ? "none"
           : "inline-flex";
@@ -8091,12 +9076,10 @@
       switchMenu = function (sectionId, clickedElement) {
         _origSwitchMenu(sectionId, clickedElement);
         if (sectionId === "site-engineer") {
-          seUpdateKPI();
-          seRenderTable();
+          loadSeChangeRequests();
         }
         if (sectionId === "knowledge-base") {
-          kbUpdateKPI();
-          kbRenderTable();
+          kbLoadData({ sync: true });
         }
       };
 
@@ -8106,8 +9089,7 @@
           .getElementById("knowledge-base")
           ?.classList.contains("active-section")
       ) {
-        kbUpdateKPI();
-        kbRenderTable();
+        kbLoadData({ sync: true });
       }
 
       // Pre-init if already on site-engineer tab on load
@@ -8116,8 +9098,7 @@
           .getElementById("site-engineer")
           ?.classList.contains("active-section")
       ) {
-        seUpdateKPI();
-        seRenderTable();
+        loadSeChangeRequests();
       }
       document
         .getElementById("se-priority")
@@ -8416,72 +9397,108 @@
       // KNOWLEDGE BASE MODULE (ALGORITMA & CRUD)
       // =========================================
 
-      let kbDatabase = [
-        {
-          id: "KM-001",
-          date: "2026-04-12",
-          title: "SOP Pengawasan Pengecoran Lantai Jembatan",
-          category: "Standardization",
-          author: "Galuh Rizkiya",
-          status: "PUBLISHED",
-          desc: "Dokumen standar operasional prosedur untuk inspeksi penulangan dan uji slump beton sebelum pengecoran pada struktur jembatan bentang panjang.",
-          imageUrl: "jembatan.jpg",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-004", "CR-015"],
-          relatedRisks: [
-            "R3.6 - Perubahan mix design",
-            "R4.4 - Kebutuhan rework",
-          ],
-        },
-        {
-          id: "KM-002",
-          date: "2026-05-20",
-          title: "Mitigasi Clash MEP vs Balok Struktur Utama",
-          category: "Lesson Learned",
-          author: "Tim Engineer IMS",
-          status: "PUBLISHED",
-          desc: "Catatan lesson learned mengenai seringnya clash antara rute pipa plumbing dengan dimensi balok pracetak. Solusi: Overlay wajib 3D BIM sebelum persetujuan shop drawing.",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-008"],
-          relatedRisks: [
-            "R1.3 - Kondisi lapangan berubah",
-            "R5.2 - Material tidak sesuai spesifikasi",
-          ],
-        },
-        {
-          id: "KM-003",
-          date: "2026-06-02",
-          title: "Pedoman Evaluasi Kapasitas Parkir Kampus",
-          category: "Standardization",
-          author: "Galuh Rizkiya",
-          status: "PUBLISHED",
-          desc: "Panduan teknis pengumpulan data SRP (Satuan Ruang Parkir) dan manuver sirkulasi untuk optimalisasi lahan parkir existing.",
-          imageUrl: "parkirmotor.jpg",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-010", "CR-011"],
-          relatedRisks: [
-            "R8.3 - Perubahan akses dan ruang kerja",
-            "R8.5 - Gangguan sosial masyarakat",
-          ],
-        },
-        {
-          id: "KM-004",
-          date: "2026-06-15",
-          title: "Family Pipa PPRC 3 inch (Revit)",
-          category: "BIM Object",
-          author: "Dedi Kurnia",
-          status: "DRAFT",
-          desc: "Library Revit 2025 untuk komponen pipa PPRC lengkap dengan parameter routing preferences lokal.",
-          // Mapping CR & Risk
-          relatedCRs: ["CR-008"],
-          relatedRisks: ["R5.4 - Perubahan vendor atau submittal"],
-        },
-      ];
+      let kbDatabase = [];
 
       let kbCurrentTab = "all";
       let kbEditingId = null;
       let kbViewingId = null;
       let kbPendingDeleteId = null;
+      let kbIsLoading = false;
+
+      function kbSafeText(value, fallback = "-") {
+        const text =
+          value === null || value === undefined || value === "" ? fallback : String(value);
+        return text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function kbNormalizeApiDoc(row) {
+        const riskLabel = [row.risk_kode, row.risk_nama].filter(Boolean).join(" - ");
+        return {
+          id: row.docId || row.id,
+          date: row.changeDate || row.date || "",
+          title: row.documentName || row.title || "-",
+          category: row.knowledgeCategory || row.category || "-",
+          author: row.submittedBy || row.author || "-",
+          status: row.validationStatus || row.status || "DRAFT",
+          desc: row.description || row.desc || "",
+          relatedCRs: row.changeRequestLink ? [row.changeRequestLink] : row.relatedCRs || [],
+          relatedRisks: riskLabel ? [riskLabel] : row.relatedRisks || [],
+          repository: {
+            wbsCode: row.wbs_kode || "",
+            wbsName: row.wbs_nama || "",
+            riskCode: row.risk_kode || row.riskVariableLink || "",
+            riskName: row.risk_nama || "",
+            riskCategory: row.risk_kategori || "",
+            insight: row.insight || "",
+            saran: row.saran || "",
+          },
+          actualImpact: row.actual_impact || "",
+          crImpact: {
+            cost: row.cr_impact_cost ?? "",
+            time: row.cr_impact_time ?? "",
+            scope: row.cr_impact_scope ?? "",
+            quality: row.cr_impact_quality ?? "",
+            safety: row.cr_impact_safety ?? "",
+            actualTime: row.cr_time_impact ?? "",
+            actualCost: row.cr_cost_impact ?? "",
+          },
+          appliedSolution: row.applied_solution || "",
+          documentFile: row.documentFile || "",
+        };
+      }
+
+      async function kbLoadData(options = {}) {
+        if (kbIsLoading) return;
+        kbIsLoading = true;
+
+        try {
+          if (options.sync) {
+            await fetch("api_knowledge_base.php?action=sync");
+          }
+
+          const response = await fetch("api_knowledge_base.php?action=list");
+          const result = await response.json();
+
+          if (result.status === "success") {
+            const docs = (result.data || []).map(kbNormalizeApiDoc);
+            kbDatabase = docs;
+          } else {
+            console.error("Gagal memuat Knowledge Base:", result.message);
+            kbDatabase = [];
+          }
+        } catch (error) {
+          console.error("Error memuat Knowledge Base:", error);
+          kbDatabase = [];
+        } finally {
+          kbIsLoading = false;
+          kbUpdateKPI();
+          kbRenderTable();
+        }
+      }
+
+      async function kbSyncAutoLessons() {
+        try {
+          const response = await fetch("api_knowledge_base.php?action=sync");
+          const result = await response.json();
+
+          if (result.status !== "success") {
+            alert(result.message || "Sinkronisasi Knowledge Base gagal.");
+            return;
+          }
+
+          await kbLoadData();
+          const createdCount = result.data?.created?.length || 0;
+          alert(`${createdCount} Lesson Learned baru berhasil disinkronkan.`);
+        } catch (error) {
+          console.error("Error sinkronisasi Knowledge Base:", error);
+          alert("Sinkronisasi Knowledge Base gagal: " + error.message);
+        }
+      }
 
       function kbGenerateNextId() {
         if (kbDatabase.length === 0) return "KM-001";
@@ -8542,11 +9559,11 @@
           .map(
             (r) => `
             <tr>
-              <td><b style="color:#0f2d52;">${r.id}</b></td>
-              <td>${r.date}</td>
-              <td><div style="font-weight:600; color:#1e3a5f;">${r.title}</div><div style="font-size:11px; color:#64748b; margin-top:4px;">${r.desc.substring(0, 60)}...</div></td>
-              <td><span class="badge" style="background:#eff6ff; color:#2563eb;">${r.category}</span></td>
-              <td>${r.author}</td>
+              <td><b style="color:#0f2d52;">${kbSafeText(r.id)}</b></td>
+              <td>${kbSafeText(r.date)}</td>
+              <td><div style="font-weight:600; color:#1e3a5f;">${kbSafeText(r.title)}</div><div style="font-size:11px; color:#64748b; margin-top:4px;">${kbSafeText((r.desc || "").substring(0, 60))}...</div></td>
+              <td><span class="badge" style="background:#eff6ff; color:#2563eb;">${kbSafeText(r.category)}</span></td>
+              <td>${kbSafeText(r.author)}</td>
               <td>${kbGetStatusHTML(r.status)}</td>
               <td style="text-align:center; white-space:nowrap;">
                 <button class="btn-edit-table" onclick="kbOpenViewModal('${r.id}')">👁️ Lihat</button>
@@ -8616,7 +9633,7 @@
         document.getElementById("kbFormModal").classList.remove("show");
       }
 
-      function kbSaveData() {
+      async function kbSaveData() {
         const id = document.getElementById("kb-id").value;
         const category = document.getElementById("kb-category").value;
         const date = document.getElementById("kb-date").value;
@@ -8632,16 +9649,265 @@
 
         const dataObj = { id, category, date, title, author, status, desc };
 
-        if (kbEditingId) {
-          const index = kbDatabase.findIndex((x) => x.id === kbEditingId);
-          if (index > -1) kbDatabase[index] = dataObj;
-        } else {
-          kbDatabase.unshift(dataObj);
+        try {
+          const formData = new FormData();
+          formData.append("action", "save");
+          formData.append("docId", id);
+          formData.append("knowledgeCategory", category);
+          formData.append("changeDate", date);
+          formData.append("documentName", title);
+          formData.append("submittedBy", author);
+          formData.append("validationStatus", status);
+          formData.append("description", desc);
+
+          const response = await fetch("api_knowledge_base.php?action=save", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+
+          if (result.status !== "success") {
+            alert(result.message || "Gagal menyimpan data Knowledge Base.");
+            return;
+          }
+
+          if (kbEditingId) {
+            const index = kbDatabase.findIndex((x) => x.id === kbEditingId);
+            if (index > -1) kbDatabase[index] = dataObj;
+          } else {
+            kbDatabase.unshift(dataObj);
+          }
+
+          kbCloseFormModal();
+          await kbLoadData();
+        } catch (error) {
+          console.error("Error menyimpan Knowledge Base:", error);
+          alert("Gagal menyimpan Knowledge Base: " + error.message);
+        }
+      }
+
+      function kbFormatRupiah(value) {
+        const number = Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+        if (!Number.isFinite(number)) return kbSafeText(value || "-");
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          maximumFractionDigits: 0,
+        }).format(number);
+      }
+
+      function kbParseJsonArray(raw) {
+        if (!raw || typeof raw !== "string") return [];
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function kbRenderDescriptionHTML(desc) {
+        const rawDesc = String(desc || "");
+        const compactDesc = rawDesc.replace(/\s+/g, " ").trim();
+        const extractGeneratedValue = (label, nextLabels) => {
+          const nextPattern = nextLabels.map((item) => item.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+          const regex = new RegExp(`${label}:\\s*([\\s\\S]*?)(?=\\s+(?:${nextPattern}):|$)`, "i");
+          const match = compactDesc.match(regex);
+          return match ? match[1].trim() : "";
+        };
+        const generatedSummary = extractGeneratedValue("Ringkasan CR", [
+          "Catatan lapangan",
+          "Insight",
+          "Saran",
+          "Catatan PM",
+        ]);
+        const generatedFieldNote = extractGeneratedValue("Catatan lapangan", [
+          "Insight",
+          "Saran",
+          "Catatan PM",
+        ]);
+        const sections = rawDesc
+          .split(/\n{2,}/)
+          .map((part) => part.trim())
+          .filter(Boolean);
+        const hiddenLabels = new Set([
+          "change request",
+          "wbs",
+          "risiko",
+          "insight",
+          "saran",
+          "catatan pm",
+        ]);
+        let displaySections = sections
+          .map((section) => {
+            const match = section.match(/^([^:\n]{2,40}):\s*([\s\S]*)$/);
+            if (!match) return { label: "Deskripsi", value: section };
+
+            const label = match[1].trim();
+            if (hiddenLabels.has(label.toLowerCase())) return null;
+
+            return {
+              label: label.replace(/^Ringkasan CR$/i, "Deskripsi").replace(/^Catatan lapangan$/i, "Catatan"),
+              value: match[2].trim(),
+            };
+          })
+          .filter((item) => item && item.value);
+
+        if (!displaySections.length && (generatedSummary || generatedFieldNote)) {
+          displaySections = [
+            generatedSummary ? { label: "Deskripsi", value: generatedSummary } : null,
+            generatedFieldNote ? { label: "Catatan", value: generatedFieldNote } : null,
+          ].filter(Boolean);
         }
 
-        kbCloseFormModal();
-        kbUpdateKPI();
-        kbRenderTable();
+        if (!displaySections.length) {
+          return `<div class="kb-detail-card"><strong>Deskripsi</strong><p>-</p></div>`;
+        }
+
+        return `
+          <div class="kb-detail-stack">
+            ${displaySections
+              .map(
+                ({ label, value }) => `
+                  <div class="kb-detail-card">
+                    <strong>${kbSafeText(label)}</strong>
+                    <p>${kbSafeText(value)}</p>
+                  </div>
+                `,
+              )
+              .join("")}
+          </div>
+        `;
+      }
+
+      function kbGetObjectValue(row, column) {
+        const value = row[column.key] ?? (column.altKey ? row[column.altKey] : undefined);
+        return value === null || value === undefined || value === "" ? "-" : value;
+      }
+
+      function kbRenderImpactTable(title, rawJson, columns) {
+        const rows = kbParseJsonArray(rawJson);
+        if (!rows.length) return "";
+
+        return `
+          <div>
+            <label style="margin-bottom:8px;">${kbSafeText(title)}</label>
+          <table class="kb-impact-table">
+            <thead>
+              <tr>
+                  ${columns
+                    .map((col) => `<th class="${col.numeric ? "is-number" : ""}">${kbSafeText(col.label)}</th>`)
+                    .join("")}
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (row) => `
+                    <tr>
+                        ${columns
+                          .map((col) => `<td class="${col.numeric ? "is-number" : ""}">${kbSafeText(kbGetObjectValue(row, col))}</td>`)
+                          .join("")}
+                    </tr>
+                  `,
+                )
+                .join("")}
+            </tbody>
+          </table>
+          </div>
+        `;
+      }
+
+      function kbRenderImpactHTML(actualImpact, crImpact = {}) {
+        const lines = String(actualImpact || "")
+          .split(/\n{2,}/)
+          .map((line) => line.trim())
+          .filter(Boolean);
+
+        const getLineValue = (label) => {
+          const found = lines.find((line) => line.toLowerCase().startsWith(label.toLowerCase() + ":"));
+          return found ? found.slice(found.indexOf(":") + 1).trim() : "";
+        };
+
+        const actualTime = getLineValue("Dampak waktu aktual") || (crImpact.actualTime !== "" ? `${crImpact.actualTime} hari` : "");
+        const actualCost = getLineValue("Dampak biaya aktual") || (crImpact.actualCost !== "" ? crImpact.actualCost : "");
+        const estimatedCost = getLineValue("Estimasi dampak biaya") || crImpact.cost || "";
+        const estimatedTime = getLineValue("Estimasi dampak waktu") || crImpact.time || "";
+        const estimatedScope = getLineValue("Estimasi dampak lingkup") || crImpact.scope || "";
+        const qualityImpact = getLineValue("Dampak mutu") || crImpact.quality || "";
+        const safetyImpact = getLineValue("Dampak K3") || crImpact.safety || "";
+        const impactTables = [
+          kbRenderImpactTable("Estimasi Dampak Biaya", estimatedCost, [
+            { key: "item", label: "Item" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Estimasi Dampak Waktu", estimatedTime, [
+            { key: "aktivitas", label: "Aktivitas" },
+            { key: "sifat", label: "Sifat" },
+            { key: "waktu", label: "Waktu", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Estimasi Dampak Lingkup", estimatedScope, [
+            { key: "lingkup", label: "Lingkup" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+            { key: "dokumenAcuan", altKey: "dokumen", label: "Dokumen Acuan" },
+          ]),
+          kbRenderImpactTable("Dampak Mutu", qualityImpact, [
+            { key: "item", label: "Item" },
+            { key: "spesifikasiAwal", altKey: "spekAwal", label: "Spesifikasi Awal" },
+            { key: "spesifikasiBaru", altKey: "spekBaru", label: "Spesifikasi Baru" },
+            { key: "tingkatMutu", altKey: "mutu", label: "Tingkat Mutu" },
+            { key: "justifikasi", label: "Justifikasi" },
+          ]),
+          kbRenderImpactTable("Dampak Keselamatan", safetyImpact, [
+            { key: "aktivitas", label: "Aktivitas" },
+            { key: "sifat", label: "Sifat" },
+            { key: "kebutuhan", label: "Kebutuhan" },
+            { key: "kuantitas", label: "Kuantitas", numeric: true },
+            { key: "satuan", label: "Satuan" },
+          ]),
+        ].filter(Boolean).join("");
+        const remaining = lines.filter(
+          (line) =>
+            !line.toLowerCase().startsWith("dampak waktu aktual:") &&
+            !line.toLowerCase().startsWith("dampak biaya aktual:") &&
+            !line.toLowerCase().startsWith("estimasi dampak biaya:") &&
+            !line.toLowerCase().startsWith("estimasi dampak waktu:") &&
+            !line.toLowerCase().startsWith("estimasi dampak lingkup:") &&
+            !line.toLowerCase().startsWith("dampak mutu:") &&
+            !line.toLowerCase().startsWith("dampak k3:"),
+        );
+
+        return `
+          <div class="kb-impact-panel">
+            <div class="kb-impact-summary">
+              <div class="kb-impact-metric">
+                <span>Dampak Waktu Aktual</span>
+                <b>${kbSafeText(actualTime || "-")}</b>
+              </div>
+              <div class="kb-impact-metric">
+                <span>Dampak Biaya Aktual</span>
+                <b>${actualCost !== "" ? kbFormatRupiah(actualCost) : "-"}</b>
+              </div>
+            </div>
+            ${
+              impactTables
+            }
+            ${
+              remaining.length
+                ? `<div class="kb-detail-stack">${remaining
+                    .map((line) => `<div class="kb-detail-card"><strong>Dampak Lain</strong><p>${kbSafeText(line)}</p></div>`)
+                    .join("")}</div>`
+                : ""
+            }
+          </div>
+        `;
       }
 
       // -- VIEW LOGIC --
@@ -8693,29 +9959,48 @@
           </div>
         `;
 
+        let autoLessonSectionHTML = "";
+        if (doc.repository?.insight || doc.repository?.saran || doc.appliedSolution || doc.actualImpact) {
+          autoLessonSectionHTML = `
+            <div class="view-grid-2" style="margin-top:16px;">
+              <div class="view-field">
+                <label>Insight Repository</label>
+                <div class="view-value" style="white-space:pre-wrap; line-height:1.6;">${kbSafeText(doc.repository?.insight || "-")}</div>
+              </div>
+              <div class="view-field">
+                <label>Saran / Catatan PM</label>
+                <div class="view-value" style="white-space:pre-wrap; line-height:1.6;">${kbSafeText(doc.appliedSolution || doc.repository?.saran || "-")}</div>
+              </div>
+            </div>
+            <div class="view-field" style="margin-top:16px;">
+              <label>Dampak Aktual / Estimasi</label>
+              ${kbRenderImpactHTML(doc.actualImpact, doc.crImpact)}
+            </div>
+          `;
+        }
+
         // 3. Merender Keseluruhan HTML ke dalam View Modal
         document.getElementById("kbViewTitle").innerText =
           "📄 Detail Dokumen: " + doc.id;
         document.getElementById("kbViewBody").innerHTML = `
           <div class="view-grid">
-            <div class="view-field"><label>Doc ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${doc.id}</div></div>
-            <div class="view-field"><label>Tanggal Terbit</label><div class="view-value">${doc.date}</div></div>
-            <div class="view-field"><label>Kategori Utama</label><div class="view-value">${doc.category}</div></div>
+            <div class="view-field"><label>Doc ID</label><div class="view-value" style="color:#2563eb;font-weight:700;">${kbSafeText(doc.id)}</div></div>
+            <div class="view-field"><label>Tanggal Terbit</label><div class="view-value">${kbSafeText(doc.date)}</div></div>
+            <div class="view-field"><label>Kategori Utama</label><div class="view-value">${kbSafeText(doc.category)}</div></div>
             <div class="view-field"><label>Status Validasi</label><div class="view-value">${kbGetStatusHTML(doc.status)}</div></div>
-            <div class="view-field"><label>Disusun Oleh</label><div class="view-value">${doc.author}</div></div>
+            <div class="view-field"><label>Disusun Oleh</label><div class="view-value">${kbSafeText(doc.author)}</div></div>
           </div>
           <hr class="se-section-divider">
           <div class="view-field">
             <label>Judul Dokumen</label>
-            <div class="view-value" style="font-size: 16px; font-weight:700; color: #1e3a5f;">${doc.title}</div>
+            <div class="view-value" style="font-size: 16px; font-weight:700; color: #1e3a5f;">${kbSafeText(doc.title)}</div>
           </div>
           <div class="view-field" style="margin-top:16px;">
             <label>Deskripsi / Abstrak Singkat</label>
-           <div class="view-value" style="background:#f8fafc; padding:16px; border-radius:10px; line-height:1.6; border: 1px solid #e2e8f0;">
-              ${doc.desc}
-            </div>
+            ${kbRenderDescriptionHTML(doc.desc)}
           </div>
           ${mappingSectionHTML}
+          ${autoLessonSectionHTML}
           ${imageSectionHTML}
         `;
         document.getElementById("kbViewModal").classList.add("show");
@@ -8741,12 +10026,31 @@
         kbPendingDeleteId = null;
       }
 
-      function kbConfirmDelete() {
+      async function kbConfirmDelete() {
         if (!kbPendingDeleteId) return;
-        kbDatabase = kbDatabase.filter((r) => r.id !== kbPendingDeleteId);
-        kbCloseDeleteModal();
-        kbUpdateKPI();
-        kbRenderTable();
+        try {
+          const formData = new FormData();
+          formData.append("action", "delete");
+          formData.append("docId", kbPendingDeleteId);
+
+          const response = await fetch("api_knowledge_base.php?action=delete", {
+            method: "POST",
+            body: formData,
+          });
+          const result = await response.json();
+
+          if (result.status !== "success") {
+            alert(result.message || "Gagal menghapus dokumen Knowledge Base.");
+            return;
+          }
+
+          kbDatabase = kbDatabase.filter((r) => r.id !== kbPendingDeleteId);
+          kbCloseDeleteModal();
+          await kbLoadData();
+        } catch (error) {
+          console.error("Error menghapus Knowledge Base:", error);
+          alert("Gagal menghapus Knowledge Base: " + error.message);
+        }
       }
 
       // Klik luar modal untuk menutup (Knowledge Base Event Listeners)
@@ -8871,6 +10175,256 @@
           container.insertAdjacentHTML("beforeend", activityItem);
         });
       }
+
+      const adminReportState = {
+        stats: null,
+        scurve: { progress: null, spi: null, delayDays: 0 },
+      };
+
+      function adminReportEscape(value) {
+        const div = document.createElement("div");
+        div.textContent = value ?? "";
+        return div.innerHTML;
+      }
+
+      function adminReportFormatDate(date = new Date()) {
+        return date.toLocaleDateString("id-ID", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+      }
+
+      function adminReportPercent(value) {
+        return value === null || value === undefined || Number.isNaN(Number(value))
+          ? "-"
+          : `${Number(value).toFixed(1)}%`;
+      }
+
+      function adminReportSpi(value) {
+        return value === null || value === undefined || Number.isNaN(Number(value))
+          ? "-"
+          : Number(value).toFixed(2);
+      }
+
+      function adminReportMostFrequent(items, getter, fallback = "-") {
+        const counter = new Map();
+        items.forEach((item) => {
+          const raw = getter(item);
+          const value = raw && String(raw).trim() ? String(raw).trim() : "";
+          if (!value) return;
+          counter.set(value, (counter.get(value) || 0) + 1);
+        });
+        return [...counter.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] || fallback;
+      }
+
+      function clearAdminFinalReportDraft() {
+        const draft = document.getElementById("adminReportDraft");
+        if (!draft) return;
+        draft.className = "admin-report-paper empty";
+        draft.innerHTML =
+          "Draft laporan masih kosong. Pilih proyek, lalu klik Generate Ringkasan Otomatis untuk membuat dokumen siap cetak.";
+      }
+
+      function populateAdminReportProjectDropdown(projects = globalProjectsData) {
+        const select = document.getElementById("adminReportProjectSelect");
+        if (!select) return;
+
+        const projectList = Array.isArray(projects) ? projects : [];
+        if (projectList.length === 0) {
+          select.innerHTML = '<option value="">Tidak ada proyek</option>';
+          return;
+        }
+
+        const previousValue = select.value;
+        select.innerHTML = projectList
+          .map((project) => {
+            const id = project.project_id || "";
+            const name = project.project_name || "Tanpa Nama";
+            return `<option value="${adminReportEscape(id)}">${adminReportEscape(id)} - ${adminReportEscape(name)}</option>`;
+          })
+          .join("");
+
+        if (previousValue && projectList.some((project) => project.project_id === previousValue)) {
+          select.value = previousValue;
+        }
+
+        select.onchange = () => {
+          adminReportState.stats = null;
+          adminReportState.scurve = { progress: null, spi: null, delayDays: 0 };
+          clearAdminFinalReportDraft();
+        };
+      }
+
+      async function ensureAdminReportProjects() {
+        if (globalProjectsData && globalProjectsData.length > 0) {
+          populateAdminReportProjectDropdown(globalProjectsData);
+          return globalProjectsData;
+        }
+
+        const response = await fetch("api_get_projects.php?view_as=Admin");
+        const result = await response.json();
+        if (result.status === "success") {
+          globalProjectsData = result.data || [];
+          populateAdminReportProjectDropdown(globalProjectsData);
+          return globalProjectsData;
+        }
+        throw new Error(result.message || "Gagal memuat daftar proyek.");
+      }
+
+      async function fetchAdminReportSCurve(projectId) {
+        const response = await fetch(`api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`);
+        const result = await response.json();
+        if (result.status !== "success") {
+          throw new Error(result.message || "Gagal memuat Kurva S.");
+        }
+
+        const rows = Array.isArray(result.curve_data) ? result.curve_data : [];
+        const validRows = rows.filter((row) => row.realisasi_kumulatif !== null);
+        let progress = null;
+        let spi = null;
+
+        if (validRows.length > 0) {
+          const latest = validRows[validRows.length - 1];
+          const actual = Number(latest.realisasi_kumulatif || 0);
+          const plan = Number(latest.rencana_kumulatif || 0);
+          progress = actual;
+          spi = plan > 0 ? actual / plan : null;
+        }
+
+        adminReportState.scurve = {
+          progress,
+          spi,
+          delayDays: Number(result.total_delay_days || 0),
+        };
+        return adminReportState.scurve;
+      }
+
+      async function generateAdminFinalReport() {
+        const draft = document.getElementById("adminReportDraft");
+        const select = document.getElementById("adminReportProjectSelect");
+        if (!draft || !select) return;
+
+        try {
+          await ensureAdminReportProjects();
+          const projectId = select.value || globalProjectsData[0]?.project_id || "";
+          const project = globalProjectsData.find((item) => item.project_id === projectId);
+          if (!projectId || !project) {
+            clearAdminFinalReportDraft();
+            return;
+          }
+
+          draft.className = "admin-report-paper empty";
+          draft.innerHTML = "Menyusun laporan akhir proyek...";
+
+          const [statsResponse] = await Promise.all([
+            fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`).then((response) => response.json()),
+            fetchAdminReportSCurve(projectId),
+          ]);
+
+          if (statsResponse.status !== "success") {
+            throw new Error(statsResponse.message || "Gagal memuat statistik proyek.");
+          }
+
+          const stats = statsResponse.data || {};
+          adminReportState.stats = stats;
+
+          const recentActivities = Array.isArray(stats.recent_activities) ? stats.recent_activities : [];
+          const pendingRequests = Array.isArray(stats.pending_requests) ? stats.pending_requests : [];
+          const allActivities = [...recentActivities, ...pendingRequests];
+
+          const projectName = project.project_name || "-";
+          const projectStatus = project.status || project.project_status || "-";
+          const pmName = project.project_manager_name || "Project Manager";
+          const seName = project.site_engineer_name || "Site Engineer";
+          const adminName = document.getElementById("userFullName")?.innerText || "Administrator";
+          const totalChanges = Number(project.total_changes ?? 0);
+          const underReview = Number(stats.under_review ?? 0);
+          const needMitigation = Number(stats.need_mitigation ?? 0);
+          const approved = Number(stats.approved ?? project.approved_changes ?? 0);
+          const rejected = Number(stats.rejected ?? 0);
+          const progress = adminReportPercent(adminReportState.scurve.progress);
+          const spi = adminReportSpi(adminReportState.scurve.spi);
+          const delayDays = Number(adminReportState.scurve.delayDays || 0);
+          const riskFocus = adminReportMostFrequent(
+            allActivities,
+            (item) => item.risk_kategori || item.riskCategory || item.riskVariable,
+            "Belum ada risiko dominan"
+          );
+          const wbsFocus = adminReportMostFrequent(
+            allActivities,
+            (item) => item.wbsLevel5 || item.wbsLevel4,
+            "Belum ada WBS dominan"
+          );
+          const lessonSource = allActivities.find((item) => item.insight || item.saran || item.riskDescription) || {};
+          const insight =
+            lessonSource.insight ||
+            lessonSource.riskDescription ||
+            "Belum terdapat lesson learned terverifikasi dari Knowledge Repository untuk proyek ini.";
+          const recommendation =
+            lessonSource.saran ||
+            "Lakukan pemantauan berkala terhadap WBS kritis, validasi risiko sebelum persetujuan perubahan, dan dokumentasikan keputusan sebagai referensi Knowledge Base.";
+          const today = adminReportFormatDate();
+          const reportNo = `LAP/${String(projectId).replace(/[^A-Z0-9]/gi, "")}/${new Date().getFullYear()}`;
+
+          draft.className = "admin-report-paper";
+          draft.innerHTML = `
+            <div class="admin-report-letterhead">
+              <h2>Laporan Akhir Proyek dan Lesson Learned</h2>
+              <p>Sistem Integrasi BIM - WBS - Change Risk Management</p>
+            </div>
+            <table class="admin-report-meta">
+              <tr><td>Nomor</td><td>: ${adminReportEscape(reportNo)}</td></tr>
+              <tr><td>Lampiran</td><td>: Ringkasan kinerja proyek dan rekapitulasi change request</td></tr>
+              <tr><td>Perihal</td><td>: Penyampaian Laporan Akhir Proyek ${adminReportEscape(projectName)}</td></tr>
+            </table>
+            <p>Kepada Yth.<br><strong>Manajemen Proyek / Project Manager</strong><br>di Tempat</p>
+            <p>Dengan hormat,</p>
+            <p>Bersama ini kami sampaikan laporan akhir proyek untuk <strong>${adminReportEscape(projectName)}</strong> (${adminReportEscape(projectId)}). Laporan ini disusun berdasarkan data historis pelaksanaan, evaluasi change request, pemetaan WBS, penilaian risiko, dan pembelajaran yang tersimpan pada Knowledge Base.</p>
+            <div class="admin-report-title">Ringkasan Laporan Akhir Proyek</div>
+            <div class="admin-report-section-title">A. Identitas dan Status Proyek</div>
+            <table class="admin-report-meta">
+              <tr><td>Project ID</td><td>: ${adminReportEscape(projectId)}</td></tr>
+              <tr><td>Nama Proyek</td><td>: ${adminReportEscape(projectName)}</td></tr>
+              <tr><td>Status</td><td>: ${adminReportEscape(projectStatus)}</td></tr>
+              <tr><td>Project Manager</td><td>: ${adminReportEscape(pmName)}</td></tr>
+              <tr><td>Site Engineer</td><td>: ${adminReportEscape(seName)}</td></tr>
+            </table>
+            <div class="admin-report-section-title">B. Kinerja Waktu dan Progres</div>
+            <p>Progres fisik terakhir tercatat sebesar <strong>${adminReportEscape(progress)}</strong> dengan nilai SPI sebesar <strong>${adminReportEscape(spi)}</strong>. Total dampak waktu dari change request yang telah disetujui tercatat sebesar <strong>${adminReportEscape(delayDays)} hari</strong>. Nilai ini menjadi dasar evaluasi pengendalian jadwal dan prioritas tindak lanjut pada periode penutupan proyek.</p>
+            <div class="admin-report-section-title">C. Rekapitulasi Change Request</div>
+            <ul class="admin-report-list">
+              <li>Total change request tercatat: <strong>${adminReportEscape(totalChanges)}</strong></li>
+              <li>Dalam peninjauan PM: <strong>${adminReportEscape(underReview)}</strong></li>
+              <li>Membutuhkan mitigasi risiko: <strong>${adminReportEscape(needMitigation)}</strong></li>
+              <li>Disetujui: <strong>${adminReportEscape(approved)}</strong></li>
+              <li>Ditolak: <strong>${adminReportEscape(rejected)}</strong></li>
+            </ul>
+            <div class="admin-report-section-title">D. WBS dan Risiko Dominan</div>
+            <p>Area WBS yang paling sering muncul dalam aktivitas perubahan adalah <strong>${adminReportEscape(wbsFocus)}</strong>. Fokus risiko dominan yang perlu menjadi perhatian adalah <strong>${adminReportEscape(riskFocus)}</strong>. Informasi ini digunakan sebagai acuan pengendalian ulang terhadap paket pekerjaan, aktivitas, sumber daya, serta keputusan persetujuan perubahan.</p>
+            <div class="admin-report-section-title">E. Lesson Learned dan Rekomendasi</div>
+            <p><strong>Lesson Learned:</strong> ${adminReportEscape(insight)}</p>
+            <p><strong>Rekomendasi:</strong> ${adminReportEscape(recommendation)}</p>
+            <p>Demikian laporan ini disampaikan untuk menjadi dokumen penutupan, dasar evaluasi kinerja, dan referensi pengambilan keputusan pada proyek berikutnya. Atas perhatian dan kerja samanya, kami ucapkan terima kasih.</p>
+            <p style="text-align:right;margin-top:26px;">${adminReportEscape(today)}</p>
+            <div class="admin-report-signatures">
+              <div class="admin-report-signature-box"><div>Disusun oleh,<br>Site Engineer</div><div class="admin-report-signature-name">${adminReportEscape(seName)}</div></div>
+              <div class="admin-report-signature-box"><div>Diperiksa oleh,<br>Admin/MK</div><div class="admin-report-signature-name">${adminReportEscape(adminName)}</div></div>
+              <div class="admin-report-signature-box"><div>Disetujui oleh,<br>Project Manager</div><div class="admin-report-signature-name">${adminReportEscape(pmName)}</div></div>
+            </div>
+          `;
+        } catch (error) {
+          console.error("Gagal generate laporan admin:", error);
+          draft.className = "admin-report-paper empty";
+          draft.innerHTML = "Gagal menyusun laporan. Pastikan proyek sudah dipilih dan data proyek tersedia.";
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        ensureAdminReportProjects().catch((error) => {
+          console.error("Gagal memuat dropdown laporan admin:", error);
+        });
+      });
 
       /**
        * Memuat dan memperbarui komponen statistik dashboard (Decision Summary & Recent Activities)
@@ -9305,6 +10859,7 @@
       // FUNGSI MEMUAT DATA REGISTRI PROYEK DAN UPDATE KARTU STATISTIK
       // ==========================================================
       function loadProjectRegistry() {
+<<<<<<< HEAD
         const tbody = document.getElementById("projectTable");
         if (tbody) {
           tbody.innerHTML =
@@ -9366,6 +10921,60 @@
                 '<tr><td colspan="6" style="text-align:center; color:red;">Koneksi terputus ke server.</td></tr>';
           });
       }
+=======
+          const tbody = document.getElementById('projectTable');
+          if (tbody) {
+              tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Memuat data proyek dari database...</td></tr>';
+          }
+
+          // Panggil API dengan parameter bypass Admin agar menarik seluruh proyek
+          fetch('api_get_projects.php?view_as=Admin')
+              .then(response => response.json())
+              .then(res => {
+                  if (res.status === 'success') {
+                      const allProjects = res.data || [];
+
+                      // 📊 1. HITUNG STATISTIK DARI DATABASE (Kalkulasi Otomatis)
+                      const totalCount = allProjects.length;
+                      const inProgressCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'in progress').length;
+                      const pendingCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'pending').length;
+                      const completedCount = allProjects.filter(p => (p.status || '').toLowerCase() === 'completed').length;
+
+                      // 🚀 2. SINKRONKAN NILAI KE CARD METRIC ATAS
+                      const inProgressEl = document.getElementById('progressProjects') || document.getElementById('inProgressProjects');
+
+                      if (document.getElementById('totalProjects')) 
+                          document.getElementById('totalProjects').innerText = totalCount;
+                      if (inProgressEl) 
+                          inProgressEl.innerText = inProgressCount;
+                      if (document.getElementById('pendingProjects')) 
+                          document.getElementById('pendingProjects').innerText = pendingCount;
+                      if (document.getElementById('completedProjects')) 
+                          document.getElementById('completedProjects').innerText = completedCount;
+
+                      // 3. SINKRONISASI NAMA HEADER ADMIN
+                      if (res.user_name) {
+                          const nameDisplay = document.getElementById("userFullName");
+                          if (nameDisplay) nameDisplay.innerText = res.user_name;
+                      }
+
+                      // 4. RENDER DATA KE TABEL REGISTRY
+                      renderProjectTable(allProjects);
+
+                  } else if (res.message === "Akses ditolak. Silakan login.") {
+                      localStorage.removeItem("isLoggedIn");
+                      window.location.replace("login.html");
+                  } else {
+                      if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red;">Error: ${res.message}</td></tr>`;
+                  }
+              })
+              .catch(error => {
+                  console.error("Error fetching projects:", error);
+                  if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Koneksi terputus ke server.</td></tr>';
+              });
+      }
+      
+>>>>>>> f332868457e282c6464b7e884fa97383b6688602
 
       // ==========================================================
       // FUNGSI RENDER BARIS TABEL (Membaca key dari api_get_projects.php)
