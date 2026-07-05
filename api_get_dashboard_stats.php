@@ -116,8 +116,7 @@ try {
             AND SUBSTRING(TRIM(cr.wbsLevel5), 1, 7) COLLATE utf8mb4_unicode_ci = TRIM(kr.wbs_kode) COLLATE utf8mb4_unicode_ci
         $whereRecent
         GROUP BY cr.changeId
-        ORDER BY MAX(cr.changeDate) DESC 
-        LIMIT 5
+        ORDER BY MAX(cr.changeDate) DESC
     ");
     $stmtRecent->execute($params);
     $recentActivities = $stmtRecent->fetchAll();
@@ -158,6 +157,50 @@ try {
     $stmtPending->execute($params);
     $pendingRequests = $stmtPending->fetchAll();
 
+    // 7. Distribusi klasifikasi risiko seluruh Change Request pada proyek aktif
+    $whereAllProject = !empty($projectId) ? "WHERE projectArea = :project_id" : "";
+    $stmtRiskDistribution = $pdo->prepare("
+        SELECT
+            SUM(CASE WHEN CAST(risk AS UNSIGNED) >= 9 THEN 1 ELSE 0 END) AS kritis,
+            SUM(CASE WHEN CAST(risk AS UNSIGNED) BETWEEN 7 AND 8 THEN 1 ELSE 0 END) AS tinggi,
+            SUM(CASE WHEN CAST(risk AS UNSIGNED) BETWEEN 5 AND 6 THEN 1 ELSE 0 END) AS sedang,
+            SUM(CASE WHEN CAST(risk AS UNSIGNED) BETWEEN 3 AND 4 THEN 1 ELSE 0 END) AS rendah,
+            SUM(CASE WHEN CAST(risk AS UNSIGNED) BETWEEN 1 AND 2 THEN 1 ELSE 0 END) AS aman,
+            COUNT(*) AS total
+        FROM change_requests
+        $whereAllProject
+    ");
+    $stmtRiskDistribution->execute($params);
+    $riskDistribution = $stmtRiskDistribution->fetch() ?: [];
+
+    // 8. Rekap kode WBS terdampak, cukup kode singkat agar mudah discan di dashboard
+    $stmtWbsImpacted = $pdo->prepare("
+        SELECT
+            SUBSTRING_INDEX(TRIM(COALESCE(NULLIF(wbsLevel5, ''), wbsLevel4)), ' ', 1) AS wbs_code,
+            COUNT(*) AS total
+        FROM change_requests
+        $whereAllProject
+        GROUP BY wbs_code
+        HAVING wbs_code IS NOT NULL AND wbs_code <> ''
+        ORDER BY total DESC, wbs_code ASC
+        LIMIT 12
+    ");
+    $stmtWbsImpacted->execute($params);
+    $wbsImpacted = $stmtWbsImpacted->fetchAll();
+
+    // 9. Ringkasan adendum/approved impact sebagai indikator perubahan kontraktual
+    $stmtAddendum = $pdo->prepare("
+        SELECT
+            COUNT(*) AS approved_changes,
+            SUM(CASE WHEN COALESCE(CAST(timeImpact AS SIGNED), 0) > 0 OR COALESCE(CAST(costImpact AS DECIMAL(18,2)), 0) > 0 THEN 1 ELSE 0 END) AS addendum_candidates,
+            COALESCE(SUM(CAST(timeImpact AS SIGNED)), 0) AS total_time_impact,
+            COALESCE(SUM(CAST(costImpact AS DECIMAL(18,2))), 0) AS total_cost_impact
+        FROM change_requests
+        " . (!empty($projectId) ? "WHERE projectArea = :project_id AND UPPER(status) = 'APPROVED'" : "WHERE UPPER(status) = 'APPROVED'") . "
+    ");
+    $stmtAddendum->execute($params);
+    $addendumSummary = $stmtAddendum->fetch() ?: [];
+
     // Kembalikan semua data dalam satu paket JSON lengkap ke frontend
     echo json_encode([
         "status" => "success",
@@ -167,7 +210,22 @@ try {
             "approved" => (int)$approvedCount,          
             "rejected" => (int)$rejectedCount,          
             "recent_activities" => $recentActivities,
-            "pending_requests" => $pendingRequests
+            "pending_requests" => $pendingRequests,
+            "risk_distribution" => [
+                "kritis" => (int)($riskDistribution['kritis'] ?? 0),
+                "tinggi" => (int)($riskDistribution['tinggi'] ?? 0),
+                "sedang" => (int)($riskDistribution['sedang'] ?? 0),
+                "rendah" => (int)($riskDistribution['rendah'] ?? 0),
+                "aman" => (int)($riskDistribution['aman'] ?? 0),
+                "total" => (int)($riskDistribution['total'] ?? 0)
+            ],
+            "wbs_impacted" => $wbsImpacted,
+            "addendum_summary" => [
+                "approved_changes" => (int)($addendumSummary['approved_changes'] ?? 0),
+                "addendum_candidates" => (int)($addendumSummary['addendum_candidates'] ?? 0),
+                "total_time_impact" => (int)($addendumSummary['total_time_impact'] ?? 0),
+                "total_cost_impact" => (float)($addendumSummary['total_cost_impact'] ?? 0)
+            ]
         ]
     ]);
 

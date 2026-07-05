@@ -395,6 +395,14 @@
         position: relative;
         margin-top: 8px;
         padding-left: 10px;
+        max-height: 420px;
+        overflow-y: auto;
+        padding-right: 8px;
+      }
+      #recentActivitiesList {
+        max-height: 420px;
+        overflow-y: auto;
+        padding-right: 8px;
       }
       .pmd-timeline-item {
         display: grid;
@@ -438,39 +446,6 @@
         font-size: 13px;
         line-height: 1.5;
       }
-      .recent-activity-pager {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-top: 14px;
-        padding-top: 12px;
-        border-top: 1px solid #e2e8f0;
-      }
-      .recent-activity-page-info {
-        color: #64748b;
-        font-size: 12px;
-        font-weight: 700;
-      }
-      .recent-activity-nav {
-        display: inline-flex;
-        gap: 8px;
-      }
-      .recent-activity-nav button {
-        width: 32px;
-        height: 32px;
-        border: 1px solid #cbd5e1;
-        border-radius: 50%;
-        background: #fff;
-        color: #0f2d52;
-        cursor: pointer;
-        font-weight: 900;
-      }
-      .recent-activity-nav button:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-
       .action-btn {
         background: white;
         border: 1px solid #cbd5e1;
@@ -7096,25 +7071,6 @@
       }
 
       const recentActivityPagerState = {};
-      const RECENT_ACTIVITY_PAGE_SIZE = 5;
-
-      function getRecentPageSlice(activities, page) {
-        const safeActivities = Array.isArray(activities) ? activities : [];
-        const totalPages = Math.max(
-          1,
-          Math.ceil(safeActivities.length / RECENT_ACTIVITY_PAGE_SIZE),
-        );
-        const safePage = Math.min(Math.max(page, 0), totalPages - 1);
-        const start = safePage * RECENT_ACTIVITY_PAGE_SIZE;
-        return {
-          page: safePage,
-          totalPages,
-          total: safeActivities.length,
-          start,
-          end: Math.min(start + RECENT_ACTIVITY_PAGE_SIZE, safeActivities.length),
-          items: safeActivities.slice(start, start + RECENT_ACTIVITY_PAGE_SIZE),
-        };
-      }
 
       function renderRecentActivityPager(targetId, activities, page, renderFn) {
         const container = document.getElementById(targetId);
@@ -7124,39 +7080,8 @@
           activities: Array.isArray(activities) ? activities : [],
           renderFn,
         };
-
-        const slice = getRecentPageSlice(activities, page);
-        recentActivityPagerState[targetId].page = slice.page;
-        renderFn(container, slice.items);
-
-        if (slice.total <= RECENT_ACTIVITY_PAGE_SIZE) return;
-
-        container.insertAdjacentHTML(
-          "beforeend",
-          `
-          <div class="recent-activity-pager">
-            <span class="recent-activity-page-info">${slice.start + 1}-${slice.end} dari ${slice.total}</span>
-            <span class="recent-activity-nav">
-              <button type="button" onclick="changeRecentActivityPage('${targetId}', -1)" ${slice.page === 0 ? "disabled" : ""} aria-label="Aktivitas sebelumnya">&lt;</button>
-              <button type="button" onclick="changeRecentActivityPage('${targetId}', 1)" ${slice.page >= slice.totalPages - 1 ? "disabled" : ""} aria-label="Aktivitas berikutnya">&gt;</button>
-            </span>
-          </div>
-        `,
-        );
-      }
-
-      function changeRecentActivityPage(targetId, direction) {
-        const state = recentActivityPagerState[targetId];
-        if (!state) return;
-        const currentPage = state.page || 0;
-        const nextPage = currentPage + direction;
-        state.page = nextPage;
-        renderRecentActivityPager(
-          targetId,
-          state.activities,
-          nextPage,
-          state.renderFn,
-        );
+        recentActivityPagerState[targetId].page = 0;
+        renderFn(container, Array.isArray(activities) ? activities : []);
       }
 
       function renderPmdTimelineItems(container, activities) {
@@ -7253,7 +7178,7 @@
               // Mempertahankan nilai statis SPI karena belum ada di skema DB (sesuai eksisting)
               document.getElementById("pmdSpi").innerText = (1.0).toFixed(2);
 
-              // -- Recent Change Activities (Ambil 3 CR terbaru dari DB) --
+              // -- Recent Change Activities --
               const timelineEl = document.getElementById("pmdTimeline");
               const activities = stats.recent_activities || [];
 
@@ -8026,6 +7951,9 @@
           impactScope: cr.impactScope || "",
           impactQuality: cr.impactQuality || "",
           impactSafety: cr.impactSafety || "",
+          reviewId: cr.reviewId || cr.review_id || "",
+          approvalDate: cr.approvalDate || cr.approval_date || "",
+          approvalNotes: cr.approvalNotes || cr.approval_notes || "",
         };
       }
 
@@ -9253,6 +9181,25 @@
                       </div>`;
       }
 
+      function seGetApprovalField(r, camelKey, snakeKey = "") {
+        return r?.[camelKey] ?? (snakeKey ? r?.[snakeKey] : "") ?? "";
+      }
+
+      function seRenderApprovalInfo(r) {
+        const status = seGetRecordStatus(r);
+        if (!["APPROVED", "REJECTED"].includes(status)) return "";
+
+        return `
+                      <div class="se-detail-form-card">
+                        <p class="se-section-label">Informasi Approval</p>
+                        <div class="se-form-grid">
+                          ${seReadonlyField("Review ID", seGetApprovalField(r, "reviewId", "review_id"))}
+                          ${seReadonlyField("Tanggal Keputusan", seGetApprovalField(r, "approvalDate", "approval_date"))}
+                          ${seReadonlyField("Approval Notes / Instruksi", seGetApprovalField(r, "approvalNotes", "approval_notes"))}
+                        </div>
+                      </div>`;
+      }
+
       function seBuildChangeDetailView(r, id, isLocked, recordId) {
         let evidenceHTML = "";
         const evidenceFiles = r.evidenceFiles || [];
@@ -9422,7 +9369,8 @@
                         </div>
                         ${impactHtml || '<p style="color:#94a3b8; font-style:italic; font-size:13px; margin-top:12px;">Tidak ada rincian parameter terdampak.</p>'}
                         <div class="se-form-group" style="margin-top:16px;"><label>Justifikasi Teknis & Narasi Lapangan</label><div class="se-detail-readonly">${seSafeText(seGetRecordDescriptionDetail(r))}</div></div>
-                      </div>`;
+                      </div>
+                      ${seRenderApprovalInfo(r)}`;
       }
 
       // ---- VIEW MODAL ----
