@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -241,6 +241,34 @@
         padding: 30px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
         border: 1px solid #e2e8f0;
+      }
+      .dashboard-registry-risk-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
+        gap: 22px;
+        align-items: start;
+      }
+      .dashboard-registry-column {
+        display: grid;
+        gap: 22px;
+        min-width: 0;
+      }
+      .dashboard-registry-column .kpi-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 0;
+      }
+      .dashboard-registry-column .kpi-card {
+        padding: 20px 14px;
+      }
+      .dashboard-registry-risk-grid .table-section {
+        order: 1;
+      }
+      .portfolio-risk-card {
+        order: 2;
+        padding: 24px;
+        position: sticky;
+        top: 18px;
       }
       .table-header {
         display: flex;
@@ -630,6 +658,200 @@
         padding: 35px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
         border: 1px solid #e2e8f0;
+      }
+      .raci-control,
+      .risk-filter-select {
+        width: min(100%, 280px);
+        height: 42px;
+        margin: 0 auto;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        background-color: #f8fafc;
+        color: #0f172a;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      }
+      .raci-control {
+        padding: 0 14px;
+      }
+      select.raci-control,
+      .risk-filter-select {
+        appearance: none;
+        -webkit-appearance: none;
+        padding: 0 38px 0 14px;
+        cursor: pointer;
+        background-image:
+          linear-gradient(45deg, transparent 50%, #1e3a5f 50%),
+          linear-gradient(135deg, #1e3a5f 50%, transparent 50%);
+        background-position:
+          calc(100% - 18px) 18px,
+          calc(100% - 12px) 18px;
+        background-size: 6px 6px, 6px 6px;
+        background-repeat: no-repeat;
+      }
+      input.raci-control {
+        cursor: text;
+      }
+      .raci-control:hover,
+      .risk-filter-select:hover {
+        border-color: #94a3b8;
+        background-color: #ffffff;
+      }
+      .raci-control:focus,
+      .risk-filter-select:focus {
+        outline: none;
+        border-color: #2563eb;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+      }
+      .raci-card table td {
+        background: #ffffff;
+      }
+      .raci-card table tr:last-child td {
+        padding-top: 34px;
+        padding-bottom: 28px;
+      }
+      .risk-matrix-wrap {
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 10px;
+        align-items: center;
+      }
+      .risk-axis-y {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        text-align: center;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .risk-matrix-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(58px, 1fr));
+        gap: 6px;
+      }
+      .risk-cell {
+        min-height: 62px;
+        border-radius: 8px;
+        padding: 6px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+      .risk-cell small {
+        position: absolute;
+        right: 7px;
+        bottom: 5px;
+        font-size: 10px;
+        font-weight: 800;
+        color: rgba(15, 23, 42, 0.45);
+      }
+      .risk-cell.low-zone { background: #dcfce7; }
+      .risk-cell.medium-zone { background: #fef3c7; }
+      .risk-cell.high-zone { background: #fee2e2; }
+      .risk-cell.critical-zone { background: #fecaca; }
+      .risk-dot-stack { display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start; }
+      .risk-point {
+        width: auto;
+        min-width: 30px;
+        height: 20px;
+        padding: 0 7px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff1f2;
+        color: #e11d48;
+        border: 1px solid #fecdd3;
+        font-size: 10px;
+        font-weight: 800;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+        cursor: help;
+      }
+      .risk-matrix-x {
+        grid-column: 2;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+        margin-top: 8px;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .bowtie {
+        display: grid;
+        grid-template-columns: 1fr 160px 1fr;
+        gap: 12px;
+        align-items: stretch;
+        margin-top: 16px;
+      }
+      .bowtie-wing,
+      .bowtie-center {
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: #f8fafc;
+        padding: 12px;
+      }
+      .bowtie-wing h4,
+      .bowtie-center h4 {
+        margin: 0 0 8px;
+        font-size: 12px;
+        color: #0f172a;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .bowtie-item {
+        border-left: 3px solid #2563eb;
+        padding-left: 9px;
+        margin-top: 8px;
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .bowtie-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        background: #fff7ed;
+        border-color: #fed7aa;
+      }
+      .bowtie-code { font-size: 20px; font-weight: 900; color: #9a3412; }
+      .bowtie-risk { margin-top: 6px; color: #7c2d12; font-size: 12px; line-height: 1.35; }
+      .floating-tooltip {
+        position: fixed;
+        z-index: 99999;
+        max-width: 320px;
+        width: max-content;
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: #0f172a;
+        color: #ffffff;
+        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.24);
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        pointer-events: none;
+      }
+      @media (max-width: 1200px) {
+        .dashboard-registry-risk-grid {
+          grid-template-columns: 1fr;
+        }
+        .dashboard-registry-column .kpi-grid {
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        }
+        .portfolio-risk-card {
+          position: static;
+        }
       }
       .title {
         margin-bottom: 30px;
@@ -1640,6 +1862,20 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .report-print-btn {
+        min-width: 96px;
+        justify-content: center;
+        background: #1e3a5f;
+        color: #ffffff;
+        border: 1px solid #1e3a5f;
+        box-shadow: 0 6px 16px rgba(30, 58, 95, 0.16);
+      }
+      .report-print-btn:hover {
+        background: #294c75;
+        border-color: #294c75;
       }
       .admin-report-select {
         min-width: 260px;
@@ -1721,12 +1957,12 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 18px;
-        margin-top: 34px;
+        margin-top: 52px;
         text-align: center;
         font-family: "Times New Roman", Times, serif;
       }
       .admin-report-signature-box {
-        min-height: 116px;
+        min-height: 168px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -2194,24 +2430,26 @@
           </div>
           <div class="status-badge-header">MASTER ADMIN</div>
         </div>
-        <div class="kpi-grid">
-          <div class="kpi-card border-blue">
-            <h3>Total Projects</h3>
-            <span id="totalProjects">...</span>
-          </div>
-          <div class="kpi-card border-green">
-            <h3>Completed</h3>
-            <span id="completedProjects">...</span>
-          </div>
-          <div class="kpi-card border-yellow">
-            <h3>In Progress</h3>
-            <span id="progressProjects">...</span>
-          </div>
-          <div class="kpi-card border-red">
-            <h3>Pending</h3>
-            <span id="pendingProjects">...</span>
-          </div>
-        </div>
+        <div class="dashboard-registry-risk-grid">
+          <div class="dashboard-registry-column">
+            <div class="kpi-grid">
+              <div class="kpi-card border-blue">
+                <h3>Total Projects</h3>
+                <span id="totalProjects">...</span>
+              </div>
+              <div class="kpi-card border-green">
+                <h3>Completed</h3>
+                <span id="completedProjects">...</span>
+              </div>
+              <div class="kpi-card border-yellow">
+                <h3>In Progress</h3>
+                <span id="progressProjects">...</span>
+              </div>
+              <div class="kpi-card border-red">
+                <h3>Pending</h3>
+                <span id="pendingProjects">...</span>
+              </div>
+            </div>
         <div class="table-section">
           <div class="table-header">
             <h2>Project Data Registry</h2>
@@ -2317,7 +2555,21 @@
             </table>
           </div>
         </div>
-
+          </div>
+          <div class="card portfolio-risk-card">
+            <div class="table-header" style="margin-bottom: 16px">
+              <h2>Portfolio Risk Heatmap</h2>
+              <select id="globalProjectSelect" class="risk-filter-select">
+                <option value="">Semua Proyek</option>
+              </select>
+            </div>
+            <div id="adminRiskMatrix">
+              <p style="color: #64748b; font-size: 13px; margin: 0">
+                Memuat matriks risiko portofolio...
+              </p>
+            </div>
+          </div>
+        </div>
         <div class="modal" id="projectModal">
           <div class="modal-content">
             <h2>Tambah Data Proyek</h2>
@@ -3094,6 +3346,7 @@
                   Change Request dengan data Knowledge Base di database.
                 </p>
               </div>
+              <div id="adminBowtieDiagram"></div>
             </div>
 
             <div
@@ -4513,31 +4766,11 @@
             </p>
           </div>
         </div>
-        <div class="card admin-report-card" style="margin-bottom: 20px">
-          <div class="admin-report-toolbar">
-            <h2>Draft Laporan Akhir Proyek</h2>
-            <div class="admin-report-actions no-print">
-              <select id="adminReportProjectSelect" class="admin-report-select">
-                <option value="">Memuat proyek...</option>
-              </select>
-              <button
-                class="btn secondary"
-                onclick="generateAdminFinalReport()"
-              >
-                Generate Ringkasan Otomatis
-              </button>
-            </div>
-          </div>
-          <div id="adminReportDraft" class="admin-report-paper empty">
-            Draft laporan masih kosong. Pilih proyek, lalu klik Generate
-            Ringkasan Otomatis untuk membuat dokumen siap cetak.
-          </div>
-        </div>
-        <div class="card">
+        <div class="card raci-card" style="margin-bottom: 20px">
           <div class="title"><h2>RACI & Pengesahan Laporan Dokumen</h2></div>
           <table>
             <tr style="background: #f1f5f9">
-              <th style="text-align: center">Disusun Oleh (Site Engineer)</th>
+              <th style="text-align: center">Disusun Oleh (Site Manager)</th>
               <th style="text-align: center">Diperiksa Oleh (Admin/MK)</th>
               <th style="text-align: center">
                 Disetujui Oleh (Project Manager)
@@ -4551,7 +4784,7 @@
                   vertical-align: bottom;
                 "
               >
-                ( Tanda Tangan & Nama )
+                <select id="adminRaciSiteManager" class="raci-control"></select>
               </td>
               <td
                 style="
@@ -4560,7 +4793,13 @@
                   vertical-align: bottom;
                 "
               >
-                ( Tanda Tangan & Nama )
+                <input
+                  id="adminRaciAdmin"
+                  class="raci-control"
+                  type="text"
+                  value="Administrator"
+                  placeholder="Nama Administrator / Admin MK"
+                />
               </td>
               <td
                 style="
@@ -4571,10 +4810,37 @@
                   color: var(--primary);
                 "
               >
-                ( Tanda Tangan PM Secara Digital )
+                <select id="adminRaciProjectManager" class="raci-control"></select>
               </td>
             </tr>
           </table>
+        </div>
+        <div class="card admin-report-card" style="margin-bottom: 20px">
+          <div class="admin-report-toolbar">
+            <h2>Draft Laporan Akhir Proyek</h2>
+            <div class="admin-report-actions no-print">
+              <select id="adminReportProjectSelect" class="admin-report-select">
+                <option value="">Memuat proyek...</option>
+              </select>
+              <button
+                class="btn secondary"
+                onclick="generateAdminFinalReport()"
+              >
+                Generate Ringkasan Otomatis
+              </button>
+              <button
+                type="button"
+                class="btn report-print-btn"
+                onclick="printReportDraft('adminReportDraft')"
+              >
+                Print
+              </button>
+            </div>
+          </div>
+          <div id="adminReportDraft" class="admin-report-paper empty">
+            Draft laporan masih kosong. Pilih proyek, lalu klik Generate
+            Ringkasan Otomatis untuk membuat dokumen siap cetak.
+          </div>
         </div>
       </div>
     </div>
@@ -4914,12 +5180,32 @@
 
       let globalProjectsData = []; // Untuk menyimpan data mentah dari database
 
+      function populateAdminRiskProjectSelect(projects = globalProjectsData) {
+        const select = document.getElementById("globalProjectSelect");
+        if (!select) return;
+        const current = select.value;
+        const options = ['<option value="">Semua Proyek</option>']
+          .concat(
+            (Array.isArray(projects) ? projects : []).map((project) => {
+              const id = project.project_id || "";
+              const name = project.project_name || "Tanpa Nama";
+              return `<option value="${adminReportEscape(id)}">${adminReportEscape(id)} - ${adminReportEscape(name)}</option>`;
+            }),
+          )
+          .join("");
+        select.innerHTML = options;
+        if ([...select.options].some((option) => option.value === current)) {
+          select.value = current;
+        }
+      }
+
       function syncProjectData() {
         fetch("api_get_projects.php?view_as=Admin")
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
               globalProjectsData = res.data; // Simpan ke variabel global
+              populateAdminRiskProjectSelect(globalProjectsData);
 
               const tbody = document.getElementById("projectTableBody");
               tbody.innerHTML = "";
@@ -7706,6 +7992,8 @@
           // Tampilkan ke komponen AI Engine HTML
           aiBoxParagraph.innerHTML = `Berdasarkan pembelajaran histori proyek pada elemen <strong>WBS (${wbsCode})</strong> dan <strong>kode risiko ${riskCode}</strong>:<br><br><strong>Insight:</strong> ${insightText} <br><br><strong>Rekomendasi:</strong> ${saranText}`;
         }
+
+        renderAdminBowtieDiagram(data);
       }
 
       function closeCrDetail() {
@@ -10610,12 +10898,183 @@
             if (activitiesList) {
               renderAdminRecentActivities(stats.recent_activities);
             }
+
+            renderAdminRiskMatrix(
+              "adminRiskMatrix",
+              Array.isArray(stats.risk_matrix) ? stats.risk_matrix : [],
+            );
           } else {
             console.error("Gagal memuat statistik admin:", result.message);
           }
         } catch (error) {
           console.error("Sistem error saat fetch dashboard stats:", error);
         }
+      }
+
+      function adminEscapeAttr(value) {
+        return adminReportEscape(value)
+          .replace(/"/g, "&quot;")
+          .replace(/\r?\n/g, "&#10;");
+      }
+
+      let adminFloatingTooltipEl = null;
+      let adminFloatingTooltipTarget = null;
+
+      function positionAdminFloatingTooltip(event) {
+        if (!adminFloatingTooltipEl) return;
+        const gap = 14;
+        const maxLeft =
+          window.innerWidth - adminFloatingTooltipEl.offsetWidth - 10;
+        const maxTop =
+          window.innerHeight - adminFloatingTooltipEl.offsetHeight - 10;
+        let left = event.clientX + gap;
+        let top = event.clientY + gap;
+        if (left > maxLeft)
+          left = event.clientX - adminFloatingTooltipEl.offsetWidth - gap;
+        if (top > maxTop)
+          top = event.clientY - adminFloatingTooltipEl.offsetHeight - gap;
+        adminFloatingTooltipEl.style.left = `${Math.max(10, left)}px`;
+        adminFloatingTooltipEl.style.top = `${Math.max(10, top)}px`;
+      }
+
+      function showAdminFloatingTooltip(target, event) {
+        const text = target?.getAttribute("data-tooltip");
+        if (!text) return;
+        hideAdminFloatingTooltip();
+        adminFloatingTooltipTarget = target;
+        adminFloatingTooltipEl = document.createElement("div");
+        adminFloatingTooltipEl.className = "floating-tooltip";
+        adminFloatingTooltipEl.textContent = text;
+        document.body.appendChild(adminFloatingTooltipEl);
+        positionAdminFloatingTooltip(event);
+      }
+
+      function hideAdminFloatingTooltip() {
+        if (adminFloatingTooltipEl) adminFloatingTooltipEl.remove();
+        adminFloatingTooltipEl = null;
+        adminFloatingTooltipTarget = null;
+      }
+
+      document.addEventListener("mouseover", (event) => {
+        const target = event.target.closest("[data-tooltip]");
+        if (!target || !target.getAttribute("data-tooltip")) return;
+        showAdminFloatingTooltip(target, event);
+      });
+
+      document.addEventListener("mousemove", (event) => {
+        if (adminFloatingTooltipEl) positionAdminFloatingTooltip(event);
+      });
+
+      document.addEventListener("mouseout", (event) => {
+        if (!adminFloatingTooltipTarget) return;
+        if (
+          event.relatedTarget &&
+          adminFloatingTooltipTarget.contains(event.relatedTarget)
+        )
+          return;
+        hideAdminFloatingTooltip();
+      });
+
+      function adminRiskZoneClass(likelihood, impact) {
+        const score = Number(likelihood || 1) * Number(impact || 1);
+        if (score >= 20) return "critical-zone";
+        if (score >= 12) return "high-zone";
+        if (score >= 6) return "medium-zone";
+        return "low-zone";
+      }
+
+      function renderAdminRiskMatrix(containerId, points = []) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (!points.length) {
+          container.innerHTML =
+            '<p style="color:#64748b;font-size:13px;margin:0;">Belum ada Change Request untuk dipetakan.</p>';
+          return;
+        }
+
+        const cells = [];
+        for (let y = 5; y >= 1; y--) {
+          for (let x = 1; x <= 5; x++) {
+            const cellPoints = points.filter(
+              (item) =>
+                Number(item.likelihood) === x && Number(item.impact) === y,
+            );
+            const dots = cellPoints
+              .slice(0, 9)
+              .map((item) => {
+                const label =
+                  item.riskVariable || item.riskName || item.changeId || "CR";
+                const shortLabel = String(label).replace(/^R/i, "R").slice(0, 8);
+                const tooltip = `Change Request: ${item.changeId || "-"}\nProject: ${item.projectArea || "-"}\nVariabel Risiko: ${item.riskVariable || "-"}\nNama Risiko: ${item.riskName || "-"}\nKategori: ${item.riskCategory || "-"}\nSkor Risiko: ${item.riskScore || 0}\nStatus: ${item.status || "-"}`;
+                return `<span class="risk-point" data-tooltip="${adminEscapeAttr(tooltip)}">${adminReportEscape(shortLabel)}</span>`;
+              })
+              .join("");
+            const extra =
+              cellPoints.length > 9
+                ? `<span class="risk-point" data-tooltip="${cellPoints.length - 9} CR lain di sel ini">+${cellPoints.length - 9}</span>`
+                : "";
+            cells.push(
+              `<div class="risk-cell ${adminRiskZoneClass(x, y)}"><div class="risk-dot-stack">${dots}${extra}</div><small>${x}x${y}</small></div>`,
+            );
+          }
+        }
+
+        container.innerHTML = `
+          <div class="risk-matrix-wrap">
+            <div class="risk-axis-y">Dampak</div>
+            <div class="risk-matrix-grid">${cells.join("")}</div>
+            <div></div>
+            <div class="risk-matrix-x"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div style="margin-top:8px;color:#64748b;font-size:11px;font-weight:800;text-align:center;text-transform:uppercase;">Probabilitas</div>`;
+      }
+
+      function adminNormalizeNumber(value, fallback = 0) {
+        if (value === null || value === undefined || value === "") return fallback;
+        const numeric = Number(String(value).replace(/[^\d.-]/g, ""));
+        return Number.isFinite(numeric) ? numeric : fallback;
+      }
+
+      function adminFormatCurrency(value) {
+        return "Rp " + adminNormalizeNumber(value).toLocaleString("id-ID");
+      }
+
+      function renderAdminBowtieDiagram(data) {
+        const container = document.getElementById("adminBowtieDiagram");
+        if (!container || !data) return;
+
+        const riskCode = data.riskVariable || data.riskCategory || "Risiko CR";
+        const riskName =
+          data.riskDescription || data.desc || data.description || "Variabel risiko perubahan";
+        const cause =
+          data.desc || data.description || data.riskDescription || "Penyebab belum terdokumentasi.";
+        const preventive =
+          data.insight ||
+          "Validasi WBS, metode kerja, dan kesiapan resource sebelum keputusan perubahan.";
+        const impact = `Biaya ${adminFormatCurrency(data.costImpact)} dan waktu +${adminNormalizeNumber(data.timeImpact)} hari.`;
+        const corrective =
+          data.saran ||
+          "Tetapkan owner mitigasi, update baseline, dan pantau tindak lanjut sampai selesai.";
+
+        container.innerHTML = `
+          <div class="bowtie">
+            <div class="bowtie-wing">
+              <h4>Penyebab & Preventif</h4>
+              <div class="bowtie-item"><b>P:</b> ${adminReportEscape(cause)}</div>
+              <div class="bowtie-item"><b>TP:</b> ${adminReportEscape(preventive)}</div>
+            </div>
+            <div class="bowtie-center">
+              <h4>Variabel Risiko</h4>
+              <div class="bowtie-code">${adminReportEscape(riskCode)}</div>
+              <div class="bowtie-risk">${adminReportEscape(riskName)}</div>
+            </div>
+            <div class="bowtie-wing">
+              <h4>Dampak & Korektif</h4>
+              <div class="bowtie-item"><b>D:</b> ${adminReportEscape(impact)}</div>
+              <div class="bowtie-item"><b>TK:</b> ${adminReportEscape(corrective)}</div>
+            </div>
+          </div>`;
       }
 
       // Fungsi pembantu untuk membuat baris HTML di Recent Change Activities
@@ -10737,6 +11196,62 @@
           "Draft laporan masih kosong. Pilih proyek, lalu klik Generate Ringkasan Otomatis untuk membuat dokumen siap cetak.";
       }
 
+      function printReportDraft(draftId) {
+        const draft = document.getElementById(draftId);
+        if (!draft || draft.classList.contains("empty")) {
+          alert(
+            "Draft laporan masih kosong. Generate ringkasan terlebih dahulu sebelum print.",
+          );
+          return;
+        }
+
+        const frame = document.createElement("iframe");
+        frame.style.position = "fixed";
+        frame.style.right = "0";
+        frame.style.bottom = "0";
+        frame.style.width = "0";
+        frame.style.height = "0";
+        frame.style.border = "0";
+        document.body.appendChild(frame);
+
+        const doc = frame.contentWindow.document;
+        doc.open();
+        doc.write(`<!doctype html>
+          <html>
+            <head>
+              <title>Print Laporan Akhir Proyek</title>
+              <style>
+                @page { size: A4; margin: 18mm; }
+                * { box-sizing: border-box; }
+                body { margin: 0; color: #111827; background: #ffffff; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.55; }
+                .print-page { width: 100%; min-height: 257mm; }
+                table { width: 100%; border-collapse: collapse; }
+                td, th { padding: 3px 0; vertical-align: top; border: 0; }
+                .admin-report-letterhead, .report-letterhead { text-align: center; border-bottom: 3px double #111827; padding-bottom: 12px; margin-bottom: 20px; }
+                .admin-report-letterhead h2, .admin-report-letterhead p, .report-letterhead h2, .report-letterhead p { margin: 0; }
+                .admin-report-letterhead h2, .report-letterhead h2 { font-size: 14pt; letter-spacing: .04em; text-transform: uppercase; }
+                .admin-report-meta, .report-meta { margin-bottom: 16px; }
+                .admin-report-meta td:first-child, .report-meta td:first-child { width: 34mm; }
+                .admin-report-title, .report-title { text-align: center; text-decoration: underline; font-weight: 700; text-transform: uppercase; margin: 18px 0 12px; }
+                .admin-report-section-title, .report-section-title { font-weight: 700; margin: 12px 0 4px; }
+                .admin-report-list, .report-list { margin: 4px 0 0 18px; padding: 0; }
+                .admin-report-signatures, .report-signatures { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 52px; text-align: center; }
+                .admin-report-signature-box, .report-signature-box { min-height: 168px; display: flex; flex-direction: column; justify-content: space-between; }
+                .admin-report-signature-name, .report-signature-name { border-top: 1px solid #111827; padding-top: 6px; font-weight: 700; }
+              </style>
+            </head>
+            <body><main class="print-page" id="printRoot"></main></body>
+          </html>`);
+        doc.close();
+        doc.getElementById("printRoot").innerHTML = draft.innerHTML;
+
+        setTimeout(() => {
+          frame.contentWindow.focus();
+          frame.contentWindow.print();
+          setTimeout(() => frame.remove(), 1000);
+        }, 250);
+      }
+
       function populateAdminReportProjectDropdown(
         projects = globalProjectsData,
       ) {
@@ -10769,6 +11284,78 @@
           adminReportState.stats = null;
           adminReportState.scurve = { progress: null, spi: null, delayDays: 0 };
           clearAdminFinalReportDraft();
+          updateAdminRaciControls();
+        };
+        updateAdminRaciControls();
+      }
+
+      function adminSplitAssignedNames(project, listKey, singleKey, fallback = "") {
+        const names = String(project?.[listKey] || "")
+          .split("||")
+          .map((name) => name.trim())
+          .filter(Boolean);
+        if (names.length) return names;
+        const single = project?.[singleKey] || fallback;
+        return single ? [single] : [];
+      }
+
+      function adminFillRaciSelect(selectId, names, fallback) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+        const previousValue = select.value;
+        const safeNames = names.length ? names : [fallback];
+        select.innerHTML = safeNames
+          .map(
+            (name) =>
+              `<option value="${adminReportEscape(name)}">${adminReportEscape(name)}</option>`,
+          )
+          .join("");
+        if (previousValue && safeNames.includes(previousValue)) {
+          select.value = previousValue;
+        }
+      }
+
+      function getAdminSelectedReportProject() {
+        const select = document.getElementById("adminReportProjectSelect");
+        const projectId = select?.value || globalProjectsData[0]?.project_id || "";
+        return (
+          globalProjectsData.find((project) => project.project_id === projectId) ||
+          globalProjectsData[0] ||
+          null
+        );
+      }
+
+      function updateAdminRaciControls(project = getAdminSelectedReportProject()) {
+        if (!project) return;
+        adminFillRaciSelect(
+          "adminRaciSiteManager",
+          adminSplitAssignedNames(project, "site_engineer_names", "site_engineer_name", "Site Manager"),
+          "Site Manager",
+        );
+        adminFillRaciSelect(
+          "adminRaciProjectManager",
+          adminSplitAssignedNames(project, "project_manager_names", "project_manager_name", "Project Manager"),
+          "Project Manager",
+        );
+        const adminInput = document.getElementById("adminRaciAdmin");
+        if (adminInput && !adminInput.value.trim()) adminInput.value = "Administrator";
+      }
+
+      function getAdminRaciValues(project = getAdminSelectedReportProject()) {
+        updateAdminRaciControls(project);
+        return {
+          siteManager:
+            document.getElementById("adminRaciSiteManager")?.value ||
+            project?.site_engineer_name ||
+            "Site Manager",
+          admin:
+            document.getElementById("adminRaciAdmin")?.value ||
+            document.getElementById("userFullName")?.innerText ||
+            "Administrator",
+          projectManager:
+            document.getElementById("adminRaciProjectManager")?.value ||
+            project?.project_manager_name ||
+            "Project Manager",
         };
       }
 
@@ -10866,11 +11453,10 @@
 
           const projectName = project.project_name || "-";
           const projectStatus = project.status || project.project_status || "-";
-          const pmName = project.project_manager_name || "Project Manager";
-          const seName = project.site_engineer_name || "Site Engineer";
-          const adminName =
-            document.getElementById("userFullName")?.innerText ||
-            "Administrator";
+          const raci = getAdminRaciValues(project);
+          const pmName = raci.projectManager;
+          const seName = raci.siteManager;
+          const adminName = raci.admin;
           const totalChanges = Number(project.total_changes ?? 0);
           const underReview = Number(stats.under_review ?? 0);
           const needMitigation = Number(stats.need_mitigation ?? 0);
@@ -10919,7 +11505,7 @@
                         </table>
                         <p>Kepada Yth.<br><strong>Manajemen Proyek / Project Manager</strong><br>di Tempat</p>
                         <p>Dengan hormat,</p>
-                        <p>Bersama ini kami sampaikan laporan akhir proyek untuk <strong>${adminReportEscape(projectName)}</strong> (${adminReportEscape(projectId)}). Laporan ini disusun berdasarkan data historis pelaksanaan, evaluasi change request, pemetaan WBS, penilaian risiko, dan pembelajaran yang tersimpan pada Knowledge Base.</p>
+                        <p>Bersama ini kami sampaikan laporan akhir proyek untuk <strong>${adminReportEscape(projectName)}</strong> (${adminReportEscape(projectId)}). Laporan ini disusun berdasarkan data historis pelaksanaan, evaluasi change request, pemetaan WBS, penilaian risiko, dan pembelajaran yang tersimpan pada Knowledge Base.</p><br>
                         <div class="admin-report-title">Ringkasan Laporan Akhir Proyek</div>
                         <div class="admin-report-section-title">A. Identitas dan Status Proyek</div>
                         <table class="admin-report-meta">
@@ -11564,6 +12150,8 @@
         // Render project selection cards too (if function available)
         if (typeof renderProjectSelection === "function")
           renderProjectSelection(projects);
+        if (typeof populateAdminRiskProjectSelect === "function")
+          populateAdminRiskProjectSelect(projects);
       }
 
       // ==========================================================

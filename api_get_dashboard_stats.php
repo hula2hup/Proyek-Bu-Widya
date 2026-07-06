@@ -177,6 +177,9 @@ try {
     $stmtWbsImpacted = $pdo->prepare("
         SELECT
             SUBSTRING_INDEX(TRIM(COALESCE(NULLIF(wbsLevel5, ''), wbsLevel4)), ' ', 1) AS wbs_code,
+            MAX(wbsLevel4) AS wbsLevel4,
+            MAX(wbsLevel5) AS wbsLevel5,
+            MAX(wbsLevel6) AS wbsLevel6,
             COUNT(*) AS total
         FROM change_requests
         $whereAllProject
@@ -200,6 +203,80 @@ try {
     ");
     $stmtAddendum->execute($params);
     $addendumSummary = $stmtAddendum->fetch() ?: [];
+
+    // 10. Dataset visual risiko: matriks 5x5 dan tornado biaya/waktu
+    $stmtRiskVisual = $pdo->prepare("
+        SELECT
+            cr.changeId,
+            MAX(cr.projectArea) AS projectArea,
+            MAX(cr.risk) AS risk,
+            MAX(cr.riskVariable) AS riskVariable,
+            MAX(cr.riskCategory) AS riskCategory,
+            MAX(cr.riskDescription) AS riskDescription,
+            MAX(cr.costImpact) AS costImpact,
+            MAX(cr.timeImpact) AS timeImpact,
+            MAX(cr.status) AS status,
+            MAX(kr.risk_nama) AS risk_nama,
+            MAX(kr.risk_kategori) AS risk_kategori
+        FROM change_requests cr
+        LEFT JOIN knowledge_repository kr
+            ON TRIM(cr.riskVariable) COLLATE utf8mb4_unicode_ci = TRIM(kr.risk_kode) COLLATE utf8mb4_unicode_ci
+        $whereAllProject
+        GROUP BY cr.changeId
+        ORDER BY MAX(cr.changeDate) DESC
+    ");
+    $stmtRiskVisual->execute($params);
+    $riskVisualRows = $stmtRiskVisual->fetchAll();
+
+    $riskMatrix = [];
+    $tornadoMap = [];
+    foreach ($riskVisualRows as $row) {
+        $riskScore = max(0, min(10, (int)($row['risk'] ?? 0)));
+        $likelihood = max(1, min(5, (int)ceil(max(1, $riskScore) / 2)));
+        $costImpact = (float)($row['costImpact'] ?? 0);
+        $timeImpact = (int)($row['timeImpact'] ?? 0);
+        $impactBase = max($riskScore, $costImpact > 0 ? 7 : 0, $timeImpact > 0 ? 6 : 0);
+        $impact = max(1, min(5, (int)ceil(max(1, $impactBase) / 2)));
+        $riskCode = trim((string)($row['riskVariable'] ?? ''));
+        $riskName = trim((string)($row['risk_nama'] ?? ''));
+        $riskLabel = $riskCode !== '' ? $riskCode : ($riskName !== '' ? $riskName : 'Risiko belum dikodekan');
+
+        $riskMatrix[] = [
+            "changeId" => $row['changeId'],
+            "projectArea" => $row['projectArea'] ?? '',
+            "riskScore" => $riskScore,
+            "likelihood" => $likelihood,
+            "impact" => $impact,
+            "riskVariable" => $riskCode,
+            "riskName" => $riskName,
+            "riskCategory" => $row['riskCategory'] ?: ($row['risk_kategori'] ?? ''),
+            "status" => $row['status'] ?? ''
+        ];
+
+        if (!isset($tornadoMap[$riskLabel])) {
+            $tornadoMap[$riskLabel] = [
+                "riskVariable" => $riskLabel,
+                "riskName" => $riskName,
+                "riskCategory" => $row['riskCategory'] ?: ($row['risk_kategori'] ?? ''),
+                "totalCost" => 0,
+                "totalTime" => 0,
+                "count" => 0,
+                "maxRisk" => 0
+            ];
+        }
+        $tornadoMap[$riskLabel]["totalCost"] += $costImpact;
+        $tornadoMap[$riskLabel]["totalTime"] += $timeImpact;
+        $tornadoMap[$riskLabel]["count"] += 1;
+        $tornadoMap[$riskLabel]["maxRisk"] = max($tornadoMap[$riskLabel]["maxRisk"], $riskScore);
+    }
+
+    $tornadoSensitivity = array_values($tornadoMap);
+    usort($tornadoSensitivity, function ($a, $b) {
+        $scoreA = ($a['totalCost'] / 1000000) + ($a['totalTime'] * 10) + ($a['maxRisk'] * 2);
+        $scoreB = ($b['totalCost'] / 1000000) + ($b['totalTime'] * 10) + ($b['maxRisk'] * 2);
+        return $scoreB <=> $scoreA;
+    });
+    $tornadoSensitivity = array_slice($tornadoSensitivity, 0, 10);
 
     // Kembalikan semua data dalam satu paket JSON lengkap ke frontend
     echo json_encode([
@@ -225,7 +302,9 @@ try {
                 "addendum_candidates" => (int)($addendumSummary['addendum_candidates'] ?? 0),
                 "total_time_impact" => (int)($addendumSummary['total_time_impact'] ?? 0),
                 "total_cost_impact" => (float)($addendumSummary['total_cost_impact'] ?? 0)
-            ]
+            ],
+            "risk_matrix" => $riskMatrix,
+            "tornado_sensitivity" => $tornadoSensitivity
         ]
     ]);
 

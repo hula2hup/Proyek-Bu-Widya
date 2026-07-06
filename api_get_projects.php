@@ -25,10 +25,16 @@ try {
             (SELECT u.full_name FROM project_assignments pa 
              JOIN users u ON pa.user_id = u.id 
              WHERE pa.project_id = p.project_id AND pa.role_assigned = 'Site Engineer' LIMIT 1) AS site_engineer_name,
+            (SELECT GROUP_CONCAT(u.full_name ORDER BY u.full_name SEPARATOR '||') FROM project_assignments pa
+             JOIN users u ON pa.user_id = u.id
+             WHERE pa.project_id = p.project_id AND pa.role_assigned = 'Site Engineer') AS site_engineer_names,
              
             (SELECT u.full_name FROM project_assignments pa 
              JOIN users u ON pa.user_id = u.id 
              WHERE pa.project_id = p.project_id AND pa.role_assigned = 'Project Manager' LIMIT 1) AS project_manager_name,
+            (SELECT GROUP_CONCAT(u.full_name ORDER BY u.full_name SEPARATOR '||') FROM project_assignments pa
+             JOIN users u ON pa.user_id = u.id
+             WHERE pa.project_id = p.project_id AND pa.role_assigned = 'Project Manager') AS project_manager_names,
             
             -- Menghitung KPI dari tabel change_requests (menggunakan projectId dan 'Pending')
             (SELECT COUNT(*) FROM change_requests cr WHERE cr.projectArea = p.project_id) AS total_changes,
