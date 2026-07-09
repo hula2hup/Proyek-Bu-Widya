@@ -1280,9 +1280,9 @@
               <div class="form-group">
                 <label>Date</label>
                 <input
-                  type="text"
+                  type="date"
                   id="changeDate"
-                  placeholder="DD/MM/YYYY"
+                  placeholder="MM/DD/YYYY"
                   required
                 />
               </div>
@@ -6257,13 +6257,6 @@ Pilih variabel risiko</textarea
           }
         });
       }
-
-      flatpickr("#changeDate", {
-        dateFormat: "Y-m-d", // Format yang akan dikirim ke SQL / Value
-        altInput: true,
-        altFormat: "d/m/Y", // Format yang dilihat oleh klien (DD/MM/YYYY)
-        allowInput: true,
-      });
     </script>
   </body>
 </html>
