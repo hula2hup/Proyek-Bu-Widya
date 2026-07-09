@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form Site Engineer</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
       // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
       document.documentElement.style.display = "none";
@@ -1278,8 +1283,6 @@
                   type="text"
                   id="changeDate"
                   placeholder="DD/MM/YYYY"
-                  pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/\d{4}"
-                  maxlength="10"
                   required
                 />
               </div>
@@ -6272,6 +6275,12 @@ Pilih variabel risiko</textarea
 
           e.target.value = formattedValue;
         });
+      flatpickr("#changeDate", {
+        dateFormat: "Y-m-d", // Format yang akan dikirim ke SQL / Value
+        altInput: true,
+        altFormat: "d/m/Y", // Format yang dilihat oleh klien (DD/MM/YYYY)
+        allowInput: true,
+      });
     </script>
   </body>
 </html>
