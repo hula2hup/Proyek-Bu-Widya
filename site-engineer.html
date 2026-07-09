@@ -1277,13 +1277,33 @@
                 <input value="Loading..." id="changeId" readonly required />
               </div>
 
-              <div class="form-group">
+              <div class="form-group" style="position: relative">
                 <label>Date</label>
+
+                <!-- 1. Input Teks yang DILIHAT klien (Format Indonesia, tidak bisa diketik) -->
+                <input
+                  type="text"
+                  id="changeDateDisplay"
+                  placeholder="DD/MM/YYYY"
+                  readonly
+                  required
+                />
+
+                <!-- 2. Input Date ASLI untuk Kalender & SQL (Disembunyikan secara visual) -->
                 <input
                   type="date"
                   id="changeDate"
-                  placeholder="MM/DD/YYYY"
-                  required
+                  name="changeDate"
+                  style="
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 0;
+                    height: 0;
+                    opacity: 0;
+                    border: none;
+                    padding: 0;
+                  "
                 />
               </div>
 
@@ -6257,6 +6277,47 @@ Pilih variabel risiko</textarea
           }
         });
       }
+      document.addEventListener("DOMContentLoaded", function () {
+        const dateInput = document.getElementById("changeDate");
+        const displayInput = document.getElementById("changeDateDisplay");
+
+        // --- 1. SET OTOMATIS TANGGAL HARI INI ---
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0"); // Bulan dimulai dari 0
+        const dd = String(today.getDate()).padStart(2, "0");
+
+        const sqlToday = `${yyyy}-${mm}-${dd}`; // Format untuk SQL (YYYY-MM-DD)
+        const displayToday = `${dd}/${mm}/${yyyy}`; // Format untuk Klien (DD/MM/YYYY)
+
+        // Isi nilai awal dengan tanggal hari ini
+        dateInput.value = sqlToday;
+        displayInput.value = displayToday;
+
+        // --- 2. PEMICU KALENDER SAAT DIKLIK ---
+        displayInput.addEventListener("click", function () {
+          try {
+            // Membuka kalender bawaan browser secara paksa
+            dateInput.showPicker();
+          } catch (error) {
+            // Fallback jika browser versi lama
+            dateInput.click();
+          }
+        });
+
+        // --- 3. UPDATE TAMPILAN SAAT USER PILIH TANGGAL BARU ---
+        dateInput.addEventListener("change", function (e) {
+          const selectedValue = e.target.value; // Hasilnya pasti YYYY-MM-DD
+
+          if (selectedValue) {
+            const [year, month, day] = selectedValue.split("-");
+            // Ubah ke format Indonesia untuk ditampilkan ke user
+            displayInput.value = `${day}/${month}/${year}`;
+          } else {
+            displayInput.value = "";
+          }
+        });
+      });
     </script>
   </body>
 </html>
