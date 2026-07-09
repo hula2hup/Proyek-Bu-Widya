@@ -2,23 +2,9 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); // Mengizinkan request antar halaman jika diperlukan
 
-// 1. KONFIGURASI DATABASE (Sesuaikan jika nanti di hosting)
-$host = 'localhost';
-$db   = 'db_data_proyek'; 
-$user = 'root';
-$pass = ''; 
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+require_once __DIR__ . '/db_user.php';
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-    
     // 1. Tangkap user dari parameter URL, jika tidak ada pasang default kosong
     $currentUser = isset($_GET['user']) ? $_GET['user'] : '';
 

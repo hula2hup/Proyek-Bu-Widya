@@ -1,21 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-$host = 'localhost';
-$db   = 'db_data_proyek'; 
-$user = 'root';
-$pass = ''; 
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-];
+require_once __DIR__ . '/db_user.php';
 
 try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-    
     // Hitung total record yang ada di database saat ini
     $stmt = $pdo->query("SELECT COUNT(*) as total FROM change_requests");
     $row = $stmt->fetch();

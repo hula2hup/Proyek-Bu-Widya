@@ -1,23 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-// 1. KONFIGURASI KONEKSI DATABASE
-$host = 'localhost';
-$db   = 'db_data_proyek';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-} catch (PDOException $e) {
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
-    exit();
-}
+require_once __DIR__ . '/db_user.php';
 
 // 2. PROSES UPDATE DATA (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

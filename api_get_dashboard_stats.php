@@ -8,27 +8,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['Project Manag
     exit();
 }
 
-// Konfigurasi Database
-$host = 'localhost';
-$db   = 'db_data_proyek';
-$user = 'root';
-$pass = '';
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-    
-    // Matikan error ONLY_FULL_GROUP_BY secara dinamis untuk session ini
-    $pdo->exec("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''))");
-    
-} catch (PDOException $e) {
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
-    exit();
-}
+require_once __DIR__ . '/db_user.php';
 
 function ensureProjectAccess(PDO $pdo, string $projectId): void {
     if ($projectId === '' || $_SESSION['role'] === 'Admin') {

@@ -2,28 +2,7 @@
 // Pastikan response selalu berupa JSON
 header('Content-Type: application/json');
 
-// 1. KONFIGURASI DATABASE (Laragon Default)
-$host = 'localhost';
-$db   = 'db_data_proyek'; 
-$user = 'root';
-$pass = ''; 
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-try {
-    // Membuat koneksi ke MySQL Laragon
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (PDOException $e) {
-    // Balas dengan JSON jika koneksi database mati
-    echo json_encode(["status" => "error", "message" => "Koneksi database gagal: " . $e->getMessage()]);
-    exit();
-}
+require_once __DIR__ . '/db_user.php';
 
 // 2. PROSES DATA SAAT FORM DI-SUBMIT (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
