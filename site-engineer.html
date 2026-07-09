@@ -6257,24 +6257,7 @@ Pilih variabel risiko</textarea
           }
         });
       }
-      document
-        .getElementById("changeDate")
-        .addEventListener("input", function (e) {
-          let value = e.target.value.replace(/\D/g, ""); // Hapus semua karakter non-angka
-          let formattedValue = "";
 
-          if (value.length > 0) {
-            formattedValue += value.substr(0, 2);
-          }
-          if (value.length > 2) {
-            formattedValue += "/" + value.substr(2, 2);
-          }
-          if (value.length > 4) {
-            formattedValue += "/" + value.substr(4, 4);
-          }
-
-          e.target.value = formattedValue;
-        });
       flatpickr("#changeDate", {
         dateFormat: "Y-m-d", // Format yang akan dikirim ke SQL / Value
         altInput: true,
