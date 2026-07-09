@@ -5,34 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form Site Engineer</title>
     <script>
-    // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
-    document.documentElement.style.display = 'none';
+      // 1. Sembunyikan seluruh dokumen HTML seketika sebelum dirender
+      document.documentElement.style.display = "none";
 
-    // 2. Fungsi utama untuk memvalidasi sesi login
-    function enforceSecurity() {
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      const role = localStorage.getItem("role"); // <--- Ambil data role
-      
-      // Engineer HANYA boleh mengakses jika logged in DAN role-nya adalah 'Site Engineer'
-      if (isLoggedIn !== "true" || role !== "Site Engineer") {
-        // Jika tidak sesuai, bersihkan localStorage sisaan dan lempar ke login
-        localStorage.clear(); 
-        window.location.replace("login.html");
-      } else {
-        document.documentElement.style.display = 'block';
+      // 2. Fungsi utama untuk memvalidasi sesi login
+      function enforceSecurity() {
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const role = localStorage.getItem("role"); // <--- Ambil data role
+
+        // Engineer HANYA boleh mengakses jika logged in DAN role-nya adalah 'Site Engineer'
+        if (isLoggedIn !== "true" || role !== "Site Engineer") {
+          // Jika tidak sesuai, bersihkan localStorage sisaan dan lempar ke login
+          localStorage.clear();
+          window.location.replace("login.html");
+        } else {
+          document.documentElement.style.display = "block";
+        }
       }
-    }
 
-    // 3. Jalankan pengecekan pertama kali saat skrip terbaca
-    enforceSecurity();
+      // 3. Jalankan pengecekan pertama kali saat skrip terbaca
+      enforceSecurity();
 
-    // 4. Deteksi BFCache (Mencegah loophole dari long-click / history jump)
-    window.addEventListener('pageshow', function (event) {
-      // event.persisted bernilai 'true' jika halaman dimuat dari cache browser
-      if (event.persisted) {
-        enforceSecurity();
-      }
-    });
+      // 4. Deteksi BFCache (Mencegah loophole dari long-click / history jump)
+      window.addEventListener("pageshow", function (event) {
+        // event.persisted bernilai 'true' jika halaman dimuat dari cache browser
+        if (event.persisted) {
+          enforceSecurity();
+        }
+      });
     </script>
     <style>
       .risk-status {
@@ -939,90 +939,91 @@
       }
       /* --- STYLE BARU UNTUK TABEL DINAMIS IMPACT AREA --- */
       .impact-table-container {
-          display: none; /* Sembunyikan secara default */
-          margin-top: 15px;
-          padding: 15px;
-          background: #f8f9fa;
-          border-left: 4px solid #0f2d52;
-          border-radius: 4px;
-          overflow-x: auto;
+        display: none; /* Sembunyikan secara default */
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-left: 4px solid #0f2d52;
+        border-radius: 4px;
+        overflow-x: auto;
       }
 
       .dynamic-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 10px;
-          background: #fff;
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background: #fff;
       }
 
       .dynamic-table th {
-          background-color: #0f2d52;
-          color: white;
-          padding: 8px;
-          font-size: 13px;
-          text-align: left;
+        background-color: #0f2d52;
+        color: white;
+        padding: 8px;
+        font-size: 13px;
+        text-align: left;
       }
 
       .dynamic-table td {
-          padding: 6px;
-          border: 1px solid #ddd;
+        padding: 6px;
+        border: 1px solid #ddd;
       }
 
-      .dynamic-table input, .dynamic-table select {
-          width: 100%;
-          padding: 6px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          box-sizing: border-box;
+      .dynamic-table input,
+      .dynamic-table select {
+        width: 100%;
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
       }
 
       .btn-add-row {
-          margin-top: 10px;
-          background-color: #1cc88a;
-          color: white;
-          border: none;
-          padding: 6px 12px;
-          border-radius: 4px;
-          cursor: pointer;
-          font-size: 13px;
+        margin-top: 10px;
+        background-color: #1cc88a;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
       }
 
       .btn-remove-row {
-          background-color: #e74a3b;
-          color: white;
-          border: none;
-          padding: 4px 8px;
-          border-radius: 4px;
-          cursor: pointer;
+        background-color: #e74a3b;
+        color: white;
+        border: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        cursor: pointer;
       }
       /* --- STYLE UNTUK RADIO & CHECKBOX GROUP --- */
       .radio-checkbox-wrapper {
-          display: flex;
-          flex-direction: column; /* Menyusun opsi ke bawah */
-          gap: -4px !important; /* Jarak antar opsi */
-          margin-top: 8px;
+        display: flex;
+        flex-direction: column; /* Menyusun opsi ke bawah */
+        gap: -4px !important; /* Jarak antar opsi */
+        margin-top: 8px;
       }
 
       .compact-label {
-          display: inline-flex;
-          align-items: center;
-          width: fit-content !important; /* KUNCI: Mencegah area klik melebar */
-          padding: -12px 8px -12px 4px !important; /* Padding kanan untuk area klik ekstra sedikit */
-          margin: 0 !important; /* Menghapus margin default */
-          cursor: pointer;
-          font-weight: normal !important; /* Agar tidak bold seperti judul label */
-          border-radius: 4px;
-          transition: background-color 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        width: fit-content !important; /* KUNCI: Mencegah area klik melebar */
+        padding: -12px 8px -12px 4px !important; /* Padding kanan untuk area klik ekstra sedikit */
+        margin: 0 !important; /* Menghapus margin default */
+        cursor: pointer;
+        font-weight: normal !important; /* Agar tidak bold seperti judul label */
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
       }
 
       /* Efek hover opsional agar lebih interaktif */
       .compact-label:hover {
-          background-color: #f8f9fa;
+        background-color: #f8f9fa;
       }
 
       .compact-label input {
-          margin: -12px 8px -12px 0 !important; /* Memastikan browser tidak menambahkan margin bawaan secara vertikal */
-          cursor: pointer;
+        margin: -12px 8px -12px 0 !important; /* Memastikan browser tidak menambahkan margin bawaan secara vertikal */
+        cursor: pointer;
       }
     </style>
   </head>
@@ -1050,10 +1051,7 @@
         </div>
 
         <div class="submenu" id="changeSubmenu">
-          <div
-            class="submenu-item"
-            onclick="showPage('newChangePage', this)"
-          >
+          <div class="submenu-item" onclick="showPage('newChangePage', this)">
             New Change
           </div>
           <div class="submenu-item" onclick="showPage('openChangePage', this)">
@@ -1138,7 +1136,9 @@
         <div class="recent-activity-card">
           <h2>Recent Change Activities</h2>
           <div class="se-recent-list" id="seRecentActivitiesList">
-            <p style="color:#64748b;margin:0;">Memuat aktivitas perubahan...</p>
+            <p style="color: #64748b; margin: 0">
+              Memuat aktivitas perubahan...
+            </p>
           </div>
         </div>
       </div>
@@ -1274,17 +1274,19 @@
 
               <div class="form-group">
                 <label>Date</label>
-                <input type="date" id="changeDate" required />
+                <input
+                  type="text"
+                  id="changeDate"
+                  placeholder="DD/MM/YYYY"
+                  pattern="(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[012])/\d{4}"
+                  maxlength="10"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label>Submitted By</label>
-                <input
-                  id="submittedBy"
-                  value=""
-                  readonly
-                  required
-                />
+                <input id="submittedBy" value="" readonly required />
               </div>
 
               <div class="form-group">
@@ -1301,12 +1303,22 @@
 
               <div class="form-group">
                 <label>Location</label>
-                <input type="text" placeholder="Masukkan Lokasi" id="location" required />
+                <input
+                  type="text"
+                  placeholder="Masukkan Lokasi"
+                  id="location"
+                  required
+                />
               </div>
 
               <div class="form-group">
                 <label>BIM Object ID</label>
-                <input type="text" placeholder="Contoh : BIM-001" id="bimObjectId" required />
+                <input
+                  type="text"
+                  placeholder="Contoh : BIM-001"
+                  id="bimObjectId"
+                  required
+                />
               </div>
             </div>
 
@@ -1335,10 +1347,9 @@
 
             <div class="full-width">
               <label>Deskripsi Risiko</label>
-              <textarea
-                id="riskDescription"
-                readonly
-              >Pilih variabel risiko</textarea>
+              <textarea id="riskDescription" readonly>
+Pilih variabel risiko</textarea
+              >
             </div>
 
             <div class="upload-section full-width">
@@ -1412,153 +1423,310 @@
           </div>
 
           <div id="register" class="form-card hidden">
+            <div
+              class="form-grid"
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                align-items: start;
+              "
+            >
+              <div class="form-group">
+                <label style="font-weight: bold; color: #0f2d52"
+                  >Apakah ini atas Permintaan Owner / Konsultan?
+                  <span style="color: red">*</span></label
+                >
+                <div class="radio-checkbox-wrapper">
+                  <label class="compact-label">
+                    <input
+                      type="radio"
+                      name="ownerRequest"
+                      value="Ya"
+                      required
+                    />
+                    Ya (Potensi VO)
+                  </label>
+                  <label class="compact-label">
+                    <input type="radio" name="ownerRequest" value="Tidak" />
+                    Tidak (Internal/Kontraktor)
+                  </label>
+                </div>
+              </div>
 
-    <div class="form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start;">
-        
-        <div class="form-group">
-            <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
-            <div class="radio-checkbox-wrapper">
-                <label class="compact-label">
-                    <input type="radio" name="ownerRequest" value="Ya" required> Ya (Potensi VO)
-                </label>
-                <label class="compact-label">
-                    <input type="radio" name="ownerRequest" value="Tidak"> Tidak (Internal/Kontraktor)
-                </label>
+              <div class="form-group">
+                <label style="font-weight: bold; color: #0f2d52"
+                  >Akar Penyebab Utama <span style="color: red">*</span></label
+                >
+                <div class="radio-checkbox-wrapper">
+                  <label class="compact-label">
+                    <input
+                      type="checkbox"
+                      name="changeDrivers"
+                      value="Desain"
+                    />
+                    Kesalahan Desain / Gambar Kontrak
+                  </label>
+                  <label class="compact-label">
+                    <input
+                      type="checkbox"
+                      name="changeDrivers"
+                      value="Lapangan"
+                    />
+                    Kondisi Lapangan Aktual (Site Condition)
+                  </label>
+                  <label class="compact-label">
+                    <input
+                      type="checkbox"
+                      name="changeDrivers"
+                      value="Material"
+                    />
+                    Kelangkaan Material / Suplai
+                  </label>
+                  <label class="compact-label">
+                    <input
+                      type="checkbox"
+                      name="changeDrivers"
+                      value="Metode"
+                    />
+                    Usulan Optimasi Metode
+                  </label>
+                </div>
+              </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
-            <div class="radio-checkbox-wrapper">
-                <label class="compact-label">
-                    <input type="checkbox" name="changeDrivers" value="Desain"> Kesalahan Desain / Gambar Kontrak
-                </label>
-                <label class="compact-label">
-                    <input type="checkbox" name="changeDrivers" value="Lapangan"> Kondisi Lapangan Aktual (Site Condition)
-                </label>
-                <label class="compact-label">
-                    <input type="checkbox" name="changeDrivers" value="Material"> Kelangkaan Material / Suplai
-                </label>
-                <label class="compact-label">
-                    <input type="checkbox" name="changeDrivers" value="Metode"> Usulan Optimasi Metode
-                </label>
+            <hr class="section-divider" style="margin: 20px 0" />
+
+            <div class="form-group">
+              <label style="font-size: 16px; color: #0f2d52"
+                >Centang Parameter yang Terdampak:
+                <span style="color: red">*</span></label
+              >
+              <div
+                style="
+                  display: flex;
+                  gap: 15px;
+                  flex-wrap: wrap;
+                  margin-top: 10px;
+                  padding: 10px;
+                  background: #f1f1f1;
+                  border-radius: 4px;
+                "
+              >
+                <label
+                  ><input
+                    type="checkbox"
+                    id="chk-cost"
+                    onchange="toggleTable('cost')"
+                  />
+                  Cost (Biaya)</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    id="chk-time"
+                    onchange="toggleTable('time')"
+                  />
+                  Time (Waktu)</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    id="chk-scope"
+                    onchange="toggleTable('scope')"
+                  />
+                  Scope (Lingkup)</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    id="chk-quality"
+                    onchange="toggleTable('quality')"
+                  />
+                  Quality (Mutu)</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    id="chk-safety"
+                    onchange="toggleTable('safety')"
+                  />
+                  Safety (K3)</label
+                >
+              </div>
             </div>
-        </div>
 
-    </div>
-
-    <hr class="section-divider" style="margin:20px 0;" />
-
-    <div class="form-group">
-        <label style="font-size:16px; color:#0f2d52;">Centang Parameter yang Terdampak: <span style="color:red;">*</span></label>
-        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
-            <label><input type="checkbox" id="chk-cost" onchange="toggleTable('cost')"> Cost (Biaya)</label>
-            <label><input type="checkbox" id="chk-time" onchange="toggleTable('time')"> Time (Waktu)</label>
-            <label><input type="checkbox" id="chk-scope" onchange="toggleTable('scope')"> Scope (Lingkup)</label>
-            <label><input type="checkbox" id="chk-quality" onchange="toggleTable('quality')"> Quality (Mutu)</label>
-            <label><input type="checkbox" id="chk-safety" onchange="toggleTable('safety')"> Safety (K3)</label>
-        </div>
-    </div>
-
-    <div id="table-cost" class="impact-table-container" style="border-left-color: #4e73df;">
-        <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
-        <table class="dynamic-table" id="dyn-cost">
-            <thead>
-                <tr>
+            <div
+              id="table-cost"
+              class="impact-table-container"
+              style="border-left-color: #4e73df"
+            >
+              <label
+                ><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label
+              >
+              <table class="dynamic-table" id="dyn-cost">
+                <thead>
+                  <tr>
                     <th>Item / Material</th>
                     <th width="15%">Sifat</th>
                     <th width="15%">Kuantitas</th>
                     <th width="10%">Satuan</th>
                     <th width="30%">Justifikasi</th>
                     <th width="5%">Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button type="button" class="btn-add-row" onclick="addRow('cost')">+ Tambah Item</button>
-    </div>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button
+                type="button"
+                class="btn-add-row"
+                onclick="addRow('cost')"
+              >
+                + Tambah Item
+              </button>
+            </div>
 
-    <div id="table-time" class="impact-table-container" style="border-left-color: #4e73df;">
-        <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
-        <table class="dynamic-table" id="dyn-time">
-            <thead>
-                <tr>
+            <div
+              id="table-time"
+              class="impact-table-container"
+              style="border-left-color: #4e73df"
+            >
+              <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
+              <table class="dynamic-table" id="dyn-time">
+                <thead>
+                  <tr>
                     <th>Aktivitas Terdampak</th>
                     <th width="20%">Sifat</th>
                     <th width="15%">Waktu</th>
                     <th width="10%">Satuan</th>
                     <th width="30%">Justifikasi</th>
                     <th width="5%">Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button type="button" class="btn-add-row" onclick="addRow('time')">+ Tambah Item</button>
-    </div>
-    <div id="table-scope" class="impact-table-container" style="border-left-color: #4e73df;">
-        <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
-        <table class="dynamic-table" id="dyn-scope">
-            <thead>
-                <tr>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button
+                type="button"
+                class="btn-add-row"
+                onclick="addRow('time')"
+              >
+                + Tambah Item
+              </button>
+            </div>
+            <div
+              id="table-scope"
+              class="impact-table-container"
+              style="border-left-color: #4e73df"
+            >
+              <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
+              <table class="dynamic-table" id="dyn-scope">
+                <thead>
+                  <tr>
                     <th>Lingkup Pekerjaan</th>
                     <th width="20%">Sifat</th>
                     <th width="15%">Kuantitas</th>
                     <th width="10%">Satuan</th>
                     <th width="30%">Dokumen Acuan</th>
                     <th width="5%">Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button type="button" class="btn-add-row" onclick="addRow('scope')">+ Tambah Item</button>
-    </div>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button
+                type="button"
+                class="btn-add-row"
+                onclick="addRow('scope')"
+              >
+                + Tambah Item
+              </button>
+            </div>
 
-    <div id="table-quality" class="impact-table-container" style="border-left-color: #4e73df;">
-        <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
-        <table class="dynamic-table" id="dyn-quality">
-            <thead>
-                <tr>
+            <div
+              id="table-quality"
+              class="impact-table-container"
+              style="border-left-color: #4e73df"
+            >
+              <label
+                ><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label
+              >
+              <table class="dynamic-table" id="dyn-quality">
+                <thead>
+                  <tr>
                     <th>Item Terdampak</th>
                     <th width="15%">Spesifikasi Awal</th>
                     <th width="15%">Spesifikasi Baru</th>
                     <th width="15%">Tingkat Mutu</th>
                     <th width="30%">Justifikasi</th>
                     <th width="5%">Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button type="button" class="btn-add-row" onclick="addRow('quality')">+ Tambah Item</button>
-    </div>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button
+                type="button"
+                class="btn-add-row"
+                onclick="addRow('quality')"
+              >
+                + Tambah Item
+              </button>
+            </div>
 
-    <div id="table-safety" class="impact-table-container" style="border-left-color: #4e73df;">
-        <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
-        <table class="dynamic-table" id="dyn-safety">
-            <thead>
-                <tr>
+            <div
+              id="table-safety"
+              class="impact-table-container"
+              style="border-left-color: #4e73df"
+            >
+              <label
+                ><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label
+              >
+              <table class="dynamic-table" id="dyn-safety">
+                <thead>
+                  <tr>
                     <th>Aktivitas Berisiko</th>
                     <th width="15%">Sifat</th>
                     <th width="30%">Kebutuhan</th>
                     <th width="10%">Kuantitas</th>
                     <th width="10%">Satuan</th>
                     <th width="5%">Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-        <button type="button" class="btn-add-row" onclick="addRow('safety')">+ Tambah Item</button>
-    </div>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+              <button
+                type="button"
+                class="btn-add-row"
+                onclick="addRow('safety')"
+              >
+                + Tambah Item
+              </button>
+            </div>
 
-    <div class="full-width" style="margin-top:20px;">
-        <label>Justifikasi Teknis & Narasi Lapangan</label>
-        <textarea rows="4" id="descriptionDetail" required placeholder="Jelaskan secara kronologis kejadian di lapangan..."></textarea>
-    </div>
+            <div class="full-width" style="margin-top: 20px">
+              <label>Justifikasi Teknis & Narasi Lapangan</label>
+              <textarea
+                rows="4"
+                id="descriptionDetail"
+                required
+                placeholder="Jelaskan secara kronologis kejadian di lapangan..."
+              ></textarea>
+            </div>
 
-    <div class="button-group" style="justify-content: space-between; margin-top: 35px">
-        <button type="button" class="btn-back" onclick="backForm()">Back</button>
-        <button type="button" class="btn-submit" onclick="submitCR(event)">Submit Request</button>
-    </div>
-</div>
+            <div
+              class="button-group"
+              style="justify-content: space-between; margin-top: 35px"
+            >
+              <button type="button" class="btn-back" onclick="backForm()">
+                Back
+              </button>
+              <button
+                type="button"
+                class="btn-submit"
+                onclick="submitCR(event)"
+              >
+                Submit Request
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1566,7 +1734,8 @@
         <div class="content-page">
           <h2>Open Change</h2>
           <p>
-            Daftar perubahan yang sedang aktif diajukan dan menunggu persetujuan oleh Project Manager.
+            Daftar perubahan yang sedang aktif diajukan dan menunggu persetujuan
+            oleh Project Manager.
           </p>
           <div class="table-container">
             <table class="change-table">
@@ -1591,7 +1760,8 @@
         <div class="content-page">
           <h2>Closed Change</h2>
           <p>
-            Daftar perubahan yang diterima oleh Project Manager untuk diimplementasikan dan yang ditolak sehingga memerlukan perbaikan.
+            Daftar perubahan yang diterima oleh Project Manager untuk
+            diimplementasikan dan yang ditolak sehingga memerlukan perbaikan.
           </p>
           <div class="table-container">
             <table class="change-table">
@@ -1660,61 +1830,61 @@
 
       // Fungsi untuk memasukkan nama user yang login ke dalam input form
       function setLoggedUserToForm() {
-          // Ambil nama dari localStorage, jika kosong default-nya adalah "SITE ENGINEER"
-          const currentUser = localStorage.getItem("username") || "SITE ENGINEER"; 
-          
-          const submittedByInput = document.getElementById("submittedBy");
-          if (submittedByInput) {
-              submittedByInput.value = currentUser; // Otomatis mengisi input form
-          }
+        // Ambil nama dari localStorage, jika kosong default-nya adalah "SITE ENGINEER"
+        const currentUser = localStorage.getItem("username") || "SITE ENGINEER";
+
+        const submittedByInput = document.getElementById("submittedBy");
+        if (submittedByInput) {
+          submittedByInput.value = currentUser; // Otomatis mengisi input form
+        }
       }
 
       // Fungsi untuk memunculkan nama & inisial user di sidebar profil secara otomatis
       function updateSidebarUserProfile() {
-          // Ambil nama dari localStorage, default jika kosong adalah "Site Engineer"
-          const currentUser = localStorage.getItem("username") || "Site Engineer";
-          
-          // 1. Update Teks Nama Pemilik Akun
-          const userNameEl = document.getElementById("sidebarUserName");
-          if (userNameEl) {
-              userNameEl.innerText = currentUser;
-          }
-          
-          // 2. Bonus: Otomatis bikin inisial avatar (Contoh: Budi Setiawan -> BS)
-          const avatarEl = document.getElementById("userAvatar");
-          if (avatarEl && currentUser !== "Site Engineer") {
-              const initials = currentUser
-                  .split(" ")                  // Memecah nama berdasarkan spasi
-                  .map(word => word[0])        // Mengambil huruf pertama tiap kata
-                  .join("")                    // Menggabungkan kembali hurufnya
-                  .toUpperCase();              // Dipaksa jadi huruf kapital
-                  
-              avatarEl.innerText = initials.substring(0, 2); // Ambil maksimal 2 huruf terdepan
-          }
+        // Ambil nama dari localStorage, default jika kosong adalah "Site Engineer"
+        const currentUser = localStorage.getItem("username") || "Site Engineer";
+
+        // 1. Update Teks Nama Pemilik Akun
+        const userNameEl = document.getElementById("sidebarUserName");
+        if (userNameEl) {
+          userNameEl.innerText = currentUser;
+        }
+
+        // 2. Bonus: Otomatis bikin inisial avatar (Contoh: Budi Setiawan -> BS)
+        const avatarEl = document.getElementById("userAvatar");
+        if (avatarEl && currentUser !== "Site Engineer") {
+          const initials = currentUser
+            .split(" ") // Memecah nama berdasarkan spasi
+            .map((word) => word[0]) // Mengambil huruf pertama tiap kata
+            .join("") // Menggabungkan kembali hurufnya
+            .toUpperCase(); // Dipaksa jadi huruf kapital
+
+          avatarEl.innerText = initials.substring(0, 2); // Ambil maksimal 2 huruf terdepan
+        }
       }
 
       // --- LOGIKA TABEL DINAMIS IMPACT AREA ---
 
       function toggleTable(type) {
-          const isChecked = document.getElementById(`chk-${type}`).checked;
-          const container = document.getElementById(`table-${type}`);
-          const tbody = document.querySelector(`#dyn-${type} tbody`);
-          
-          if (isChecked) {
-              container.style.display = 'block';
-              if (tbody.children.length === 0) addRow(type); // Otomatis buat 1 baris saat dicentang
-          } else {
-              container.style.display = 'none';
-              tbody.innerHTML = ''; // Hapus semua isian jika di-uncheck
-          }
+        const isChecked = document.getElementById(`chk-${type}`).checked;
+        const container = document.getElementById(`table-${type}`);
+        const tbody = document.querySelector(`#dyn-${type} tbody`);
+
+        if (isChecked) {
+          container.style.display = "block";
+          if (tbody.children.length === 0) addRow(type); // Otomatis buat 1 baris saat dicentang
+        } else {
+          container.style.display = "none";
+          tbody.innerHTML = ""; // Hapus semua isian jika di-uncheck
+        }
       }
 
       function addRow(type) {
         const tbody = document.querySelector(`#dyn-${type} tbody`);
-        const tr = document.createElement('tr');
+        const tr = document.createElement("tr");
 
-        if (type === 'cost') {
-            tr.innerHTML = `
+        if (type === "cost") {
+          tr.innerHTML = `
                 <td><input type="text" class="dyn-val" data-key="item" placeholder="Contoh: Besi D16" required></td>
                 <td>
                     <select class="dyn-val" data-key="sifat" required>
@@ -1727,9 +1897,8 @@
                 <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Alasan perubahan" required></td>
                 <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
             `;
-        } 
-        else if (type === 'time') {
-            tr.innerHTML = `
+        } else if (type === "time") {
+          tr.innerHTML = `
                 <td><input type="text" class="dyn-val" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" required></td>
                 <td>
                     <select class="dyn-val" data-key="sifat" required>
@@ -1748,9 +1917,8 @@
                 <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Alasan hambatan" required></td>
                 <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
             `;
-        } 
-        else if (type === 'scope') {
-            tr.innerHTML = `
+        } else if (type === "scope") {
+          tr.innerHTML = `
                 <td><input type="text" class="dyn-val" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" required></td>
                 <td>
                     <select class="dyn-val" data-key="sifat" required>
@@ -1764,9 +1932,8 @@
                 <td><input type="text" class="dyn-val" data-key="dokumen" placeholder="No. Sketsa / RFI" required></td>
                 <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
             `;
-        } 
-        else if (type === 'quality') {
-            tr.innerHTML = `
+        } else if (type === "quality") {
+          tr.innerHTML = `
                 <td><input type="text" class="dyn-val" data-key="item" placeholder="Contoh: Pipa Air Bersih" required></td>
                 <td><input type="text" class="dyn-val" data-key="spekAwal" placeholder="Merk A (Kontrak)" required></td>
                 <td><input type="text" class="dyn-val" data-key="spekBaru" placeholder="Merk B (Aktual)" required></td>
@@ -1780,9 +1947,8 @@
                 <td><input type="text" class="dyn-val" data-key="justifikasi" placeholder="Contoh: Stok Kosong" required></td>
                 <td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>
             `;
-        } 
-        else if (type === 'safety') {
-            tr.innerHTML = `
+        } else if (type === "safety") {
+          tr.innerHTML = `
                 <td><input type="text" class="dyn-val" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" required></td>
                 <td>
                     <select class="dyn-val" data-key="sifat" required>
@@ -1798,27 +1964,27 @@
         }
 
         tbody.appendChild(tr);
-    }
+      }
 
       // Fungsi Pemanen Data Tabel sebelum disubmit ke PHP
       function extractTableData(type) {
-          const tbody = document.querySelector(`#dyn-${type} tbody`);
-          if (!tbody || tbody.children.length === 0) return null;
-          
-          let dataArray = [];
-          tbody.querySelectorAll('tr').forEach(row => {
-              let rowObj = {};
-              row.querySelectorAll('.dyn-val').forEach(input => {
-                  rowObj[input.dataset.key] = input.value;
-              });
-              dataArray.push(rowObj);
+        const tbody = document.querySelector(`#dyn-${type} tbody`);
+        if (!tbody || tbody.children.length === 0) return null;
+
+        let dataArray = [];
+        tbody.querySelectorAll("tr").forEach((row) => {
+          let rowObj = {};
+          row.querySelectorAll(".dyn-val").forEach((input) => {
+            rowObj[input.dataset.key] = input.value;
           });
-          return JSON.stringify(dataArray); // Ubah jadi JSON text untuk dikirim
+          dataArray.push(rowObj);
+        });
+        return JSON.stringify(dataArray); // Ubah jadi JSON text untuk dikirim
       }
 
-      document.addEventListener('DOMContentLoaded', function () {
-          // 1. Panggil fungsi untuk mengambil data proyek
-          fetchAssignedProjects();
+      document.addEventListener("DOMContentLoaded", function () {
+        // 1. Panggil fungsi untuk mengambil data proyek
+        fetchAssignedProjects();
       });
 
       // Variabel global untuk menyimpan data proyek yang aktif
@@ -1827,148 +1993,150 @@
       let assignmentLogoutPromptShown = false;
 
       function performLogout() {
-          fetch('api_logout.php')
-            .finally(() => {
-                localStorage.clear();
-                window.location.replace("login.html");
-            });
+        fetch("api_logout.php").finally(() => {
+          localStorage.clear();
+          window.location.replace("login.html");
+        });
       }
 
       function setNewChangeLocked(isLocked) {
-          const newChangeItem = document.querySelector(
-              ".submenu-item[onclick*='newChangePage']",
-          );
-          const newChangePage = document.getElementById("newChangePage");
-          const projectAreaInput = document.getElementById("projectArea");
+        const newChangeItem = document.querySelector(
+          ".submenu-item[onclick*='newChangePage']",
+        );
+        const newChangePage = document.getElementById("newChangePage");
+        const projectAreaInput = document.getElementById("projectArea");
 
-          if (newChangeItem) {
-              newChangeItem.classList.toggle("disabled", isLocked);
-              newChangeItem.title = isLocked
-                  ? "Hubungi administrator agar akun Anda di-assign ke project."
-                  : "";
-          }
+        if (newChangeItem) {
+          newChangeItem.classList.toggle("disabled", isLocked);
+          newChangeItem.title = isLocked
+            ? "Hubungi administrator agar akun Anda di-assign ke project."
+            : "";
+        }
 
-          if (newChangePage) {
-              newChangePage.classList.toggle("assignment-locked", isLocked);
-              newChangePage
-                  .querySelectorAll("input, select, textarea, button")
-                  .forEach((el) => {
-                      if (el.closest(".sidebar")) return;
-                      el.disabled = isLocked;
-                  });
-          }
+        if (newChangePage) {
+          newChangePage.classList.toggle("assignment-locked", isLocked);
+          newChangePage
+            .querySelectorAll("input, select, textarea, button")
+            .forEach((el) => {
+              if (el.closest(".sidebar")) return;
+              el.disabled = isLocked;
+            });
+        }
 
-          if (projectAreaInput && isLocked) {
-              projectAreaInput.value = "Belum di-assign";
-              projectAreaInput.readOnly = true;
-              projectAreaInput.style.backgroundColor = "#fee2e2";
-              projectAreaInput.style.cursor = "not-allowed";
-          }
+        if (projectAreaInput && isLocked) {
+          projectAreaInput.value = "Belum di-assign";
+          projectAreaInput.readOnly = true;
+          projectAreaInput.style.backgroundColor = "#fee2e2";
+          projectAreaInput.style.cursor = "not-allowed";
+        }
       }
 
       function promptUnassignedProjectLogout() {
-          setNewChangeLocked(true);
-          if (assignmentLogoutPromptShown) return;
-          assignmentLogoutPromptShown = true;
+        setNewChangeLocked(true);
+        if (assignmentLogoutPromptShown) return;
+        assignmentLogoutPromptShown = true;
 
-          const shouldLogout = confirm(
-              "Akun Anda belum di-assign ke project mana pun. Hubungi administrator untuk dapat di-assign ke project.\n\nLogout sekarang?",
+        const shouldLogout = confirm(
+          "Akun Anda belum di-assign ke project mana pun. Hubungi administrator untuk dapat di-assign ke project.\n\nLogout sekarang?",
+        );
+        if (shouldLogout) {
+          performLogout();
+        } else if (typeof showPage === "function") {
+          showPage(
+            "dashboardPage",
+            document.querySelector(".menu-item[onclick*='dashboardPage']"),
           );
-          if (shouldLogout) {
-              performLogout();
-          } else if (typeof showPage === "function") {
-              showPage(
-                  "dashboardPage",
-                  document.querySelector(".menu-item[onclick*='dashboardPage']"),
-              );
-          }
+        }
       }
 
       function fetchAssignedProjects() {
-          fetch('api_get_projects.php')
-              .then(response => response.json())
-              .then(res => {
-                  // 2. Jika sukses dan user tersebut memang punya proyek
-                  if (res.status === 'success' && res.data.length > 0) {
-                      activeProjects = res.data;
-                      hasAssignedProject = true;
-                      setNewChangeLocked(false);
-                      
-                      // Ambil data proyek pertama (index 0)
-                      const assignedProject = res.data[0]; 
-                      const projectId = assignedProject.project_id; // Contoh: "PRJ-001"
-                      
-                      // 3. Cari elemen input HTML Anda berdasarkan ID
-                      const projectAreaInput = document.getElementById("projectArea");
-                      
-                      if (projectAreaInput) {
-                          // Autofill nilainya dengan Kode Proyek
-                          projectAreaInput.value = projectId;
-                          
-                          // [PENTING] Kunci kolom agar tidak bisa diketik/diubah manual oleh user
-                          projectAreaInput.readOnly = true; 
-                          
-                          // Beri efek visual abu-abu agar user paham kolom ini otomatis
-                          projectAreaInput.style.backgroundColor = "#e9ecef"; 
-                          projectAreaInput.style.cursor = "not-allowed";
-                      }
-                  } else {
-                      activeProjects = [];
-                      hasAssignedProject = false;
-                      console.warn("User ini tidak di-assign ke proyek mana pun.");
-                      promptUnassignedProjectLogout();
-                  }
-              })
-              .catch(error => {
-                  activeProjects = [];
-                  hasAssignedProject = false;
-                  setNewChangeLocked(true);
-                  console.error("Gagal menarik data proyek:", error);
-              });
+        fetch("api_get_projects.php")
+          .then((response) => response.json())
+          .then((res) => {
+            // 2. Jika sukses dan user tersebut memang punya proyek
+            if (res.status === "success" && res.data.length > 0) {
+              activeProjects = res.data;
+              hasAssignedProject = true;
+              setNewChangeLocked(false);
+
+              // Ambil data proyek pertama (index 0)
+              const assignedProject = res.data[0];
+              const projectId = assignedProject.project_id; // Contoh: "PRJ-001"
+
+              // 3. Cari elemen input HTML Anda berdasarkan ID
+              const projectAreaInput = document.getElementById("projectArea");
+
+              if (projectAreaInput) {
+                // Autofill nilainya dengan Kode Proyek
+                projectAreaInput.value = projectId;
+
+                // [PENTING] Kunci kolom agar tidak bisa diketik/diubah manual oleh user
+                projectAreaInput.readOnly = true;
+
+                // Beri efek visual abu-abu agar user paham kolom ini otomatis
+                projectAreaInput.style.backgroundColor = "#e9ecef";
+                projectAreaInput.style.cursor = "not-allowed";
+              }
+            } else {
+              activeProjects = [];
+              hasAssignedProject = false;
+              console.warn("User ini tidak di-assign ke proyek mana pun.");
+              promptUnassignedProjectLogout();
+            }
+          })
+          .catch((error) => {
+            activeProjects = [];
+            hasAssignedProject = false;
+            setNewChangeLocked(true);
+            console.error("Gagal menarik data proyek:", error);
+          });
       }
 
       /* --- CONTOH FUNGSI PENDUKUNG (Sesuaikan dengan ID HTML Anda) --- */
 
       // Fungsi jika Anda punya elemen <select id="projectSelector"> di navbar/header
       function renderProjectDropdown(projects) {
-          const selector = document.getElementById('projectSelector');
-          if (!selector) return;
+        const selector = document.getElementById("projectSelector");
+        if (!selector) return;
 
-          selector.innerHTML = ''; // Kosongkan dulu
-          projects.forEach(proj => {
-              const option = document.createElement('option');
-              option.value = proj.project_id;
-              option.textContent = `${proj.project_name} (${proj.project_id})`;
-              selector.appendChild(option);
-          });
+        selector.innerHTML = ""; // Kosongkan dulu
+        projects.forEach((proj) => {
+          const option = document.createElement("option");
+          option.value = proj.project_id;
+          option.textContent = `${proj.project_name} (${proj.project_id})`;
+          selector.appendChild(option);
+        });
 
-          // Event listener jika user mengganti proyek di dropdown
-          selector.addEventListener('change', function(e) {
-              const selectedProjectId = e.target.value;
-              // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
-              // renderDashboardData(selectedProjectId); 
-          });
+        // Event listener jika user mengganti proyek di dropdown
+        selector.addEventListener("change", function (e) {
+          const selectedProjectId = e.target.value;
+          // Panggil ulang fungsi render grafik / tabel berdasarkan ID proyek baru
+          // renderDashboardData(selectedProjectId);
+        });
       }
 
       function crSafeText(value) {
-          const div = document.createElement("div");
-          div.textContent = value ?? "";
-          return div.innerHTML;
+        const div = document.createElement("div");
+        div.textContent = value ?? "";
+        return div.innerHTML;
       }
 
       function getCrApprovalField(record, camelKey, snakeKey = "") {
-          return record?.[camelKey] ?? (snakeKey ? record?.[snakeKey] : "") ?? "";
+        return record?.[camelKey] ?? (snakeKey ? record?.[snakeKey] : "") ?? "";
       }
 
       function renderCrApprovalInfo(record) {
-          const status = (record?.status || "PENDING").toUpperCase();
-          if (!["APPROVED", "REJECTED"].includes(status)) return "";
+        const status = (record?.status || "PENDING").toUpperCase();
+        if (!["APPROVED", "REJECTED"].includes(status)) return "";
 
-          const reviewId = getCrApprovalField(record, "reviewId", "review_id") || "-";
-          const approvalDate = getCrApprovalField(record, "approvalDate", "approval_date") || "-";
-          const approvalNotes = getCrApprovalField(record, "approvalNotes", "approval_notes") || "-";
+        const reviewId =
+          getCrApprovalField(record, "reviewId", "review_id") || "-";
+        const approvalDate =
+          getCrApprovalField(record, "approvalDate", "approval_date") || "-";
+        const approvalNotes =
+          getCrApprovalField(record, "approvalNotes", "approval_notes") || "-";
 
-          return `
+        return `
                   <div class="form-card" style="margin-top:20px; border-left:5px solid ${status === "APPROVED" ? "#16a34a" : "#dc2626"};">
                       <h3 style="color:#0f2d52; margin-bottom:15px; border-bottom:2px solid #dbe4ef; padding-bottom:5px;">Informasi Approval</h3>
                       <div class="form-grid">
@@ -1983,141 +2151,179 @@
       }
 
       function editChange(id) {
-          selectedChange = changeRequestsFromDB.find((x) => (x.change_id || x.changeId) === id);
-          if (!selectedChange) {
-              alert("Data Change Request tidak ditemukan!");
-              return;
+        selectedChange = changeRequestsFromDB.find(
+          (x) => (x.change_id || x.changeId) === id,
+        );
+        if (!selectedChange) {
+          alert("Data Change Request tidak ditemukan!");
+          return;
+        }
+
+        const status = (selectedChange.status || "PENDING").toUpperCase();
+        const isRejected = status === "REJECTED";
+        const isReadOnly = status === "APPROVED" || isRejected;
+        const disabledAttr = isReadOnly ? "disabled" : "";
+        const readonlyAttr = isReadOnly ? "readonly" : "";
+
+        let evidenceHTML = "";
+        if (
+          selectedChange.photoEvidence &&
+          selectedChange.photoEvidence.trim() !== ""
+        ) {
+          const fileList = selectedChange.photoEvidence.split(",");
+          fileList.forEach((file) => {
+            const fileTrimmed = file.trim();
+            if (fileTrimmed.toLowerCase().endsWith(".pdf")) {
+              evidenceHTML += `<div style="margin: 5px 0;"><a href="uploads/${fileTrimmed}" target="_blank" style="color:#0f2d52; font-weight:600; text-decoration:underline;">📄 Buka Dokumen PDF (${fileTrimmed})</a></div>`;
+            } else {
+              evidenceHTML += `<div style="margin:5px; display:inline-block; border:1px solid #ddd; padding:5px; background:#fff; border-radius:4px;"><img src="uploads/${fileTrimmed}" style="max-width:120px; max-height:120px; display:block; border-radius:2px;"><a href="uploads/${fileTrimmed}" target="_blank" style="font-size:11px; text-align:center; display:block; margin-top:4px; color:#0f2d52;">Perbesar</a></div>`;
+            }
+          });
+        } else {
+          evidenceHTML =
+            '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
+        }
+
+        const actionDisplay = isReadOnly ? "none" : "table-cell";
+        const btnDisplay = isReadOnly ? "none" : "inline-block";
+
+        // --- GENERATOR TABEL SPESIFIK (Menyamakan Logika form Add New) ---
+        function parseSafe(dataJson) {
+          if (!dataJson || dataJson === "[]") return [];
+          try {
+            return typeof dataJson === "string"
+              ? JSON.parse(dataJson)
+              : dataJson;
+          } catch (e) {
+            return [];
           }
+        }
 
-          const status = (selectedChange.status || "PENDING").toUpperCase();
-          const isRejected = status === "REJECTED";
-          const isReadOnly = (status === "APPROVED" || isRejected);
-          const disabledAttr = isReadOnly ? "disabled" : "";
-          const readonlyAttr = isReadOnly ? "readonly" : "";
-
-          let evidenceHTML = '';
-          if (selectedChange.photoEvidence && selectedChange.photoEvidence.trim() !== "") {
-              const fileList = selectedChange.photoEvidence.split(',');
-              fileList.forEach(file => {
-                  const fileTrimmed = file.trim();
-                  if (fileTrimmed.toLowerCase().endsWith('.pdf')) {
-                      evidenceHTML += `<div style="margin: 5px 0;"><a href="uploads/${fileTrimmed}" target="_blank" style="color:#0f2d52; font-weight:600; text-decoration:underline;">📄 Buka Dokumen PDF (${fileTrimmed})</a></div>`;
-                  } else {
-                      evidenceHTML += `<div style="margin:5px; display:inline-block; border:1px solid #ddd; padding:5px; background:#fff; border-radius:4px;"><img src="uploads/${fileTrimmed}" style="max-width:120px; max-height:120px; display:block; border-radius:2px;"><a href="uploads/${fileTrimmed}" target="_blank" style="font-size:11px; text-align:center; display:block; margin-top:4px; color:#0f2d52;">Perbesar</a></div>`;
-                  }
-              });
-          } else {
-              evidenceHTML = '<p style="color:#999; font-style:italic; font-size:13px;">Tidak ada berkas bukti terlampir.</p>';
-          }
-
-          const actionDisplay = isReadOnly ? 'none' : 'table-cell'; 
-          const btnDisplay = isReadOnly ? 'none' : 'inline-block'; 
-
-          // --- GENERATOR TABEL SPESIFIK (Menyamakan Logika form Add New) ---
-          function parseSafe(dataJson) {
-              if (!dataJson || dataJson === '[]') return [];
-              try { return typeof dataJson === 'string' ? JSON.parse(dataJson) : dataJson; } catch (e) { return []; }
-          }
-
-          const costRows = parseSafe(selectedChange.impactCost).map(row => `
+        const costRows = parseSafe(selectedChange.impactCost)
+          .map(
+            (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.item || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${row.item || ""}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
-                          <option value="Penambahan" ${row.sifat === 'Penambahan' ? 'selected' : ''}>Penambahan</option>
-                          <option value="Pengurangan" ${row.sifat === 'Pengurangan' ? 'selected' : ''}>Pengurangan</option>
-                          <option value="Penggantian" ${row.sifat === 'Penggantian' ? 'selected' : ''}>Penggantian</option>
+                          <option value="Penambahan" ${row.sifat === "Penambahan" ? "selected" : ""}>Penambahan</option>
+                          <option value="Pengurangan" ${row.sifat === "Pengurangan" ? "selected" : ""}>Pengurangan</option>
+                          <option value="Penggantian" ${row.sifat === "Penggantian" ? "selected" : ""}>Penggantian</option>
                       </select>
                   </td>
-                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-4" value="${row.satuan || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ""}" ${readonlyAttr}></td>
                   <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
-              </tr>`).join('');
+              </tr>`,
+          )
+          .join("");
 
-          const timeRows = parseSafe(selectedChange.impactTime).map(row => `
+        const timeRows = parseSafe(selectedChange.impactTime)
+          .map(
+            (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ""}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
-                          <option value="Percepatan" ${row.sifat === 'Percepatan' ? 'selected' : ''}>Percepatan</option>
-                          <option value="Penundaan" ${row.sifat === 'Penundaan' ? 'selected' : ''}>Penundaan</option>
-                          <option value="Perpanjangan" ${row.sifat === 'Perpanjangan' ? 'selected' : ''}>Perpanjangan</option>
+                          <option value="Percepatan" ${row.sifat === "Percepatan" ? "selected" : ""}>Percepatan</option>
+                          <option value="Penundaan" ${row.sifat === "Penundaan" ? "selected" : ""}>Penundaan</option>
+                          <option value="Perpanjangan" ${row.sifat === "Perpanjangan" ? "selected" : ""}>Perpanjangan</option>
                       </select>
                   </td>
-                  <td><input type="number" class="input-col-3" value="${row.waktu || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-4" value="${row.satuan || 'Hari'}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td><input type="number" class="input-col-3" value="${row.waktu || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || "Hari"}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ""}" ${readonlyAttr}></td>
                   <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
-              </tr>`).join('');
+              </tr>`,
+          )
+          .join("");
 
-          const scopeRows = parseSafe(selectedChange.impactScope).map(row => `
+        const scopeRows = parseSafe(selectedChange.impactScope)
+          .map(
+            (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.lingkup || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${row.lingkup || ""}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
-                          <option value="Penambahan" ${row.sifat === 'Penambahan' ? 'selected' : ''}>Penambahan</option>
-                          <option value="Pengurangan" ${row.sifat === 'Pengurangan' ? 'selected' : ''}>Pengurangan</option>
-                          <option value="Perubahan" ${row.sifat === 'Perubahan' ? 'selected' : ''}>Perubahan</option>
+                          <option value="Penambahan" ${row.sifat === "Penambahan" ? "selected" : ""}>Penambahan</option>
+                          <option value="Pengurangan" ${row.sifat === "Pengurangan" ? "selected" : ""}>Pengurangan</option>
+                          <option value="Perubahan" ${row.sifat === "Perubahan" ? "selected" : ""}>Perubahan</option>
                       </select>
                   </td>
-                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-4" value="${row.satuan || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-5" value="${row.dokumenAcuan || ''}" ${readonlyAttr}></td>
+                  <td><input type="number" class="input-col-3" value="${row.kuantitas || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-4" value="${row.satuan || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.dokumenAcuan || ""}" ${readonlyAttr}></td>
                   <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
-              </tr>`).join('');
+              </tr>`,
+          )
+          .join("");
 
-          const qualityRows = parseSafe(selectedChange.impactQuality).map(row => `
+        const qualityRows = parseSafe(selectedChange.impactQuality)
+          .map(
+            (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.item || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-2" value="${row.spesifikasiAwal || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-3" value="${row.spesifikasiBaru || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${row.item || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-2" value="${row.spesifikasiAwal || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-3" value="${row.spesifikasiBaru || ""}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-4" ${disabledAttr}>
-                          <option value="Lebih Tinggi" ${row.tingkatMutu === 'Lebih Tinggi' ? 'selected' : ''}>Lebih Tinggi</option>
-                          <option value="Setara" ${row.tingkatMutu === 'Setara' ? 'selected' : ''}>Setara</option>
-                          <option value="Lebih Rendah" ${row.tingkatMutu === 'Lebih Rendah' ? 'selected' : ''}>Lebih Rendah</option>
+                          <option value="Lebih Tinggi" ${row.tingkatMutu === "Lebih Tinggi" ? "selected" : ""}>Lebih Tinggi</option>
+                          <option value="Setara" ${row.tingkatMutu === "Setara" ? "selected" : ""}>Setara</option>
+                          <option value="Lebih Rendah" ${row.tingkatMutu === "Lebih Rendah" ? "selected" : ""}>Lebih Rendah</option>
                       </select>
                   </td>
-                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.justifikasi || ""}" ${readonlyAttr}></td>
                   <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
-              </tr>`).join('');
+              </tr>`,
+          )
+          .join("");
 
-          const safetyRows = parseSafe(selectedChange.impactSafety).map(row => `
+        const safetyRows = parseSafe(selectedChange.impactSafety)
+          .map(
+            (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ""}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
-                          <option value="Risiko Baru" ${row.sifat === 'Risiko Baru' ? 'selected' : ''}>Risiko Baru</option>
-                          <option value="Peningkatan Risiko" ${row.sifat === 'Peningkatan Risiko' ? 'selected' : ''}>Peningkatan Risiko</option>
+                          <option value="Risiko Baru" ${row.sifat === "Risiko Baru" ? "selected" : ""}>Risiko Baru</option>
+                          <option value="Peningkatan Risiko" ${row.sifat === "Peningkatan Risiko" ? "selected" : ""}>Peningkatan Risiko</option>
                       </select>
                   </td>
-                  <td><input type="text" class="input-col-3" value="${row.kebutuhan || ''}" ${readonlyAttr}></td>
-                  <td><input type="number" class="input-col-4" value="${row.kuantitas || ''}" ${readonlyAttr}></td>
-                  <td><input type="text" class="input-col-5" value="${row.satuan || ''}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-3" value="${row.kebutuhan || ""}" ${readonlyAttr}></td>
+                  <td><input type="number" class="input-col-4" value="${row.kuantitas || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-5" value="${row.satuan || ""}" ${readonlyAttr}></td>
                   <td style="display: ${actionDisplay}; text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()">X</button></td>
-              </tr>`).join('');
+              </tr>`,
+          )
+          .join("");
 
-          const drivers = selectedChange.changeDrivers || '';
-          const hasCost = costRows !== '';
-          const hasTime = timeRows !== '';
-          const hasScope = scopeRows !== '';
-          const hasQuality = qualityRows !== '';
-          const hasSafety = safetyRows !== '';
+        const drivers = selectedChange.changeDrivers || "";
+        const hasCost = costRows !== "";
+        const hasTime = timeRows !== "";
+        const hasScope = scopeRows !== "";
+        const hasQuality = qualityRows !== "";
+        const hasSafety = safetyRows !== "";
 
-          // --- RENDER HTML UTAMA ---
-          document.getElementById("editFormContainer").innerHTML = `
-              ${isReadOnly ? `
-                  <div style="background:${isRejected ? '#fee2e2' : '#e2f0d9'}; color:${isRejected ? '#991b1b' : '#385723'}; padding:15px; margin-bottom:20px; border-left:5px solid ${isRejected ? '#dc2626' : '#385723'}; font-weight:600; border-radius:4px;">
-                      ${isRejected
-                        ? 'STATUS REJECTED: Data pengajuan ini terkunci (Read-Only). Gunakan tombol Ajukan Ulang untuk membuat Change Request baru dengan isian yang sama.'
-                        : 'STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit.'}
+        // --- RENDER HTML UTAMA ---
+        document.getElementById("editFormContainer").innerHTML = `
+              ${
+                isReadOnly
+                  ? `
+                  <div style="background:${isRejected ? "#fee2e2" : "#e2f0d9"}; color:${isRejected ? "#991b1b" : "#385723"}; padding:15px; margin-bottom:20px; border-left:5px solid ${isRejected ? "#dc2626" : "#385723"}; font-weight:600; border-radius:4px;">
+                      ${
+                        isRejected
+                          ? "STATUS REJECTED: Data pengajuan ini terkunci (Read-Only). Gunakan tombol Ajukan Ulang untuk membuat Change Request baru dengan isian yang sama."
+                          : "STATUS APPROVED: Seluruh data terkunci (Read-Only) dan tidak dapat dimodifikasi kembali demi integritas data audit."
+                      }
                   </div>
-              ` : `
+              `
+                  : `
                   <div style="background:#fff3cd; color:#856404; padding:15px; margin-bottom:20px; border-left:5px solid #856404; font-weight:600; border-radius:4px;">
                       ✏️ MODE EDITING (Status: ${status}): Anda diizinkan untuk melakukan modifikasi data dan mengunggah ulang dokumen bukti jika diperlukan.
                   </div>
-              `}
+              `
+              }
               
               <form id="updateCrForm" onsubmit="event.preventDefault();">
                   <div class="form-card">
@@ -2132,10 +2338,10 @@
                           <div class="form-group">
                               <label>Kategori Perubahan</label>
                               <select id="editCategory" ${disabledAttr}>
-                                  <option value="Design" ${selectedChange.changeCategory === 'Design' ? 'selected' : ''}>Design</option>
-                                  <option value="Method" ${selectedChange.changeCategory === 'Method' ? 'selected' : ''}>Method</option>
-                                  <option value="Material" ${selectedChange.changeCategory === 'Material' ? 'selected' : ''}>Material</option>
-                                  <option value="Schedule" ${selectedChange.changeCategory === 'Schedule' ? 'selected' : ''}>Schedule</option>
+                                  <option value="Design" ${selectedChange.changeCategory === "Design" ? "selected" : ""}>Design</option>
+                                  <option value="Method" ${selectedChange.changeCategory === "Method" ? "selected" : ""}>Method</option>
+                                  <option value="Material" ${selectedChange.changeCategory === "Material" ? "selected" : ""}>Material</option>
+                                  <option value="Schedule" ${selectedChange.changeCategory === "Schedule" ? "selected" : ""}>Schedule</option>
                               </select>
                           </div>
                           <div class="form-group"><label>Priority (1 - 5)</label><input type="number" id="editPriority" min="1" max="5" step="1" value="${selectedChange.priority || ""}" ${readonlyAttr}></div>
@@ -2146,7 +2352,7 @@
 
                       <div class="form-grid">
                           <div class="form-group"><label>Change ID</label><input id="editChangeId" value="${selectedChange.change_id || selectedChange.changeId || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
-                          <div class="form-group"><label>Date</label><input type="date" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}></div>
+                          <div class="form-group"><label>Date</label><input type="text" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}></div>
                           <div class="form-group"><label>Submitted By</label><input id="editSubmittedBy" value="${selectedChange.submittedBy || "SITE ENGINEER"}" readonly style="background:#e9ecef; font-weight:bold;"></div>
                           <div class="form-group"><label>Project Area</label><input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
                           <div class="form-group"><label>Location</label><input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}></div>
@@ -2167,7 +2373,7 @@
                       <div class="upload-section full-width" style="margin-top:15px;">
                           <label style="font-weight:bold; color:#0f2d52;">Lampiran Bukti Saat Ini:</label>
                           <div style="margin: 10px 0; background:#f8f9fa; padding:10px; border:1px solid #ddd; border-radius:4px;">${evidenceHTML}</div>
-                          ${!isReadOnly ? `<label>Unggah Bukti Baru (Pilihan)</label><input type="file" id="editPhoto" accept="image/*,.pdf" multiple>` : ''}
+                          ${!isReadOnly ? `<label>Unggah Bukti Baru (Pilihan)</label><input type="file" id="editPhoto" accept="image/*,.pdf" multiple>` : ""}
                       </div>
                   </div>
 
@@ -2177,17 +2383,17 @@
                         <div class="form-group">
                             <label style="font-weight: bold; color: #0f2d52;">Apakah ini atas Permintaan Owner / Konsultan? <span style="color:red;">*</span></label>
                             <div class="radio-checkbox-wrapper">
-                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Ya" ${selectedChange.ownerRequest === 'Ya' ? 'checked' : ''} ${disabledAttr}> Ya (Potensi VO)</label>
-                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Tidak" ${selectedChange.ownerRequest === 'Tidak' ? 'checked' : ''} ${disabledAttr}> Tidak (Internal/Kontraktor)</label>
+                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Ya" ${selectedChange.ownerRequest === "Ya" ? "checked" : ""} ${disabledAttr}> Ya (Potensi VO)</label>
+                                <label class="compact-label"><input type="radio" name="editOwnerRequest" value="Tidak" ${selectedChange.ownerRequest === "Tidak" ? "checked" : ""} ${disabledAttr}> Tidak (Internal/Kontraktor)</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label style="font-weight: bold; color: #0f2d52;">Akar Penyebab Utama <span style="color:red;">*</span></label>
                             <div class="radio-checkbox-wrapper">
-                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Desain" ${drivers.includes('Desain') ? 'checked' : ''} ${disabledAttr}> Kesalahan Desain</label>
-                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Lapangan" ${drivers.includes('Lapangan') ? 'checked' : ''} ${disabledAttr}> Kondisi Lapangan</label>
-                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Material" ${drivers.includes('Material') ? 'checked' : ''} ${disabledAttr}> Kelangkaan Material</label>
-                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Metode" ${drivers.includes('Metode') ? 'checked' : ''} ${disabledAttr}> Usulan Optimasi Metode</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Desain" ${drivers.includes("Desain") ? "checked" : ""} ${disabledAttr}> Kesalahan Desain</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Lapangan" ${drivers.includes("Lapangan") ? "checked" : ""} ${disabledAttr}> Kondisi Lapangan</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Material" ${drivers.includes("Material") ? "checked" : ""} ${disabledAttr}> Kelangkaan Material</label>
+                                <label class="compact-label"><input type="checkbox" name="editChangeDrivers" value="Metode" ${drivers.includes("Metode") ? "checked" : ""} ${disabledAttr}> Usulan Optimasi Metode</label>
                             </div>
                         </div>
                       </div>
@@ -2198,15 +2404,15 @@
                   <div class="form-group">
                       <label style="font-size:16px; color:#0f2d52;">Parameter yang Terdampak:</label>
                       <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top:10px; padding:10px; background:#f1f1f1; border-radius:4px;">
-                          <label><input type="checkbox" id="edit-chk-cost" ${hasCost ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-cost').style.display = this.checked ? 'block' : 'none'"> Cost (Biaya)</label>
-                          <label><input type="checkbox" id="edit-chk-time" ${hasTime ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-time').style.display = this.checked ? 'block' : 'none'"> Time (Waktu)</label>
-                          <label><input type="checkbox" id="edit-chk-scope" ${hasScope ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-scope').style.display = this.checked ? 'block' : 'none'"> Scope (Lingkup)</label>
-                          <label><input type="checkbox" id="edit-chk-quality" ${hasQuality ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-quality').style.display = this.checked ? 'block' : 'none'"> Quality (Mutu)</label>
-                          <label><input type="checkbox" id="edit-chk-safety" ${hasSafety ? 'checked' : ''} ${disabledAttr} onclick="document.getElementById('edit-table-safety').style.display = this.checked ? 'block' : 'none'"> Safety (K3)</label>
+                          <label><input type="checkbox" id="edit-chk-cost" ${hasCost ? "checked" : ""} ${disabledAttr} onclick="document.getElementById('edit-table-cost').style.display = this.checked ? 'block' : 'none'"> Cost (Biaya)</label>
+                          <label><input type="checkbox" id="edit-chk-time" ${hasTime ? "checked" : ""} ${disabledAttr} onclick="document.getElementById('edit-table-time').style.display = this.checked ? 'block' : 'none'"> Time (Waktu)</label>
+                          <label><input type="checkbox" id="edit-chk-scope" ${hasScope ? "checked" : ""} ${disabledAttr} onclick="document.getElementById('edit-table-scope').style.display = this.checked ? 'block' : 'none'"> Scope (Lingkup)</label>
+                          <label><input type="checkbox" id="edit-chk-quality" ${hasQuality ? "checked" : ""} ${disabledAttr} onclick="document.getElementById('edit-table-quality').style.display = this.checked ? 'block' : 'none'"> Quality (Mutu)</label>
+                          <label><input type="checkbox" id="edit-chk-safety" ${hasSafety ? "checked" : ""} ${disabledAttr} onclick="document.getElementById('edit-table-safety').style.display = this.checked ? 'block' : 'none'"> Safety (K3)</label>
                       </div>
                   </div>
 
-                  <div id="edit-table-cost" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasCost ? 'block' : 'none'};">
+                  <div id="edit-table-cost" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasCost ? "block" : "none"};">
                       <label><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label>
                       <table class="dynamic-table" id="edit-dyn-cost">
                           <thead><tr><th>Item / Material</th><th width="15%">Sifat</th><th width="15%">Kuantitas</th><th width="10%">Satuan</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
@@ -2215,7 +2421,7 @@
                       <button type="button" class="btn-add-row" onclick="addRowForEdit('cost')" style="display:${btnDisplay}">+ Tambah Item</button>
                   </div>
 
-                  <div id="edit-table-time" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasTime ? 'block' : 'none'};">
+                  <div id="edit-table-time" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasTime ? "block" : "none"};">
                       <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
                       <table class="dynamic-table" id="edit-dyn-time">
                           <thead><tr><th>Aktivitas Terdampak</th><th width="20%">Sifat</th><th width="15%">Waktu</th><th width="10%">Satuan</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
@@ -2224,7 +2430,7 @@
                       <button type="button" class="btn-add-row" onclick="addRowForEdit('time')" style="display:${btnDisplay}">+ Tambah Item</button>
                   </div>
 
-                  <div id="edit-table-scope" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasScope ? 'block' : 'none'};">
+                  <div id="edit-table-scope" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasScope ? "block" : "none"};">
                       <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
                       <table class="dynamic-table" id="edit-dyn-scope">
                           <thead><tr><th>Lingkup Pekerjaan</th><th width="20%">Sifat</th><th width="15%">Kuantitas</th><th width="10%">Satuan</th><th width="30%">Dokumen Acuan</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
@@ -2233,7 +2439,7 @@
                       <button type="button" class="btn-add-row" onclick="addRowForEdit('scope')" style="display:${btnDisplay}">+ Tambah Item</button>
                   </div>
 
-                  <div id="edit-table-quality" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasQuality ? 'block' : 'none'};">
+                  <div id="edit-table-quality" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasQuality ? "block" : "none"};">
                       <label><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label>
                       <table class="dynamic-table" id="edit-dyn-quality">
                           <thead><tr><th>Item Terdampak</th><th width="15%">Spesifikasi Awal</th><th width="15%">Spesifikasi Baru</th><th width="15%">Tingkat Mutu</th><th width="30%">Justifikasi</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
@@ -2242,7 +2448,7 @@
                       <button type="button" class="btn-add-row" onclick="addRowForEdit('quality')" style="display:${btnDisplay}">+ Tambah Item</button>
                   </div>
 
-                  <div id="edit-table-safety" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasSafety ? 'block' : 'none'};">
+                  <div id="edit-table-safety" class="impact-table-container" style="border-left-color: #4e73df; display: ${hasSafety ? "block" : "none"};">
                       <label><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label>
                       <table class="dynamic-table" id="edit-dyn-safety">
                           <thead><tr><th>Aktivitas Berisiko</th><th width="15%">Sifat</th><th width="30%">Kebutuhan</th><th width="10%">Kuantitas</th><th width="10%">Satuan</th><th width="5%" style="display:${actionDisplay}">Aksi</th></tr></thead>
@@ -2253,209 +2459,334 @@
 
                   <div class="full-width" style="margin-top:20px;">
                       <label>Justifikasi Teknis & Narasi Lapangan</label>
-                      <textarea rows="4" id="editDescriptionDetail" ${readonlyAttr} placeholder="Jelaskan secara kronologis...">${selectedChange.descriptionDetail || ''}</textarea>
+                      <textarea rows="4" id="editDescriptionDetail" ${readonlyAttr} placeholder="Jelaskan secara kronologis...">${selectedChange.descriptionDetail || ""}</textarea>
                   </div>
 
                   ${renderCrApprovalInfo(selectedChange)}
 
                   <div style="margin-top:25px; text-align:right;">
                       <button type="button" class="btn-back" onclick="showPage('historyPage')" style="margin-right:10px;">Kembali</button>
-                      ${isRejected ? `<button type="button" class="btn-submit" onclick="resubmitRejectedChange('${selectedChange.change_id || selectedChange.changeId || ""}')" style="margin-right:10px; background:#f59e0b;">Ajukan Ulang</button>` : ''}
-                      ${!isReadOnly ? `<button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">💾 Simpan Perubahan</button>` : ''}
+                      ${isRejected ? `<button type="button" class="btn-submit" onclick="resubmitRejectedChange('${selectedChange.change_id || selectedChange.changeId || ""}')" style="margin-right:10px; background:#f59e0b;">Ajukan Ulang</button>` : ""}
+                      ${!isReadOnly ? `<button type="button" class="btn-submit" onclick="executeDatabaseUpdate()">💾 Simpan Perubahan</button>` : ""}
                   </div>
               </form>
           `;
 
-          const editWbs2 = document.getElementById('editWbs2');
-          const editWbs3 = document.getElementById('editWbs3');
-          const editWbs4 = document.getElementById('editWbs4');
-          const editWbs5 = document.getElementById('editWbs5');
-          const editWbs6 = document.getElementById('editWbs6');
+        const editWbs2 = document.getElementById("editWbs2");
+        const editWbs3 = document.getElementById("editWbs3");
+        const editWbs4 = document.getElementById("editWbs4");
+        const editWbs5 = document.getElementById("editWbs5");
+        const editWbs6 = document.getElementById("editWbs6");
 
-          if (editWbs4 && editWbs5 && editWbs6 && typeof syncWbsSelects === 'function') {
-            attachWbsCascade(editWbs2, editWbs3, editWbs4, editWbs5, editWbs6);
+        if (
+          editWbs4 &&
+          editWbs5 &&
+          editWbs6 &&
+          typeof syncWbsSelects === "function"
+        ) {
+          attachWbsCascade(editWbs2, editWbs3, editWbs4, editWbs5, editWbs6);
 
-            const editRiskCategoryEl = document.getElementById('editRiskCategory');
-            const editRiskVariableEl = document.getElementById('editRiskVariable');
-            const editRiskDescriptionEl = document.getElementById('editRiskDescription');
+          const editRiskCategoryEl =
+            document.getElementById("editRiskCategory");
+          const editRiskVariableEl =
+            document.getElementById("editRiskVariable");
+          const editRiskDescriptionEl = document.getElementById(
+            "editRiskDescription",
+          );
 
-            function populateEditRiskCategories() {
-              editRiskCategoryEl.innerHTML = '';
-              editRiskCategoryEl.appendChild(new Option('Pilih Kategori Risiko', ''));
-              Object.keys(riskData).forEach((category) => {
-                const option = new Option(category, category);
-                if (category === selectedChange.riskCategory) {
+          function populateEditRiskCategories() {
+            editRiskCategoryEl.innerHTML = "";
+            editRiskCategoryEl.appendChild(
+              new Option("Pilih Kategori Risiko", ""),
+            );
+            Object.keys(riskData).forEach((category) => {
+              const option = new Option(category, category);
+              if (category === selectedChange.riskCategory) {
+                option.selected = true;
+              }
+              editRiskCategoryEl.appendChild(option);
+            });
+          }
+
+          function populateEditRiskVariables(category) {
+            editRiskVariableEl.innerHTML = "";
+            editRiskVariableEl.appendChild(
+              new Option("Pilih Variabel Risiko", ""),
+            );
+            if (category && riskData[category]) {
+              riskData[category].forEach((item) => {
+                const option = new Option(
+                  `${item.code} - ${item.title}`,
+                  item.code,
+                );
+                if (item.code === selectedChange.riskVariable) {
                   option.selected = true;
                 }
-                editRiskCategoryEl.appendChild(option);
+                editRiskVariableEl.appendChild(option);
               });
             }
-
-            function populateEditRiskVariables(category) {
-              editRiskVariableEl.innerHTML = '';
-              editRiskVariableEl.appendChild(new Option('Pilih Variabel Risiko', ''));
-              if (category && riskData[category]) {
-                riskData[category].forEach((item) => {
-                  const option = new Option(`${item.code} - ${item.title}`, item.code);
-                  if (item.code === selectedChange.riskVariable) {
-                    option.selected = true;
-                  }
-                  editRiskVariableEl.appendChild(option);
-                });
-              }
-            }
-
-            function updateEditRiskDescription() {
-              const category = editRiskCategoryEl.value;
-              const variableCode = editRiskVariableEl.value;
-              const item = riskData[category]?.find((r) => r.code === variableCode);
-              if (item) {
-                editRiskDescriptionEl.value = item.desc;
-              } else if (selectedChange.riskDescription) {
-                editRiskDescriptionEl.value = selectedChange.riskDescription;
-              } else {
-                editRiskDescriptionEl.value = '';
-              }
-            }
-
-            if (editRiskCategoryEl && editRiskVariableEl && editRiskDescriptionEl) {
-              editRiskCategoryEl.addEventListener('change', () => {
-                populateEditRiskVariables(editRiskCategoryEl.value);
-                updateEditRiskDescription();
-              });
-              editRiskVariableEl.addEventListener('change', updateEditRiskDescription);
-              populateEditRiskCategories();
-              populateEditRiskVariables(selectedChange.riskCategory);
-              updateEditRiskDescription();
-            }
-
-            syncWbsSelects(
-              editWbs4,
-              editWbs5,
-              editWbs6,
-              selectedChange.wbsLevel4,
-              selectedChange.wbsLevel5,
-              selectedChange.wbsLevel6,
-              editWbs2,
-              editWbs3,
-            );
           }
 
-          showPage("editChangePage");
+          function updateEditRiskDescription() {
+            const category = editRiskCategoryEl.value;
+            const variableCode = editRiskVariableEl.value;
+            const item = riskData[category]?.find(
+              (r) => r.code === variableCode,
+            );
+            if (item) {
+              editRiskDescriptionEl.value = item.desc;
+            } else if (selectedChange.riskDescription) {
+              editRiskDescriptionEl.value = selectedChange.riskDescription;
+            } else {
+              editRiskDescriptionEl.value = "";
+            }
+          }
+
+          if (
+            editRiskCategoryEl &&
+            editRiskVariableEl &&
+            editRiskDescriptionEl
+          ) {
+            editRiskCategoryEl.addEventListener("change", () => {
+              populateEditRiskVariables(editRiskCategoryEl.value);
+              updateEditRiskDescription();
+            });
+            editRiskVariableEl.addEventListener(
+              "change",
+              updateEditRiskDescription,
+            );
+            populateEditRiskCategories();
+            populateEditRiskVariables(selectedChange.riskCategory);
+            updateEditRiskDescription();
+          }
+
+          syncWbsSelects(
+            editWbs4,
+            editWbs5,
+            editWbs6,
+            selectedChange.wbsLevel4,
+            selectedChange.wbsLevel5,
+            selectedChange.wbsLevel6,
+            editWbs2,
+            editWbs3,
+          );
+        }
+
+        showPage("editChangePage");
       }
 
-    function executeDatabaseUpdate() {
-      const formData = new FormData();
+      function executeDatabaseUpdate() {
+        const formData = new FormData();
 
-      // 1. DATA UTAMA
-      formData.append('changeId', document.getElementById('editChangeId').value);
-      formData.append('changeDate', document.getElementById('editChangeDate').value);
-      formData.append('wbsLevel4', document.getElementById('editWbs4').value);
-      formData.append('wbsLevel5', document.getElementById('editWbs5').value);
-      formData.append('wbsLevel6', document.getElementById('editWbs6').value);
-      formData.append('changeCategory', document.getElementById('editCategory').value);
-      formData.append('priority', document.getElementById('editPriority').value);
-      formData.append('risk', document.getElementById('editRisk').value);
-      formData.append('projectArea', document.getElementById('editProjectArea').value);
-      formData.append('location', document.getElementById('editLocation').value);
-      formData.append('bimObjectId', document.getElementById('editBimObjectId').value);
-      formData.append('riskCategory', document.getElementById('editRiskCategory').value);
-      formData.append('riskVariable', document.getElementById('editRiskVariable').value);
-      formData.append('riskDescription', document.getElementById('editRiskDescription').value);
-      formData.append('description', document.getElementById('editDescription').value);
-      formData.append('descriptionDetail', document.getElementById('editDescriptionDetail').value);
-      
-      // 2. CHECKBOX & RADIO
-      const checkedOwner = document.querySelector('input[name="editOwnerRequest"]:checked');
-      formData.append('ownerRequest', checkedOwner ? checkedOwner.value : 'Tidak');
+        // 1. DATA UTAMA
+        formData.append(
+          "changeId",
+          document.getElementById("editChangeId").value,
+        );
+        formData.append(
+          "changeDate",
+          document.getElementById("editChangeDate").value,
+        );
+        formData.append("wbsLevel4", document.getElementById("editWbs4").value);
+        formData.append("wbsLevel5", document.getElementById("editWbs5").value);
+        formData.append("wbsLevel6", document.getElementById("editWbs6").value);
+        formData.append(
+          "changeCategory",
+          document.getElementById("editCategory").value,
+        );
+        formData.append(
+          "priority",
+          document.getElementById("editPriority").value,
+        );
+        formData.append("risk", document.getElementById("editRisk").value);
+        formData.append(
+          "projectArea",
+          document.getElementById("editProjectArea").value,
+        );
+        formData.append(
+          "location",
+          document.getElementById("editLocation").value,
+        );
+        formData.append(
+          "bimObjectId",
+          document.getElementById("editBimObjectId").value,
+        );
+        formData.append(
+          "riskCategory",
+          document.getElementById("editRiskCategory").value,
+        );
+        formData.append(
+          "riskVariable",
+          document.getElementById("editRiskVariable").value,
+        );
+        formData.append(
+          "riskDescription",
+          document.getElementById("editRiskDescription").value,
+        );
+        formData.append(
+          "description",
+          document.getElementById("editDescription").value,
+        );
+        formData.append(
+          "descriptionDetail",
+          document.getElementById("editDescriptionDetail").value,
+        );
 
-      const driverCheckboxes = document.querySelectorAll('input[name="editChangeDrivers"]:checked');
-      if (driverCheckboxes.length > 0) {
-          driverCheckboxes.forEach(cb => formData.append('changeDrivers[]', cb.value));
-      }
+        // 2. CHECKBOX & RADIO
+        const checkedOwner = document.querySelector(
+          'input[name="editOwnerRequest"]:checked',
+        );
+        formData.append(
+          "ownerRequest",
+          checkedOwner ? checkedOwner.value : "Tidak",
+        );
 
-      // 3. FUNGSI SCRAPER PINTAR (Menggunakan Class .input-col)
-      function scrapeTableToJson(tableId, type) {
+        const driverCheckboxes = document.querySelectorAll(
+          'input[name="editChangeDrivers"]:checked',
+        );
+        if (driverCheckboxes.length > 0) {
+          driverCheckboxes.forEach((cb) =>
+            formData.append("changeDrivers[]", cb.value),
+          );
+        }
+
+        // 3. FUNGSI SCRAPER PINTAR (Menggunakan Class .input-col)
+        function scrapeTableToJson(tableId, type) {
           const table = document.getElementById(tableId);
-          if (!table) return '[]';
-          
-          const rows = table.querySelectorAll('tbody tr');
+          if (!table) return "[]";
+
+          const rows = table.querySelectorAll("tbody tr");
           const items = [];
-          
-          rows.forEach(row => {
-              const el1 = row.querySelector('.input-col-1');
-              const el2 = row.querySelector('.input-col-2');
-              const el3 = row.querySelector('.input-col-3');
-              const el4 = row.querySelector('.input-col-4');
-              const el5 = row.querySelector('.input-col-5');
 
-              if (el1 && el2) { 
-                  const val1 = el1.value.trim();
-                  const val2 = el2.value.trim();
-                  const val3 = el3 ? el3.value.trim() : '';
-                  const val4 = el4 ? el4.value.trim() : '';
-                  const val5 = el5 ? el5.value.trim() : '';
+          rows.forEach((row) => {
+            const el1 = row.querySelector(".input-col-1");
+            const el2 = row.querySelector(".input-col-2");
+            const el3 = row.querySelector(".input-col-3");
+            const el4 = row.querySelector(".input-col-4");
+            const el5 = row.querySelector(".input-col-5");
 
-                  if (val1 === "") return; // Abaikan jika kosong
+            if (el1 && el2) {
+              const val1 = el1.value.trim();
+              const val2 = el2.value.trim();
+              const val3 = el3 ? el3.value.trim() : "";
+              const val4 = el4 ? el4.value.trim() : "";
+              const val5 = el5 ? el5.value.trim() : "";
 
-                  let obj = {};
-                  if (type === 'cost') obj = { item: val1, sifat: val2, kuantitas: val3, satuan: val4, justifikasi: val5 };
-                  else if (type === 'time') obj = { aktivitas: val1, sifat: val2, waktu: val3, satuan: val4, justifikasi: val5 };
-                  else if (type === 'scope') obj = { lingkup: val1, sifat: val2, kuantitas: val3, satuan: val4, dokumenAcuan: val5 };
-                  else if (type === 'quality') obj = { item: val1, spesifikasiAwal: val2, spesifikasiBaru: val3, tingkatMutu: val4, justifikasi: val5 };
-                  else if (type === 'safety') obj = { aktivitas: val1, sifat: val2, kebutuhan: val3, kuantitas: val4, satuan: val5 };
-                  items.push(obj);
-              }
+              if (val1 === "") return; // Abaikan jika kosong
+
+              let obj = {};
+              if (type === "cost")
+                obj = {
+                  item: val1,
+                  sifat: val2,
+                  kuantitas: val3,
+                  satuan: val4,
+                  justifikasi: val5,
+                };
+              else if (type === "time")
+                obj = {
+                  aktivitas: val1,
+                  sifat: val2,
+                  waktu: val3,
+                  satuan: val4,
+                  justifikasi: val5,
+                };
+              else if (type === "scope")
+                obj = {
+                  lingkup: val1,
+                  sifat: val2,
+                  kuantitas: val3,
+                  satuan: val4,
+                  dokumenAcuan: val5,
+                };
+              else if (type === "quality")
+                obj = {
+                  item: val1,
+                  spesifikasiAwal: val2,
+                  spesifikasiBaru: val3,
+                  tingkatMutu: val4,
+                  justifikasi: val5,
+                };
+              else if (type === "safety")
+                obj = {
+                  aktivitas: val1,
+                  sifat: val2,
+                  kebutuhan: val3,
+                  kuantitas: val4,
+                  satuan: val5,
+                };
+              items.push(obj);
+            }
           });
           return JSON.stringify(items);
-      }
+        }
 
-      const costChecked = document.getElementById('edit-chk-cost')?.checked;
-      const timeChecked = document.getElementById('edit-chk-time')?.checked;
-      const scopeChecked = document.getElementById('edit-chk-scope')?.checked;
-      const qualityChecked = document.getElementById('edit-chk-quality')?.checked;
-      const safetyChecked = document.getElementById('edit-chk-safety')?.checked;
+        const costChecked = document.getElementById("edit-chk-cost")?.checked;
+        const timeChecked = document.getElementById("edit-chk-time")?.checked;
+        const scopeChecked = document.getElementById("edit-chk-scope")?.checked;
+        const qualityChecked =
+          document.getElementById("edit-chk-quality")?.checked;
+        const safetyChecked =
+          document.getElementById("edit-chk-safety")?.checked;
 
-      formData.append('impactCost', costChecked ? scrapeTableToJson('edit-dyn-cost', 'cost') : '[]');
-      formData.append('impactTime', timeChecked ? scrapeTableToJson('edit-dyn-time', 'time') : '[]');
-      formData.append('impactScope', scopeChecked ? scrapeTableToJson('edit-dyn-scope', 'scope') : '[]');
-      formData.append('impactQuality', qualityChecked ? scrapeTableToJson('edit-dyn-quality', 'quality') : '[]');
-      formData.append('impactSafety', safetyChecked ? scrapeTableToJson('edit-dyn-safety', 'safety') : '[]');
+        formData.append(
+          "impactCost",
+          costChecked ? scrapeTableToJson("edit-dyn-cost", "cost") : "[]",
+        );
+        formData.append(
+          "impactTime",
+          timeChecked ? scrapeTableToJson("edit-dyn-time", "time") : "[]",
+        );
+        formData.append(
+          "impactScope",
+          scopeChecked ? scrapeTableToJson("edit-dyn-scope", "scope") : "[]",
+        );
+        formData.append(
+          "impactQuality",
+          qualityChecked
+            ? scrapeTableToJson("edit-dyn-quality", "quality")
+            : "[]",
+        );
+        formData.append(
+          "impactSafety",
+          safetyChecked ? scrapeTableToJson("edit-dyn-safety", "safety") : "[]",
+        );
 
-      // 4. DATA LAMPIRAN
-      const fileInput = document.getElementById('editPhoto');
-      if (fileInput && fileInput.files.length > 0) {
+        // 4. DATA LAMPIRAN
+        const fileInput = document.getElementById("editPhoto");
+        if (fileInput && fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
-              formData.append('photo[]', fileInput.files[i]); 
+            formData.append("photo[]", fileInput.files[i]);
           }
+        }
+
+        // 5. FETCH KE UPDATE_DATA.PHP
+        fetch("update_data.php", { method: "POST", body: formData })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              alert(data.message || "Perubahan Berhasil Disimpan!");
+              if (typeof fetchDashboardData === "function")
+                fetchDashboardData();
+              if (typeof showPage === "function") showPage("historyPage");
+            } else {
+              alert("Error: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Terjadi masalah pada koneksi server.");
+          });
       }
 
-      // 5. FETCH KE UPDATE_DATA.PHP
-      fetch('update_data.php', { method: 'POST', body: formData })
-      .then(response => response.json())
-      .then(data => {
-          if (data.status === 'success') {
-              alert(data.message || "Perubahan Berhasil Disimpan!");
-              if (typeof fetchDashboardData === "function") fetchDashboardData(); 
-              if (typeof showPage === "function") showPage('historyPage');
-          } else {
-              alert("Error: " + data.message);
-          }
-      })
-      .catch(err => {
-          console.error(err);
-          alert("Terjadi masalah pada koneksi server.");
-      });
-  }
+      function addRowForEdit(type) {
+        const tbody = document.querySelector(`#edit-dyn-${type} tbody`);
+        if (!tbody) return;
 
-  function addRowForEdit(type) {
-      const tbody = document.querySelector(`#edit-dyn-${type} tbody`);
-      if (!tbody) return;
+        const newRow = document.createElement("tr");
+        let colsHtml = "";
 
-      const newRow = document.createElement('tr');
-      let colsHtml = '';
-
-      if (type === 'cost') {
+        if (type === "cost") {
           colsHtml = `
               <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Besi D16" required></td>
                 <td>
@@ -2468,7 +2799,7 @@
                 <td><input type="text" class="input-col-4" data-key="satuan" placeholder="Btg / m3" required></td>
                 <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan perubahan" required></td>
                 `;
-      } else if (type === 'time') {
+        } else if (type === "time") {
           colsHtml = `
               <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pengecoran Lantai 2" required></td>
                 <td>
@@ -2487,7 +2818,7 @@
                 </td>
                 <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Alasan hambatan" required></td>
                 `;
-      } else if (type === 'scope') {
+        } else if (type === "scope") {
           colsHtml = `
               <td><input type="text" class="input-col-1" data-key="lingkup" placeholder="Contoh: Saluran Air Samping" required></td>
                 <td>
@@ -2501,7 +2832,7 @@
                 <td><input type="text" class="input-col-4" data-key="satuan" placeholder="m / ls" required></td>
                 <td><input type="text" class="input-col-5" data-key="dokumen" placeholder="No. Sketsa / RFI" required></td>
                 `;
-      } else if (type === 'quality') {
+        } else if (type === "quality") {
           colsHtml = `
               <td><input type="text" class="input-col-1" data-key="item" placeholder="Contoh: Pipa Air Bersih" required></td>
                 <td><input type="text" class="input-col-2" data-key="spekAwal" placeholder="Merk A (Kontrak)" required></td>
@@ -2515,7 +2846,7 @@
                 </td>
                 <td><input type="text" class="input-col-5" data-key="justifikasi" placeholder="Contoh: Stok Kosong" required></td>
                 `;
-      } else if (type === 'safety') {
+        } else if (type === "safety") {
           colsHtml = `
               <td><input type="text" class="input-col-1" data-key="aktivitas" placeholder="Contoh: Pasang Kaca Fasad" required></td>
                 <td>
@@ -2528,11 +2859,13 @@
                 <td><input type="number" step="any" class="input-col-4" data-key="kuantitas" placeholder="0" required></td>
                 <td><input type="text" class="input-col-5" data-key="satuan" placeholder="Unit / Pcs" required></td>
                 `;
-      }
+        }
 
-      newRow.innerHTML = colsHtml + `<td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>`;
-      tbody.appendChild(newRow);
-  }
+        newRow.innerHTML =
+          colsHtml +
+          `<td style="text-align:center;"><button type="button" class="btn-remove-row" onclick="this.closest('tr').remove()" title="Hapus Baris">X</button></td>`;
+        tbody.appendChild(newRow);
+      }
 
       const wbsData = {
         // 1 Pekerjaan Persiapan
@@ -2662,16 +2995,15 @@
           ],
         },
         // 1.4 Kajian Teknis Lapangan
-        "1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan":
-          {
-            "1.4.1.1 Survey ulang sebelum pelaksanaan": [
-              "Pilox/Marka",
-              "Patok kayu",
-              "Surveyor",
-              "Asisten survey/fleet",
-              "Total station/theodolit",
-            ],
-          },
+        "1.4.1 Pekerjaan Survei Lapangan untuk Peninjauan Kembali Rancangan": {
+          "1.4.1.1 Survey ulang sebelum pelaksanaan": [
+            "Pilox/Marka",
+            "Patok kayu",
+            "Surveyor",
+            "Asisten survey/fleet",
+            "Total station/theodolit",
+          ],
+        },
         "1.4.2 Pekerjaan Survei Pelaksanaan Rutin": {
           "1.4.2.1 Survey selama pelaksanaan": [
             "Pilox/Marka",
@@ -2950,11 +3282,7 @@
             "Alat tukang",
           ],
           "3.2.2.2 Galian Mekanik": ["Operator", "Excavator", "Dumptruck"],
-          "3.2.2.3 Pembuangan tanah": [
-            "Operator",
-            "Excavator",
-            "Dump truck",
-          ],
+          "3.2.2.3 Pembuangan tanah": ["Operator", "Excavator", "Dump truck"],
         },
         "3.2.3 Galian Batu": {
           "3.2.2.1 Persiapan dan pemasangan patok": [
@@ -3068,12 +3396,7 @@
             "Bulldozer",
             "Dump truck",
           ],
-          "3.3.2.3 Pemadatan": [
-            "Tanah",
-            "Pekerja",
-            "Mandor",
-            "Vibro Roller",
-          ],
+          "3.3.2.3 Pemadatan": ["Tanah", "Pekerja", "Mandor", "Vibro Roller"],
         },
         // 3.4 Perbaikan Tanah
         "3.4.1 Pekerjaan Geotekstil": {
@@ -3479,11 +3802,7 @@
             "Concrete Pump",
             "Truck mixer",
           ],
-          "7.1.4.11 Penarikan casing": [
-            "Pekerja",
-            "Mandor",
-            "Crawler Crane",
-          ],
+          "7.1.4.11 Penarikan casing": ["Pekerja", "Mandor", "Crawler Crane"],
         },
         "7.1.5 Pondasi Sumuran": {
           "7.1.5.1 Pengadaan Material": [
@@ -3557,11 +3876,7 @@
           ],
           "7.1.8.6 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
           "7.1.8.6 Slump test": ["Tukang", "Abhram cone"],
-          "7.1.8.6 Tes kubus": [
-            "Beton campuran",
-            "Tukang",
-            "cetakan kubus",
-          ],
+          "7.1.8.6 Tes kubus": ["Beton campuran", "Tukang", "cetakan kubus"],
         },
         // 7.2 Struktur Atas Beton
         "7.2.1 Pek. Abutmen/kolom/pier head (Beton cast insitu)": {
@@ -3619,11 +3934,7 @@
           ],
           "7.2.1.6 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
           "7.2.1.6 Slump test": ["Tukang", "Abhram cone"],
-          "7.2.1.6 Tes kubus": [
-            "Beton campuran",
-            "Tukang",
-            "cetakan kubus",
-          ],
+          "7.2.1.6 Tes kubus": ["Beton campuran", "Tukang", "cetakan kubus"],
           "7.2.1.7 Sambungan Ekspansi (Expansion Joint)": [
             "Expansion joint",
             "Tukang",
@@ -3640,10 +3951,7 @@
           ],
         },
         "7.2.3 Pek. Girder (Beton Pracetak pre-tension)": {
-          "7.2.3.1 Pengadaan Material": [
-            "Beton Ready Mix",
-            "Mortar grouting",
-          ],
+          "7.2.3.1 Pengadaan Material": ["Beton Ready Mix", "Mortar grouting"],
           "7.2.3.2 Instalasi PC Strand": [
             "Steel Strand",
             "Tukang",
@@ -3769,19 +4077,18 @@
             "Trailler/Boogie",
             "Crane",
           ],
-          "7.2.7.3 Pemasangan (Erection) dengan metode Balance cantilever":
-            [
-              "Girder beton pracetak",
-              "Link set steel beam",
-              "Counter weight",
-              "Operator",
-              "Rigger",
-              "Pekerja",
-              "Sling wire rope",
-              "Shackle",
-              "Trailler/Boogie",
-              "Crane",
-            ],
+          "7.2.7.3 Pemasangan (Erection) dengan metode Balance cantilever": [
+            "Girder beton pracetak",
+            "Link set steel beam",
+            "Counter weight",
+            "Operator",
+            "Rigger",
+            "Pekerja",
+            "Sling wire rope",
+            "Shackle",
+            "Trailler/Boogie",
+            "Crane",
+          ],
           "7.2.7.4 Penempatan girder pada bearing pad": [
             "Girder beton pracetak",
             "Bearing pad",
@@ -3999,11 +4306,7 @@
           ],
           "7.2.11.8 Pengendalian Mutu Di Lapangan": ["Beton campuran"],
           "7.2.11.8 Slump test": ["Tukang", "Abhram cone"],
-          "7.2.11.8 Tes kubus": [
-            "Beton campuran",
-            "Tukang",
-            "cetakan kubus",
-          ],
+          "7.2.11.8 Tes kubus": ["Beton campuran", "Tukang", "cetakan kubus"],
         },
         // 7.3 Pekerjaan asesoris Jembatan
         "7.3.1 Sandaran (Railing)": {
@@ -4116,11 +4419,7 @@
             "Spesialis",
             "Peralatan bantu",
           ],
-          "8.1.2.4 CCTV": [
-            "CCTV dan asesoris",
-            "Tukang MEP",
-            "Peralatan MEP",
-          ],
+          "8.1.2.4 CCTV": ["CCTV dan asesoris", "Tukang MEP", "Peralatan MEP"],
           "8.1.2.5 Rambu Rambu Petunjuk": [
             "Rambu Nama Gerbang Tol",
             "Rambu-rambu pengatur lalu lintas",
@@ -4289,46 +4588,46 @@
       };
 
       const wbsLevel2Labels = {
-        "1": "1 Pekerjaan Persiapan",
-        "2": "2 Pekerjaan Drainase",
-        "3": "3 Pekerjaan Tanah",
-        "4": "4 Pelebaran Perkerasan dan Bahu Jalan",
-        "5": "5 Perkerasan Berbutir & Perkerasan Beton Semen",
-        "6": "6 Perkerasan Aspal",
-        "7": "7 Pekerjaan Struktur",
-        "8": "8 Fasilitas Pelayanan Tol",
-        "9": "9 Pekerjaan Pengembalian Kondisi Pekerjaan Minor",
+        1: "1 Pekerjaan Persiapan",
+        2: "2 Pekerjaan Drainase",
+        3: "3 Pekerjaan Tanah",
+        4: "4 Pelebaran Perkerasan dan Bahu Jalan",
+        5: "5 Perkerasan Berbutir & Perkerasan Beton Semen",
+        6: "6 Perkerasan Aspal",
+        7: "7 Pekerjaan Struktur",
+        8: "8 Fasilitas Pelayanan Tol",
+        9: "9 Pekerjaan Pengembalian Kondisi Pekerjaan Minor",
       };
 
       const wbsLevel3Labels = {
-        "1.1": "1.1 Mobilisasi & Demobilisasi",
-        "1.2": "1.2 Kantor Lapangan dan Fasilitasnya",
-        "1.3": "1.3 Manajemen dan Keselamatan Lalu Lintas",
-        "1.4": "1.4 Kajian Teknis Lapangan",
-        "1.5": "1.5 Pengamanan Lingkungan Hidup",
-        "1.6": "1.6 Relokasi Eksisting utilitas",
-        "1.7": "1.7 Keselamatan dan Kesehatan Kerja",
-        "1.8": "1.8 Pengujian Tanah",
-        "1.9": "1.9 Manajemen Mutu",
-        "2.1": "2.1 Drainase Penunjang / konstruksi Jembatan",
-        "2.2": "2.2 Drainase Pada Konstruksi Jembatan",
-        "3.1": "3.1 Land clearing",
-        "3.2": "3.2 Galian",
-        "3.3": "3.3 Timbunan",
-        "3.4": "3.4 Perbaikan Tanah",
-        "4.1": "4.1 Pekerjaan pelebaran perkerasan",
-        "4.2": "4.2 Pekerjaan bahu jalan",
-        "5.1": "5.1 Perkerasan berbutir",
-        "5.2": "5.2 Perkerasan Beton Semen",
-        "6.1": "6.1 Asphal Mixing Plant (AMP)",
-        "6.2": "6.2 Non Asphal Mixing Plant (Non-AMP)",
-        "7.1": "7.1 Struktur Bawah",
-        "7.2": "7.2 Struktur Atas Beton",
-        "7.3": "7.3 Pekerjaan asesoris Jembatan",
-        "8.1": "8.1 Plaza Tol",
-        "8.2": "8.2 Kantor dan Fasilitas Tol",
-        "9.1": "9.1 Pengembalian Kondisi Pekerjaan Minor",
-        "9.2": "9.2 Pemeliharaan Rutin Jalan & Jembatan",
+        1.1: "1.1 Mobilisasi & Demobilisasi",
+        1.2: "1.2 Kantor Lapangan dan Fasilitasnya",
+        1.3: "1.3 Manajemen dan Keselamatan Lalu Lintas",
+        1.4: "1.4 Kajian Teknis Lapangan",
+        1.5: "1.5 Pengamanan Lingkungan Hidup",
+        1.6: "1.6 Relokasi Eksisting utilitas",
+        1.7: "1.7 Keselamatan dan Kesehatan Kerja",
+        1.8: "1.8 Pengujian Tanah",
+        1.9: "1.9 Manajemen Mutu",
+        2.1: "2.1 Drainase Penunjang / konstruksi Jembatan",
+        2.2: "2.2 Drainase Pada Konstruksi Jembatan",
+        3.1: "3.1 Land clearing",
+        3.2: "3.2 Galian",
+        3.3: "3.3 Timbunan",
+        3.4: "3.4 Perbaikan Tanah",
+        4.1: "4.1 Pekerjaan pelebaran perkerasan",
+        4.2: "4.2 Pekerjaan bahu jalan",
+        5.1: "5.1 Perkerasan berbutir",
+        5.2: "5.2 Perkerasan Beton Semen",
+        6.1: "6.1 Asphal Mixing Plant (AMP)",
+        6.2: "6.2 Non Asphal Mixing Plant (Non-AMP)",
+        7.1: "7.1 Struktur Bawah",
+        7.2: "7.2 Struktur Atas Beton",
+        7.3: "7.3 Pekerjaan asesoris Jembatan",
+        8.1: "8.1 Plaza Tol",
+        8.2: "8.2 Kantor dan Fasilitas Tol",
+        9.1: "9.1 Pengembalian Kondisi Pekerjaan Minor",
+        9.2: "9.2 Pemeliharaan Rutin Jalan & Jembatan",
       };
 
       function getWbsCode(value, depth) {
@@ -4338,23 +4637,36 @@
       }
 
       function getWbsLevel2Options() {
-        return [...new Set(Object.keys(wbsData).map((item) => getWbsCode(item, 1)).filter(Boolean))];
+        return [
+          ...new Set(
+            Object.keys(wbsData)
+              .map((item) => getWbsCode(item, 1))
+              .filter(Boolean),
+          ),
+        ];
       }
 
       function getWbsLevel3Options(level2Code = "") {
-        return [...new Set(
-          Object.keys(wbsData)
-            .filter((item) => !level2Code || getWbsCode(item, 1) === level2Code)
-            .map((item) => getWbsCode(item, 2))
-            .filter(Boolean),
-        )];
+        return [
+          ...new Set(
+            Object.keys(wbsData)
+              .filter(
+                (item) => !level2Code || getWbsCode(item, 1) === level2Code,
+              )
+              .map((item) => getWbsCode(item, 2))
+              .filter(Boolean),
+          ),
+        ];
       }
 
       function getWbsLevel4Options(level2Code = "", level3Code = "") {
         return Object.keys(wbsData).filter((item) => {
           const itemLevel2 = getWbsCode(item, 1);
           const itemLevel3 = getWbsCode(item, 2);
-          return (!level2Code || itemLevel2 === level2Code) && (!level3Code || itemLevel3 === level3Code);
+          return (
+            (!level2Code || itemLevel2 === level2Code) &&
+            (!level3Code || itemLevel3 === level3Code)
+          );
         });
       }
 
@@ -4373,23 +4685,45 @@
         });
       }
 
-      function syncWbsSelects(level4Select, level5Select, level6Select, selected4, selected5, selected6, level2Select = null, level3Select = null) {
+      function syncWbsSelects(
+        level4Select,
+        level5Select,
+        level6Select,
+        selected4,
+        selected5,
+        selected6,
+        level2Select = null,
+        level3Select = null,
+      ) {
         const selected2 = getWbsCode(selected4, 1);
         const selected3 = getWbsCode(selected4, 2);
 
         if (level2Select) {
-          populateWbsOptions(level2Select, getWbsLevel2Options(), "Pilih Rumpun Pekerjaan", wbsLevel2Labels);
+          populateWbsOptions(
+            level2Select,
+            getWbsLevel2Options(),
+            "Pilih Rumpun Pekerjaan",
+            wbsLevel2Labels,
+          );
           level2Select.value = selected2;
         }
 
         if (level3Select) {
-          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select?.value || selected2), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          populateWbsOptions(
+            level3Select,
+            getWbsLevel3Options(level2Select?.value || selected2),
+            "Pilih Jenis Pekerjaan",
+            wbsLevel3Labels,
+          );
           level3Select.value = selected3;
         }
 
         populateWbsOptions(
           level4Select,
-          getWbsLevel4Options(level2Select?.value || selected2, level3Select?.value || selected3),
+          getWbsLevel4Options(
+            level2Select?.value || selected2,
+            level3Select?.value || selected3,
+          ),
           "Pilih Paket Pekerjaan",
         );
         if (selected4 && wbsData[selected4]) {
@@ -4399,7 +4733,11 @@
         }
         level4Select.dispatchEvent(new Event("change"));
 
-        if (selected5 && wbsData[level4Select.value] && wbsData[level4Select.value][selected5]) {
+        if (
+          selected5 &&
+          wbsData[level4Select.value] &&
+          wbsData[level4Select.value][selected5]
+        ) {
           level5Select.value = selected5;
         } else {
           level5Select.value = "";
@@ -4418,31 +4756,63 @@
         }
       }
 
-      function attachWbsCascade(level2Select, level3Select, level4Select, level5Select, level6Select) {
+      function attachWbsCascade(
+        level2Select,
+        level3Select,
+        level4Select,
+        level5Select,
+        level6Select,
+      ) {
         if (!level4Select || !level5Select || !level6Select) return;
 
-        syncWbsSelects(level4Select, level5Select, level6Select, "", "", "", level2Select, level3Select);
+        syncWbsSelects(
+          level4Select,
+          level5Select,
+          level6Select,
+          "",
+          "",
+          "",
+          level2Select,
+          level3Select,
+        );
 
         level2Select?.addEventListener("change", () => {
-          populateWbsOptions(level3Select, getWbsLevel3Options(level2Select.value), "Pilih Jenis Pekerjaan", wbsLevel3Labels);
+          populateWbsOptions(
+            level3Select,
+            getWbsLevel3Options(level2Select.value),
+            "Pilih Jenis Pekerjaan",
+            wbsLevel3Labels,
+          );
           populateWbsOptions(level4Select, [], "Pilih Paket Pekerjaan");
           populateWbsOptions(level5Select, [], "Pilih Aktivitas");
           populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
         });
 
         level3Select?.addEventListener("change", () => {
-          populateWbsOptions(level4Select, getWbsLevel4Options(level2Select?.value || "", level3Select.value), "Pilih Paket Pekerjaan");
+          populateWbsOptions(
+            level4Select,
+            getWbsLevel4Options(level2Select?.value || "", level3Select.value),
+            "Pilih Paket Pekerjaan",
+          );
           populateWbsOptions(level5Select, [], "Pilih Aktivitas");
           populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
         });
 
         level4Select.addEventListener("change", () => {
-          populateWbsOptions(level5Select, Object.keys(wbsData[level4Select.value] || {}), "Pilih Aktivitas");
+          populateWbsOptions(
+            level5Select,
+            Object.keys(wbsData[level4Select.value] || {}),
+            "Pilih Aktivitas",
+          );
           populateWbsOptions(level6Select, [], "Pilih Sumber Daya");
         });
 
         level5Select.addEventListener("change", () => {
-          populateWbsOptions(level6Select, wbsData[level4Select.value]?.[level5Select.value] || [], "Pilih Sumber Daya");
+          populateWbsOptions(
+            level6Select,
+            wbsData[level4Select.value]?.[level5Select.value] || [],
+            "Pilih Sumber Daya",
+          );
         });
       }
 
@@ -5005,7 +5375,8 @@
       function parseImpactRows(dataJson) {
         if (!dataJson || dataJson === "[]") return [];
         try {
-          const rows = typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
+          const rows =
+            typeof dataJson === "string" ? JSON.parse(dataJson) : dataJson;
           return Array.isArray(rows) ? rows : [];
         } catch (error) {
           console.warn("Gagal membaca data impact area:", error);
@@ -5030,7 +5401,12 @@
       function setSelectValue(select, value) {
         if (!select) return;
         const safeValue = value ?? "";
-        if (safeValue && !Array.from(select.options).some((option) => option.value === safeValue)) {
+        if (
+          safeValue &&
+          !Array.from(select.options).some(
+            (option) => option.value === safeValue,
+          )
+        ) {
           select.add(new Option(safeValue, safeValue));
         }
         select.value = safeValue;
@@ -5052,7 +5428,9 @@
           if (!newRow) return;
 
           newRow.querySelectorAll(".dyn-val").forEach((field) => {
-            const aliases = aliasesByKey[field.dataset.key] || [field.dataset.key];
+            const aliases = aliasesByKey[field.dataset.key] || [
+              field.dataset.key,
+            ];
             const value = pickRowValue(row, aliases);
             if (field.tagName === "SELECT") {
               setSelectValue(field, value);
@@ -5064,14 +5442,18 @@
       }
 
       async function resubmitRejectedChange(id) {
-        const sourceChange = changeRequestsFromDB.find((item) => (item.change_id || item.changeId) === id);
+        const sourceChange = changeRequestsFromDB.find(
+          (item) => (item.change_id || item.changeId) === id,
+        );
         if (!sourceChange) {
           alert("Data Change Request tidak ditemukan.");
           return;
         }
 
         if ((sourceChange.status || "").toUpperCase() !== "REJECTED") {
-          alert("Hanya Change Request berstatus REJECTED yang dapat diajukan ulang.");
+          alert(
+            "Hanya Change Request berstatus REJECTED yang dapat diajukan ulang.",
+          );
           return;
         }
 
@@ -5133,7 +5515,9 @@
         }
 
         const ownerValue = sourceChange.ownerRequest || "Tidak";
-        const ownerRadio = document.querySelector(`input[name="ownerRequest"][value="${ownerValue}"]`);
+        const ownerRadio = document.querySelector(
+          `input[name="ownerRequest"][value="${ownerValue}"]`,
+        );
         if (ownerRadio) ownerRadio.checked = true;
 
         const drivers = Array.isArray(sourceChange.changeDrivers)
@@ -5142,9 +5526,11 @@
               .split(",")
               .map((item) => item.trim())
               .filter(Boolean);
-        document.querySelectorAll('input[name="changeDrivers"]').forEach((checkbox) => {
-          checkbox.checked = drivers.includes(checkbox.value);
-        });
+        document
+          .querySelectorAll('input[name="changeDrivers"]')
+          .forEach((checkbox) => {
+            checkbox.checked = drivers.includes(checkbox.value);
+          });
 
         fillImpactRows("cost", parseImpactRows(sourceChange.impactCost), {
           item: ["item"],
@@ -5182,29 +5568,34 @@
           satuan: ["satuan"],
         });
 
-        showPage("newChangePage", document.querySelector(".submenu-item[onclick*='newChangePage']"));
+        showPage(
+          "newChangePage",
+          document.querySelector(".submenu-item[onclick*='newChangePage']"),
+        );
         document.getElementById("identify").style.display = "block";
         document.getElementById("register").style.display = "none";
         document.getElementById("step2-indicator").classList.remove("active");
         document.getElementById("step1-indicator").classList.add("active");
         window.scrollTo({ top: 0, behavior: "smooth" });
 
-        alert("Form New Change sudah terisi dari data REJECTED. Change ID sudah dibuat terbaru; silakan melakukan penyuntingan dan unggah bukti ulang sebelum submit.");
+        alert(
+          "Form New Change sudah terisi dari data REJECTED. Change ID sudah dibuat terbaru; silakan melakukan penyuntingan dan unggah bukti ulang sebelum submit.",
+        );
       }
 
       function submitCR(event) {
         // 1. Mencegah form melakukan refresh otomatis (Ini sangat penting!)
         if (event) {
-            event.preventDefault(); 
+          event.preventDefault();
         }
 
         if (hasAssignedProject !== true) {
-            if (hasAssignedProject === null) {
-                alert("Data assignment project masih dimuat. Coba lagi sebentar.");
-                return;
-            }
-            promptUnassignedProjectLogout();
+          if (hasAssignedProject === null) {
+            alert("Data assignment project masih dimuat. Coba lagi sebentar.");
             return;
+          }
+          promptUnassignedProjectLogout();
+          return;
         }
 
         const requiredFields = document.querySelectorAll(
@@ -5217,94 +5608,141 @@
             return;
           }
         }
-        
+
         // 1. Inisialisasi FormData (mendukung pengiriman teks & upload file sekaligus)
         const formData = new FormData();
 
         // 2. Ambil data dari elemen Tahap 1 (Identify)
-        formData.append('wbsLevel4', document.getElementById('wbsLevel4').value);
-        formData.append('wbsLevel5', document.getElementById('wbsLevel5').value);
-        formData.append('wbsLevel6', document.getElementById('wbsLevel6').value);
-        formData.append('changeCategory', document.getElementById('changeCategory').value);
-        formData.append('priority', document.getElementById('priority').value);
-        formData.append('risk', document.getElementById('risk').value);
-        formData.append('changeId', document.getElementById('changeId').value);
-        formData.append('changeDate', document.getElementById('changeDate').value);
-        formData.append('submittedBy', document.getElementById('submittedBy').value);
-        formData.append('projectArea', document.getElementById('projectArea').value);
-        formData.append('location', document.getElementById('location').value);
-        formData.append('bimObjectId', document.getElementById('bimObjectId').value);
-        formData.append('riskCategory', document.getElementById('riskCategory').value);
-        formData.append('riskVariable', document.getElementById('riskVariable').value);
-        const createRiskDescription = document.getElementById('riskDescription');
-        formData.append('riskDescription', createRiskDescription ? createRiskDescription.value : '');
-        formData.append('description', document.getElementById('description').value);
+        formData.append(
+          "wbsLevel4",
+          document.getElementById("wbsLevel4").value,
+        );
+        formData.append(
+          "wbsLevel5",
+          document.getElementById("wbsLevel5").value,
+        );
+        formData.append(
+          "wbsLevel6",
+          document.getElementById("wbsLevel6").value,
+        );
+        formData.append(
+          "changeCategory",
+          document.getElementById("changeCategory").value,
+        );
+        formData.append("priority", document.getElementById("priority").value);
+        formData.append("risk", document.getElementById("risk").value);
+        formData.append("changeId", document.getElementById("changeId").value);
+        formData.append(
+          "changeDate",
+          document.getElementById("changeDate").value,
+        );
+        formData.append(
+          "submittedBy",
+          document.getElementById("submittedBy").value,
+        );
+        formData.append(
+          "projectArea",
+          document.getElementById("projectArea").value,
+        );
+        formData.append("location", document.getElementById("location").value);
+        formData.append(
+          "bimObjectId",
+          document.getElementById("bimObjectId").value,
+        );
+        formData.append(
+          "riskCategory",
+          document.getElementById("riskCategory").value,
+        );
+        formData.append(
+          "riskVariable",
+          document.getElementById("riskVariable").value,
+        );
+        const createRiskDescription =
+          document.getElementById("riskDescription");
+        formData.append(
+          "riskDescription",
+          createRiskDescription ? createRiskDescription.value : "",
+        );
+        formData.append(
+          "description",
+          document.getElementById("description").value,
+        );
 
         // 3. Ambil data dari elemen Tahap 2 (Register)
-        
-        const ownerReq = document.querySelector('input[name="ownerRequest"]:checked');
-        formData.append('ownerRequest', ownerReq ? ownerReq.value : 'Tidak');
+
+        const ownerReq = document.querySelector(
+          'input[name="ownerRequest"]:checked',
+        );
+        formData.append("ownerRequest", ownerReq ? ownerReq.value : "Tidak");
         const drivers = [];
-        document.querySelectorAll('input[name="changeDrivers"]:checked').forEach(cb => drivers.push(cb.value));
-        formData.append('changeDrivers', drivers.join(', '));
+        document
+          .querySelectorAll('input[name="changeDrivers"]:checked')
+          .forEach((cb) => drivers.push(cb.value));
+        formData.append("changeDrivers", drivers.join(", "));
 
         // 3. Panen Data JSON dari masing-masing Tabel Dinamis
-        const costData = extractTableData('cost');
-        if(costData) formData.append('impactCost', costData);
+        const costData = extractTableData("cost");
+        if (costData) formData.append("impactCost", costData);
 
-        const timeData = extractTableData('time');
-        if(timeData) formData.append('impactTime', timeData);
+        const timeData = extractTableData("time");
+        if (timeData) formData.append("impactTime", timeData);
 
-        const scopeData = extractTableData('scope');
-        if(scopeData) formData.append('impactScope', scopeData);
+        const scopeData = extractTableData("scope");
+        if (scopeData) formData.append("impactScope", scopeData);
 
-        const qualityData = extractTableData('quality');
-        if(qualityData) formData.append('impactQuality', qualityData);
+        const qualityData = extractTableData("quality");
+        if (qualityData) formData.append("impactQuality", qualityData);
 
-        const safetyData = extractTableData('safety');
-        if(safetyData) formData.append('impactSafety', safetyData);
+        const safetyData = extractTableData("safety");
+        if (safetyData) formData.append("impactSafety", safetyData);
 
-        formData.append('descriptionDetail', document.getElementById('descriptionDetail').value);
+        formData.append(
+          "descriptionDetail",
+          document.getElementById("descriptionDetail").value,
+        );
 
         // 4. Ambil file Foto / PDF (Mendukung multiple files)
-        const fileInput = document.getElementById('photo');
+        const fileInput = document.getElementById("photo");
         if (fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
-            formData.append('photo[]', fileInput.files[i]);
+            formData.append("photo[]", fileInput.files[i]);
           }
         }
 
         // 5. Eksekusi pengiriman ke script PHP secara asynchronous
-        fetch('save_data.php', {
-          method: 'POST',
-          body: formData
+        fetch("save_data.php", {
+          method: "POST",
+          body: formData,
         })
-        .then(response => response.json()) // Mengharapkan respon dalam format JSON balik dari PHP
-        .then(data => {
-          if (data.status === 'success') {
-            alert("Change Request berhasil disimpan ke database!");
-            
-            // 6. Setelah sukses, Anda bisa melakukan tindakan tambahan seperti mereset form, memperbarui tampilan, atau mengambil data terbaru untuk dashboard.
-            try {
-              fetchDashboardData();
-              resetNewChangeFormAfterSubmit();
-              generateAutoChangeId();
-              // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
-              showPage('historyPage'); 
-            } catch (uiError) {
-              console.error("Data tersimpan, tetapi UI gagal di-reset:", uiError);
+          .then((response) => response.json()) // Mengharapkan respon dalam format JSON balik dari PHP
+          .then((data) => {
+            if (data.status === "success") {
+              alert("Change Request berhasil disimpan ke database!");
+
+              // 6. Setelah sukses, Anda bisa melakukan tindakan tambahan seperti mereset form, memperbarui tampilan, atau mengambil data terbaru untuk dashboard.
+              try {
+                fetchDashboardData();
+                resetNewChangeFormAfterSubmit();
+                generateAutoChangeId();
+                // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
+                showPage("historyPage");
+              } catch (uiError) {
+                console.error(
+                  "Data tersimpan, tetapi UI gagal di-reset:",
+                  uiError,
+                );
+              }
+
+              // Anda juga bisa memanggil fungsi renderTables() atau updateDashboard()
+              // untuk memperbarui tampilan dashboard jika datanya di-load dinamis.
+            } else {
+              alert("Gagal menyimpan data ke database: " + data.message);
             }
-            
-            // Anda juga bisa memanggil fungsi renderTables() atau updateDashboard() 
-            // untuk memperbarui tampilan dashboard jika datanya di-load dinamis.
-          } else {
-            alert("Gagal menyimpan data ke database: " + data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert("Terjadi kesalahan sistem saat mengirim data.");
-        });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Terjadi kesalahan sistem saat mengirim data.");
+          });
       }
 
       function saveChange() {
@@ -5579,7 +6017,7 @@
       document.querySelector('input[type="date"]').value = new Date()
         .toISOString()
         .split("T")[0];
-    
+
       // 1. Variabel global untuk menyimpan data dari database
       let changeRequestsFromDB = [];
       const seRecentActivityPagerState = {};
@@ -5641,91 +6079,97 @@
 
       // 2. Fungsi utama Fetch Data dari Database
       async function fetchDashboardData() {
-          try {
-              // 1. Ambil nama user yang sedang login dari localStorage
-              // Catatan: Sesuaikan 'username' dengan key yang Anda gunakan saat login sukses
-              const currentUser = localStorage.getItem("username") || "SITE ENGINEER"; 
+        try {
+          // 1. Ambil nama user yang sedang login dari localStorage
+          // Catatan: Sesuaikan 'username' dengan key yang Anda gunakan saat login sukses
+          const currentUser =
+            localStorage.getItem("username") || "SITE ENGINEER";
 
-              // 2. Kirim nama user tersebut sebagai query parameter ke PHP
-              const response = await fetch(`get_data.php?user=${encodeURIComponent(currentUser)}`);
-              const result = await response.json();
-              
-              if (result.status === 'success') {
-                  // Simpan data dari database ke variabel global
-                  changeRequestsFromDB = result.data;
-                  
-                  // Panggil fungsi pembantu untuk update UI dashboard dan Tabel
-                  updateDashboardWithRealData();
-                  renderTablesWithRealData();
-                  seRenderRecentActivities(0);
-              } else {
-                  console.error("Gagal memuat data dari database:", result.message);
-              }
-          } catch (error) {
-              console.error("Terjadi kesalahan sistem saat fetch data:", error);
+          // 2. Kirim nama user tersebut sebagai query parameter ke PHP
+          const response = await fetch(
+            `get_data.php?user=${encodeURIComponent(currentUser)}`,
+          );
+          const result = await response.json();
+
+          if (result.status === "success") {
+            // Simpan data dari database ke variabel global
+            changeRequestsFromDB = result.data;
+
+            // Panggil fungsi pembantu untuk update UI dashboard dan Tabel
+            updateDashboardWithRealData();
+            renderTablesWithRealData();
+            seRenderRecentActivities(0);
+          } else {
+            console.error("Gagal memuat data dari database:", result.message);
           }
+        } catch (error) {
+          console.error("Terjadi kesalahan sistem saat fetch data:", error);
+        }
       }
 
       // Fungsi untuk mengambil nomor Change ID otomatis dari database
       async function generateAutoChangeId() {
-          try {
-              const response = await fetch('get_next_id.php');
-              const result = await response.json();
-              
-              if (result.status === 'success') {
-                  // 1. Masukkan ID otomatis ke elemen input HTML
-                  const changeIdInput = document.getElementById('changeId');
-                  if (changeIdInput) {
-                      changeIdInput.value = result.next_id;
-                  }
+        try {
+          const response = await fetch("get_next_id.php");
+          const result = await response.json();
 
-                  // 2. UPDATE KOTAK TOTAL CHANGE DI DASHBOARD
-                  const totalChangeEl = document.getElementById('totalChange');
-                  if (totalChangeEl) {
-                      totalChangeEl.innerText = result.total_all; // Mengisi dengan angka total seluruh database
-                  }
-              } else {
-                  console.error("Gagal generate ID:", result.message);
-              }
-          } catch (error) {
-              console.error("Terjadi kesalahan sistem saat mengambil ID baru:", error);
+          if (result.status === "success") {
+            // 1. Masukkan ID otomatis ke elemen input HTML
+            const changeIdInput = document.getElementById("changeId");
+            if (changeIdInput) {
+              changeIdInput.value = result.next_id;
+            }
+
+            // 2. UPDATE KOTAK TOTAL CHANGE DI DASHBOARD
+            const totalChangeEl = document.getElementById("totalChange");
+            if (totalChangeEl) {
+              totalChangeEl.innerText = result.total_all; // Mengisi dengan angka total seluruh database
+            }
+          } else {
+            console.error("Gagal generate ID:", result.message);
           }
+        } catch (error) {
+          console.error(
+            "Terjadi kesalahan sistem saat mengambil ID baru:",
+            error,
+          );
+        }
       }
 
       // 3. Fungsi untuk Update Angka di Bagian Dashboard (Open, Closed, High Risk)
       function updateDashboardWithRealData() {
-          let openCount = 0;
-          let closedCount = 0;
-          let highRiskCount = 0;
+        let openCount = 0;
+        let closedCount = 0;
+        let highRiskCount = 0;
 
-          changeRequestsFromDB.forEach(item => {
-              // 1. Hitung Closed Change (Status: APPROVED atau REJECTED)
-              if (item.status === 'APPROVED' || item.status === 'REJECTED') {
-                  closedCount++;
-              } 
-              // 2. Hitung Open Change (Status: PENDING atau OPEN)
-              else if (item.status === 'PENDING' || item.status === 'OPEN') {
-                  openCount++;
-              }
-              
-              // 3. Hitung High Risk (Nilai angka risk >= 7)
-              // Kita gunakan parseFloat agar string dari database dikonversi menjadi angka tulen
-              const riskValue = parseFloat(item.risk) || 0; 
-              if (riskValue >= 7) {
-                  highRiskCount++;
-              }
-          });
+        changeRequestsFromDB.forEach((item) => {
+          // 1. Hitung Closed Change (Status: APPROVED atau REJECTED)
+          if (item.status === "APPROVED" || item.status === "REJECTED") {
+            closedCount++;
+          }
+          // 2. Hitung Open Change (Status: PENDING atau OPEN)
+          else if (item.status === "PENDING" || item.status === "OPEN") {
+            openCount++;
+          }
 
-          // Masukkan nilainya ke dalam elemen HTML bawaan Anda
-          if (document.getElementById("openChange")) {
-              document.getElementById("openChange").innerText = openCount;
+          // 3. Hitung High Risk (Nilai angka risk >= 7)
+          // Kita gunakan parseFloat agar string dari database dikonversi menjadi angka tulen
+          const riskValue = parseFloat(item.risk) || 0;
+          if (riskValue >= 7) {
+            highRiskCount++;
           }
-          if (document.getElementById("closedChange")) {
-              document.getElementById("closedChange").innerText = closedCount;
-          }
-          if (document.getElementById("highRisk")) {
-              document.getElementById("highRisk").innerText = highRiskCount;
-          }
+        });
+
+        // Masukkan nilainya ke dalam elemen HTML bawaan Anda
+        if (document.getElementById("openChange")) {
+          document.getElementById("openChange").innerText = openCount;
+        }
+        if (document.getElementById("closedChange")) {
+          document.getElementById("closedChange").innerText = closedCount;
+        }
+        if (document.getElementById("highRisk")) {
+          document.getElementById("highRisk").innerText = highRiskCount;
+        }
       }
 
       // 4. Fungsi untuk merender data baris ke dalam Tabel History Anda
@@ -5742,21 +6186,20 @@
 
         // Lakukan perulangan untuk setiap data dari Database
         changeRequestsFromDB.forEach((item) => {
-            
-            // --- MAPPING VARIABEL DATABASE ---
-            // Karena nama kolom di database berbeda dengan data dummy lama Anda, 
-            // kita mapping nilainya di sini agar rapi.
-            const id = item.changeId || item.change_id || "-";
-            const submittedBy = item.submittedBy || "-";
-            const date = item.changeDate || item.change_date || "-";
-            const category = item.changeCategory || "-";
-            const detail = item.description || "-";
-            const risk = item.risk || "-";
-            const status = (item.status || "PENDING").toUpperCase();
+          // --- MAPPING VARIABEL DATABASE ---
+          // Karena nama kolom di database berbeda dengan data dummy lama Anda,
+          // kita mapping nilainya di sini agar rapi.
+          const id = item.changeId || item.change_id || "-";
+          const submittedBy = item.submittedBy || "-";
+          const date = item.changeDate || item.change_date || "-";
+          const category = item.changeCategory || "-";
+          const detail = item.description || "-";
+          const risk = item.risk || "-";
+          const status = (item.status || "PENDING").toUpperCase();
 
-            // 2. BAGIAN OPEN CHANGE (Status: PENDING atau OPEN)
-            if (openBody && (status === "PENDING")) {
-                openBody.innerHTML += `
+          // 2. BAGIAN OPEN CHANGE (Status: PENDING atau OPEN)
+          if (openBody && status === "PENDING") {
+            openBody.innerHTML += `
                     <tr>
                         <td style="font-weight:600; color:#0f2d52;">${id}</td>
                         <td>${submittedBy}</td>
@@ -5770,11 +6213,11 @@
                           </button>
                         </td>
                     </tr>`;
-            }
+          }
 
-            // 3. BAGIAN CLOSED CHANGE (Status: APPROVED atau REJECTED)
-            if (closedBody && (status === "APPROVED" || status === "REJECTED")) {
-                closedBody.innerHTML += `
+          // 3. BAGIAN CLOSED CHANGE (Status: APPROVED atau REJECTED)
+          if (closedBody && (status === "APPROVED" || status === "REJECTED")) {
+            closedBody.innerHTML += `
                     <tr>
                         <td style="font-weight:600; color:#0f2d52;">${id}</td>
                         <td>${submittedBy}</td>
@@ -5786,14 +6229,14 @@
                             <button class="btn-edit-table" onclick="editChange('${id}')">
                                 👁️ Lihat
                             </button>
-                            ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ''}
+                            ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ""}
                         </td>
                     </tr>`;
-            }
+          }
 
-            // 4. BAGIAN HISTORY CHANGE (Semua Status Masuk ke Sini)
-            if (historyBody) {
-                historyBody.innerHTML += `
+          // 4. BAGIAN HISTORY CHANGE (Semua Status Masuk ke Sini)
+          if (historyBody) {
+            historyBody.innerHTML += `
                     <tr>
                         <td style="font-weight:600; color:#0f2d52;">${id}</td>
                         <td>${date}</td>
@@ -5805,12 +6248,30 @@
                           <button class="btn-edit-table" onclick="editChange('${id}')">
                                 👁️ Lihat
                           </button>
-                          ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ''}
+                          ${status === "REJECTED" ? `<button class="btn-edit-table" onclick="resubmitRejectedChange('${id}')" style="margin-left:6px; border-color:#f59e0b; color:#92400e;">Ajukan Ulang</button>` : ""}
                         </td>
                     </tr>`;
-            }
+          }
         });
       }
+      document
+        .getElementById("changeDate")
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, ""); // Hapus semua karakter non-angka
+          let formattedValue = "";
+
+          if (value.length > 0) {
+            formattedValue += value.substr(0, 2);
+          }
+          if (value.length > 2) {
+            formattedValue += "/" + value.substr(2, 2);
+          }
+          if (value.length > 4) {
+            formattedValue += "/" + value.substr(4, 4);
+          }
+
+          e.target.value = formattedValue;
+        });
     </script>
   </body>
 </html>
