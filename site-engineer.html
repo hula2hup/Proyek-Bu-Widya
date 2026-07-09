@@ -1325,10 +1325,23 @@
               </div>
 
               <div class="form-group">
-                <label>Location</label>
+                <label>Format Lokasi</label>
+                <select id="locationFormat" required>
+                  <option value="">Pilih Format Lokasi</option>
+                  <option value="STA">STA</option>
+                  <option value="Pier/Abutment">Pier/Abutment</option>
+                  <option value="Span">Span</option>
+                  <option value="Zona Fabrikasi">Zona Fabrikasi</option>
+                  <option value="Stockyard">Stockyard</option>
+                  <option value="Titik Koordinat">Titik Koordinat</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Detail Lokasi</label>
                 <input
                   type="text"
-                  placeholder="Masukkan Lokasi"
+                  placeholder="Masukkan Detail (Misal: STA 10+000 / Pier 2)"
                   id="location"
                   required
                 />
@@ -2378,7 +2391,19 @@ Pilih variabel risiko</textarea
                           <div class="form-group"><label>Date</label><input type="text" id="editChangeDate" value="${selectedChange.change_date || selectedChange.changeDate || ""}" ${readonlyAttr}></div>
                           <div class="form-group"><label>Submitted By</label><input id="editSubmittedBy" value="${selectedChange.submittedBy || "SITE ENGINEER"}" readonly style="background:#e9ecef; font-weight:bold;"></div>
                           <div class="form-group"><label>Project Area</label><input type="text" id="editProjectArea" value="${selectedChange.projectArea || ""}" readonly style="background:#e9ecef; font-weight:bold;"></div>
-                          <div class="form-group"><label>Location</label><input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}></div>
+                          <div class="form-group">
+                              <label>Format Lokasi</label>
+                              <select id="editLocationFormat" ${disabledAttr}>
+                                  <option value="">Pilih Format Lokasi</option>
+                                  <option value="STA" ${selectedChange.locationFormat === "STA" ? "selected" : ""}>STA</option>
+                                  <option value="Pier/Abutment" ${selectedChange.locationFormat === "Pier/Abutment" ? "selected" : ""}>Pier/Abutment</option>
+                                  <option value="Span" ${selectedChange.locationFormat === "Span" ? "selected" : ""}>Span</option>
+                                  <option value="Zona Fabrikasi" ${selectedChange.locationFormat === "Zona Fabrikasi" ? "selected" : ""}>Zona Fabrikasi</option>
+                                  <option value="Stockyard" ${selectedChange.locationFormat === "Stockyard" ? "selected" : ""}>Stockyard</option>
+                                  <option value="Titik Koordinat" ${selectedChange.locationFormat === "Titik Koordinat" ? "selected" : ""}>Titik Koordinat</option>
+                              </select>
+                          </div>
+                          <div class="form-group"><label>Detail Lokasi</label><input type="text" id="editLocation" value="${selectedChange.location || ""}" ${readonlyAttr}></div>
                           <div class="form-group"><label>BIM Object ID</label><input type="text" id="editBimObjectId" value="${selectedChange.bimObjectId || ""}" ${readonlyAttr}></div>
                           <div class="form-group"><label>Kategori Risiko</label><select id="editRiskCategory" ${disabledAttr}></select></div>
                           <div class="form-group"><label>Variabel Risiko</label><select id="editRiskVariable" ${disabledAttr}></select></div>
