@@ -1,0 +1,6 @@
+# Block direct access to APS credentials file (server-side only, added alongside
+# BIM viewer APS integration — lihat integrasi-bim-viewer-catatan.txt)
+<Files ".env">
+  Order allow,deny
+  Deny from all
+</Files>

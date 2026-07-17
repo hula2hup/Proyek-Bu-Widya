@@ -1,0 +1,2 @@
+# Kredensial APS / server-side secrets — JANGAN pernah masuk git history
+.env

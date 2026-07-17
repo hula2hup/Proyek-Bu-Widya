@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Project Monitoring</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
       document.documentElement.style.display = "none";
 
@@ -2364,6 +2365,35 @@
         white-space: nowrap;
         text-align: center;
       }
+
+      /* ── BIM 3D VIEWER (read-only, sama dengan Project Manager) ── */
+      .bim-viewer-wrap { height: 420px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+      #bimThreeCanvas { width: 100%; height: 100%; display: block; }
+      .bim-viewer-toolbar { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 8px; z-index: 10; }
+      .bim-viewer-toolbar button { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.15); color: #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 11px; cursor: pointer; font-weight: 700; }
+      .bim-viewer-toolbar button:hover { background: #1d4ed8; border-color: #1d4ed8; }
+      .bim-viewer-badge { position: absolute; top: 14px; left: 14px; background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.1); padding: 7px 14px; border-radius: 8px; font-size: 11px; color: #94a3b8; }
+      .bim-viewer-badge b { color: #60a5fa; }
+      .bim-obj-info-panel { position: absolute; right: 14px; bottom: 14px; background: rgba(10,18,32,.92); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; width: 290px; max-height: 380px; overflow-y: auto; z-index: 10; }
+      .bim-obj-info-panel .oi-title { font-size: 11px; color: #60a5fa; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+      .bim-obj-info-panel .oi-row { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+      .bim-obj-info-panel .oi-row:last-child { border: 0; }
+      .bim-obj-info-panel .oi-label { color: #64748b; flex-shrink: 0; }
+      .bim-obj-info-panel .oi-val { color: #e2e8f0; font-weight: 600; text-align: right; word-break: break-word; }
+      .bim-obj-info-panel .oi-val a { color: #60a5fa; }
+      .oi-detail-title { font-size: 10px; color: #475569; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin: 10px 0 4px; }
+      .oi-detail-empty { font-size: 11px; color: #64748b; font-style: italic; padding: 4px 0; }
+      #forgeViewerDiv { width: 100%; height: 100%; display: none; }
+      .viewer-mode-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+      .mode-switch { display: flex; gap: 6px; }
+      .mode-btn { padding: 8px 12px; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; color: #64748b; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; transition: .15s; white-space: nowrap; }
+      .mode-btn:hover { border-color: #1d4ed8; color: #1d4ed8; }
+      .mode-btn.active { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+      .aps-status-chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+      .aps-status-chip.off { background: #f1f5f9; color: #64748b; }
+      .aps-status-chip.connecting { background: #fef3c7; color: #92400e; }
+      .aps-status-chip.on { background: #dcfce7; color: #166534; }
+      .aps-status-chip.error { background: #fee2e2; color: #991b1b; }
     </style>
   </head>
 
@@ -4461,8 +4491,41 @@
               Eksplorasi hierarki aktivitas proyek dan pemetaan sumber daya.
             </p>
           </div>
+          <div class="viewer-mode-bar">
+            <div class="mode-switch">
+              <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">🏗️ Autodesk BIM</button>
+              <button id="btnModeThree" class="mode-btn active" onclick="switchViewerMode('three')">🧊 Three.js</button>
+            </div>
+            <span class="aps-status-chip off" id="apsStatusChip">Memuat...</span>
+          </div>
           <div class="status-badge-header">MASTER ADMIN</div>
         </div>
+
+        <div class="card" style="padding:0;overflow:hidden;border-radius:20px;margin-bottom:18px;">
+          <div class="bim-viewer-wrap" id="bimViewerWrap">
+            <canvas id="bimThreeCanvas"></canvas>
+            <div id="forgeViewerDiv"></div>
+            <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">—</b></div>
+            <div class="bim-viewer-toolbar">
+              <button onclick="bimResetCamera()">⟳ Reset</button>
+              <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
+              <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
+            </div>
+            <div class="bim-obj-info-panel" id="bimObjInfoPanel">
+              <div class="oi-title">Selected Object</div>
+              <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">—</span></div>
+              <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">—</span></div>
+              <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">—</span></div>
+              <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">—</span></div>
+              <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">—</span></div>
+              <div id="bimOiDetailWrap" style="display:none;">
+                <div class="oi-detail-title">Detail Properti Revit</div>
+                <div id="bimOiDetail"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p style="color:#64748b;font-size:13px;margin:0 0 18px 2px;">Klik elemen pada viewer untuk melihat detail Object ID, WBS, status, dan Change Request terkait. Mode "Autodesk BIM" memuat model RVT asli secara otomatis; kalau tidak tersedia, otomatis kembali ke mode Three.js.</p>
 
         <div class="card">
           <div class="title">
@@ -5049,6 +5112,12 @@
         if (sectionId === "project-manager") {
           loadChangeRequests();
         }
+
+        // Jika masuk tab WBS Mapping, load viewer 3D BIM (lazy, sekali saja)
+        if (sectionId === "wbs-mapping") {
+          if (!crData.length) loadChangeRequests();
+          if (typeof bimViewerInit === "function") bimViewerInit();
+        }
       }
 
       function normalizeCrStatus(status) {
@@ -5165,6 +5234,7 @@
               // Update tampilan
               updateProjectCounts();
               showProjectSelection();
+              if (typeof bimRefreshStatusColors === "function") bimRefreshStatusColors();
 
               console.log(`Berhasil load ${crData.length} Change Request(s)`);
             } else {
@@ -12152,6 +12222,304 @@
           renderProjectSelection(projects);
         if (typeof populateAdminRiskProjectSelect === "function")
           populateAdminRiskProjectSelect(projects);
+      }
+
+      // ══════════════════════════════════════════
+      // BIM 3D VIEWER — elemen jembatan representatif, terhubung ke Change Request
+      // Read-only, sama seperti versi Project Manager (tab "WBS Mapping")
+      // ══════════════════════════════════════════
+      const bimParts = [
+        { id: 'BIM-001', name: 'Abutment A1',      wbs: '1.1.1', geo: () => new THREE.BoxGeometry(1.6, 2.4, 4.4),         pos: [-6.4, 1.2, 0] },
+        { id: 'BIM-002', name: 'Pier P1',          wbs: '7.2.6', geo: () => new THREE.CylinderGeometry(0.5, 0.6, 3.2, 16), pos: [-2.6, 1.6, 0] },
+        { id: 'BIM-003', name: 'Pier P2',          wbs: '7.2.6', geo: () => new THREE.CylinderGeometry(0.5, 0.6, 3.2, 16), pos: [2.6, 1.6, 0] },
+        { id: 'BIM-004', name: 'Pier Head P1',     wbs: '7.2.6', geo: () => new THREE.BoxGeometry(1.6, 0.5, 3),           pos: [-2.6, 3.45, 0] },
+        { id: 'BIM-004', name: 'Pier Head P2',     wbs: '7.2.6', geo: () => new THREE.BoxGeometry(1.6, 0.5, 3),           pos: [2.6, 3.45, 0] },
+        { id: 'BIM-005', name: 'Girder Segment G1',wbs: '7.2.6', geo: () => new THREE.BoxGeometry(9.6, 0.5, 0.9),         pos: [0, 3.9, -1] },
+        { id: 'BIM-005', name: 'Girder Segment G2',wbs: '7.2.6', geo: () => new THREE.BoxGeometry(9.6, 0.5, 0.9),         pos: [0, 3.9, 1] },
+        { id: 'BIM-006', name: 'Bearing Pad',      wbs: '7.2.6', geo: () => new THREE.BoxGeometry(0.5, 0.2, 0.5),         pos: [-2.6, 3.6, 0] },
+        { id: 'BIM-007', name: 'Deck Slab',        wbs: '1.2.1', geo: () => new THREE.BoxGeometry(10, 0.3, 4.4),          pos: [0, 4.3, 0] },
+        { id: 'BIM-008', name: 'Parapet / Railing',wbs: '1.1.1', geo: () => new THREE.BoxGeometry(10, 0.5, 0.2),          pos: [0, 4.7, 2] },
+        { id: 'BIM-010', name: 'Utility Duct',     wbs: '1.7.2', geo: () => new THREE.CylinderGeometry(0.15, 0.15, 9.4, 12), pos: [0, 3.55, 0.7], rot: [0, 0, Math.PI / 2] },
+      ];
+      const bimStatusColors = { Normal: 0x22c55e, Affected: 0xf59e0b, Change: 0x3b82f6, Clash: 0xef4444 };
+      let bimState = { ready: false, scene: null, camera: null, renderer: null, meshes: [], wireframe: false, selected: null };
+
+      function bimStatusForObject(id) {
+        const matches = (crData || []).filter(c => c.bimObjectId === id);
+        if (!matches.length) return 'Normal';
+        if (matches.some(c => (c.status || '').toUpperCase() === 'PENDING' && (c.risikoScore || c.risk || 0) >= 8)) return 'Clash';
+        if (matches.some(c => (c.status || '').toUpperCase() === 'PENDING')) return 'Affected';
+        if (matches.some(c => (c.status || '').toUpperCase() === 'APPROVED')) return 'Change';
+        return 'Normal';
+      }
+
+      function bimRefreshStatusColors() {
+        (bimState.meshes || []).forEach(mesh => {
+          const status = bimStatusForObject(mesh.userData.bimId);
+          mesh.userData.status = status;
+          mesh.userData.origColor = bimStatusColors[status] || 0x64748b;
+          if (mesh !== bimState.selected) mesh.material.color.setHex(mesh.userData.origColor);
+        });
+      }
+
+      function bimViewerInit() {
+        if (bimState.ready) { bimRefreshStatusColors(); return; }
+        initApsAuto();
+        const canvas = document.getElementById('bimThreeCanvas');
+        const wrap = document.getElementById('bimViewerWrap');
+        if (!canvas || !wrap || typeof THREE === 'undefined') return;
+        const W = wrap.clientWidth || 600, H = wrap.clientHeight || 420;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0d1117);
+        scene.fog = new THREE.Fog(0x0d1117, 30, 90);
+
+        const camera = new THREE.PerspectiveCamera(50, W / H, 0.1, 300);
+        camera.position.set(11, 8, 14);
+        camera.lookAt(0, 2, 0);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        renderer.setSize(W, H);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(12, 22, 10);
+        scene.add(dirLight);
+        scene.add(new THREE.PointLight(0x60a5fa, 0.7, 40, 2));
+        scene.add(new THREE.GridHelper(30, 30, 0x1e293b, 0x1e293b));
+
+        const meshes = [];
+        bimParts.forEach(part => {
+          const status = bimStatusForObject(part.id);
+          const color = bimStatusColors[status] || 0x64748b;
+          const mat = new THREE.MeshPhongMaterial({ color, transparent: true, opacity: 0.9, shininess: 55 });
+          const mesh = new THREE.Mesh(part.geo(), mat);
+          mesh.position.set(...part.pos);
+          if (part.rot) mesh.rotation.set(...part.rot);
+          mesh.userData = { bimId: part.id, name: part.name, wbs: part.wbs, status, origColor: color };
+          scene.add(mesh);
+          meshes.push(mesh);
+        });
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let prevMouse = { x: 0, y: 0 };
+
+        canvas.addEventListener('mousedown', e => { prevMouse = { x: e.clientX, y: e.clientY }; });
+        canvas.addEventListener('mousemove', e => {
+          if (e.buttons === 1) {
+            const dx = e.clientX - prevMouse.x;
+            camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), -dx * 0.005);
+            prevMouse = { x: e.clientX, y: e.clientY };
+          }
+        });
+        canvas.addEventListener('wheel', e => {
+          camera.position.multiplyScalar(1 + e.deltaY * 0.001);
+          e.preventDefault();
+        }, { passive: false });
+        canvas.addEventListener('click', e => {
+          const rect = canvas.getBoundingClientRect();
+          mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+          mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+          raycaster.setFromCamera(mouse, camera);
+          const hits = raycaster.intersectObjects(meshes);
+          if (bimState.selected) {
+            bimState.selected.material.color.setHex(bimState.selected.userData.origColor);
+            bimState.selected.material.emissive.setHex(0x000000);
+          }
+          if (hits.length) {
+            const mesh = hits[0].object;
+            bimState.selected = mesh;
+            mesh.material.color.setHex(0xfde68a);
+            mesh.material.emissive.setHex(0x332200);
+            bimSelectObject(mesh.userData);
+          } else {
+            bimState.selected = null;
+          }
+        });
+
+        function animate() {
+          requestAnimationFrame(animate);
+          camera.lookAt(0, 2, 0);
+          renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+          if (!wrap.clientWidth) return;
+          camera.aspect = wrap.clientWidth / wrap.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+        });
+
+        bimState = { ready: true, scene, camera, renderer, meshes, wireframe: false, selected: null };
+      }
+
+      function bimSelectObject(data) {
+        document.getElementById('bimOiId').textContent = data.bimId || '—';
+        document.getElementById('bimOiWbs').textContent = data.wbs || '—';
+        document.getElementById('bimOiType').textContent = data.name || '—';
+        document.getElementById('bimOiStatus').textContent = data.status || '—';
+        document.getElementById('bimTargetLabel').textContent = data.bimId || '—';
+
+        const related = (crData || []).filter(c => c.bimObjectId === data.bimId);
+        const crCell = document.getElementById('bimOiCr');
+        crCell.innerHTML = related.length
+          ? related.map(c => `<a href="#" onclick="event.preventDefault(); bimGoToCr('${c.changeId || c.id}')">${c.changeId || c.id}</a>`).join(', ')
+          : 'Tidak ada CR aktif';
+      }
+
+      function bimResetCamera() {
+        if (bimState.camera) bimState.camera.position.set(11, 8, 14);
+      }
+
+      function bimToggleWireframe() {
+        if (!bimState.meshes) return;
+        bimState.wireframe = !bimState.wireframe;
+        bimState.meshes.forEach(m => { m.material.wireframe = bimState.wireframe; });
+      }
+
+      function bimHighlightAffected() {
+        if (!bimState.meshes) return;
+        bimState.meshes.forEach(m => {
+          if (['Affected', 'Change', 'Clash'].includes(m.userData.status)) {
+            m.material.emissive.setHex(0x221100);
+            setTimeout(() => { if (m !== bimState.selected) m.material.emissive.setHex(0x000000); }, 1200);
+          }
+        });
+      }
+
+      function bimGoToCr(crId) {
+        // Admin: buka tab Project Manager lalu tampilkan detail CR yang sesuai
+        const pmMenu = document.querySelector(".menu-item[onclick*=\"project-manager\"]");
+        if (pmMenu) switchMenu('project-manager', pmMenu);
+        if (typeof openCrDetail === 'function') setTimeout(() => openCrDetail(crId), 150);
+      }
+
+      // ══════════════════════════════════════════
+      // AUTODESK APS — mode model RVT asli (alternatif dari Three.js representatif)
+      // Production mode: token diambil otomatis dari server (.env), tidak ada input manual.
+      // ══════════════════════════════════════════
+      const FORGE_URN = 'urn:adsk.objects:os.object:gbc1y5bytf1lnyjs9nj5-bimwbs-prod/FILE-P2.rvt';
+      let apsMode  = false;
+      let apsToken = null;
+      let apsUrn   = FORGE_URN;
+      let apsViewer = null;
+
+      async function initApsAuto() {
+        const chip = document.getElementById('apsStatusChip');
+        chip.textContent = '⟳ Menghubungkan Autodesk APS...';
+        chip.className   = 'aps-status-chip connecting';
+        try {
+          const res  = await fetch('api_aps_token.php');
+          const data = await res.json();
+          if (!data.access_token) throw new Error(data.message || 'Token APS tidak tersedia');
+          apsToken = data.access_token;
+          await loadForgeViewer();
+        } catch (e) {
+          console.warn('[APS] fallback ke Three.js:', e.message);
+          chip.textContent = 'Three.js Mode (APS tidak tersedia)';
+          chip.className   = 'aps-status-chip off';
+          switchViewerMode('three');
+        }
+      }
+
+      function switchViewerMode(mode) {
+        if (mode === 'aps' && !apsToken) return;
+        apsMode = mode === 'aps';
+        setBimViewerMode(mode);
+        document.getElementById('btnModeAps').classList.toggle('active', apsMode);
+        document.getElementById('btnModeThree').classList.toggle('active', !apsMode);
+      }
+
+      function setBimViewerMode(mode) {
+        document.getElementById('bimThreeCanvas').style.display = mode === 'three' ? 'block' : 'none';
+        document.getElementById('forgeViewerDiv').style.display  = mode === 'aps'   ? 'block' : 'none';
+      }
+
+      function loadForgeViewer() {
+        return new Promise((resolve, reject) => {
+          if (!apsToken || !apsUrn) { reject(new Error('Token/URN APS tidak tersedia')); return; }
+          const div = document.getElementById('forgeViewerDiv');
+          const go = () => initForgeViewer(div, resolve, reject);
+          if (!window.Autodesk) {
+            const link = document.createElement('link');
+            link.rel  = 'stylesheet';
+            link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css';
+            document.head.appendChild(link);
+
+            const script  = document.createElement('script');
+            script.src    = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js';
+            script.onload = go;
+            document.head.appendChild(script);
+          } else {
+            go();
+          }
+        });
+      }
+
+      function initForgeViewer(div, resolve, reject) {
+        const chip = document.getElementById('apsStatusChip');
+        const opts = { env: 'AutodeskProduction', api: 'derivativeV2', getAccessToken: cb => cb(apsToken, 3600) };
+        Autodesk.Viewing.Initializer(opts, () => {
+          apsViewer = new Autodesk.Viewing.GuiViewer3D(div);
+          apsViewer.start();
+          const docUrn = apsUrn.startsWith('urn:') ? btoa(apsUrn).replace(/=/g, '') : apsUrn;
+          Autodesk.Viewing.Document.load('urn:' + docUrn, doc => {
+            const viewable = doc.getRoot().getDefaultGeometry();
+            apsViewer.loadDocumentNode(doc, viewable).then(() => {
+              apsViewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, onForgeSelect);
+              switchViewerMode('aps');
+              chip.textContent = 'Autodesk APS Aktif';
+              chip.className   = 'aps-status-chip on';
+              resolve();
+            });
+          }, err => {
+            chip.textContent = 'Model APS gagal dimuat';
+            chip.className   = 'aps-status-chip error';
+            switchViewerMode('three');
+            reject(new Error(String(err)));
+          });
+        });
+      }
+
+      async function onForgeSelect(e) {
+        if (!e.dbIdArray || !e.dbIdArray.length) return;
+        const dbId = e.dbIdArray[0];
+        document.getElementById('bimTargetLabel').textContent = 'dbId ' + dbId;
+        const detailWrap = document.getElementById('bimOiDetailWrap');
+        const detailBox  = document.getElementById('bimOiDetail');
+        try {
+          const res  = await fetch(`api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
+          const data = await res.json();
+          document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
+          document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;
+          document.getElementById('bimOiWbs').textContent  = (data.linkedChanges && data.linkedChanges[0])
+            ? [data.linkedChanges[0].wbsLevel4, data.linkedChanges[0].wbsLevel5, data.linkedChanges[0].wbsLevel6].filter(Boolean).join(' → ')
+            : '—';
+          document.getElementById('bimOiStatus').textContent = data.bimObjectId ? 'Terhubung ke data proyek' : 'Belum ada tag BIM Object ID di Revit';
+          const crCell = document.getElementById('bimOiCr');
+          crCell.innerHTML = (data.linkedChanges && data.linkedChanges.length)
+            ? data.linkedChanges.map(c => `<a href="#" onclick="event.preventDefault(); bimGoToCr('${c.changeId}')">${c.changeId}</a>`).join(', ')
+            : 'Tidak ada CR aktif';
+
+          detailWrap.style.display = 'block';
+          const entries = Object.entries(data.detail || {});
+          if (entries.length) {
+            detailBox.innerHTML = entries.map(([k, v]) =>
+              `<div class="oi-row"><span class="oi-label">${k}</span><span class="oi-val">${v}</span></div>`
+            ).join('');
+          } else if (data.name) {
+            detailBox.innerHTML = '<div class="oi-detail-empty">Tidak ada parameter tambahan untuk elemen ini.</div>';
+          } else {
+            detailBox.innerHTML = '<div class="oi-detail-empty">Elemen ini tidak punya data properti (kemungkinan node grup/instance, bukan elemen tunggal).</div>';
+          }
+        } catch (err) {
+          document.getElementById('bimOiId').textContent = 'dbId ' + dbId;
+          document.getElementById('bimOiType').textContent = 'Gagal memuat properti';
+          detailWrap.style.display = 'none';
+        }
       }
 
       // ==========================================================
