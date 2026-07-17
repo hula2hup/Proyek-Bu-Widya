@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manager Workspace - BIM WBS System</title>
+  <link rel="icon" type="image/png" href="wylcore.png">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
@@ -76,6 +77,11 @@
       flex-direction: column;
     }
     .brand { display: flex; gap: 12px; align-items: center; margin-bottom: 28px; }
+    .mobile-menu-toggle,
+    .mobile-user-toggle,
+    .mobile-user-card {
+      display: none;
+    }
     .logo {
       width: 44px; height: 44px; border-radius: 14px;
       background: linear-gradient(135deg, var(--warning), var(--danger));
@@ -493,6 +499,256 @@
     .kb-impact-table td.is-number, .kb-impact-table th.is-number { text-align: right; }
     @media (max-width: 900px) { .kb-kpi-grid, .kb-detail-grid, .kb-impact-summary { grid-template-columns: 1fr; } }
     @media (max-width: 900px) { main { padding: 18px 16px 48px; } }
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; padding-top: 66px; }
+      aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+        padding: 12px 14px;
+        z-index: 5000;
+        transform: translateY(0);
+        transition: transform .24s ease, box-shadow .24s ease;
+        will-change: transform;
+      }
+      aside.mobile-nav-hidden:not(.mobile-menu-open):not(.mobile-user-open) {
+        transform: translateY(-100%);
+        box-shadow: none;
+      }
+      .brand {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 1fr) 44px;
+        gap: 10px;
+        margin-bottom: 0;
+      }
+      .brand > .logo {
+        display: none;
+      }
+      .brand h1 {
+        font-size: 15px;
+        letter-spacing: .08em;
+        line-height: 1.15;
+        text-align: center;
+        text-transform: uppercase;
+      }
+      .project-selector-container {
+        display: none;
+      }
+      aside.mobile-menu-open .project-selector-container {
+        display: block;
+        margin-top: 8px;
+      }
+      .mobile-menu-toggle,
+      .mobile-user-toggle {
+        align-items: center;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 12px;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-flex;
+        height: 42px;
+        justify-content: center;
+        width: 42px;
+        position: relative;
+        z-index: 5002;
+        transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .mobile-menu-toggle:hover,
+      .mobile-menu-toggle:focus-visible,
+      .mobile-user-toggle:hover,
+      .mobile-user-toggle:focus-visible {
+        background: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.32);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+        outline: none;
+        transform: translateY(-1px);
+      }
+      .mobile-user-toggle {
+        background: var(--primary);
+        border-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        font-weight: 800;
+      }
+      nav {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 6px;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0;
+        transition: max-height .25s ease, padding .25s ease;
+      }
+      aside.mobile-menu-open nav {
+        max-height: 520px;
+        padding: 10px 0 14px;
+      }
+      nav button { margin: 0; min-height: 44px; }
+      .aside-footer {
+        margin-top: 0;
+        position: relative;
+      }
+      .aside-footer > div:not(.mobile-user-card) {
+        display: none !important;
+      }
+      .mobile-user-card {
+        background: #ffffff;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+        color: #0f172a;
+        display: none;
+        min-width: 220px;
+        padding: 14px;
+        position: fixed;
+        right: 12px;
+        top: 64px;
+        width: min(260px, calc(100vw - 24px));
+        z-index: 99999;
+      }
+      body > .mobile-user-card {
+        position: fixed;
+        right: 12px;
+        top: 64px;
+      }
+      aside.mobile-user-open .mobile-user-card {
+        display: block;
+      }
+      body.mobile-user-open .mobile-user-card {
+        display: block;
+      }
+      .mobile-user-card strong,
+      .mobile-user-card span {
+        display: block;
+      }
+      .mobile-user-card strong {
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+      .mobile-user-card span {
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+      .mobile-user-card .logout-btn {
+        background: #fee2e2;
+        color: #b91c1c;
+        justify-content: center;
+        min-height: 40px;
+        width: 100%;
+      }
+      main { overflow-x: clip; }
+      .cols-4, .cols-2, .form-grid, .delay-status { grid-template-columns: 1fr; }
+      #dashboard > .grid.cols-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 760px) {
+      html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+      body { overflow-wrap: anywhere; }
+      main { padding: 14px 12px 40px; }
+      .topbar {
+        align-items: stretch;
+        border-radius: 16px;
+        flex-direction: column;
+        gap: 14px;
+        padding: 16px;
+      }
+      .topbar h2 { font-size: 20px; line-height: 1.25; }
+      .topbar p { font-size: 13px; }
+      .card { border-radius: 14px; padding: 14px; min-width: 0; }
+      #dashboard > .grid.cols-4 {
+        gap: 10px;
+        margin-bottom: 16px !important;
+      }
+      #dashboard > .grid.cols-4 .metric {
+        min-height: 130px;
+        padding: 12px;
+      }
+      #dashboard > .grid.cols-4 .metric > div {
+        gap: 8px;
+      }
+      #dashboard > .grid.cols-4 .metric h3 {
+        font-size: 11px;
+        line-height: 1.25;
+        margin-bottom: 7px;
+      }
+      #dashboard > .grid.cols-4 .metric .num {
+        font-size: 28px;
+        line-height: 1;
+      }
+      #dashboard > .grid.cols-4 .metric small {
+        display: block;
+        font-size: 10px;
+        line-height: 1.35;
+        margin-top: 8px;
+      }
+      #dashboard > .grid.cols-4 .icon-btn {
+        flex: 0 0 30px;
+        height: 30px;
+        width: 30px;
+      }
+      .metric .num { font-size: 26px; }
+      .btn { width: 100%; min-height: 44px; }
+      .chart-container { height: 240px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 6px; padding-left: 16px; }
+      .risk-matrix-wrap { grid-template-columns: 1fr; overflow-x: auto; }
+      .risk-axis-y { writing-mode: horizontal-tb; transform: none; text-align: left; }
+      .risk-matrix-grid, .risk-matrix-x { min-width: 300px; }
+      .bowtie { gap: 10px; }
+      .bim-viewer-wrap { height: min(420px, 78vh); border-radius: 14px; }
+      .bim-viewer-toolbar {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .bim-viewer-toolbar button { flex: 1 1 92px; }
+      .bim-viewer-badge { max-width: calc(100% - 20px); left: 10px; top: 10px; }
+      .bim-obj-info-panel {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        bottom: 58px;
+        width: auto;
+        max-height: 42%;
+      }
+      .viewer-mode-bar, .mode-switch { justify-content: stretch; width: 100%; }
+      .mode-switch { flex-wrap: wrap; }
+      .mode-btn { flex: 1 1 120px; }
+      .modal-overlay { align-items: flex-start; padding: 12px; overflow-y: auto; }
+      .modal-content { width: 100%; max-width: none; border-radius: 14px; }
+      .modal-header, .modal-body { padding: 16px; }
+      .modal-body { max-height: none; }
+      table { min-width: 680px; }
+      .card:has(table), .table-container, .kb-table-wrap { overflow-x: auto; }
+    }
+    @media (max-width: 420px) {
+      nav { grid-template-columns: 1fr; }
+      .brand { align-items: flex-start; }
+      .logo { width: 38px; height: 38px; border-radius: 12px; flex: 0 0 38px; }
+      .risk-row { grid-template-columns: 70px 1fr 28px; gap: 6px; }
+      input, select, textarea { font-size: 16px; }
+      #dashboard > .grid.cols-4 {
+        gap: 8px;
+      }
+      #dashboard > .grid.cols-4 .metric {
+        min-height: 122px;
+        padding: 11px 10px;
+      }
+      #dashboard > .grid.cols-4 .metric .num {
+        font-size: 24px;
+      }
+      #dashboard > .grid.cols-4 .metric small {
+        font-size: 9.5px;
+      }
+    }
     @media print { .report-paper { border: 0; border-radius: 0; padding: 0; min-height: auto; box-shadow: none; } .card.report-card { border: 0; box-shadow: none; padding: 0; } }
   </style>
 </head>
@@ -500,6 +756,13 @@
 <div class="app">
   <aside>
     <div class="brand">
+      <button class="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Buka menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <path d="M4 7h16"></path>
+          <path d="M4 12h16"></path>
+          <path d="M4 17h16"></path>
+        </svg>
+      </button>
       <div class="logo">PM</div>
       <div>
         <h1>Project Manager</h1>
@@ -509,6 +772,7 @@
           </select>
         </div>
       </div>
+      <button class="mobile-user-toggle" type="button" onclick="toggleMobileUser()" aria-label="Lihat profil" aria-expanded="false">PM</button>
     </div>
     <nav>
       <button class="active" onclick="showSection('dashboard', this)">📊 01. Dashboard Monitoring</button>
@@ -535,6 +799,11 @@
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
         </button>
+      </div>
+      <div class="mobile-user-card">
+        <strong id="mobileUserFullName">Project Manager</strong>
+        <span>Project Manager</span>
+        <button class="logout-btn" onclick="logout()" title="Logout">Logout</button>
       </div>
     </div>
   </aside>
@@ -1002,8 +1271,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const nameDisplay = document.getElementById("userFullName");
     const initialDisplay = document.getElementById("userInitial");
+    const mobileNameDisplay = document.getElementById("mobileUserFullName");
+    const mobileInitialDisplay = document.querySelector(".mobile-user-toggle");
     if (nameDisplay) nameDisplay.innerText = fullName;
     if (initialDisplay) initialDisplay.innerText = initial;
+    if (mobileNameDisplay) mobileNameDisplay.innerText = fullName;
+    if (mobileInitialDisplay) mobileInitialDisplay.innerText = initial;
     // ---------------------------------------------------------
 
     // 1. Panggil fungsi untuk mengambil data proyek
@@ -3117,7 +3390,9 @@ function fetchAssignedProjects() {
                 // 🚀 SINKRONISASI NAMA LANGSUNG DARI BACKEND SESSION (Anti Gagal)
                 if (res.user_name) {
                     const nameDisplay = document.getElementById("userFullName");
+                    const mobileNameDisplay = document.getElementById("mobileUserFullName");
                     if (nameDisplay) nameDisplay.innerText = res.user_name;
+                    if (mobileNameDisplay) mobileNameDisplay.innerText = res.user_name;
                     
                     // Hitung inisial 2 kata pertama dari nama user (Contoh: "Budi Setiawan" -> "BS")
                     const words = res.user_name.trim().split(/\s+/);
@@ -3127,7 +3402,9 @@ function fetchAssignedProjects() {
                     if (!initial) initial = "PM"; // Fallback jika kosong
                     
                     const initialDisplay = document.getElementById("userInitial");
+                    const mobileInitialDisplay = document.querySelector(".mobile-user-toggle");
                     if (initialDisplay) initialDisplay.innerText = initial;
+                    if (mobileInitialDisplay) mobileInitialDisplay.innerText = initial;
                 }
 
                 // Cek apakah user punya proyek atau tidak
@@ -4351,7 +4628,105 @@ function closeCrDetail() {
     if (id === "knowledge-base") pmKbLoadData(currentProjectId || document.getElementById("projectDropdown")?.value || "");
     if (id === "bim") { pmInitializeWbsMapping(); bimViewerInit(); }
     window.scrollTo({ top:0, behavior:'smooth' });
+    closeMobileChrome();
   }
+
+  function toggleMobileMenu() {
+    const sidebar = document.querySelector("aside");
+    const button = document.querySelector(".mobile-menu-toggle");
+    if (!sidebar || !button) return;
+    sidebar.classList.remove("mobile-nav-hidden");
+    const isOpen = sidebar.classList.toggle("mobile-menu-open");
+    sidebar.classList.remove("mobile-user-open");
+    document.body.classList.remove("mobile-user-open");
+    button.setAttribute("aria-expanded", String(isOpen));
+    document
+      .querySelector(".mobile-user-toggle")
+      ?.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMobileUser() {
+    const sidebar = document.querySelector("aside");
+    const button = document.querySelector(".mobile-user-toggle");
+    if (!sidebar || !button) return;
+    ensureMobileUserCardLayer();
+    sidebar.classList.remove("mobile-nav-hidden");
+    const isOpen = sidebar.classList.toggle("mobile-user-open");
+    document.body.classList.toggle("mobile-user-open", isOpen);
+    sidebar.classList.remove("mobile-menu-open");
+    button.setAttribute("aria-expanded", String(isOpen));
+    document
+      .querySelector(".mobile-menu-toggle")
+      ?.setAttribute("aria-expanded", "false");
+  }
+
+  function closeMobileChrome() {
+    const sidebar = document.querySelector("aside");
+    if (!sidebar) return;
+    sidebar.classList.remove("mobile-menu-open", "mobile-user-open");
+    document.body.classList.remove("mobile-user-open");
+    document
+      .querySelector(".mobile-menu-toggle")
+      ?.setAttribute("aria-expanded", "false");
+    document
+      .querySelector(".mobile-user-toggle")
+      ?.setAttribute("aria-expanded", "false");
+  }
+
+  function ensureMobileUserCardLayer() {
+    const card = document.querySelector(".mobile-user-card");
+    if (!card || card.parentElement === document.body) return;
+    document.body.appendChild(card);
+  }
+
+  function initMobileAutoHideNavbar() {
+    const sidebar = document.querySelector("aside");
+    if (!sidebar || sidebar.dataset.autoHideReady === "true") return;
+    sidebar.dataset.autoHideReady = "true";
+    let lastY = window.scrollY || 0;
+    let ticking = false;
+    const mq = window.matchMedia("(max-width: 1100px)");
+
+    function update() {
+      ticking = false;
+      if (!mq.matches) {
+        sidebar.classList.remove("mobile-nav-hidden");
+        lastY = window.scrollY || 0;
+        return;
+      }
+      const currentY = window.scrollY || 0;
+      const isPanelOpen =
+        sidebar.classList.contains("mobile-menu-open") ||
+        sidebar.classList.contains("mobile-user-open");
+
+      if (currentY <= 8 || isPanelOpen) {
+        sidebar.classList.remove("mobile-nav-hidden");
+      } else if (currentY > lastY + 8) {
+        sidebar.classList.add("mobile-nav-hidden");
+      } else if (currentY < lastY - 8) {
+        sidebar.classList.remove("mobile-nav-hidden");
+      }
+      lastY = currentY;
+    }
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  document.addEventListener("DOMContentLoaded", initMobileAutoHideNavbar);
+  document.addEventListener("DOMContentLoaded", ensureMobileUserCardLayer);
+  initMobileAutoHideNavbar();
+  ensureMobileUserCardLayer();
 
   // ══════════════════════════════════════════
   // MODAL

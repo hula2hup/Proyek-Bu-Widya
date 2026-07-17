@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BIM-WBS Change Management Dashboard</title>
+  <link rel="icon" type="image/png" href="wylcore.png">
   <style>
     :root{
       --bg:#f4f7fb;
@@ -193,6 +194,33 @@
     .searchbar{display:flex;gap:10px;margin-bottom:14px}
     .searchbar input{flex:1}
     @media(max-width:1100px){.app{grid-template-columns:1fr}aside{height:auto;position:relative}.grid.cols-4,.grid.cols-3,.grid.cols-2,.flow,.kanban{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}}
+    @media(max-width:760px){
+      html,body{width:100%;max-width:100%;overflow-x:hidden}
+      body{overflow-wrap:anywhere}
+      aside{padding:18px 14px}
+      nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px}
+      nav button{margin:0;min-height:44px}
+      main{padding:14px 12px 40px;overflow-x:clip}
+      .topbar{align-items:stretch;flex-direction:column;gap:14px}
+      .topbar h2{font-size:21px;line-height:1.25}
+      .btn{width:100%;min-height:44px}
+      .card{border-radius:14px;padding:14px;min-width:0}
+      .metric .num{font-size:26px}
+      .timeline-item{grid-template-columns:1fr;gap:6px;padding-left:16px}
+      .searchbar{flex-direction:column}
+      .bim-viewer{height:min(390px,72vh);border-radius:14px}
+      .bim-title{left:12px;right:12px;top:12px}
+      .object-info{left:12px;right:12px;bottom:12px;width:auto;max-height:42%;overflow:auto}
+      .obj1{width:34%;left:8%;top:28%}
+      .obj2{width:18%;height:36%;left:24%;top:38%}
+      .obj3{width:36%;right:7%;top:32%}
+      .obj4{width:18%;height:34%;right:22%;top:43%}
+      .obj5{width:70%;left:15%;bottom:20%}
+      table{min-width:640px}
+      .card:has(table){overflow-x:auto}
+      .risk-matrix{min-width:300px;overflow-x:auto}
+    }
+    @media(max-width:420px){nav{grid-template-columns:1fr}.brand{align-items:flex-start}input,select,textarea{font-size:16px}}
   </style>
 </head>
 <body>

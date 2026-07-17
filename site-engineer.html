@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form Site Engineer</title>
+    <link rel="icon" type="image/png" href="wylcore.png">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
@@ -397,6 +398,13 @@
       .sidebar-header {
         padding: 30px 25px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .mobile-menu-toggle,
+      .mobile-user-toggle {
+        display: none;
+      }
+      .mobile-user-card {
+        display: none;
       }
       .sidebar-header h2 {
         color: white;
@@ -1063,15 +1071,416 @@
       .aps-status-chip.connecting { background: #fef3c7; color: #92400e; }
       .aps-status-chip.on { background: #dcfce7; color: #166534; }
       .aps-status-chip.error { background: #fee2e2; color: #991b1b; }
+      @media (max-width: 1100px) {
+        body {
+          display: block;
+          overflow-x: hidden;
+          padding-top: 66px;
+        }
+        .sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          height: auto;
+          min-height: 0;
+          z-index: 5000;
+          transform: translateY(0);
+          transition: transform .24s ease, box-shadow .24s ease;
+          will-change: transform;
+        }
+        .sidebar.mobile-nav-hidden:not(.mobile-menu-open):not(.mobile-user-open) {
+          transform: translateY(-100%);
+          box-shadow: none;
+        }
+        .sidebar-header {
+          align-items: center;
+          border-bottom: 0;
+          display: grid;
+          grid-template-columns: 44px minmax(0, 1fr) 44px;
+          gap: 10px;
+          padding: 12px 14px;
+        }
+        .sidebar-header h2 {
+          font-size: 14px;
+          letter-spacing: .08em;
+          line-height: 1.15;
+          text-align: center;
+        }
+        .mobile-menu-toggle,
+        .mobile-user-toggle {
+          align-items: center;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          border-radius: 12px;
+          color: #ffffff;
+          cursor: pointer;
+          display: inline-flex;
+          height: 42px;
+          justify-content: center;
+          width: 42px;
+          position: relative;
+          z-index: 5002;
+          transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-menu-toggle:hover,
+        .mobile-menu-toggle:focus-visible,
+        .mobile-user-toggle:hover,
+        .mobile-user-toggle:focus-visible {
+          background: rgba(255, 255, 255, 0.16);
+          border-color: rgba(255, 255, 255, 0.32);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+          outline: none;
+          transform: translateY(-1px);
+        }
+        .mobile-user-toggle {
+          background: #2563eb;
+          border-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          font-weight: 800;
+        }
+        .sidebar-menu {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+          max-height: 0;
+          overflow: hidden;
+          padding: 0 12px;
+          transition: max-height .25s ease, padding .25s ease;
+        }
+        .sidebar.mobile-menu-open .sidebar-menu {
+          max-height: 620px;
+          padding: 8px 12px 14px;
+        }
+        .menu-item,
+        .submenu-item {
+          border-radius: 10px;
+          min-height: 44px;
+          padding: 12px 14px;
+        }
+        .menu-item.active {
+          border-left-width: 0;
+          box-shadow: inset 0 -3px 0 #2563eb;
+        }
+        .submenu {
+          grid-column: 1 / -1;
+        }
+        .sidebar-footer {
+          border-top: 0;
+          padding: 0;
+          position: relative;
+        }
+        .sidebar-footer > div:first-child,
+        .sidebar-footer > .logout-btn {
+          display: none !important;
+        }
+        .mobile-user-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 14px;
+          box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+          color: #0f172a;
+          display: none;
+          min-width: 220px;
+          padding: 14px;
+          position: fixed;
+          right: 12px;
+          top: 64px;
+          z-index: 6000;
+        }
+        .sidebar.mobile-user-open .mobile-user-card {
+          display: block;
+        }
+        .mobile-user-card strong,
+        .mobile-user-card span {
+          display: block;
+        }
+        .mobile-user-card strong {
+          font-size: 14px;
+          margin-bottom: 2px;
+        }
+        .mobile-user-card span {
+          color: #64748b;
+          font-size: 12px;
+          margin-bottom: 12px;
+        }
+        .mobile-user-card .logout-btn {
+          background: #fee2e2;
+          color: #b91c1c;
+          justify-content: center;
+          min-height: 40px;
+          width: 100%;
+        }
+        .container {
+          margin-left: 0;
+          width: 100%;
+          max-width: none;
+          padding: 18px;
+        }
+        .form-grid,
+        .wbs-grid,
+        .change-summary-grid,
+        .dashboard-grid,
+        .bim-layout-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 760px) {
+        html, body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        body {
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .container {
+          padding: 12px 10px 40px;
+        }
+        .header-dashboard,
+        .upload-section,
+        .table-section,
+        .card,
+        .form-card,
+        .info-box {
+          border-radius: 14px;
+          padding: 16px;
+          min-width: 0;
+        }
+        .header-dashboard {
+          margin-bottom: 16px;
+        }
+        .header-dashboard .subtitle {
+          font-size: 10px;
+          letter-spacing: .22em;
+          line-height: 1.45;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .header-dashboard h1,
+        .section-title {
+          font-size: 21px;
+          line-height: 1.25;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .header-dashboard p {
+          font-size: 14px;
+          line-height: 1.55;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+          margin-bottom: 18px;
+        }
+        .kpi-card {
+          border-left-width: 4px;
+          border-radius: 14px;
+          min-height: 132px;
+          padding: 14px 12px;
+        }
+        .kpi-card h3 {
+          font-size: 12px;
+          line-height: 1.25;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .kpi-card span {
+          font-size: 34px;
+          margin-top: 8px;
+        }
+        .kpi-card p {
+          font-size: 11px;
+          line-height: 1.35;
+          margin-top: 8px;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .form-grid,
+        .wbs-grid {
+          grid-template-columns: 1fr;
+        }
+        .risk-status,
+        .status-badge,
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        button[type="submit"] {
+          width: 100%;
+          min-height: 44px;
+          text-align: center;
+        }
+        .table-container,
+        .impact-table-container,
+        .se-table-container,
+        div[id^="table-"],
+        div[id^="edit-table-"] {
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch;
+        }
+        .change-table {
+          min-width: 760px;
+          table-layout: fixed;
+        }
+        .change-table th,
+        .change-table td {
+          font-size: 12px;
+          line-height: 1.35;
+          overflow-wrap: normal;
+          padding: 12px 10px;
+          vertical-align: top;
+          white-space: nowrap;
+          word-break: normal;
+        }
+        .change-table th {
+          font-size: 11px;
+          letter-spacing: .06em;
+        }
+        .change-table th:nth-child(1),
+        .change-table td:nth-child(1) {
+          width: 100px;
+        }
+        .change-table th:nth-child(2),
+        .change-table td:nth-child(2) {
+          width: 108px;
+        }
+        .change-table th:nth-child(3),
+        .change-table td:nth-child(3) {
+          width: 150px;
+          white-space: normal;
+        }
+        .change-table th:nth-child(4),
+        .change-table td:nth-child(4) {
+          width: 122px;
+        }
+        .change-table th:nth-child(5),
+        .change-table td:nth-child(5) {
+          width: 72px;
+        }
+        .change-table th:nth-child(6),
+        .change-table td:nth-child(6) {
+          width: 118px;
+        }
+        table:not(.change-table):not(.dynamic-table),
+        .dynamic-table {
+          min-width: 680px;
+        }
+        .content-page {
+          border-radius: 16px;
+          margin-top: 16px;
+          padding: 22px 16px;
+        }
+        .content-page h2 {
+          font-size: 24px;
+          line-height: 1.2;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .content-page > p {
+          font-size: 14px;
+          line-height: 1.55;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .recent-activity-card {
+          border-radius: 14px;
+          margin-top: 16px;
+          padding: 18px 14px;
+        }
+        .recent-activity-card h2 {
+          font-size: 21px;
+          line-height: 1.2;
+        }
+        .se-recent-item {
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding-left: 16px;
+        }
+        .modal,
+        #infoModal,
+        #imageModal,
+        #pdfModal {
+          overflow-y: auto;
+        }
+        .modal-content,
+        .info-modal-content {
+          width: calc(100vw - 24px) !important;
+          max-width: none !important;
+          max-height: none;
+          border-radius: 14px;
+          margin: 12px auto;
+        }
+        #modalImage {
+          max-width: 92vw;
+          max-height: 78vh;
+        }
+        #pdfViewer {
+          width: 100%;
+          height: 82vh;
+        }
+        .bim-viewer-wrap {
+          height: min(420px, 78vh);
+          border-radius: 14px;
+        }
+        .bim-viewer-toolbar {
+          left: 10px;
+          right: 10px;
+          bottom: 10px;
+          flex-wrap: wrap;
+        }
+        .bim-viewer-toolbar button {
+          flex: 1 1 92px;
+        }
+        .bim-viewer-badge {
+          left: 10px;
+          top: 10px;
+          max-width: calc(100% - 20px);
+        }
+        .bim-obj-info-panel {
+          left: 10px;
+          right: 10px;
+          bottom: 58px;
+          width: auto;
+          max-height: 42%;
+        }
+      }
+      @media (max-width: 420px) {
+        .sidebar-menu {
+          grid-template-columns: 1fr;
+        }
+        .sidebar-footer,
+        .user-info {
+          min-width: 0;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea,
+        textarea {
+          font-size: 16px;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="sidebar">
       <div class="sidebar-header">
+        <button class="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Buka menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
         <h2>
           CHANGE MANAGEMENT<br />
           SYSTEM
         </h2>
+        <button class="mobile-user-toggle" type="button" onclick="toggleMobileUser()" aria-label="Lihat profil" aria-expanded="false">SE</button>
       </div>
 
       <div class="sidebar-menu">
@@ -1137,6 +1546,11 @@
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
         </button>
+        <div class="mobile-user-card">
+          <strong id="mobileSidebarUserName">Site Engineer</strong>
+          <span>Site Engineer</span>
+          <button class="logout-btn" onclick="logout()" title="Logout">Logout</button>
+        </div>
       </div>
     </div>
     <div class="container">
@@ -1966,18 +2380,26 @@ Pilih variabel risiko</textarea
         if (userNameEl) {
           userNameEl.innerText = currentUser;
         }
+        const mobileUserNameEl = document.getElementById("mobileSidebarUserName");
+        if (mobileUserNameEl) {
+          mobileUserNameEl.innerText = currentUser;
+        }
 
         // 2. Bonus: Otomatis bikin inisial avatar (Contoh: Budi Setiawan -> BS)
         const avatarEl = document.getElementById("userAvatar");
-        if (avatarEl && currentUser !== "Site Engineer") {
-          const initials = currentUser
-            .split(" ") // Memecah nama berdasarkan spasi
-            .map((word) => word[0]) // Mengambil huruf pertama tiap kata
-            .join("") // Menggabungkan kembali hurufnya
-            .toUpperCase(); // Dipaksa jadi huruf kapital
+        const mobileAvatarEl = document.querySelector(".mobile-user-toggle");
+        const initials =
+          currentUser !== "Site Engineer"
+            ? currentUser
+                .split(" ") // Memecah nama berdasarkan spasi
+                .map((word) => word[0]) // Mengambil huruf pertama tiap kata
+                .join("") // Menggabungkan kembali hurufnya
+                .toUpperCase() // Dipaksa jadi huruf kapital
+                .substring(0, 2)
+            : "SE";
 
-          avatarEl.innerText = initials.substring(0, 2); // Ambil maksimal 2 huruf terdepan
-        }
+        if (avatarEl) avatarEl.innerText = initials;
+        if (mobileAvatarEl) mobileAvatarEl.innerText = initials;
       }
 
       // --- LOGIKA TABEL DINAMIS IMPACT AREA ---
@@ -5965,6 +6387,91 @@ Pilih variabel risiko</textarea
         }
       }
 
+      function toggleMobileMenu() {
+        const sidebar = document.querySelector(".sidebar");
+        const button = document.querySelector(".mobile-menu-toggle");
+        if (!sidebar || !button) return;
+        sidebar.classList.remove("mobile-nav-hidden");
+        const isOpen = sidebar.classList.toggle("mobile-menu-open");
+        sidebar.classList.remove("mobile-user-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+        document
+          .querySelector(".mobile-user-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleMobileUser() {
+        const sidebar = document.querySelector(".sidebar");
+        const button = document.querySelector(".mobile-user-toggle");
+        if (!sidebar || !button) return;
+        sidebar.classList.remove("mobile-nav-hidden");
+        const isOpen = sidebar.classList.toggle("mobile-user-open");
+        sidebar.classList.remove("mobile-menu-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+        document
+          .querySelector(".mobile-menu-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function closeMobileChrome() {
+        const sidebar = document.querySelector(".sidebar");
+        if (!sidebar) return;
+        sidebar.classList.remove("mobile-menu-open", "mobile-user-open");
+        document
+          .querySelector(".mobile-menu-toggle")
+          ?.setAttribute("aria-expanded", "false");
+        document
+          .querySelector(".mobile-user-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function initMobileAutoHideNavbar() {
+        const sidebar = document.querySelector(".sidebar");
+        if (!sidebar || sidebar.dataset.autoHideReady === "true") return;
+        sidebar.dataset.autoHideReady = "true";
+        let lastY = window.scrollY || 0;
+        let ticking = false;
+        const mq = window.matchMedia("(max-width: 1100px)");
+
+        function update() {
+          ticking = false;
+          if (!mq.matches) {
+            sidebar.classList.remove("mobile-nav-hidden");
+            lastY = window.scrollY || 0;
+            return;
+          }
+          const currentY = window.scrollY || 0;
+          const isPanelOpen =
+            sidebar.classList.contains("mobile-menu-open") ||
+            sidebar.classList.contains("mobile-user-open");
+
+          if (currentY <= 8 || isPanelOpen) {
+            sidebar.classList.remove("mobile-nav-hidden");
+          } else if (currentY > lastY + 8) {
+            sidebar.classList.add("mobile-nav-hidden");
+          } else if (currentY < lastY - 8) {
+            sidebar.classList.remove("mobile-nav-hidden");
+          }
+          lastY = currentY;
+        }
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              window.requestAnimationFrame(update);
+              ticking = true;
+            }
+          },
+          { passive: true },
+        );
+        window.addEventListener("resize", update);
+        update();
+      }
+
+      document.addEventListener("DOMContentLoaded", initMobileAutoHideNavbar);
+      initMobileAutoHideNavbar();
+
       function showPage(pageId, el) {
         if (pageId === "newChangePage" && hasAssignedProject === false) {
           promptUnassignedProjectLogout();
@@ -6016,6 +6523,7 @@ Pilih variabel risiko</textarea
         }
 
         window.scrollTo({ top: 0, behavior: "smooth" });
+        closeMobileChrome();
       }
 
       function getRiskColor(risk) {

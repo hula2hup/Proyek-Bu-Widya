@@ -9,6 +9,7 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" type="image/png" href="wylcore.png">
 
     <style>
       html {
@@ -131,6 +132,9 @@
         font-size: 28px;
         font-weight: 700;
         color: white;
+      }
+      .mobile-nav-toggle {
+        display: none;
       }
       .login-btn {
         background: white;
@@ -828,10 +832,267 @@
           transform: translateY(0);
         }
       }
+      @media (max-width: 760px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        body {
+          overflow-wrap: anywhere;
+        }
+        .container {
+          width: 100%;
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+        .navbar {
+          display: grid;
+          grid-template-columns: 42px minmax(0, 1fr) auto;
+          height: auto;
+          min-height: 64px;
+          padding: 10px 14px;
+          gap: 10px;
+          max-width: none;
+          width: 100%;
+        }
+        .mobile-nav-toggle {
+          align-items: center;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          border-radius: 12px;
+          color: #ffffff;
+          cursor: pointer;
+          display: inline-flex;
+          height: 42px;
+          justify-content: center;
+          width: 42px;
+        }
+        .logo {
+          align-self: center;
+          min-width: 0;
+          overflow: hidden;
+          text-align: left;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 20px;
+        }
+        .nav-links {
+          background: #0b3a55;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 14px;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 4px;
+          max-height: 0;
+          order: 3;
+          overflow: hidden;
+          padding: 0 10px;
+          transition: max-height .25s ease, padding .25s ease;
+          width: 100%;
+          grid-column: 1 / -1;
+        }
+        .navbar.mobile-nav-open .nav-links {
+          max-height: 280px;
+          padding: 8px 10px;
+        }
+        .nav-links a {
+          border-radius: 10px;
+          display: block;
+          font-size: 14px;
+          padding: 11px 12px;
+          white-space: normal;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+          background: rgba(255, 255, 255, 0.08);
+        }
+        .nav-links a::after {
+          display: none;
+        }
+        .login-btn {
+          align-self: center;
+          margin-right: 0;
+          padding: 9px 16px;
+          text-align: center;
+          white-space: nowrap;
+        }
+        .hero-video {
+          padding: 12px 0 22px;
+        }
+        .video-wrapper {
+          border-radius: 16px;
+        }
+        .video-wrapper video {
+          height: clamp(260px, 58vh, 430px);
+        }
+        .video-content {
+          padding: 20px;
+        }
+        .video-content h1 {
+          font-size: clamp(38px, 14vw, 56px);
+          line-height: 1;
+        }
+        .video-content p {
+          font-size: 15px;
+          line-height: 1.5;
+        }
+        .section-title h2,
+        .hero-text h1 {
+          font-size: clamp(28px, 9vw, 42px);
+          line-height: 1.15;
+        }
+        .section-title {
+          margin-bottom: 34px;
+        }
+        .about-section,
+        .strength-section,
+        .feature-section,
+        .workflow-section,
+        .stats-section {
+          padding: 32px 0;
+        }
+        .hero-buttons,
+        .strength-grid,
+        .wylcore-grid {
+          grid-template-columns: 1fr;
+        }
+        .wylcore-grid {
+          gap: 12px;
+        }
+        .wyl-card {
+          align-items: center;
+          display: flex;
+          gap: 16px;
+          justify-content: flex-start;
+          min-height: 86px;
+          padding: 18px 20px;
+          text-align: left;
+        }
+        .wyl-card h3 {
+          flex: 0 0 52px;
+          font-size: 34px;
+          line-height: 1;
+          margin: 0;
+          text-align: center;
+        }
+        .wyl-card span {
+          display: block;
+          flex: 1 1 auto;
+          font-size: 14px;
+          line-height: 1.35;
+          min-width: 0;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .feature-grid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .feature-card {
+          min-height: 0;
+          padding: 18px;
+          text-align: left;
+        }
+        .feature-card h3 {
+          font-size: 18px;
+          line-height: 1.25;
+          margin-bottom: 8px;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .feature-card p {
+          color: #64748b;
+          font-size: 14px;
+          line-height: 1.55;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .workflow {
+          align-items: stretch;
+          display: grid;
+          gap: 10px;
+          grid-template-columns: 1fr;
+          justify-content: stretch;
+        }
+        .step {
+          align-items: center;
+          border-radius: 14px;
+          display: flex;
+          gap: 12px;
+          justify-content: flex-start;
+          min-width: 0;
+          padding: 14px 16px;
+          text-align: left;
+          width: 100%;
+        }
+        .step span {
+          flex: 0 0 34px;
+          font-size: 12px;
+          margin: 0;
+        }
+        .arrow {
+          animation: none;
+          font-size: 16px;
+          justify-self: center;
+          line-height: 1;
+          transform: rotate(90deg);
+          width: auto;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+          gap: 14px;
+        }
+        .stat-card {
+          padding: 22px 14px;
+        }
+        .stat-card h2 {
+          font-size: 34px;
+          line-height: 1;
+        }
+        .stat-card p {
+          font-size: 13px;
+          line-height: 1.35;
+          margin-top: 10px;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .hero-buttons {
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .btn-primary,
+        .btn-secondary {
+          width: 100%;
+          text-align: center;
+        }
+        img,
+        video {
+          max-width: 100%;
+        }
+      }
+      @media (max-width: 420px) {
+        .navbar {
+          grid-template-columns: 42px minmax(0, 1fr) auto;
+        }
+        .login-btn {
+          padding: 9px 13px;
+          text-align: center;
+        }
+      }
     </style>
   </head>
   <body>
     <nav class="navbar">
+      <button class="mobile-nav-toggle" type="button" onclick="toggleMobileNav()" aria-label="Buka menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+          <path d="M4 7h16"></path>
+          <path d="M4 12h16"></path>
+          <path d="M4 17h16"></path>
+        </svg>
+      </button>
       <div class="logo">WYLCORE</div>
 
       <div class="nav-links">
@@ -1166,6 +1427,22 @@
     </footer>
 
     <script>
+      function toggleMobileNav() {
+        const navbar = document.querySelector(".navbar");
+        const button = document.querySelector(".mobile-nav-toggle");
+        if (!navbar || !button) return;
+        const isOpen = navbar.classList.toggle("mobile-nav-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      function closeMobileNav() {
+        const navbar = document.querySelector(".navbar");
+        const button = document.querySelector(".mobile-nav-toggle");
+        if (!navbar || !button) return;
+        navbar.classList.remove("mobile-nav-open");
+        button.setAttribute("aria-expanded", "false");
+      }
+
       const titles = document.querySelectorAll(".section-title");
 
       const titleObserver = new IntersectionObserver(
@@ -1223,7 +1500,9 @@
       revealOnScroll();
       document.querySelectorAll(".nav-links a").forEach((link) => {
         link.addEventListener("click", function () {
-          const target = document.querySelector(this.getAttribute("href"));
+          closeMobileNav();
+          const href = this.getAttribute("href");
+          const target = href && href !== "#" ? document.querySelector(href) : null;
 
           if (target) {
             target.classList.remove("active");
@@ -1248,9 +1527,10 @@
 
       document.querySelectorAll(".nav-links a").forEach((link) => {
         link.addEventListener("click", function () {
+          closeMobileNav();
           const id = this.getAttribute("href");
 
-          const section = document.querySelector(id);
+          const section = id && id !== "#" ? document.querySelector(id) : null;
 
           if (section) {
             section.classList.remove("section-flash");

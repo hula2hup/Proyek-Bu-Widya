@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Project Monitoring</title>
+    <link rel="icon" type="image/png" href="wylcore.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
@@ -62,6 +63,13 @@
       .sidebar-header {
         padding: 30px 25px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .mobile-menu-toggle,
+      .mobile-user-toggle {
+        display: none;
+      }
+      .mobile-user-card {
+        display: none;
       }
       .sidebar-header h2 {
         color: white;
@@ -2366,6 +2374,321 @@
         text-align: center;
       }
 
+      @media (max-width: 1100px) {
+        body {
+          display: block;
+          overflow-x: hidden;
+          padding-top: 66px;
+        }
+        .sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          height: auto;
+          min-height: 0;
+          z-index: 5000;
+          transform: translateY(0);
+          transition: transform .24s ease, box-shadow .24s ease;
+          will-change: transform;
+        }
+        .sidebar.mobile-nav-hidden:not(.mobile-menu-open):not(.mobile-user-open) {
+          transform: translateY(-100%);
+          box-shadow: none;
+        }
+        .sidebar-header {
+          align-items: center;
+          border-bottom: 0;
+          display: grid;
+          grid-template-columns: 44px minmax(0, 1fr) 44px;
+          gap: 10px;
+          padding: 12px 14px;
+        }
+        .sidebar-header h2 {
+          font-size: 15px;
+          letter-spacing: .08em;
+          line-height: 1.15;
+          text-align: center;
+        }
+        .mobile-menu-toggle,
+        .mobile-user-toggle {
+          align-items: center;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          border-radius: 12px;
+          color: #ffffff;
+          cursor: pointer;
+          display: inline-flex;
+          height: 42px;
+          justify-content: center;
+          width: 42px;
+          position: relative;
+          z-index: 5002;
+          transition: background .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-menu-toggle:hover,
+        .mobile-menu-toggle:focus-visible,
+        .mobile-user-toggle:hover,
+        .mobile-user-toggle:focus-visible {
+          background: rgba(255, 255, 255, 0.16);
+          border-color: rgba(255, 255, 255, 0.32);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+          outline: none;
+          transform: translateY(-1px);
+        }
+        .mobile-user-toggle {
+          background: #2563eb;
+          border-color: rgba(255, 255, 255, 0.2);
+          border-radius: 50%;
+          font-weight: 800;
+        }
+        .sidebar-menu {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+          max-height: 0;
+          overflow: hidden;
+          padding: 0 12px;
+          transition: max-height .25s ease, padding .25s ease;
+        }
+        .sidebar.mobile-menu-open .sidebar-menu {
+          max-height: 520px;
+          padding: 8px 12px 14px;
+        }
+        .menu-item {
+          border-radius: 10px;
+          min-height: 44px;
+          padding: 12px 14px;
+        }
+        .menu-item.active {
+          border-left-width: 0;
+          box-shadow: inset 0 -3px 0 #2563eb;
+        }
+        .sidebar-footer {
+          border-top: 0;
+          padding: 0;
+          position: relative;
+        }
+        .sidebar-footer > .user-profile,
+        .sidebar-footer > .logout-btn {
+          display: none;
+        }
+        .mobile-user-card {
+          background: #ffffff;
+          border: 1px solid #e2e8f0;
+          border-radius: 14px;
+          box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+          color: #0f172a;
+          display: none;
+          min-width: 220px;
+          padding: 14px;
+          position: fixed;
+          right: 12px;
+          top: 64px;
+          z-index: 6000;
+        }
+        .sidebar.mobile-user-open .mobile-user-card {
+          display: block;
+        }
+        .mobile-user-card strong,
+        .mobile-user-card span {
+          display: block;
+        }
+        .mobile-user-card strong {
+          font-size: 14px;
+          margin-bottom: 2px;
+        }
+        .mobile-user-card span {
+          color: #64748b;
+          font-size: 12px;
+          margin-bottom: 12px;
+        }
+        .mobile-user-card .logout-btn {
+          background: #fee2e2;
+          color: #b91c1c;
+          justify-content: center;
+          min-height: 40px;
+          width: 100%;
+        }
+        .container {
+          margin-left: 0;
+          width: 100%;
+          max-width: none;
+          padding: 18px;
+        }
+        .header-dashboard {
+          flex-direction: column;
+          gap: 14px;
+        }
+        .form-grid,
+        .se-form-grid,
+        .se-form-grid-2,
+        .kb-detail-grid,
+        .admin-report-signature-grid {
+          grid-template-columns: 1fr;
+        }
+        .dashboard-registry-risk-grid,
+        .dashboard-registry-column .kpi-grid,
+        .risk-matrix-wrap,
+        .bowtie {
+          grid-template-columns: 1fr;
+        }
+        .risk-axis-y {
+          writing-mode: horizontal-tb;
+          transform: none;
+          text-align: left;
+        }
+        .portfolio-risk-card {
+          position: static;
+        }
+      }
+      @media (max-width: 760px) {
+        html, body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+        body {
+          overflow-wrap: anywhere;
+        }
+        .container {
+          padding: 12px;
+        }
+        .header-dashboard,
+        .table-section,
+        .card,
+        .se-detail-form-card,
+        .admin-report-paper {
+          border-radius: 14px;
+          padding: 16px;
+          min-width: 0;
+        }
+        .header-dashboard h1 {
+          font-size: 22px;
+          line-height: 1.25;
+        }
+        .table-header,
+        .modal-buttons,
+        .se-modal-footer,
+        .viewer-mode-bar,
+        .mode-switch {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .btn-primary,
+        .btn-secondary,
+        .btn-danger,
+        .mode-btn,
+        .status-badge-header {
+          width: 100%;
+          min-height: 44px;
+          text-align: center;
+        }
+        .kpi-grid,
+        .se-kpi-grid,
+        .projects-grid,
+        .risk-summary-grid,
+        .kb-impact-summary {
+          grid-template-columns: 1fr;
+        }
+        .table-container,
+        .se-table-container,
+        .kb-table-wrap,
+        .se-impact-table-wrap,
+        div[id^="se-table-"] {
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch;
+        }
+        table,
+        .se-impact-table,
+        .dynamic-table {
+          min-width: 680px;
+        }
+        .modal,
+        .se-modal {
+          align-items: flex-start;
+          padding: 12px;
+          overflow-y: auto;
+        }
+        .modal-content,
+        .se-modal-content {
+          width: 100%;
+          max-width: none !important;
+          max-height: none;
+          border-radius: 14px;
+          margin: 0;
+        }
+        .se-modal-header,
+        .se-modal-body,
+        .se-modal-footer {
+          padding: 16px;
+        }
+        .se-modal-body {
+          max-height: none;
+        }
+        .risk-matrix-grid,
+        .risk-matrix-x {
+          min-width: 300px;
+        }
+        .risk-matrix-wrap {
+          overflow-x: auto;
+        }
+        .timeline-item {
+          grid-template-columns: 1fr;
+          gap: 6px;
+          padding-left: 16px;
+        }
+        .bim-viewer-wrap {
+          height: min(420px, 78vh);
+          border-radius: 14px;
+        }
+        .bim-viewer-toolbar {
+          left: 10px;
+          right: 10px;
+          bottom: 10px;
+          flex-wrap: wrap;
+        }
+        .bim-viewer-toolbar button {
+          flex: 1 1 92px;
+        }
+        .bim-viewer-badge {
+          left: 10px;
+          top: 10px;
+          max-width: calc(100% - 20px);
+        }
+        .bim-obj-info-panel {
+          left: 10px;
+          right: 10px;
+          bottom: 58px;
+          width: auto;
+          max-height: 42%;
+        }
+        #seModalImage,
+        #modalImage {
+          max-width: 92vw;
+          max-height: 78vh;
+        }
+      }
+      @media (max-width: 420px) {
+        .sidebar-menu {
+          grid-template-columns: 1fr;
+        }
+        .user-profile,
+        .sidebar-footer {
+          min-width: 0;
+        }
+        .form-group select,
+        .form-group input,
+        .se-form-group input,
+        .se-form-group select,
+        textarea {
+          font-size: 16px;
+        }
+      }
+
       /* ── BIM 3D VIEWER (read-only, sama dengan Project Manager) ── */
       .bim-viewer-wrap { height: 420px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
       #bimThreeCanvas { width: 100%; height: 100%; display: block; }
@@ -2394,13 +2717,34 @@
       .aps-status-chip.connecting { background: #fef3c7; color: #92400e; }
       .aps-status-chip.on { background: #dcfce7; color: #166534; }
       .aps-status-chip.error { background: #fee2e2; color: #991b1b; }
+      @media (max-width: 760px) {
+        .bim-viewer-wrap { height: min(420px, 78vh); border-radius: 14px; }
+        .bim-viewer-toolbar { left: 10px; right: 10px; bottom: 10px; flex-wrap: wrap; }
+        .bim-viewer-toolbar button { flex: 1 1 92px; }
+        .bim-viewer-badge { left: 10px; top: 10px; max-width: calc(100% - 20px); }
+        .bim-obj-info-panel {
+          left: 10px;
+          right: 10px;
+          bottom: 58px;
+          width: auto;
+          max-height: 42%;
+        }
+      }
     </style>
   </head>
 
   <body>
     <div class="sidebar">
       <div class="sidebar-header">
+        <button class="mobile-menu-toggle" type="button" onclick="toggleMobileMenu()" aria-label="Buka menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
         <h2>ADMIN<br />WORKSPACE</h2>
+        <button class="mobile-user-toggle" type="button" onclick="toggleMobileUser()" aria-label="Lihat profil" aria-expanded="false">AD</button>
       </div>
       <div class="sidebar-menu">
         <div class="menu-item active" onclick="switchMenu('dashboard', this)">
@@ -2443,6 +2787,11 @@
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
         </button>
+        <div class="mobile-user-card">
+          <strong>Administrator</strong>
+          <span>System Control</span>
+          <button class="logout-btn" onclick="logout()" title="Logout">Logout</button>
+        </div>
       </div>
     </div>
 
@@ -5118,7 +5467,93 @@
           if (!crData.length) loadChangeRequests();
           if (typeof bimViewerInit === "function") bimViewerInit();
         }
+        closeMobileChrome();
       }
+
+      function toggleMobileMenu() {
+        const sidebar = document.querySelector(".sidebar");
+        const button = document.querySelector(".mobile-menu-toggle");
+        if (!sidebar || !button) return;
+        sidebar.classList.remove("mobile-nav-hidden");
+        const isOpen = sidebar.classList.toggle("mobile-menu-open");
+        sidebar.classList.remove("mobile-user-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+        document
+          .querySelector(".mobile-user-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function toggleMobileUser() {
+        const sidebar = document.querySelector(".sidebar");
+        const button = document.querySelector(".mobile-user-toggle");
+        if (!sidebar || !button) return;
+        sidebar.classList.remove("mobile-nav-hidden");
+        const isOpen = sidebar.classList.toggle("mobile-user-open");
+        sidebar.classList.remove("mobile-menu-open");
+        button.setAttribute("aria-expanded", String(isOpen));
+        document
+          .querySelector(".mobile-menu-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function closeMobileChrome() {
+        const sidebar = document.querySelector(".sidebar");
+        if (!sidebar) return;
+        sidebar.classList.remove("mobile-menu-open", "mobile-user-open");
+        document
+          .querySelector(".mobile-menu-toggle")
+          ?.setAttribute("aria-expanded", "false");
+        document
+          .querySelector(".mobile-user-toggle")
+          ?.setAttribute("aria-expanded", "false");
+      }
+
+      function initMobileAutoHideNavbar() {
+        const sidebar = document.querySelector(".sidebar");
+        if (!sidebar || sidebar.dataset.autoHideReady === "true") return;
+        sidebar.dataset.autoHideReady = "true";
+        let lastY = window.scrollY || 0;
+        let ticking = false;
+        const mq = window.matchMedia("(max-width: 1100px)");
+
+        function update() {
+          ticking = false;
+          if (!mq.matches) {
+            sidebar.classList.remove("mobile-nav-hidden");
+            lastY = window.scrollY || 0;
+            return;
+          }
+          const currentY = window.scrollY || 0;
+          const isPanelOpen =
+            sidebar.classList.contains("mobile-menu-open") ||
+            sidebar.classList.contains("mobile-user-open");
+
+          if (currentY <= 8 || isPanelOpen) {
+            sidebar.classList.remove("mobile-nav-hidden");
+          } else if (currentY > lastY + 8) {
+            sidebar.classList.add("mobile-nav-hidden");
+          } else if (currentY < lastY - 8) {
+            sidebar.classList.remove("mobile-nav-hidden");
+          }
+          lastY = currentY;
+        }
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              window.requestAnimationFrame(update);
+              ticking = true;
+            }
+          },
+          { passive: true },
+        );
+        window.addEventListener("resize", update);
+        update();
+      }
+
+      document.addEventListener("DOMContentLoaded", initMobileAutoHideNavbar);
+      initMobileAutoHideNavbar();
 
       function normalizeCrStatus(status) {
         const normalized = String(status || "PENDING")
