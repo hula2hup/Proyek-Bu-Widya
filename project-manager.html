@@ -726,6 +726,450 @@
       .modal-content { width: 100%; max-width: none; border-radius: 14px; }
       .modal-header, .modal-body { padding: 16px; }
       .modal-body { max-height: none; }
+      .approval-list-modal {
+        align-items: flex-start;
+        z-index: 9000;
+        padding: calc(76px + env(safe-area-inset-top)) 6px 20px;
+        overflow-x: hidden;
+        height: 100dvh;
+      }
+      .approval-list-content {
+        width: calc(100vw - 12px);
+        max-width: calc(100vw - 12px);
+        max-height: calc(100dvh - 96px - env(safe-area-inset-top));
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .approval-list-content .modal-header {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+      .approval-list-content .modal-header h3 {
+        min-width: 0;
+        font-size: 15px;
+        line-height: 1.25;
+      }
+      .approval-list-content .btn-close {
+        flex: 0 0 34px;
+        width: 34px;
+        height: 34px;
+      }
+      .approval-list-content .modal-body {
+        padding: 0;
+        max-height: calc(100dvh - 152px - env(safe-area-inset-top));
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .approval-list-table {
+        width: max-content;
+        min-width: 620px !important;
+        table-layout: fixed !important;
+        font-size: 11px;
+      }
+      .approval-list-table th,
+      .approval-list-table td {
+        padding: 12px 10px;
+        white-space: nowrap;
+      }
+      .approval-list-table th:nth-child(1),
+      .approval-list-table td:nth-child(1) {
+        width: 92px;
+      }
+      .approval-list-table th:nth-child(2),
+      .approval-list-table td:nth-child(2) {
+        width: 142px;
+      }
+      .approval-list-table th:nth-child(3),
+      .approval-list-table td:nth-child(3) {
+        width: 136px;
+      }
+      .approval-list-table th:nth-child(4),
+      .approval-list-table td:nth-child(4) {
+        width: 110px;
+      }
+      .approval-list-table th:nth-child(5),
+      .approval-list-table td:nth-child(5) {
+        width: 110px;
+        text-align: center;
+      }
+      .approval-list-table .badge {
+        padding: 5px 9px;
+        font-size: 10.5px;
+      }
+      .approval-list-table .btn {
+        width: auto;
+        min-height: 34px;
+        padding: 8px 10px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .approval-inbox-card {
+        padding: 14px 0;
+        overflow: hidden;
+      }
+      .approval-inbox-card > div:first-child {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 14px;
+        margin-bottom: 14px !important;
+      }
+      .approval-inbox-card h3 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+      .approval-inbox-card .no-print input {
+        width: 100% !important;
+        max-width: 100%;
+        font-size: 16px !important;
+      }
+      .approval-inbox-table {
+        min-width: 620px !important;
+        width: max-content;
+        table-layout: fixed !important;
+        font-size: 11px;
+      }
+      .approval-inbox-table th,
+      .approval-inbox-table td {
+        padding: 12px 10px;
+        white-space: nowrap;
+      }
+      .approval-inbox-table th:nth-child(1),
+      .approval-inbox-table td:nth-child(1) {
+        width: 78px;
+      }
+      .approval-inbox-table th:nth-child(2),
+      .approval-inbox-table td:nth-child(2) {
+        width: 134px;
+      }
+      .approval-inbox-table th:nth-child(3),
+      .approval-inbox-table td:nth-child(3) {
+        width: 126px;
+      }
+      .approval-inbox-table th:nth-child(4),
+      .approval-inbox-table td:nth-child(4) {
+        width: 128px;
+      }
+      .approval-inbox-table th:nth-child(5),
+      .approval-inbox-table td:nth-child(5) {
+        width: 104px;
+      }
+      .approval-inbox-table th:nth-child(6),
+      .approval-inbox-table td:nth-child(6) {
+        width: 88px;
+        text-align: center;
+      }
+      .approval-inbox-table .btn {
+        width: auto !important;
+        min-width: 0;
+        min-height: 34px;
+        padding: 8px 10px;
+        font-size: 11px;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+      .approval-detail-view {
+        width: 100%;
+        max-width: 100%;
+        overflow: visible;
+      }
+      .approval-detail-view > .btn.secondary {
+        width: 100%;
+        margin-bottom: 12px !important;
+      }
+      .approval-detail-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px;
+      }
+      .approval-request-card,
+      .approval-decision-card {
+        width: 100%;
+        min-width: 0;
+        padding: 16px;
+        overflow: hidden;
+      }
+      .approval-decision-card {
+        border-left-width: 0 !important;
+        border-top: 4px solid var(--primary);
+      }
+      .approval-request-card h3,
+      .approval-decision-card h3 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+      .approval-detail-table {
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: auto !important;
+        font-size: 12px;
+      }
+      .approval-detail-table tr,
+      .approval-detail-table td {
+        display: block;
+        width: 100% !important;
+      }
+      .approval-detail-table td {
+        border-bottom: 0;
+        padding: 5px 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+      .approval-detail-table td:first-child {
+        padding-top: 12px;
+        color: #475569;
+        font-size: 11px;
+        letter-spacing: .02em;
+      }
+      .approval-detail-table td + td {
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--line);
+      }
+      .approval-impact-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      .approval-impact-grid input,
+      .approval-decision-card input,
+      .approval-decision-card select,
+      .approval-decision-card textarea {
+        font-size: 16px !important;
+      }
+      .approval-detail-table .btn {
+        width: 100% !important;
+        min-height: 42px;
+        margin-top: 8px;
+        white-space: normal;
+        line-height: 1.25;
+      }
+      .approval-detail-table .badge {
+        max-width: 100%;
+        white-space: normal;
+      }
+      .pm-raci-card {
+        overflow: visible !important;
+      }
+      .raci-mobile-stack {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        min-width: 0 !important;
+        width: 100% !important;
+        table-layout: auto !important;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      .raci-mobile-stack tbody,
+      .raci-mobile-stack tr {
+        display: contents;
+      }
+      .raci-mobile-stack th,
+      .raci-mobile-stack td {
+        display: block;
+        width: 100% !important;
+        min-width: 0 !important;
+        height: auto !important;
+        border: 0 !important;
+        text-align: left !important;
+        padding: 0 !important;
+      }
+      .raci-mobile-stack th {
+        margin: 14px 0 8px;
+        background: transparent !important;
+        color: #475569;
+        font-size: 11px !important;
+        line-height: 1.3;
+        letter-spacing: .08em;
+      }
+      .raci-mobile-stack td {
+        margin-bottom: 6px;
+      }
+      .raci-mobile-stack tr:first-child th:nth-child(1) {
+        order: 1;
+      }
+      .raci-mobile-stack tr:nth-child(2) td:nth-child(1) {
+        order: 2;
+      }
+      .raci-mobile-stack tr:first-child th:nth-child(2) {
+        order: 3;
+      }
+      .raci-mobile-stack tr:nth-child(2) td:nth-child(2) {
+        order: 4;
+      }
+      .raci-mobile-stack tr:first-child th:nth-child(3) {
+        order: 5;
+      }
+      .raci-mobile-stack tr:nth-child(2) td:nth-child(3) {
+        order: 6;
+      }
+      .raci-mobile-stack .raci-control {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 46px;
+      }
+      .report-card {
+        overflow: hidden;
+      }
+      .report-toolbar {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 12px;
+        align-items: stretch;
+      }
+      .report-toolbar h3 {
+        font-size: 18px;
+        line-height: 1.25;
+      }
+      .report-actions {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        width: 100%;
+      }
+      .report-actions .btn {
+        width: 100%;
+        min-height: 44px;
+      }
+      .report-paper {
+        padding: 16px;
+        min-height: 300px;
+        font-size: 12px;
+        overflow-x: auto;
+      }
+      #knowledge-base .kb-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px;
+      }
+      #knowledge-base .kb-kpi-card {
+        min-height: 112px;
+        padding: 14px 12px;
+        border-radius: 14px;
+      }
+      #knowledge-base .kb-kpi-card h3 {
+        font-size: 10.5px;
+        line-height: 1.25;
+        overflow-wrap: normal;
+        word-break: normal;
+      }
+      #knowledge-base .kb-kpi-card .num {
+        font-size: 26px;
+      }
+      #knowledge-base .kb-kpi-card small {
+        font-size: 10.5px;
+        line-height: 1.35;
+      }
+      .kb-directory-card {
+        padding: 14px 0;
+        overflow: hidden;
+      }
+      .kb-directory-card .kb-toolbar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 14px;
+        margin-bottom: 12px;
+      }
+      .kb-directory-card .kb-toolbar h3 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+      .kb-directory-card #pmKbSearch {
+        width: 100% !important;
+        max-width: 100% !important;
+        font-size: 16px;
+      }
+      .kb-directory-card .kb-tabs {
+        gap: 6px;
+        margin: 0 14px 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+      .kb-directory-card .kb-tab {
+        flex: 0 0 auto;
+        padding: 9px 10px;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+      .kb-directory-table {
+        min-width: 660px !important;
+        width: max-content;
+        table-layout: fixed !important;
+        font-size: 11px;
+      }
+      .kb-directory-table th,
+      .kb-directory-table td {
+        padding: 12px 10px;
+        white-space: nowrap;
+      }
+      .kb-directory-table th:nth-child(1),
+      .kb-directory-table td:nth-child(1) {
+        width: 84px;
+      }
+      .kb-directory-table th:nth-child(2),
+      .kb-directory-table td:nth-child(2) {
+        width: 98px;
+      }
+      .kb-directory-table th:nth-child(3),
+      .kb-directory-table td:nth-child(3) {
+        width: 190px;
+      }
+      .kb-directory-table th:nth-child(4),
+      .kb-directory-table td:nth-child(4) {
+        width: 104px;
+      }
+      .kb-directory-table th:nth-child(5),
+      .kb-directory-table td:nth-child(5) {
+        width: 92px;
+      }
+      .kb-directory-table th:nth-child(6),
+      .kb-directory-table td:nth-child(6) {
+        width: 86px;
+      }
+      .kb-directory-table th:nth-child(7),
+      .kb-directory-table td:nth-child(7) {
+        width: 74px;
+        text-align: center;
+      }
+      .kb-directory-table .kb-doc-title {
+        max-width: 170px;
+        white-space: normal;
+        line-height: 1.25;
+        overflow-wrap: anywhere;
+      }
+      .kb-directory-table .kb-doc-desc {
+        max-width: 170px;
+        white-space: normal;
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+      }
+      .kb-directory-table .badge {
+        max-width: 84px;
+        white-space: normal;
+        justify-content: center;
+        text-align: center;
+        padding: 5px 8px;
+        font-size: 10.5px;
+        line-height: 1.15;
+      }
+      .kb-directory-table .btn {
+        width: auto !important;
+        min-width: 0;
+        min-height: 34px;
+        padding: 8px 10px;
+        font-size: 11px;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+      @supports not (height: 100dvh) {
+        .approval-list-modal {
+          height: 100vh;
+        }
+        .approval-list-content {
+          max-height: calc(100vh - 96px - env(safe-area-inset-top));
+        }
+        .approval-list-content .modal-body {
+          max-height: calc(100vh - 152px - env(safe-area-inset-top));
+        }
+      }
       table { min-width: 680px; }
       .card:has(table), .table-container, .kb-table-wrap { overflow-x: auto; }
     }
@@ -747,6 +1191,98 @@
       }
       #dashboard > .grid.cols-4 .metric small {
         font-size: 9.5px;
+      }
+    }
+    @media (max-width: 1100px) {
+      .overflow-reveal-mask {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        vertical-align: bottom;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      table th > .overflow-reveal-mask,
+      table td > .overflow-reveal-mask,
+      .th-inner > .overflow-reveal-mask,
+      .table-header h2 > .overflow-reveal-mask,
+      .content-page h2 > .overflow-reveal-mask,
+      .topbar h2 > .overflow-reveal-mask,
+      .card h2 > .overflow-reveal-mask,
+      .card h3 > .overflow-reveal-mask {
+        width: 100%;
+      }
+      .th-inner {
+        min-width: 0;
+      }
+      .th-inner > .overflow-reveal-mask {
+        flex: 1 1 auto;
+        width: auto;
+      }
+      .overflow-reveal-track {
+        display: inline-block;
+        min-width: max-content;
+        white-space: nowrap;
+        transform: translateX(0);
+      }
+      .overflow-reveal-mask.is-overflowing .overflow-reveal-track {
+        animation: overflowRevealScroll var(--overflow-reveal-duration, 7s) ease-in-out infinite;
+        padding-left: var(--overflow-reveal-edge, 18px);
+        padding-right: var(--overflow-reveal-edge, 18px);
+        will-change: transform;
+      }
+      .overflow-reveal-mask.is-overflowing {
+        -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+        mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+        animation: overflowRevealMask var(--overflow-reveal-duration, 7s) ease-in-out infinite;
+      }
+      .overflow-reveal-mask.fit-content {
+        max-width: none;
+        overflow: visible;
+        -webkit-mask-image: none;
+        mask-image: none;
+      }
+      .overflow-reveal-mask.fit-content .overflow-reveal-track {
+        animation: none;
+        transform: none;
+      }
+      table.overflow-reveal-loose-table {
+        table-layout: auto !important;
+      }
+      .overflow-reveal-mask:hover .overflow-reveal-track,
+      .overflow-reveal-mask:focus-within .overflow-reveal-track {
+        animation-play-state: paused;
+      }
+      .overflow-reveal-mask.is-overflowing:hover,
+      .overflow-reveal-mask.is-overflowing:focus-within {
+        animation-play-state: paused;
+      }
+      @keyframes overflowRevealScroll {
+        0%, 18% { transform: translateX(calc(-1 * var(--overflow-reveal-edge, 18px))); }
+        48%, 68% { transform: translateX(calc(-1 * var(--overflow-reveal-distance, 0px))); }
+        100% { transform: translateX(calc(-1 * var(--overflow-reveal-edge, 18px))); }
+      }
+      @keyframes overflowRevealMask {
+        0%, 18% {
+          -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+        }
+        19%, 47% {
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        }
+        48%, 68% {
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 100%);
+        }
+        69%, 84% {
+          -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+        }
+        85%, 100% {
+          -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+        }
       }
     }
     @media print { .report-paper { border: 0; border-radius: 0; padding: 0; min-height: auto; box-shadow: none; } .card.report-card { border: 0; box-shadow: none; padding: 0; } }
@@ -919,7 +1455,7 @@
           <p>Tinjau antrean pengajuan perubahan (CR) dan berikan keputusan strategis.</p>
         </div>
       </div>
-      <div id="approvalInbox" class="card" style="margin-bottom: 24px;">
+      <div id="approvalInbox" class="card approval-inbox-card" style="margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <h3 style="margin:0;">📥 Antrean Pengajuan (Pending Review)</h3>
           <div class="no-print">
@@ -928,7 +1464,7 @@
               oninput="applySearchAndSort()">
           </div>
         </div>
-        <table id="inboxTable">
+        <table id="inboxTable" class="approval-inbox-table">
           <thead>
             <tr>
               <th><span class="th-inner">CR ID<button class="sort-btn" id="sortBtn-crid" onclick="toggleSort('crid','main')" title="Urutkan CR ID"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-crid"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-crid"/></svg></button></span></th>
@@ -942,12 +1478,12 @@
           <tbody id="inboxTbody"></tbody>
         </table>
       </div>
-      <div id="approvalDetailView" style="display:none; animation: fadeIn 0.4s ease;">
+      <div id="approvalDetailView" class="approval-detail-view" style="display:none; animation: fadeIn 0.4s ease;">
         <button class="btn secondary" onclick="closeCrDetail()" style="margin-bottom: 15px;">🡨 Kembali</button>
-        <div class="grid cols-2">
-          <div class="card">
+        <div class="grid cols-2 approval-detail-grid">
+          <div class="card approval-request-card">
             <h3 id="detailTitle">Detail Pengajuan: (Loading...)</h3>
-            <table style="margin-bottom: 16px;">
+            <table class="approval-detail-table" style="margin-bottom: 16px;">
               <tr><td width="35%"><b>Status Pengaju</b></td><td><span id="sender">Loading...</span></td></tr>
               <tr><td><b>Timestamp</b></td><td><span id="detailTime">Loading...</span></td></tr>
               <tr><td><b>BIM Object ID</b></td><td>Loading...</td></tr>
@@ -955,7 +1491,7 @@
               <tr>
                 <td><b>Impact Analysis</b></td>
                 <td>
-                  <div style="display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:end;">
+                  <div class="approval-impact-grid" style="display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:end;">
                     <div>
                       <label for="pmCostImpact" style="margin-bottom:4px;">Biaya (Rp)</label>
                       <input type="number" id="pmCostImpact" min="0" step="1000" placeholder="0" style="padding:8px 10px;font-size:12px;">
@@ -976,7 +1512,7 @@
             </div>
             <div id="pmBowtieDiagram"></div>
           </div>
-          <div class="card" style="border-left: 4px solid var(--primary)">
+          <div class="card approval-decision-card" style="border-left: 4px solid var(--primary)">
             <h3>Form Approval Decision (Project Manager)</h3>
             <input type="hidden" id="changeId" value="CR-004"> <div class="form-grid">
                 <div><label>Review ID</label><input id="reviewId" value="Memuat..." readonly></div>
@@ -1002,9 +1538,9 @@
     <!-- SECTION 03: LAPORAN -->
     <section id="laporan" class="section">
       <div class="topbar"><div><h2>Kompilasi Laporan Akhir & Lesson Learned</h2><p>Finalisasi laporan proyek berdasarkan data historis eksekusi lapangan, review kinerja, dan penyimpanan ke Knowledge Base.</p></div></div>
-      <div class="card" style="margin-bottom:20px;">
+      <div class="card pm-raci-card" style="margin-bottom:20px;">
         <h3>RACI & Pengesahan Laporan Dokumen</h3>
-        <table>
+        <table class="raci-mobile-stack">
           <tr style="background:#f1f5f9;">
             <th style="text-align:center;">Disusun Oleh (Site Manager)</th>
             <th style="text-align:center;">Diperiksa Oleh (Admin/MK)</th>
@@ -1026,7 +1562,7 @@
       <div class="card report-card" style="margin-bottom:20px;">
         <div class="report-toolbar">
           <h3 style="margin:0;">Draft Laporan Akhir Proyek</h3>
-          <div class="no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <div class="report-actions no-print" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
             <button class="btn secondary" onclick="generateFinalReport()">Generate Ringkasan Otomatis</button>
             <button class="btn" onclick="printReportDraft('finalReportDraft')">Print</button>
           </div>
@@ -1069,7 +1605,7 @@
         </div>
       </div>
 
-      <div class="card">
+      <div class="card kb-directory-card">
         <div class="kb-toolbar">
           <h3 style="margin:0;">Direktori Pengetahuan</h3>
           <input type="text" id="pmKbSearch" placeholder="Cari Doc ID, judul, kategori, CR..." style="max-width:320px;" oninput="pmKbApplyFilter()">
@@ -1080,7 +1616,7 @@
           <div class="kb-tab" onclick="pmKbSetTab('Lesson Learned', this)">Lesson Learned</div>
           <div class="kb-tab" onclick="pmKbSetTab('BIM Object', this)">BIM Object</div>
         </div>
-        <table>
+        <table class="kb-directory-table">
           <thead>
             <tr>
               <th>Doc ID</th>
@@ -1189,14 +1725,14 @@
     </section>
 
     <!-- MODAL: PENDING -->
-    <div id="modalPending" class="modal-overlay" onclick="closeModalOutside(event,'modalPending')">
-      <div class="modal-content">
+    <div id="modalPending" class="modal-overlay approval-list-modal" onclick="closeModalOutside(event,'modalPending')">
+      <div class="modal-content approval-list-content">
         <div class="modal-header">
           <h3>⏳ Daftar Pending Approval</h3>
           <button class="btn-close" onclick="closeModal('modalPending')">✖</button>
         </div>
         <div class="modal-body">
-          <table>
+          <table class="approval-list-table">
             <thead>
               <tr>
                 <th><span class="th-inner">CR ID<button class="sort-btn" id="sortBtn-pending-crid" onclick="toggleSort('crid','pending')" title="Urutkan CR ID"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-pending-crid"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-pending-crid"/></svg></button></span></th>
@@ -1213,14 +1749,14 @@
     </div>
 
     <!-- MODAL: RISK -->
-    <div id="modalRisk" class="modal-overlay" onclick="closeModalOutside(event,'modalRisk')">
-      <div class="modal-content">
+    <div id="modalRisk" class="modal-overlay approval-list-modal" onclick="closeModalOutside(event,'modalRisk')">
+      <div class="modal-content approval-list-content">
         <div class="modal-header">
           <h3>⚠️ Daftar High Risk Exposure</h3>
           <button class="btn-close" onclick="closeModal('modalRisk')">✖</button>
         </div>
         <div class="modal-body">
-          <table>
+          <table class="approval-list-table">
             <thead>
               <tr>
                 <th><span class="th-inner">CR ID<button class="sort-btn" id="sortBtn-risk-crid" onclick="toggleSort('crid','risk')" title="Urutkan CR ID"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risk-crid"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risk-crid"/></svg></button></span></th>
@@ -5208,6 +5744,116 @@ function closeCrDetail() {
         btnSubmit.disabled = false;
     }
 }
+  (function initOverflowRevealText() {
+    const mobileQuery = window.matchMedia("(max-width: 1100px)");
+    const hostSelector = [
+      "table th",
+      "table td",
+      ".table-header h2",
+      ".content-page h2",
+      ".topbar h2",
+      ".card h2",
+      ".card h3"
+    ].join(",");
+    const inlineSelector = "b,strong,small,em,span:not(.badge):not(.status-badge):not(.status-badge-header):not(.cr-status-dot):not(.sort-indicator)";
+    const skipSelector = "button,input,select,textarea,svg,canvas,img,video,.badge,.status-badge,.status-badge-header,.cr-status-dot,.sort-btn,.btn,.btn-primary,.btn-secondary,.btn-danger,.action-btn,.tt-wrapper,.overflow-reveal-mask";
+    let revealTimer = null;
+
+    function wrapTextNode(node) {
+      const text = node.nodeValue || "";
+      if (!text.trim() || node.parentElement?.closest(".overflow-reveal-mask")) return;
+      const mask = document.createElement("span");
+      const track = document.createElement("span");
+      mask.className = "overflow-reveal-mask";
+      track.className = "overflow-reveal-track";
+      track.textContent = text;
+      mask.appendChild(track);
+      node.parentNode.replaceChild(mask, node);
+    }
+
+    function wrapTextIn(element) {
+      if (!element || element.matches(skipSelector)) return;
+      Array.from(element.childNodes).forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          wrapTextNode(node);
+          return;
+        }
+        if (node.nodeType !== Node.ELEMENT_NODE) return;
+        if (node.matches(skipSelector)) return;
+        if (node.matches(inlineSelector)) wrapTextIn(node);
+      });
+    }
+
+    function setupOverflowReveal(root = document) {
+      const scope = root.nodeType === Node.ELEMENT_NODE ? root : document;
+      if (scope.matches?.(hostSelector)) wrapTextIn(scope);
+      scope.querySelectorAll?.(hostSelector).forEach(wrapTextIn);
+      scheduleMeasureOverflowReveal();
+    }
+
+    function measureOverflowReveal() {
+      document.querySelectorAll("table.overflow-reveal-loose-table").forEach((table) => {
+        table.classList.remove("overflow-reveal-loose-table");
+      });
+      document.querySelectorAll(".overflow-reveal-mask").forEach((mask) => {
+        const track = mask.querySelector(".overflow-reveal-track");
+        if (!track) return;
+        mask.classList.remove("is-overflowing", "fit-content");
+        mask.style.removeProperty("width");
+        mask.style.removeProperty("--overflow-reveal-distance");
+        mask.style.removeProperty("--overflow-reveal-duration");
+        mask.style.removeProperty("--overflow-reveal-edge");
+
+        if (!mobileQuery.matches) return;
+
+        const cell = mask.closest("th,td");
+        const table = mask.closest("table");
+        const parentTag = mask.parentElement?.tagName;
+        if (cell && (mask.parentElement === cell || ["B", "STRONG", "SMALL", "SPAN", "EM"].includes(parentTag))) {
+          const style = getComputedStyle(cell);
+          const width = cell.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+          if (width > 24) mask.style.width = Math.floor(width) + "px";
+        }
+
+        const distance = track.scrollWidth - mask.clientWidth;
+        const overflowRatio = mask.clientWidth > 0 ? distance / mask.clientWidth : 0;
+        if (distance > 2 && overflowRatio > 0.25) {
+          const edgeGuard = 18;
+          mask.style.setProperty("--overflow-reveal-edge", edgeGuard + "px");
+          mask.style.setProperty("--overflow-reveal-distance", Math.ceil(distance + edgeGuard) + "px");
+          mask.style.setProperty("--overflow-reveal-duration", Math.min(12, Math.max(5, distance / 18 + 4)).toFixed(1) + "s");
+          mask.classList.add("is-overflowing");
+        } else if (distance > 2) {
+          mask.style.removeProperty("width");
+          mask.classList.add("fit-content");
+          table?.classList.add("overflow-reveal-loose-table");
+        }
+      });
+    }
+
+    function scheduleMeasureOverflowReveal() {
+      clearTimeout(revealTimer);
+      revealTimer = setTimeout(() => requestAnimationFrame(measureOverflowReveal), 80);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => setupOverflowReveal(document));
+    window.addEventListener("resize", scheduleMeasureOverflowReveal, { passive: true });
+    window.addEventListener("orientationchange", scheduleMeasureOverflowReveal, { passive: true });
+    document.addEventListener("click", (event) => {
+      if (event.target.closest(".menu-item,.se-tab,.submenu-item,nav button,[data-tab]")) {
+        setTimeout(scheduleMeasureOverflowReveal, 160);
+      }
+    });
+
+    const observer = new MutationObserver((mutations) => {
+      if (mutations.some((mutation) => mutation.addedNodes.length || mutation.type === "characterData")) {
+        setupOverflowReveal(document);
+      }
+    });
+    document.addEventListener("DOMContentLoaded", () => {
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    });
+  })();
 </script>
 </body>
 </html>

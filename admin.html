@@ -2730,6 +2730,542 @@
           max-height: 42%;
         }
       }
+      @media (max-width: 760px) {
+        body {
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .container {
+          padding: 12px 8px 40px;
+        }
+        .content-section,
+        .active-section {
+          min-width: 0;
+        }
+        .header-dashboard,
+        .table-section,
+        .card,
+        .se-detail-form-card,
+        .admin-report-card,
+        .admin-report-paper,
+        .portfolio-risk-card {
+          width: 100%;
+          max-width: 100%;
+          border-radius: 12px;
+          padding: 16px;
+          overflow: hidden;
+        }
+        .header-dashboard h1,
+        .table-header h2,
+        .title h2,
+        .content-section h1,
+        .content-section h2,
+        .card h2,
+        .card h3,
+        .admin-report-toolbar h2,
+        .admin-report-title,
+        .se-modal-header h2 {
+          overflow-wrap: normal;
+          word-break: normal;
+          hyphens: none;
+        }
+        .header-dashboard h1 {
+          font-size: 22px;
+          line-height: 1.25;
+        }
+        .header-dashboard p,
+        .title p,
+        .content-section p {
+          font-size: 14px;
+          line-height: 1.55;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .table-header,
+        .admin-report-toolbar,
+        .admin-report-actions {
+          align-items: stretch;
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .table-header h2,
+        .admin-report-toolbar h2 {
+          font-size: 20px;
+          line-height: 1.25;
+        }
+        .btn-primary,
+        .btn-secondary,
+        .report-print-btn,
+        .admin-report-select,
+        .raci-control,
+        .risk-filter-select,
+        .mode-btn {
+          width: 100%;
+          max-width: 100%;
+          min-height: 42px;
+          justify-content: center;
+        }
+        .dashboard-registry-column .kpi-grid,
+        .kpi-grid,
+        .kb-impact-summary {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .kpi-card,
+        .kb-impact-metric {
+          min-height: 118px;
+          padding: 14px 12px;
+        }
+        .kpi-card h3,
+        .kb-impact-metric span {
+          font-size: 11px;
+          line-height: 1.25;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .kpi-card span {
+          font-size: 30px;
+        }
+        .kpi-card p,
+        .kb-impact-metric b {
+          font-size: 12px;
+          line-height: 1.35;
+        }
+        .table-container,
+        .se-table-container,
+        .kb-table-wrap,
+        .kb-impact-panel > div,
+        .raci-card,
+        .admin-report-paper,
+        .admin-report-table-wrap {
+          overflow-x: auto !important;
+          -webkit-overflow-scrolling: touch;
+        }
+        table {
+          min-width: 720px;
+          table-layout: fixed;
+        }
+        th,
+        td,
+        .change-table th,
+        .change-table td,
+        .kb-impact-table th,
+        .kb-impact-table td {
+          padding: 12px 10px;
+          font-size: 12px;
+          line-height: 1.35;
+          white-space: nowrap;
+          overflow-wrap: normal;
+          word-break: normal;
+          vertical-align: top;
+        }
+        th,
+        .change-table th,
+        .kb-impact-table th {
+          font-size: 11px;
+          letter-spacing: .06em;
+        }
+        td:nth-child(2),
+        td:nth-child(3),
+        .change-table td:nth-child(2),
+        .change-table td:nth-child(3),
+        .kb-impact-table td {
+          white-space: normal;
+        }
+        .badge,
+        .status-badge,
+        .status-badge-header {
+          white-space: normal;
+          text-align: center;
+          line-height: 1.2;
+        }
+        .se-table-container .change-table,
+        .table-container .change-table {
+          min-width: 860px;
+        }
+        .cr-id-cell {
+          align-items: flex-start;
+          min-width: 88px;
+        }
+        .admin-report-toolbar {
+          margin-bottom: 14px;
+        }
+        .admin-report-actions {
+          grid-template-columns: 1fr;
+        }
+        .admin-report-paper {
+          font-size: 13px;
+          line-height: 1.55;
+          min-height: auto;
+        }
+        .admin-report-paper table {
+          min-width: 620px;
+        }
+        .admin-report-signatures {
+          grid-template-columns: 1fr;
+          gap: 18px;
+          margin-top: 28px;
+        }
+        .admin-report-signature-box {
+          min-height: 120px;
+        }
+        .raci-card table {
+          min-width: 760px;
+        }
+        .raci-card table td,
+        .raci-card table th {
+          white-space: normal;
+          text-align: center;
+        }
+        .viewer-mode-bar,
+        .mode-switch {
+          align-items: stretch;
+          display: grid;
+          grid-template-columns: 1fr;
+          width: 100%;
+        }
+        .bim-viewer-wrap {
+          height: min(430px, 72vh);
+          overflow: hidden;
+        }
+        .bim-obj-info-panel {
+          left: 10px;
+          right: 10px;
+          bottom: 66px;
+          width: auto;
+          max-height: 38%;
+          z-index: 20;
+        }
+        .bim-viewer-toolbar {
+          z-index: 25;
+        }
+        .bim-viewer-toolbar button {
+          min-width: 0;
+          padding: 8px 6px;
+          white-space: normal;
+        }
+      }
+      @media (max-width: 420px) {
+        .container {
+          padding-left: 6px;
+          padding-right: 6px;
+        }
+        .header-dashboard,
+        .table-section,
+        .card,
+        .admin-report-card,
+        .admin-report-paper {
+          padding: 14px;
+        }
+        .dashboard-registry-column .kpi-grid,
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+        .kpi-card {
+          min-height: 112px;
+          padding: 12px 10px;
+        }
+        .kpi-card span {
+          font-size: 27px;
+        }
+        .kpi-card p {
+          font-size: 11px;
+        }
+        .table-header h2,
+        .admin-report-toolbar h2 {
+          font-size: 18px;
+        }
+      }
+      @media (max-width: 760px) {
+        .dashboard-registry-column .kpi-grid,
+        .kpi-grid,
+        .se-kpi-grid,
+        .kb-impact-summary {
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          gap: 10px !important;
+        }
+        .kpi-card,
+        .se-kpi-card,
+        .kb-impact-metric {
+          min-width: 0;
+          min-height: 118px;
+          padding: 14px 12px;
+        }
+        .kpi-card h3,
+        .se-kpi-card h3,
+        .kb-impact-metric span {
+          font-size: 11px;
+          line-height: 1.25;
+          overflow-wrap: normal;
+          word-break: normal;
+        }
+        .kpi-card span,
+        .se-kpi-card .kpi-num,
+        .kb-impact-metric b {
+          font-size: 30px;
+          line-height: 1;
+        }
+        .kpi-card p,
+        .se-kpi-card p {
+          font-size: 11.5px;
+          line-height: 1.35;
+        }
+      }
+      @media (max-width: 420px) {
+        .dashboard-registry-column .kpi-grid,
+        .kpi-grid,
+        .se-kpi-grid,
+        .kb-impact-summary {
+          gap: 8px !important;
+        }
+        .kpi-card,
+        .se-kpi-card,
+        .kb-impact-metric {
+          min-height: 108px;
+          padding: 12px 10px;
+        }
+        .kpi-card span,
+        .se-kpi-card .kpi-num,
+        .kb-impact-metric b {
+          font-size: 26px;
+        }
+        .kpi-card p,
+        .se-kpi-card p {
+          font-size: 10.5px;
+        }
+      }
+      @media (max-width: 760px) {
+        #approvalDetailView {
+          width: 100%;
+          max-width: 100%;
+          overflow: visible;
+        }
+        #approvalDetailView > .btn-secondary {
+          width: 100%;
+          margin-bottom: 14px !important;
+        }
+        .approval-detail-grid {
+          display: grid !important;
+          grid-template-columns: 1fr !important;
+          gap: 14px !important;
+          width: 100%;
+          max-width: 100%;
+          overflow: visible;
+        }
+        .approval-detail-card,
+        .approval-decision-card {
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          height: auto !important;
+          padding: 16px !important;
+          overflow: visible;
+        }
+        .approval-decision-card {
+          order: 2;
+          border-left-width: 0 !important;
+          border-top: 5px solid #1e3a5f;
+        }
+        .approval-detail-card {
+          order: 1;
+        }
+        .approval-detail-card h3,
+        .approval-decision-card h3 {
+          font-size: 17px !important;
+          line-height: 1.25;
+          margin-bottom: 14px !important;
+        }
+        .approval-detail-table {
+          min-width: 0 !important;
+          table-layout: auto !important;
+          width: 100% !important;
+          font-size: 12px;
+        }
+        .approval-detail-table td {
+          display: block;
+          width: 100% !important;
+          padding: 5px 0 !important;
+          border: 0 !important;
+        }
+        .approval-detail-table td:first-child {
+          padding-top: 10px !important;
+          font-size: 11px;
+          letter-spacing: .02em;
+          color: #475569;
+        }
+        .approval-detail-table td + td {
+          padding-bottom: 8px !important;
+        }
+        .approval-decision-card .form-group {
+          margin-bottom: 13px !important;
+        }
+        .approval-decision-card input,
+        .approval-decision-card select,
+        .approval-decision-card textarea {
+          min-height: 48px;
+          font-size: 16px;
+        }
+        .approval-decision-card textarea {
+          min-height: 118px !important;
+          height: auto !important;
+        }
+        .raci-card {
+          overflow: visible !important;
+        }
+        .raci-mobile-stack {
+          display: grid !important;
+          grid-template-columns: 1fr !important;
+          min-width: 0 !important;
+          width: 100% !important;
+          table-layout: auto !important;
+          border-collapse: separate;
+          border-spacing: 0;
+        }
+        .raci-mobile-stack tr {
+          display: contents;
+        }
+        .raci-mobile-stack tbody {
+          display: contents;
+        }
+        .raci-mobile-stack th,
+        .raci-mobile-stack td {
+          display: block;
+          width: 100% !important;
+          min-width: 0 !important;
+          height: auto !important;
+          border: 0 !important;
+          text-align: left !important;
+          padding: 0 !important;
+        }
+        .raci-mobile-stack th {
+          margin: 14px 0 8px;
+          background: transparent !important;
+          color: #475569;
+          font-size: 11px !important;
+          line-height: 1.3;
+          letter-spacing: .08em;
+        }
+        .raci-mobile-stack td {
+          margin-bottom: 6px;
+        }
+        .raci-mobile-stack tr:first-child th:nth-child(1) {
+          order: 1;
+        }
+        .raci-mobile-stack tr:nth-child(2) td:nth-child(1) {
+          order: 2;
+        }
+        .raci-mobile-stack tr:first-child th:nth-child(2) {
+          order: 3;
+        }
+        .raci-mobile-stack tr:nth-child(2) td:nth-child(2) {
+          order: 4;
+        }
+        .raci-mobile-stack tr:first-child th:nth-child(3) {
+          order: 5;
+        }
+        .raci-mobile-stack tr:nth-child(2) td:nth-child(3) {
+          order: 6;
+        }
+        .raci-mobile-stack .raci-control {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-height: 46px;
+        }
+      }
+      @media (max-width: 1100px) {
+        .overflow-reveal-mask {
+          display: inline-block;
+          max-width: 100%;
+          overflow: hidden;
+          vertical-align: bottom;
+          -webkit-mask-image: none;
+          mask-image: none;
+        }
+        table th > .overflow-reveal-mask,
+        table td > .overflow-reveal-mask,
+        .th-inner > .overflow-reveal-mask,
+        .table-header h2 > .overflow-reveal-mask,
+        .content-page h2 > .overflow-reveal-mask,
+        .header-dashboard h1 > .overflow-reveal-mask,
+        .card h2 > .overflow-reveal-mask,
+        .card h3 > .overflow-reveal-mask {
+          width: 100%;
+        }
+        .th-inner {
+          min-width: 0;
+        }
+        .th-inner > .overflow-reveal-mask {
+          flex: 1 1 auto;
+          width: auto;
+        }
+        .overflow-reveal-track {
+          display: inline-block;
+          min-width: max-content;
+          white-space: nowrap;
+          transform: translateX(0);
+        }
+        .overflow-reveal-mask.is-overflowing .overflow-reveal-track {
+          animation: overflowRevealScroll var(--overflow-reveal-duration, 7s) ease-in-out infinite;
+          padding-left: var(--overflow-reveal-edge, 18px);
+          padding-right: var(--overflow-reveal-edge, 18px);
+          will-change: transform;
+        }
+        .overflow-reveal-mask.is-overflowing {
+          -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          animation: overflowRevealMask var(--overflow-reveal-duration, 7s) ease-in-out infinite;
+        }
+        .overflow-reveal-mask.fit-content {
+          max-width: none;
+          overflow: visible;
+          -webkit-mask-image: none;
+          mask-image: none;
+        }
+        .overflow-reveal-mask.fit-content .overflow-reveal-track {
+          animation: none;
+          transform: none;
+        }
+        table.overflow-reveal-loose-table {
+          table-layout: auto !important;
+        }
+        .overflow-reveal-mask:hover .overflow-reveal-track,
+        .overflow-reveal-mask:focus-within .overflow-reveal-track {
+          animation-play-state: paused;
+        }
+        .overflow-reveal-mask.is-overflowing:hover,
+        .overflow-reveal-mask.is-overflowing:focus-within {
+          animation-play-state: paused;
+        }
+        @keyframes overflowRevealScroll {
+          0%, 18% { transform: translateX(calc(-1 * var(--overflow-reveal-edge, 18px))); }
+          48%, 68% { transform: translateX(calc(-1 * var(--overflow-reveal-distance, 0px))); }
+          100% { transform: translateX(calc(-1 * var(--overflow-reveal-edge, 18px))); }
+        }
+        @keyframes overflowRevealMask {
+          0%, 18% {
+            -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          }
+          19%, 47% {
+            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+          }
+          48%, 68% {
+            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 100%);
+          }
+          69%, 84% {
+            -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%);
+          }
+          85%, 100% {
+            -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+            mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 14px), transparent 100%);
+          }
+        }
+      }
     </style>
   </head>
 
@@ -3590,7 +4126,7 @@
           </button>
 
           <div
-            class="form-grid"
+            class="form-grid approval-detail-grid"
             style="
               grid-template-columns: 1fr 1fr;
               gap: 24px;
@@ -3598,7 +4134,7 @@
             "
           >
             <div
-              class="card"
+              class="card approval-detail-card"
               style="
                 padding: 30px;
                 height: 100%;
@@ -3618,6 +4154,7 @@
                 Detail Pengajuan: CR-008
               </h3>
               <table
+                class="approval-detail-table"
                 style="
                   width: 100%;
                   border-collapse: collapse;
@@ -3729,7 +4266,7 @@
             </div>
 
             <div
-              class="card"
+              class="card approval-decision-card"
               style="
                 padding: 30px;
                 border-left: 5px solid #1e3a5f;
@@ -5180,7 +5717,7 @@
         </div>
         <div class="card raci-card" style="margin-bottom: 20px">
           <div class="title"><h2>RACI & Pengesahan Laporan Dokumen</h2></div>
-          <table>
+          <table class="raci-mobile-stack">
             <tr style="background: #f1f5f9">
               <th style="text-align: center">Disusun Oleh (Site Manager)</th>
               <th style="text-align: center">Diperiksa Oleh (Admin/MK)</th>
@@ -12963,6 +13500,117 @@
       document.addEventListener("DOMContentLoaded", () => {
         loadProjectRegistry(); // Eksekusi pembuatan tabel
       });
+
+      (function initOverflowRevealText() {
+        const mobileQuery = window.matchMedia("(max-width: 1100px)");
+        const hostSelector = [
+          "table th",
+          "table td",
+          ".table-header h2",
+          ".content-page h2",
+          ".header-dashboard h1",
+          ".card h2",
+          ".card h3"
+        ].join(",");
+        const inlineSelector = "b,strong,small,em,span:not(.badge):not(.status-badge):not(.status-badge-header):not(.cr-status-dot):not(.sort-indicator)";
+        const skipSelector = "button,input,select,textarea,svg,canvas,img,video,.badge,.status-badge,.status-badge-header,.cr-status-dot,.sort-btn,.btn,.btn-primary,.btn-secondary,.btn-danger,.action-btn,.tt-wrapper,.overflow-reveal-mask";
+        let revealTimer = null;
+
+        function wrapTextNode(node) {
+          const text = node.nodeValue || "";
+          if (!text.trim() || node.parentElement?.closest(".overflow-reveal-mask")) return;
+          const mask = document.createElement("span");
+          const track = document.createElement("span");
+          mask.className = "overflow-reveal-mask";
+          track.className = "overflow-reveal-track";
+          track.textContent = text;
+          mask.appendChild(track);
+          node.parentNode.replaceChild(mask, node);
+        }
+
+        function wrapTextIn(element) {
+          if (!element || element.matches(skipSelector)) return;
+          Array.from(element.childNodes).forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              wrapTextNode(node);
+              return;
+            }
+            if (node.nodeType !== Node.ELEMENT_NODE) return;
+            if (node.matches(skipSelector)) return;
+            if (node.matches(inlineSelector)) wrapTextIn(node);
+          });
+        }
+
+        function setupOverflowReveal(root = document) {
+          const scope = root.nodeType === Node.ELEMENT_NODE ? root : document;
+          if (scope.matches?.(hostSelector)) wrapTextIn(scope);
+          scope.querySelectorAll?.(hostSelector).forEach(wrapTextIn);
+          scheduleMeasureOverflowReveal();
+        }
+
+        function measureOverflowReveal() {
+          document.querySelectorAll("table.overflow-reveal-loose-table").forEach((table) => {
+            table.classList.remove("overflow-reveal-loose-table");
+          });
+          document.querySelectorAll(".overflow-reveal-mask").forEach((mask) => {
+            const track = mask.querySelector(".overflow-reveal-track");
+            if (!track) return;
+            mask.classList.remove("is-overflowing", "fit-content");
+            mask.style.removeProperty("width");
+            mask.style.removeProperty("--overflow-reveal-distance");
+            mask.style.removeProperty("--overflow-reveal-duration");
+            mask.style.removeProperty("--overflow-reveal-edge");
+
+            if (!mobileQuery.matches) return;
+
+            const cell = mask.closest("th,td");
+            const table = mask.closest("table");
+            const parentTag = mask.parentElement?.tagName;
+            if (cell && (mask.parentElement === cell || ["B", "STRONG", "SMALL", "SPAN", "EM"].includes(parentTag))) {
+              const style = getComputedStyle(cell);
+              const width = cell.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+              if (width > 24) mask.style.width = Math.floor(width) + "px";
+            }
+
+            const distance = track.scrollWidth - mask.clientWidth;
+            const overflowRatio = mask.clientWidth > 0 ? distance / mask.clientWidth : 0;
+            if (distance > 2 && overflowRatio > 0.25) {
+              const edgeGuard = 18;
+              mask.style.setProperty("--overflow-reveal-edge", edgeGuard + "px");
+              mask.style.setProperty("--overflow-reveal-distance", Math.ceil(distance + edgeGuard) + "px");
+              mask.style.setProperty("--overflow-reveal-duration", Math.min(12, Math.max(5, distance / 18 + 4)).toFixed(1) + "s");
+              mask.classList.add("is-overflowing");
+            } else if (distance > 2) {
+              mask.style.removeProperty("width");
+              mask.classList.add("fit-content");
+              table?.classList.add("overflow-reveal-loose-table");
+            }
+          });
+        }
+
+        function scheduleMeasureOverflowReveal() {
+          clearTimeout(revealTimer);
+          revealTimer = setTimeout(() => requestAnimationFrame(measureOverflowReveal), 80);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => setupOverflowReveal(document));
+        window.addEventListener("resize", scheduleMeasureOverflowReveal, { passive: true });
+        window.addEventListener("orientationchange", scheduleMeasureOverflowReveal, { passive: true });
+        document.addEventListener("click", (event) => {
+          if (event.target.closest(".menu-item,.se-tab,.submenu-item,nav button,[data-tab]")) {
+            setTimeout(scheduleMeasureOverflowReveal, 160);
+          }
+        });
+
+        const observer = new MutationObserver((mutations) => {
+          if (mutations.some((mutation) => mutation.addedNodes.length || mutation.type === "characterData")) {
+            setupOverflowReveal(document);
+          }
+        });
+        document.addEventListener("DOMContentLoaded", () => {
+          observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+        });
+      })();
     </script>
   </body>
 </html>
