@@ -3,6 +3,18 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/db_user.php';
 
+function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
+    static $columns = null;
+    if ($columns === null) {
+        $columns = [];
+        $stmt = $pdo->query("SHOW COLUMNS FROM change_requests");
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $column) {
+            $columns[$column['Field']] = true;
+        }
+    }
+    return isset($columns[$columnName]);
+}
+
 // 2. PROSES UPDATE DATA (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -60,6 +72,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Menangkap Array Checkbox dari frontend
     $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
+    $locationFormatColumn = changeRequestColumnExists($pdo, 'locationFormat')
+        ? 'locationFormat'
+        : (changeRequestColumnExists($pdo, 'location_format') ? 'location_format' : null);
+    $locationFormatSql = $locationFormatColumn ? "{$locationFormatColumn}    = :locationFormat,\n                " : "";
 
     // 4. QUERY UPDATE SQL
     $sql = "UPDATE change_requests SET 
@@ -72,6 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 priority          = :priority,
                 risk              = :risk,
                 projectArea       = :projectArea,
+                $locationFormatSql
                 location          = :location,
                 bimObjectId       = :bimObjectId,
                 riskCategory      = :riskCategory,
@@ -92,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         $stmt = $pdo->prepare($sql);
-        $success = $stmt->execute([
+        $params = [
             'changeDate'        => $_POST['changeDate'] ?? date('Y-m-d'),
             'submittedBy'       => $_POST['submittedBy'] ?? $currentData['submittedBy'],
             'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
@@ -119,7 +136,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'photoEvidence'     => $photo_evidence,
             'status'            => $newStatus,                           
             'changeId'          => $changeId
-        ]);
+        ];
+        if ($locationFormatColumn) {
+            $params['locationFormat'] = $_POST['locationFormat'] ?? null;
+        }
+        $success = $stmt->execute($params);
 
         if ($success) {
             echo json_encode([

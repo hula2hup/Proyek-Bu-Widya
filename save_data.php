@@ -4,6 +4,18 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/db_user.php';
 
+function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
+    static $columns = null;
+    if ($columns === null) {
+        $columns = [];
+        $stmt = $pdo->query("SHOW COLUMNS FROM change_requests");
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $column) {
+            $columns[$column['Field']] = true;
+        }
+    }
+    return isset($columns[$columnName]);
+}
+
 // 2. PROSES DATA SAAT FORM DI-SUBMIT (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
@@ -33,6 +45,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Menangkap Array Checkbox 
     $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
+    $locationFormatColumnName = changeRequestColumnExists($pdo, 'locationFormat')
+        ? 'locationFormat'
+        : (changeRequestColumnExists($pdo, 'location_format') ? 'location_format' : null);
 
     // Ambil data input secara terstruktur
     $data = [
@@ -63,18 +78,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'photoEvidence'     => $photo_evidence,
         'status'            => 'PENDING'
     ];
+    if ($locationFormatColumnName) {
+        $data['locationFormat'] = $_POST['locationFormat'] ?? null;
+    }
+
+    $locationFormatColumn = $locationFormatColumnName ? "{$locationFormatColumnName}, " : '';
+    $locationFormatValue = $locationFormatColumnName ? ':locationFormat, ' : '';
 
     // Query INSERT 
     $sql = "INSERT INTO change_requests (
                 changeId, changeDate, submittedBy, wbsLevel4, wbsLevel5, 
                 wbsLevel6, changeCategory, priority, risk, projectArea, 
-                location, bimObjectId, riskCategory, riskVariable, riskDescription, description, 
+                {$locationFormatColumn}location, bimObjectId, riskCategory, riskVariable, riskDescription, description,
                 ownerRequest, changeDrivers, impactCost, impactTime, 
                 impactScope, impactQuality, impactSafety, descriptionDetail, photoEvidence, status
             ) VALUES (
                 :changeId, :changeDate, :submittedBy, :wbsLevel4, :wbsLevel5, 
                 :wbsLevel6, :changeCategory, :priority, :risk, :projectArea, 
-                :location, :bimObjectId, :riskCategory, :riskVariable, :riskDescription, :description, 
+                {$locationFormatValue}:location, :bimObjectId, :riskCategory, :riskVariable, :riskDescription, :description,
                 :ownerRequest, :changeDrivers, :impactCost, :impactTime, 
                 :impactScope, :impactQuality, :impactSafety, :descriptionDetail, :photoEvidence, :status
             )";

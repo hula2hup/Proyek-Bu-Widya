@@ -34,6 +34,16 @@ function ensureProjectAccess(PDO $pdo, string $projectId): void {
     }
 }
 
+function adminDashboardTableExists($pdo, $tableName) {
+    try {
+        $stmt = $pdo->prepare("SHOW TABLES LIKE ?");
+        $stmt->execute([$tableName]);
+        return (bool)$stmt->fetchColumn();
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 // Ambil Project ID jika dikirim dari frontend (opsional untuk mendukung global/all projects view)
 $projectId = $_GET['project_id'] ?? $_GET['projectId'] ?? '';
 ensureProjectAccess($pdo, $projectId);
@@ -258,6 +268,137 @@ try {
     });
     $tornadoSensitivity = array_slice($tornadoSensitivity, 0, 10);
 
+    // 11. Statistik ringkas dashboard pengendalian perubahan
+    $stmtControlTotals = $pdo->prepare("
+        SELECT
+            COUNT(*) AS total_changes,
+            SUM(CASE WHEN UPPER(status) = 'APPROVED' THEN 1 ELSE 0 END) AS approved_changes,
+            SUM(CASE WHEN UPPER(status) = 'PENDING' AND CAST(risk AS UNSIGNED) >= 7 THEN 1 ELSE 0 END) AS active_high_risk,
+            COALESCE(SUM(CASE WHEN UPPER(status) = 'APPROVED' THEN GREATEST(CAST(timeImpact AS SIGNED), 0) ELSE 0 END), 0) AS controlled_delay_days,
+            SUM(CASE WHEN changeDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) THEN 1 ELSE 0 END) AS changes_last_6_months
+        FROM change_requests
+        $whereAllProject
+    ");
+    $stmtControlTotals->execute($params);
+    $controlTotals = $stmtControlTotals->fetch() ?: [];
+
+    $lessonTotal = 0;
+    $lessonRecent = 0;
+    try {
+        $stmtLessons = $pdo->query("
+            SELECT
+                SUM(CASE
+                    WHEN LOWER(COALESCE(knowledgeCategory, '')) LIKE '%lesson%'
+                      OR LOWER(COALESCE(documentName, '')) LIKE '%lesson%'
+                    THEN 1 ELSE 0
+                END) AS lesson_total,
+                SUM(CASE
+                    WHEN (
+                        LOWER(COALESCE(knowledgeCategory, '')) LIKE '%lesson%'
+                        OR LOWER(COALESCE(documentName, '')) LIKE '%lesson%'
+                    )
+                    AND changeDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                    THEN 1 ELSE 0
+                END) AS lesson_recent,
+                COUNT(*) AS kb_total,
+                SUM(CASE WHEN changeDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH) THEN 1 ELSE 0 END) AS kb_recent
+            FROM knowledge_base
+        ");
+        $lessonRow = $stmtLessons->fetch() ?: [];
+        $lessonTotal = (int)($lessonRow['lesson_total'] ?? 0);
+        $lessonRecent = (int)($lessonRow['lesson_recent'] ?? 0);
+        if ($lessonTotal === 0) {
+            $lessonTotal = (int)($lessonRow['kb_total'] ?? 0);
+            $lessonRecent = (int)($lessonRow['kb_recent'] ?? 0);
+        }
+    } catch (Exception $e) {
+        $lessonTotal = 0;
+        $lessonRecent = 0;
+    }
+
+    $avgSpiPercent = null;
+    try {
+        $stmtSpi = $pdo->query("
+            SELECT ROUND(AVG(spi_ratio) * 100, 1) AS avg_spi_percent
+            FROM (
+                SELECT
+                    ps.project_id,
+                    CASE
+                        WHEN CAST(ps.rencana_kumulatif AS DECIMAL(18,4)) > 0
+                        THEN LEAST(GREATEST(CAST(ps.realisasi_kumulatif AS DECIMAL(18,4)) / CAST(ps.rencana_kumulatif AS DECIMAL(18,4)), 0), 1.5)
+                        ELSE NULL
+                    END AS spi_ratio
+                FROM project_scurve ps
+                INNER JOIN (
+                    SELECT project_id, MAX(periode_ke) AS latest_period
+                    FROM project_scurve
+                    WHERE realisasi_kumulatif IS NOT NULL
+                      AND rencana_kumulatif IS NOT NULL
+                      AND CAST(rencana_kumulatif AS DECIMAL(18,4)) > 0
+                    GROUP BY project_id
+                ) latest
+                    ON latest.project_id = ps.project_id
+                   AND latest.latest_period = ps.periode_ke
+            ) spi_latest
+        ");
+        $avgSpiPercent = $stmtSpi->fetchColumn();
+        $avgSpiPercent = $avgSpiPercent !== null ? (float)$avgSpiPercent : null;
+    } catch (Exception $e) {
+        $avgSpiPercent = null;
+    }
+
+    $stmtTrend = $pdo->prepare("
+        SELECT
+            DATE_FORMAT(changeDate, '%Y-%m') AS month_key,
+            DATE_FORMAT(changeDate, '%b') AS month_label,
+            COUNT(*) AS total,
+            SUM(CASE WHEN UPPER(status) = 'APPROVED' THEN 1 ELSE 0 END) AS approved,
+            SUM(CASE WHEN UPPER(status) IN ('APPROVED', 'REJECTED') THEN 1 ELSE 0 END) AS closed
+        FROM change_requests
+        " . (!empty($whereAllProject) ? $whereAllProject . " AND changeDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)" : "WHERE changeDate >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)") . "
+        GROUP BY month_key, month_label
+        ORDER BY month_key ASC
+    ");
+    $stmtTrend->execute($params);
+    $controlTrend = $stmtTrend->fetchAll();
+
+    $stmtCause = $pdo->prepare("
+        SELECT cause, COUNT(*) AS total
+        FROM (
+            SELECT
+                CASE
+                    WHEN LOWER(CONCAT_WS(' ', changeCategory, changeDrivers, riskCategory, riskDescription)) REGEXP 'desain|design|gambar|dokumen' THEN 'Desain'
+                    WHEN LOWER(CONCAT_WS(' ', changeCategory, changeDrivers, riskCategory, riskDescription)) REGEXP 'lapangan|site|kondisi' THEN 'Kondisi lapangan'
+                    WHEN LOWER(CONCAT_WS(' ', changeCategory, changeDrivers, riskCategory, riskDescription)) REGEXP 'owner|konsultan|permintaan|vo' THEN 'Owner'
+                    WHEN LOWER(CONCAT_WS(' ', changeCategory, changeDrivers, riskCategory, riskDescription)) REGEXP 'metode|method|erection|lifting' THEN 'Metode'
+                    ELSE 'Lainnya'
+                END AS cause
+            FROM change_requests
+            $whereAllProject
+        ) cause_data
+        GROUP BY cause
+        ORDER BY total DESC
+    ");
+    $stmtCause->execute($params);
+    $controlCauses = $stmtCause->fetchAll();
+
+    $stmtTopRisks = $pdo->prepare("
+        SELECT
+            COALESCE(NULLIF(MAX(kr.risk_nama), ''), NULLIF(MAX(cr.riskDescription), ''), NULLIF(MAX(cr.riskVariable), ''), 'Risiko belum dikodekan') AS risk_name,
+            COALESCE(NULLIF(MAX(cr.description), ''), NULLIF(MAX(kr.insight), ''), 'Perlu pemantauan dan mitigasi lanjutan') AS risk_note,
+            MAX(CAST(cr.risk AS UNSIGNED)) AS max_risk,
+            COUNT(*) AS total
+        FROM change_requests cr
+        LEFT JOIN knowledge_repository kr
+            ON TRIM(cr.riskVariable) COLLATE utf8mb4_unicode_ci = TRIM(kr.risk_kode) COLLATE utf8mb4_unicode_ci
+        $whereAllProject
+        GROUP BY COALESCE(NULLIF(cr.riskVariable, ''), cr.riskDescription, cr.changeId)
+        ORDER BY max_risk DESC, total DESC
+        LIMIT 4
+    ");
+    $stmtTopRisks->execute($params);
+    $controlTopRisks = $stmtTopRisks->fetchAll();
+
     // Kembalikan semua data dalam satu paket JSON lengkap ke frontend
     echo json_encode([
         "status" => "success",
@@ -284,7 +425,21 @@ try {
                 "total_cost_impact" => (float)($addendumSummary['total_cost_impact'] ?? 0)
             ],
             "risk_matrix" => $riskMatrix,
-            "tornado_sensitivity" => $tornadoSensitivity
+            "tornado_sensitivity" => $tornadoSensitivity,
+            "control_dashboard" => [
+                "total_change_requests" => (int)($controlTotals['total_changes'] ?? 0),
+                "changes_last_6_months" => (int)($controlTotals['changes_last_6_months'] ?? 0),
+                "approved_changes" => (int)($controlTotals['approved_changes'] ?? 0),
+                "approval_rate" => (float)((int)($controlTotals['total_changes'] ?? 0) > 0 ? round(((int)($controlTotals['approved_changes'] ?? 0) / (int)$controlTotals['total_changes']) * 100, 1) : 0),
+                "controlled_delay_days" => (int)($controlTotals['controlled_delay_days'] ?? 0),
+                "active_high_risk" => (int)($controlTotals['active_high_risk'] ?? 0),
+                "lesson_learned" => $lessonTotal,
+                "lesson_recent" => $lessonRecent,
+                "avg_spi_percent" => $avgSpiPercent,
+                "trend" => $controlTrend,
+                "causes" => $controlCauses,
+                "top_risks" => $controlTopRisks
+            ]
         ]
     ]);
 

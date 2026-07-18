@@ -256,6 +256,7 @@
         grid-template-columns: minmax(0, 1.35fr) minmax(360px, 0.65fr);
         gap: 22px;
         align-items: start;
+        min-width: 0;
       }
       .dashboard-registry-column {
         display: grid;
@@ -278,6 +279,294 @@
         padding: 24px;
         position: sticky;
         top: 18px;
+        min-width: 0;
+        max-width: 100%;
+      }
+      .control-dashboard {
+        display: grid;
+        gap: 18px;
+        margin-top: 22px;
+        margin-bottom: 32px;
+        min-width: 0;
+      }
+      .control-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .control-kpi-card {
+        position: relative;
+        overflow: hidden;
+        min-width: 0;
+        min-height: 104px;
+        border: 1px solid #dbe4ef;
+        border-radius: 14px;
+        background: #ffffff;
+        padding: 18px;
+        box-shadow: 0 10px 22px rgba(15, 45, 82, 0.05);
+      }
+      .control-kpi-card::after {
+        content: "";
+        position: absolute;
+        right: -22px;
+        top: -38px;
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: #eef6fd;
+      }
+      .control-kpi-card h3 {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 10px;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+      .control-kpi-card strong {
+        position: relative;
+        z-index: 1;
+        display: block;
+        color: #0f2d52;
+        font-size: 28px;
+        line-height: 1;
+      }
+      .control-kpi-card span {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-top: 8px;
+        color: #10b981;
+        font-size: 12px;
+      }
+      .control-dashboard-main {
+        display: grid;
+        grid-template-columns: minmax(0, 1.7fr) minmax(300px, .9fr);
+        gap: 16px;
+      }
+      .control-card {
+        min-width: 0;
+        border: 1px solid #dbe4ef;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 20px;
+        box-shadow: 0 10px 22px rgba(15, 45, 82, 0.05);
+      }
+      .control-card h3 {
+        margin: 0 0 8px;
+        color: #0f2d52;
+        font-size: 16px;
+      }
+      .control-card p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+      .process-flow {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .process-step {
+        position: relative;
+        min-width: 0;
+        min-height: 114px;
+        border: 1px solid #dbe4ef;
+        border-radius: 12px;
+        background: #f8fafc;
+        padding: 12px 10px;
+        text-align: center;
+      }
+      .process-step:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+        right: -9px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #2563eb;
+        font-weight: 900;
+        z-index: 1;
+      }
+      .process-step b {
+        display: inline-grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #e7f2ff;
+        color: #0071e3;
+        font-size: 14px;
+      }
+      .process-step strong {
+        display: block;
+        margin-top: 10px;
+        color: #0f2d52;
+        font-size: 12px;
+      }
+      .process-step small {
+        display: block;
+        margin-top: 8px;
+        color: #64748b;
+        font-size: 10px;
+        line-height: 1.35;
+      }
+      .effectiveness-card {
+        text-align: center;
+      }
+      .effectiveness-ring {
+        display: grid;
+        place-items: center;
+        width: 180px;
+        height: 180px;
+        margin: 12px auto 16px;
+        border-radius: 50%;
+        background: conic-gradient(#24b878 0 var(--spi-percent, 0%), #e8edf2 var(--spi-percent, 0%) 100%);
+      }
+      .effectiveness-ring > div {
+        display: grid;
+        place-items: center;
+        width: 118px;
+        height: 118px;
+        border-radius: 50%;
+        background: #ffffff;
+      }
+      .effectiveness-ring strong {
+        color: #0f2d52;
+        font-size: 34px;
+        line-height: 1;
+      }
+      .effectiveness-ring span {
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 12px;
+      }
+      .control-dashboard-bottom {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, .9fr) minmax(0, .9fr);
+        gap: 16px;
+      }
+      .bar-chart {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        align-items: end;
+        gap: 12px;
+        height: 180px;
+        padding: 18px 6px 0;
+        border-left: 1px solid #dbe4ef;
+        border-bottom: 1px solid #dbe4ef;
+        margin-top: 16px;
+      }
+      .bar-column {
+        display: grid;
+        gap: 7px;
+        align-items: end;
+        justify-items: center;
+        height: 100%;
+      }
+      .bar-column i {
+        display: block;
+        width: 100%;
+        max-width: 72px;
+        border-radius: 8px 8px 0 0;
+        background: linear-gradient(180deg, #1682e6, #58acef);
+      }
+      .bar-column b {
+        color: #0f2d52;
+        font-size: 11px;
+      }
+      .bar-column span {
+        color: #64748b;
+        font-size: 11px;
+      }
+      .cause-wrap {
+        display: grid;
+        grid-template-columns: 160px minmax(0, 1fr);
+        gap: 18px;
+        align-items: center;
+        margin-top: 16px;
+      }
+      .cause-donut {
+        display: grid;
+        place-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: conic-gradient(#1682e6 0 34%, #7357d8 34% 58%, #24b878 58% 79%, #f5a623 79% 91%, #cbd5e1 91% 100%);
+      }
+      .cause-donut > div {
+        display: grid;
+        place-items: center;
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #0f2d52;
+        font-weight: 900;
+        line-height: 1.2;
+        text-align: center;
+      }
+      .cause-legend {
+        display: grid;
+        gap: 8px;
+        color: #0f2d52;
+        font-size: 12px;
+      }
+      .cause-legend span {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .cause-legend i {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+      }
+      .risk-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .risk-list-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+      }
+      .risk-list-item strong {
+        color: #0f172a;
+        font-size: 12px;
+        overflow-wrap: anywhere;
+      }
+      .risk-list-item small {
+        display: block;
+        margin-top: 3px;
+        color: #64748b;
+        font-size: 11px;
+        overflow-wrap: anywhere;
+      }
+      .risk-progress {
+        grid-column: 1 / -1;
+        height: 7px;
+        border-radius: 999px;
+        background: #edf2f7;
+        overflow: hidden;
+      }
+      .risk-progress i {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+      }
+      .risk-score {
+        border-radius: 999px;
+        padding: 6px 9px;
+        background: #fff7ed;
+        color: #ea580c;
+        font-size: 12px;
+        font-weight: 900;
       }
       .table-header {
         display: flex;
@@ -851,9 +1140,65 @@
         white-space: pre-wrap;
         pointer-events: none;
       }
+      @media (max-width: 1500px) {
+        .dashboard-registry-risk-grid {
+          grid-template-columns: 1fr;
+        }
+        .control-kpi-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .dashboard-registry-column .kpi-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+        .portfolio-risk-card {
+          position: static;
+        }
+      }
+      @media (max-width: 1280px) and (min-width: 1101px) {
+        .container {
+          padding: 22px;
+        }
+        .dashboard-registry-column .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .header-dashboard,
+        .table-section,
+        .portfolio-risk-card {
+          padding: 22px;
+        }
+        .risk-matrix-grid {
+          grid-template-columns: repeat(5, minmax(46px, 1fr));
+        }
+        .risk-cell {
+          min-height: 54px;
+        }
+        .control-dashboard-main,
+        .control-dashboard-bottom {
+          grid-template-columns: 1fr;
+        }
+        .process-flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .process-step:nth-child(3)::after {
+          display: none;
+        }
+      }
       @media (max-width: 1200px) {
         .dashboard-registry-risk-grid {
           grid-template-columns: 1fr;
+        }
+        .control-dashboard-main,
+        .control-dashboard-bottom {
+          grid-template-columns: 1fr;
+        }
+        .control-kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .process-flow {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .process-step:nth-child(3)::after {
+          display: none;
         }
         .dashboard-registry-column .kpi-grid {
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -2587,6 +2932,29 @@
           min-height: 44px;
           text-align: center;
         }
+        .control-kpi-grid,
+        .control-dashboard-main,
+        .control-dashboard-bottom {
+          grid-template-columns: 1fr;
+        }
+        .process-flow {
+          grid-template-columns: 1fr;
+        }
+        .process-step::after {
+          display: none;
+        }
+        .cause-wrap {
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
+        .bar-chart {
+          gap: 8px;
+          height: 150px;
+        }
+        .control-card,
+        .control-kpi-card {
+          padding: 16px;
+        }
         .kpi-grid,
         .se-kpi-grid,
         .projects-grid,
@@ -3266,6 +3634,257 @@
           }
         }
       }
+
+      .user-management-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+      }
+      .user-management-panel {
+        min-width: 0;
+      }
+      .um-form-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+      .um-form-card.is-editing {
+        background: #fff7ed;
+        border-color: #fb923c;
+        box-shadow: 0 10px 24px rgba(249, 115, 22, 0.12);
+      }
+      .um-edit-indicator {
+        display: none;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        margin-bottom: 14px;
+        border-radius: 999px;
+        background: #ffedd5;
+        color: #c2410c;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 8px 12px;
+      }
+      .um-form-card.is-editing .um-edit-indicator {
+        display: inline-flex;
+      }
+      .um-form-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: end;
+        margin-top: 14px;
+      }
+      .um-helper-text {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+      .um-action-group {
+        display: inline-flex;
+        gap: 8px;
+        justify-content: center;
+        white-space: nowrap;
+      }
+      .um-action-btn {
+        border: 0;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 9px 12px;
+      }
+      .um-action-btn.edit {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .um-action-btn.delete {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .btn-primary.um-update {
+        background: #f97316;
+        box-shadow: 0 6px 16px rgba(249, 115, 22, 0.22);
+      }
+      .btn-primary.um-update:hover {
+        background: #ea580c;
+      }
+      .um-users-table tr.is-selected td {
+        background: #fff7ed;
+      }
+      .um-role-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 7px 10px;
+        background: #eef2ff;
+        color: #1e40af;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .um-role-badge.role-admin {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .um-role-badge.role-site-engineer {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .um-role-badge.role-project-manager {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .um-empty-state {
+        color: #64748b;
+        text-align: center;
+      }
+      .um-table-wrap .change-table {
+        min-width: 760px;
+      }
+      .um-assignment-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .um-assignment-card {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+        border: 1px solid #dbe4ef;
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 16px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+      }
+      .um-assignment-card-header {
+        min-width: 0;
+      }
+      .um-assignment-project-id {
+        color: #2563eb;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+      }
+      .um-assignment-project-name {
+        margin-top: 4px;
+        color: #0f2d52;
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 1.3;
+      }
+      .um-assignment-users {
+        display: grid;
+        gap: 10px;
+      }
+      .um-assignment-person {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        border-radius: 14px;
+        background: #f8fafc;
+        padding: 10px;
+      }
+      .um-assignment-person.is-selected {
+        background: #fff7ed;
+        box-shadow: inset 0 0 0 1px #fb923c;
+      }
+      .um-assignment-avatar {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: #1e3a5f;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 900;
+      }
+      .um-assignment-name {
+        color: #0f172a;
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 1.25;
+      }
+      .um-assignment-username {
+        color: #64748b;
+        font-size: 12px;
+        margin-top: 2px;
+      }
+      .um-assignment-card-actions {
+        display: inline-flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+
+      @media (max-width: 760px) {
+        .user-management-grid {
+          gap: 14px;
+        }
+        .um-form-card {
+          border-radius: 14px;
+          padding: 14px;
+        }
+        .um-form-actions {
+          grid-template-columns: 1fr;
+        }
+        .um-table-wrap .change-table {
+          min-width: 700px;
+          table-layout: fixed;
+        }
+        .um-users-table th:nth-child(1),
+        .um-users-table td:nth-child(1) {
+          width: 74px;
+        }
+        .um-users-table th:nth-child(5),
+        .um-users-table td:nth-child(5),
+        .um-assignments-table th:nth-child(5),
+        .um-assignments-table td:nth-child(5) {
+          width: 156px;
+        }
+        .um-assignments-table th:nth-child(1),
+        .um-assignments-table td:nth-child(1) {
+          width: 72px;
+        }
+        .um-action-group {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+        .um-action-btn {
+          width: 100%;
+          min-height: 34px;
+          padding: 8px 10px;
+        }
+        .um-assignment-cards {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .um-assignment-card {
+          border-radius: 14px;
+          padding: 14px;
+        }
+        .um-assignment-person {
+          grid-template-columns: 38px minmax(0, 1fr);
+        }
+        .um-assignment-avatar {
+          width: 38px;
+          height: 38px;
+        }
+        .um-assignment-card-actions {
+          grid-column: 1 / -1;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          width: 100%;
+        }
+      }
     </style>
   </head>
 
@@ -3297,6 +3916,9 @@
         </div>
         <div class="menu-item" onclick="switchMenu('knowledge-base', this)">
           📖 Knowledge Base
+        </div>
+        <div class="menu-item" onclick="switchMenu('user-management', this)">
+          👥 User Management
         </div>
         <div class="menu-item" onclick="switchMenu('reports', this)">
           📈 Reports
@@ -3482,6 +4104,147 @@
               <p style="color: #64748b; font-size: 13px; margin: 0">
                 Memuat matriks risiko portofolio...
               </p>
+            </div>
+          </div>
+        </div>
+        <div class="control-dashboard">
+          <div class="control-kpi-grid">
+            <div class="control-kpi-card">
+              <h3>Total Change Request</h3>
+              <strong id="adminControlTotalCr">...</strong>
+              <span id="adminControlTotalCrNote">Memuat data</span>
+            </div>
+            <div class="control-kpi-card">
+              <h3>Perubahan Disetujui</h3>
+              <strong id="adminControlApprovedCr">...</strong>
+              <span id="adminControlApprovalRate">Memuat approval rate</span>
+            </div>
+            <div class="control-kpi-card">
+              <h3>Potensi Delay Terkendali</h3>
+              <strong id="adminControlDelayDays">...</strong>
+              <span id="adminControlDelayNote">Dari approved CR</span>
+            </div>
+            <div class="control-kpi-card">
+              <h3>Risiko Tinggi Aktif</h3>
+              <strong id="adminControlHighRisk">...</strong>
+              <span id="adminControlHighRiskNote" style="color: #f59e0b">Perlu mitigasi</span>
+            </div>
+            <div class="control-kpi-card">
+              <h3>Lesson Learned</h3>
+              <strong id="adminControlLessons">...</strong>
+              <span id="adminControlLessonsNote">Memuat knowledge base</span>
+            </div>
+          </div>
+
+          <div class="control-dashboard-main">
+            <div class="control-card">
+              <h3>Integrasi Proses Pengendalian Perubahan</h3>
+              <p>Alur data digital dari identifikasi perubahan hingga pembelajaran proyek</p>
+              <div class="process-flow">
+                <div class="process-step">
+                  <b>1</b>
+                  <strong>Identifikasi</strong>
+                  <small>Temuan lapangan, owner, desain, supplier</small>
+                </div>
+                <div class="process-step">
+                  <b>2</b>
+                  <strong>Pencatatan</strong>
+                  <small>Change_ID, dokumen, foto, lokasi objek</small>
+                </div>
+                <div class="process-step">
+                  <b>3</b>
+                  <strong>Analisis Dampak</strong>
+                  <small>WBS, biaya, waktu, mutu, kontrak</small>
+                </div>
+                <div class="process-step">
+                  <b>4</b>
+                  <strong>Analisis Risiko</strong>
+                  <small>Risk_ID, probabilitas, dampak, respons</small>
+                </div>
+                <div class="process-step">
+                  <b>5</b>
+                  <strong>Persetujuan</strong>
+                  <small>Review PM, CCB, owner, konsultan</small>
+                </div>
+                <div class="process-step">
+                  <b>6</b>
+                  <strong>Implementasi & KM</strong>
+                  <small>Update BIM-WBS, monitoring, lesson learned</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-card effectiveness-card">
+              <h3>Efektivitas Pengendalian Waktu</h3>
+              <div class="effectiveness-ring">
+                <div>
+                  <strong id="adminControlSpi">...</strong>
+                  <span id="adminControlSpiTarget">Target 85%</span>
+                </div>
+              </div>
+              <p>
+                Kinerja meningkat melalui deteksi dini perubahan, analisis dampak,
+                dan penggunaan kembali pengetahuan proyek.
+              </p>
+            </div>
+          </div>
+
+          <div class="control-dashboard-bottom">
+            <div class="control-card">
+              <h3>Tren Change Request per Bulan</h3>
+              <p>Perbandingan pengajuan, disetujui, dan selesai</p>
+              <div class="bar-chart" id="adminControlTrendChart">
+                <div class="bar-column"><b>8</b><i style="height: 48%"></i><span>Feb</span></div>
+                <div class="bar-column"><b>12</b><i style="height: 70%"></i><span>Mar</span></div>
+                <div class="bar-column"><b>10</b><i style="height: 59%"></i><span>Apr</span></div>
+                <div class="bar-column"><b>15</b><i style="height: 90%"></i><span>Mei</span></div>
+                <div class="bar-column"><b>11</b><i style="height: 66%"></i><span>Jun</span></div>
+                <div class="bar-column"><b>13</b><i style="height: 77%"></i><span>Jul</span></div>
+              </div>
+            </div>
+
+            <div class="control-card">
+              <h3>Distribusi Penyebab Perubahan</h3>
+              <p>Klasifikasi berdasarkan sumber perubahan</p>
+              <div class="cause-wrap">
+                <div class="cause-donut" id="adminControlCauseDonut">
+                  <div><span id="adminControlCauseTotal">...</span><br />Kasus</div>
+                </div>
+                <div class="cause-legend" id="adminControlCauseLegend">
+                  <span><i style="background: #1682e6"></i>Desain 34%</span>
+                  <span><i style="background: #7357d8"></i>Kondisi lapangan 24%</span>
+                  <span><i style="background: #24b878"></i>Owner 21%</span>
+                  <span><i style="background: #f5a623"></i>Metode 12%</span>
+                  <span><i style="background: #cbd5e1"></i>Lainnya 9%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="control-card">
+              <h3>Top Risiko Perubahan</h3>
+              <p>Prioritas mitigasi berdasarkan skor risiko</p>
+              <div class="risk-list" id="adminControlTopRisks">
+                <div class="risk-list-item">
+                  <div><strong>Revisi dimensi girder</strong><small>Fabrikasi ulang & keterlambatan erection</small></div>
+                  <span class="risk-score">20</span>
+                  <div class="risk-progress"><i style="width: 86%; background: #ef4444"></i></div>
+                </div>
+                <div class="risk-list-item">
+                  <div><strong>Dokumen desain terlambat</strong><small>Menunda approval shop drawing</small></div>
+                  <span class="risk-score">16</span>
+                  <div class="risk-progress"><i style="width: 74%; background: #f59e0b"></i></div>
+                </div>
+                <div class="risk-list-item">
+                  <div><strong>Akses mobilisasi terbatas</strong><small>Menghambat transportasi precast</small></div>
+                  <span class="risk-score">12</span>
+                  <div class="risk-progress"><i style="width: 60%; background: #f59e0b"></i></div>
+                </div>
+                <div class="risk-list-item">
+                  <div><strong>Koordinasi lintas pihak</strong><small>Informasi perubahan tidak sinkron</small></div>
+                  <span class="risk-score">9</span>
+                  <div class="risk-progress"><i style="width: 45%; background: #10b981"></i></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -4556,6 +5319,18 @@
                     id="se-projectArea"
                     placeholder="Masukkan Project Area"
                   />
+                </div>
+                <div class="se-form-group">
+                  <label>Format Lokasi</label>
+                  <select id="se-locationFormat">
+                    <option value="">Pilih Format Lokasi</option>
+                    <option value="STA">STA</option>
+                    <option value="Pier/Abutment">Pier/Abutment</option>
+                    <option value="Span">Span</option>
+                    <option value="Zona Fabrikasi">Zona Fabrikasi</option>
+                    <option value="Stockyard">Stockyard</option>
+                    <option value="Titik Koordinat">Titik Koordinat</option>
+                  </select>
                 </div>
                 <div class="se-form-group">
                   <label>Location</label>
@@ -5704,6 +6479,147 @@
         </div>
       </div>
 
+      <div id="user-management" class="content-section">
+        <div class="header-dashboard">
+          <div>
+            <div class="subtitle">ACCESS CONTROL & PROJECT MAPPING</div>
+            <h1>User Management</h1>
+            <p>
+              Kelola akun pengguna dan assignment proyek langsung dari database
+              sistem.
+            </p>
+          </div>
+          <div class="status-badge-header">MASTER ADMIN</div>
+        </div>
+
+        <div class="user-management-grid">
+          <div class="table-section user-management-panel">
+            <div class="table-header">
+              <h2>👥 User Registry</h2>
+              <button class="btn-secondary" onclick="umResetUserForm()">
+                Reset Form
+              </button>
+            </div>
+
+            <form id="umUserForm" class="um-form-card">
+              <input type="hidden" id="um-user-id" />
+              <div class="um-edit-indicator" id="umUserEditIndicator">
+                Mode edit user terpilih
+              </div>
+              <div class="se-form-grid">
+                <div class="se-form-group">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    id="um-username"
+                    placeholder="contoh: aniwijaya"
+                    required
+                  />
+                </div>
+                <div class="se-form-group">
+                  <label>Nama Lengkap</label>
+                  <input
+                    type="text"
+                    id="um-full-name"
+                    placeholder="Nama user"
+                    required
+                  />
+                </div>
+                <div class="se-form-group">
+                  <label>Role</label>
+                  <select id="um-role" required>
+                    <option value="">Pilih Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="Site Engineer">Site Engineer</option>
+                  </select>
+                </div>
+              </div>
+              <div class="um-form-actions">
+                <div class="se-form-group">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    id="um-password"
+                    placeholder="Isi untuk user baru / ganti password"
+                  />
+                </div>
+                <button class="btn-primary" type="submit" id="umUserSubmit">
+                  💾 Simpan User
+                </button>
+              </div>
+            </form>
+
+            <div class="se-table-container um-table-wrap">
+              <table class="change-table um-users-table">
+                <thead>
+                  <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Nama Lengkap</th>
+                    <th>Role</th>
+                    <th style="text-align: center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="umUsersTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-section user-management-panel">
+            <div class="table-header">
+              <h2>🗂️ Project Assignments</h2>
+              <button class="btn-secondary" onclick="umResetAssignmentForm()">
+                Reset Form
+              </button>
+            </div>
+
+            <form id="umAssignmentForm" class="um-form-card">
+              <input type="hidden" id="um-assignment-id" />
+              <input type="hidden" id="um-assignment-original-user" />
+              <input type="hidden" id="um-assignment-original-project" />
+              <input type="hidden" id="um-assignment-original-role" />
+              <div class="um-edit-indicator" id="umAssignmentEditIndicator">
+                Mode edit assignment terpilih
+              </div>
+              <div class="se-form-grid">
+                <div class="se-form-group">
+                  <label>User</label>
+                  <select id="um-assignment-user" required>
+                    <option value="">Pilih User</option>
+                  </select>
+                </div>
+                <div class="se-form-group">
+                  <label>Project</label>
+                  <select id="um-assignment-project" required>
+                    <option value="">Pilih Project</option>
+                  </select>
+                </div>
+                <div class="se-form-group">
+                  <label>Role Assignment</label>
+                  <select id="um-assignment-role" required>
+                    <option value="">Pilih Role</option>
+                    <option value="Project Manager">Project Manager</option>
+                    <option value="Site Engineer">Site Engineer</option>
+                  </select>
+                </div>
+              </div>
+              <div class="um-form-actions">
+                <p class="um-helper-text">
+                  Assignment menentukan proyek yang tampil untuk Project
+                  Manager dan Site Engineer.
+                </p>
+                <button class="btn-primary" type="submit" id="umAssignmentSubmit">
+                  💾 Simpan Assignment
+                </button>
+              </div>
+            </form>
+
+            <div class="um-assignment-cards" id="umAssignmentsTableBody"></div>
+          </div>
+        </div>
+      </div>
+
       <div id="reports" class="content-section">
         <div class="header-dashboard">
           <div>
@@ -6003,6 +6919,9 @@
         if (sectionId === "wbs-mapping") {
           if (!crData.length) loadChangeRequests();
           if (typeof bimViewerInit === "function") bimViewerInit();
+        }
+        if (sectionId === "user-management") {
+          loadUserManagementData();
         }
         closeMobileChrome();
       }
@@ -9263,6 +10182,7 @@
           changeCategory: cr.changeCategory || cr.category || "",
           category: cr.changeCategory || cr.category || "",
           projectArea: cr.projectId || cr.projectArea || "",
+          locationFormat: cr.locationFormat || cr.location_format || "",
           description: cr.description || cr.desc || "",
           risk,
           risikoScore: risk,
@@ -10047,6 +10967,7 @@
           "se-changeDate",
           "se-submittedBy",
           "se-projectArea",
+          "se-locationFormat",
           "se-location",
           "se-bimId",
           "se-riskCategory",
@@ -10133,6 +11054,8 @@
         document.getElementById("se-priority").value = r.priority || "";
         document.getElementById("se-risk").value = r.risk || "";
         document.getElementById("se-projectArea").value = r.projectArea || "";
+        document.getElementById("se-locationFormat").value =
+          r.locationFormat || "";
         document.getElementById("se-location").value = r.location || "";
         document.getElementById("se-bimId").value = seGetRecordBimId(r) || "";
 
@@ -10307,6 +11230,7 @@
           priority: getVal("se-priority"),
           risk: getVal("se-risk"),
           projectArea: getVal("se-projectArea"),
+          locationFormat: getVal("se-locationFormat"),
           location: getVal("se-location"),
           bimObjectId: getVal("se-bimId"),
           bimId: getVal("se-bimId"),
@@ -10359,6 +11283,7 @@
           formData.append("priority", data.priority);
           formData.append("risk", data.risk);
           formData.append("projectArea", data.projectArea);
+          formData.append("locationFormat", data.locationFormat);
           formData.append("location", data.location);
           formData.append("bimObjectId", data.bimObjectId);
           formData.append("riskCategory", data.riskCategory);
@@ -10415,12 +11340,71 @@
           return;
         }
 
-        seChangeRequests.unshift(data);
-        seCloseFormModal();
-        seUpdateKPI();
-        seRenderTable();
-        // Also update CR count badge on project manager if project exists
-        updateProjectCounts();
+        const formData = new FormData();
+        formData.append("changeId", data.changeId);
+        formData.append("changeDate", data.changeDate);
+        formData.append("submittedBy", data.submittedBy);
+        formData.append("wbsLevel4", data.wbsLevel4);
+        formData.append("wbsLevel5", data.wbsLevel5);
+        formData.append("wbsLevel6", data.wbsLevel6);
+        formData.append("changeCategory", data.changeCategory);
+        formData.append("priority", data.priority);
+        formData.append("risk", data.risk);
+        formData.append("projectArea", data.projectArea);
+        formData.append("locationFormat", data.locationFormat);
+        formData.append("location", data.location);
+        formData.append("bimObjectId", data.bimObjectId);
+        formData.append("riskCategory", data.riskCategory);
+        formData.append("riskVariable", selectedVarCode || data.riskVariable);
+        formData.append("riskDescription", data.riskDescription);
+        formData.append("description", data.description);
+        formData.append("changeType", data.changeType);
+        formData.append("siteCondition", data.siteCondition);
+        formData.append("ownerRequest", data.ownerRequest);
+        changeDrivers.forEach((driver) =>
+          formData.append("changeDrivers[]", driver),
+        );
+        formData.append("impactCost", data.impactCost || "[]");
+        formData.append("impactTime", data.impactTime || "[]");
+        formData.append("impactScope", data.impactScope || "[]");
+        formData.append("impactQuality", data.impactQuality || "[]");
+        formData.append("impactSafety", data.impactSafety || "[]");
+        formData.append("descriptionDetail", data.descriptionDetail);
+        newFiles.forEach((file) => formData.append("photo[]", file));
+
+        const submitBtn = document.getElementById("seFormSubmitBtn");
+        const originalText = submitBtn?.innerText || "💾 Simpan Data";
+        if (submitBtn) {
+          submitBtn.innerText = "Menyimpan...";
+          submitBtn.disabled = true;
+        }
+
+        fetch("save_data.php", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.status !== "success") {
+              throw new Error(result.message || "Gagal menyimpan data.");
+            }
+            alert(result.message || "Data Change Request berhasil disimpan.");
+            seCloseFormModal();
+            loadSeChangeRequests();
+            if (typeof loadChangeRequests === "function") loadChangeRequests();
+            if (typeof loadDashboardStats === "function") loadDashboardStats();
+            updateProjectCounts();
+          })
+          .catch((error) => {
+            console.error("Gagal menyimpan Change Request:", error);
+            alert(error.message || "Terjadi masalah pada koneksi server.");
+          })
+          .finally(() => {
+            if (submitBtn) {
+              submitBtn.innerText = originalText;
+              submitBtn.disabled = false;
+            }
+          });
       }
 
       function seSafeText(value, fallback = "-") {
@@ -10658,6 +11642,7 @@
                           ${seReadonlyField("Date", r.changeDate)}
                           ${seReadonlyField("Submitted By", r.submittedBy)}
                           ${seReadonlyField("Project Area", r.projectArea)}
+                          ${seReadonlyField("Format Lokasi", r.locationFormat)}
                           ${seReadonlyField("Location", r.location)}
                           ${seReadonlyField("BIM Object ID", seGetRecordBimId(r))}
                           ${seReadonlyField("Kategori Risiko", r.riskCategory)}
@@ -10761,6 +11746,7 @@
                             <div class="view-field"><label>Date</label><div class="view-value">${r.changeDate || "—"}</div></div>
                             <div class="view-field"><label>Submitted By</label><div class="view-value">${r.submittedBy || "—"}</div></div>
                             <div class="view-field"><label>Project Area</label><div class="view-value">${r.projectArea || "—"}</div></div>
+                            <div class="view-field"><label>Format Lokasi</label><div class="view-value">${r.locationFormat || "—"}</div></div>
                             <div class="view-field"><label>Location</label><div class="view-value">${r.location || "—"}</div></div>
                             <div class="view-field"><label>BIM Object ID</label><div class="view-value">${seGetRecordBimId(r) || "—"}</div></div>
                             <div class="view-field"><label>Kategori Risiko</label><div class="view-value">${r.riskCategory || "—"}</div></div>
@@ -11886,11 +12872,473 @@
       });
 
       // ==========================================================
+      // USER MANAGEMENT - USERS & PROJECT ASSIGNMENTS
+      // ==========================================================
+      let umUsers = [];
+      let umProjects = [];
+      let umAssignments = [];
+      let umDataLoaded = false;
+
+      function umEscape(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function umRoleClass(role) {
+        return `role-${String(role || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")}`;
+      }
+
+      async function umFetchJson(url, options = {}) {
+        const response = await fetch(url, options);
+        const text = await response.text();
+        const trimmed = text.trim();
+        if (trimmed.startsWith("<")) {
+          throw new Error(
+            "Endpoint api_user_management.php belum tersedia di hosting atau ter-redirect ke halaman HTML.",
+          );
+        }
+        try {
+          const result = JSON.parse(text);
+          if (!response.ok && result.status !== "success") {
+            throw new Error(result.message || `Request gagal (${response.status}).`);
+          }
+          return result;
+        } catch (error) {
+          if (error instanceof SyntaxError) {
+            throw new Error(
+              `Respons API tidak valid: ${trimmed.slice(0, 120) || "kosong"}`,
+            );
+          }
+          throw error;
+        }
+      }
+
+      async function loadUserManagementData(force = false) {
+        if (umDataLoaded && !force) return;
+        const usersBody = document.getElementById("umUsersTableBody");
+        const assignmentsBody = document.getElementById("umAssignmentsTableBody");
+        if (usersBody) {
+          usersBody.innerHTML =
+            '<tr><td colspan="5" class="um-empty-state">Memuat data user...</td></tr>';
+        }
+        if (assignmentsBody) {
+          assignmentsBody.innerHTML =
+            '<div class="um-empty-state">Memuat assignment...</div>';
+        }
+
+        try {
+          const result = await umFetchJson("api_user_management.php?action=list");
+          if (result.status !== "success") {
+            throw new Error(result.message || "Gagal memuat data user management.");
+          }
+          umUsers = Array.isArray(result.users) ? result.users : [];
+          umProjects = Array.isArray(result.projects) ? result.projects : [];
+          umAssignments = Array.isArray(result.assignments)
+            ? result.assignments
+            : [];
+          umDataLoaded = true;
+          umRenderUsers();
+          umRenderAssignmentOptions();
+          umRenderAssignments();
+        } catch (error) {
+          console.error("User Management load error:", error);
+          if (usersBody) {
+            usersBody.innerHTML = `<tr><td colspan="5" class="um-empty-state">${umEscape(error.message)}</td></tr>`;
+          }
+          if (assignmentsBody) {
+            assignmentsBody.innerHTML = `<div class="um-empty-state">${umEscape(error.message)}</div>`;
+          }
+        }
+      }
+
+      function umRenderUsers() {
+        const body = document.getElementById("umUsersTableBody");
+        if (!body) return;
+        if (!umUsers.length) {
+          body.innerHTML =
+            '<tr><td colspan="5" class="um-empty-state">Belum ada user di database.</td></tr>';
+          return;
+        }
+        body.innerHTML = umUsers
+          .map(
+            (user) => `
+              <tr data-um-user-row="${umEscape(user.id)}">
+                <td><strong>${umEscape(user.id)}</strong></td>
+                <td>${umEscape(user.username)}</td>
+                <td><strong>${umEscape(user.full_name)}</strong></td>
+                <td><span class="um-role-badge ${umRoleClass(user.role)}">${umEscape(user.role)}</span></td>
+                <td style="text-align:center">
+                  <div class="um-action-group">
+                    <button class="um-action-btn edit" type="button" onclick="umEditUser('${umEscape(user.id)}')">Edit</button>
+                    <button class="um-action-btn delete" type="button" onclick="umDeleteUser('${umEscape(user.id)}')">Hapus</button>
+                  </div>
+                </td>
+              </tr>
+            `,
+          )
+          .join("");
+        if (typeof setupOverflowReveal === "function") setupOverflowReveal(body);
+        const editingId = document.getElementById("um-user-id")?.value || "";
+        if (editingId) {
+          const editingUser = umUsers.find(
+            (item) => String(item.id) === String(editingId),
+          );
+          umSetUserEditingState(editingUser || null);
+        }
+      }
+
+      function umRenderAssignmentOptions() {
+        const userSelect = document.getElementById("um-assignment-user");
+        const projectSelect = document.getElementById("um-assignment-project");
+        if (userSelect) {
+          userSelect.innerHTML =
+            '<option value="">Pilih User</option>' +
+            umUsers
+              .filter((user) => user.role !== "Admin")
+              .map(
+                (user) =>
+                  `<option value="${umEscape(user.id)}" data-role="${umEscape(user.role)}">${umEscape(user.full_name)} - ${umEscape(user.role)}</option>`,
+              )
+              .join("");
+        }
+        if (projectSelect) {
+          projectSelect.innerHTML =
+            '<option value="">Pilih Project</option>' +
+            umProjects
+              .map(
+                (project) =>
+                  `<option value="${umEscape(project.project_id)}">${umEscape(project.project_id)} - ${umEscape(project.project_name)}</option>`,
+              )
+              .join("");
+        }
+      }
+
+      function umRenderAssignments() {
+        const body = document.getElementById("umAssignmentsTableBody");
+        if (!body) return;
+        if (!umAssignments.length) {
+          body.innerHTML =
+            '<div class="um-empty-state">Belum ada project assignment.</div>';
+          return;
+        }
+        const grouped = umAssignments.reduce((acc, assignment, index) => {
+          const key = assignment.project_id || `project-${index}`;
+          if (!acc[key]) {
+            acc[key] = {
+              project_id: assignment.project_id || "-",
+              project_name: assignment.project_name || "Project tanpa nama",
+              items: [],
+            };
+          }
+          acc[key].items.push({ ...assignment, index });
+          return acc;
+        }, {});
+        body.innerHTML = Object.values(grouped)
+          .map((project) => {
+            return `
+              <article class="um-assignment-card">
+                <div class="um-assignment-card-header">
+                  <div class="um-assignment-project-id">${umEscape(project.project_id)}</div>
+                  <div class="um-assignment-project-name">${umEscape(project.project_name)}</div>
+                </div>
+                <div class="um-assignment-users">
+                  ${project.items
+                    .map((assignment) => {
+                      const initials = String(assignment.full_name || assignment.username || "?")
+                        .split(/\s+/)
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((part) => part.charAt(0).toUpperCase())
+                        .join("");
+                      return `
+                        <div
+                          class="um-assignment-person"
+                          data-um-assignment-user="${umEscape(assignment.user_id || "")}"
+                          data-um-assignment-project="${umEscape(assignment.project_id || "")}"
+                          data-um-assignment-role="${umEscape(assignment.role_assigned || "")}"
+                        >
+                          <div class="um-assignment-avatar">${umEscape(initials || "?")}</div>
+                          <div>
+                            <div class="um-assignment-name">${umEscape(assignment.full_name || "-")}</div>
+                            <div class="um-assignment-username">${umEscape(assignment.username || "-")}</div>
+                            <span class="um-role-badge ${umRoleClass(assignment.role_assigned)}">${umEscape(assignment.role_assigned)}</span>
+                          </div>
+                          <div class="um-assignment-card-actions">
+                            <button class="um-action-btn edit" type="button" onclick="umEditAssignment(${assignment.index})">Edit</button>
+                            <button class="um-action-btn delete" type="button" onclick="umDeleteAssignment(${assignment.index})">Hapus</button>
+                          </div>
+                        </div>
+                      `;
+                    })
+                    .join("")}
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+        if (typeof setupOverflowReveal === "function") setupOverflowReveal(body);
+        const originalUserId =
+          document.getElementById("um-assignment-original-user")?.value || "";
+        const originalProjectId =
+          document.getElementById("um-assignment-original-project")?.value || "";
+        const originalRole =
+          document.getElementById("um-assignment-original-role")?.value || "";
+        if (originalUserId && originalProjectId && originalRole) {
+          const editingAssignment = umAssignments.find(
+            (item) =>
+              String(item.user_id) === String(originalUserId) &&
+              String(item.project_id) === String(originalProjectId) &&
+              String(item.role_assigned) === String(originalRole),
+          );
+          umSetAssignmentEditingState(editingAssignment || null);
+        }
+      }
+
+      function umSetUserEditingState(user = null) {
+        const form = document.getElementById("umUserForm");
+        const submit = document.getElementById("umUserSubmit");
+        const indicator = document.getElementById("umUserEditIndicator");
+        document
+          .querySelectorAll(".um-users-table tr.is-selected")
+          .forEach((row) => row.classList.remove("is-selected"));
+
+        if (user) {
+          form?.classList.add("is-editing");
+          submit?.classList.add("um-update");
+          if (submit) submit.innerHTML = "💾 Update User";
+          if (indicator) {
+            indicator.textContent = `Mode edit: ${user.full_name || user.username}`;
+          }
+          document.querySelectorAll("[data-um-user-row]").forEach((row) => {
+            if (row.getAttribute("data-um-user-row") === String(user.id)) {
+              row.classList.add("is-selected");
+            }
+          });
+        } else {
+          form?.classList.remove("is-editing");
+          submit?.classList.remove("um-update");
+          if (submit) submit.innerHTML = "💾 Simpan User";
+          if (indicator) indicator.textContent = "Mode edit user terpilih";
+        }
+      }
+
+      function umResetUserForm() {
+        document.getElementById("umUserForm")?.reset();
+        const userId = document.getElementById("um-user-id");
+        if (userId) userId.value = "";
+        umSetUserEditingState(null);
+      }
+
+      function umEditUser(userId) {
+        const user = umUsers.find((item) => String(item.id) === String(userId));
+        if (!user) return;
+        document.getElementById("um-user-id").value = user.id || "";
+        document.getElementById("um-username").value = user.username || "";
+        document.getElementById("um-full-name").value = user.full_name || "";
+        document.getElementById("um-role").value = user.role || "";
+        document.getElementById("um-password").value = "";
+        umSetUserEditingState(user);
+      }
+
+      async function umDeleteUser(userId) {
+        const user = umUsers.find((item) => String(item.id) === String(userId));
+        if (!user) return;
+        if (
+          !confirm(
+            `Hapus user ${user.full_name || user.username}? Assignment user ini juga akan dihapus.`,
+          )
+        ) {
+          return;
+        }
+        try {
+          await umPostAction("delete_user", { id: userId });
+          umResetUserForm();
+          await loadUserManagementData(true);
+          alert("User berhasil dihapus.");
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+
+      function umResetAssignmentForm() {
+        document.getElementById("umAssignmentForm")?.reset();
+        ["um-assignment-id", "um-assignment-original-user", "um-assignment-original-project", "um-assignment-original-role"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.value = "";
+        });
+        umSetAssignmentEditingState(null);
+      }
+
+      function umSetAssignmentEditingState(assignment = null) {
+        const form = document.getElementById("umAssignmentForm");
+        const submit = document.getElementById("umAssignmentSubmit");
+        const indicator = document.getElementById("umAssignmentEditIndicator");
+        document
+          .querySelectorAll(".um-assignment-person.is-selected")
+          .forEach((card) => card.classList.remove("is-selected"));
+
+        if (assignment) {
+          form?.classList.add("is-editing");
+          submit?.classList.add("um-update");
+          if (submit) submit.innerHTML = "💾 Update Assignment";
+          if (indicator) {
+            indicator.textContent = `Mode edit: ${assignment.full_name || assignment.username} • ${assignment.project_id || "-"}`;
+          }
+          document.querySelectorAll(".um-assignment-person").forEach((card) => {
+            const sameUser =
+              card.getAttribute("data-um-assignment-user") ===
+              String(assignment.user_id || "");
+            const sameProject =
+              card.getAttribute("data-um-assignment-project") ===
+              String(assignment.project_id || "");
+            const sameRole =
+              card.getAttribute("data-um-assignment-role") ===
+              String(assignment.role_assigned || "");
+            if (sameUser && sameProject && sameRole) {
+              card.classList.add("is-selected");
+            }
+          });
+        } else {
+          form?.classList.remove("is-editing");
+          submit?.classList.remove("um-update");
+          if (submit) submit.innerHTML = "💾 Simpan Assignment";
+          if (indicator) indicator.textContent = "Mode edit assignment terpilih";
+        }
+      }
+
+      function umEditAssignment(index) {
+        const assignment = umAssignments[index];
+        if (!assignment) return;
+        document.getElementById("um-assignment-id").value = assignment.id || "";
+        document.getElementById("um-assignment-original-user").value =
+          assignment.user_id || "";
+        document.getElementById("um-assignment-original-project").value =
+          assignment.project_id || "";
+        document.getElementById("um-assignment-original-role").value =
+          assignment.role_assigned || "";
+        document.getElementById("um-assignment-user").value =
+          assignment.user_id || "";
+        document.getElementById("um-assignment-project").value =
+          assignment.project_id || "";
+        document.getElementById("um-assignment-role").value =
+          assignment.role_assigned || "";
+        umSetAssignmentEditingState(assignment);
+        document.getElementById("um-assignment-user")?.focus();
+      }
+
+      async function umDeleteAssignment(index) {
+        const assignment = umAssignments[index];
+        if (!assignment) return;
+        if (
+          !confirm(
+            `Hapus assignment ${assignment.full_name || "user"} pada ${
+              assignment.project_id || "project"
+            }?`,
+          )
+        ) {
+          return;
+        }
+        try {
+          await umPostAction("delete_assignment", {
+            id: assignment.id || "",
+            user_id: assignment.user_id || "",
+            project_id: assignment.project_id || "",
+            role_assigned: assignment.role_assigned || "",
+          });
+          umResetAssignmentForm();
+          await loadUserManagementData(true);
+          alert("Project assignment berhasil dihapus.");
+        } catch (error) {
+          alert(error.message);
+        }
+      }
+
+      async function umPostAction(action, payload) {
+        const result = await umFetchJson("api_user_management.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, ...payload }),
+        });
+        if (result.status !== "success") {
+          throw new Error(result.message || "Aksi gagal diproses.");
+        }
+        return result;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const userForm = document.getElementById("umUserForm");
+        const assignmentForm = document.getElementById("umAssignmentForm");
+        const assignmentUser = document.getElementById("um-assignment-user");
+
+        assignmentUser?.addEventListener("change", function () {
+          const selected = this.options[this.selectedIndex];
+          const role = selected?.dataset?.role || "";
+          if (role && role !== "Admin") {
+            document.getElementById("um-assignment-role").value = role;
+          }
+        });
+
+        userForm?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          try {
+            const id = document.getElementById("um-user-id").value.trim();
+            const password = document.getElementById("um-password").value;
+            await umPostAction("save_user", {
+              id,
+              username: document.getElementById("um-username").value.trim(),
+              full_name: document.getElementById("um-full-name").value.trim(),
+              role: document.getElementById("um-role").value,
+              password,
+            });
+            umResetUserForm();
+            await loadUserManagementData(true);
+            alert("Data user berhasil disimpan.");
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+
+        assignmentForm?.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          try {
+            await umPostAction("save_assignment", {
+              id: document.getElementById("um-assignment-id").value.trim(),
+              original_user_id: document
+                .getElementById("um-assignment-original-user")
+                .value.trim(),
+              original_project_id: document
+                .getElementById("um-assignment-original-project")
+                .value.trim(),
+              original_role_assigned: document
+                .getElementById("um-assignment-original-role")
+                .value.trim(),
+              user_id: document.getElementById("um-assignment-user").value,
+              project_id: document.getElementById("um-assignment-project").value,
+              role_assigned: document.getElementById("um-assignment-role").value,
+            });
+            umResetAssignmentForm();
+            await loadUserManagementData(true);
+            alert("Project assignment berhasil disimpan.");
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+      });
+
+      // ==========================================================
       // INTEGRASI DATA STATISTIK DAN AKTIVITAS DARI DATABASE
       // ==========================================================
 
       // Jalankan saat halaman pertama kali dimuat
       document.addEventListener("DOMContentLoaded", () => {
+        adminMoveControlDashboard();
         const projectSelect = document.getElementById("globalProjectSelect");
 
         if (projectSelect) {
@@ -11945,12 +13393,162 @@
               "adminRiskMatrix",
               Array.isArray(stats.risk_matrix) ? stats.risk_matrix : [],
             );
+            renderAdminControlDashboard(stats.control_dashboard || {});
           } else {
             console.error("Gagal memuat statistik admin:", result.message);
           }
         } catch (error) {
           console.error("Sistem error saat fetch dashboard stats:", error);
         }
+      }
+
+      function adminMoveControlDashboard() {
+        const controlDashboard = document.querySelector("#dashboard .control-dashboard");
+        const registryGrid = document.querySelector("#dashboard .dashboard-registry-risk-grid");
+        if (!controlDashboard || !registryGrid) return;
+        if (controlDashboard.nextElementSibling !== registryGrid) {
+          registryGrid.parentNode.insertBefore(controlDashboard, registryGrid);
+        }
+      }
+
+      function adminFormatNumber(value, fractionDigits = 0) {
+        const number = Number(value || 0);
+        return number.toLocaleString("id-ID", {
+          minimumFractionDigits: fractionDigits,
+          maximumFractionDigits: fractionDigits,
+        });
+      }
+
+      function adminSetText(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+      }
+
+      function renderAdminControlDashboard(stats = {}) {
+        const totalCr = Number(stats.total_change_requests || 0);
+        const approved = Number(stats.approved_changes || 0);
+        const approvalRate = Number(stats.approval_rate || 0);
+        const delayDays = Number(stats.controlled_delay_days || 0);
+        const highRisk = Number(stats.active_high_risk || 0);
+        const lessons = Number(stats.lesson_learned || 0);
+        const lessonRecent = Number(stats.lesson_recent || 0);
+        const spiPercent =
+          stats.avg_spi_percent === null || stats.avg_spi_percent === undefined
+            ? null
+            : Number(stats.avg_spi_percent);
+
+        adminSetText("adminControlTotalCr", adminFormatNumber(totalCr));
+        adminSetText(
+          "adminControlTotalCrNote",
+          `▲ ${adminFormatNumber(stats.changes_last_6_months || 0)} dalam 6 bulan`,
+        );
+        adminSetText("adminControlApprovedCr", adminFormatNumber(approved));
+        adminSetText(
+          "adminControlApprovalRate",
+          `${adminFormatNumber(approvalRate, 1)}% approval rate`,
+        );
+        adminSetText(
+          "adminControlDelayDays",
+          `${adminFormatNumber(delayDays, delayDays % 1 ? 1 : 0)} hari`,
+        );
+        adminSetText("adminControlDelayNote", "Akumulasi approved CR");
+        adminSetText("adminControlHighRisk", adminFormatNumber(highRisk));
+        adminSetText(
+          "adminControlHighRiskNote",
+          highRisk > 0 ? "Perlu mitigasi" : "Terkendali",
+        );
+        adminSetText("adminControlLessons", adminFormatNumber(lessons));
+        adminSetText(
+          "adminControlLessonsNote",
+          `▲ ${adminFormatNumber(lessonRecent)} pengetahuan baru`,
+        );
+
+        const ring = document.querySelector(".effectiveness-ring");
+        const safeSpi = spiPercent === null || Number.isNaN(spiPercent) ? 0 : Math.max(0, Math.min(150, spiPercent));
+        if (ring) ring.style.setProperty("--spi-percent", `${Math.min(100, safeSpi)}%`);
+        adminSetText(
+          "adminControlSpi",
+          spiPercent === null || Number.isNaN(spiPercent)
+            ? "0%"
+            : `${adminFormatNumber(spiPercent, 1)}%`,
+        );
+        adminSetText("adminControlSpiTarget", "Rata-rata SPI seluruh project");
+
+        renderAdminControlTrend(Array.isArray(stats.trend) ? stats.trend : []);
+        renderAdminControlCauses(Array.isArray(stats.causes) ? stats.causes : [], totalCr);
+        renderAdminControlTopRisks(
+          Array.isArray(stats.top_risks) ? stats.top_risks : [],
+        );
+      }
+
+      function renderAdminControlTrend(rows) {
+        const chart = document.getElementById("adminControlTrendChart");
+        if (!chart) return;
+        if (!rows.length) {
+          chart.innerHTML = '<p class="um-empty-state">Belum ada tren CR.</p>';
+          return;
+        }
+        const maxTotal = Math.max(...rows.map((row) => Number(row.total || 0)), 1);
+        chart.innerHTML = rows
+          .map((row) => {
+            const total = Number(row.total || 0);
+            const height = Math.max(8, Math.round((total / maxTotal) * 90));
+            return `<div class="bar-column"><b>${adminFormatNumber(total)}</b><i style="height: ${height}%"></i><span>${adminReportEscape(row.month_label || "-")}</span></div>`;
+          })
+          .join("");
+      }
+
+      function renderAdminControlCauses(rows, totalCr) {
+        const donut = document.getElementById("adminControlCauseDonut");
+        const legend = document.getElementById("adminControlCauseLegend");
+        const total = rows.reduce((sum, row) => sum + Number(row.total || 0), 0) || totalCr || 0;
+        adminSetText("adminControlCauseTotal", adminFormatNumber(total));
+        if (!donut || !legend) return;
+        const colors = ["#1682e6", "#7357d8", "#24b878", "#f5a623", "#cbd5e1"];
+        if (!rows.length || total <= 0) {
+          donut.style.background = "#e8edf2";
+          legend.innerHTML = '<span>Belum ada data penyebab</span>';
+          return;
+        }
+        let start = 0;
+        const segments = rows.map((row, index) => {
+          const pct = (Number(row.total || 0) / total) * 100;
+          const end = start + pct;
+          const segment = `${colors[index % colors.length]} ${start}% ${end}%`;
+          start = end;
+          return segment;
+        });
+        donut.style.background = `conic-gradient(${segments.join(", ")})`;
+        legend.innerHTML = rows
+          .map((row, index) => {
+            const pct = total > 0 ? (Number(row.total || 0) / total) * 100 : 0;
+            return `<span><i style="background: ${colors[index % colors.length]}"></i>${adminReportEscape(row.cause || "Lainnya")} ${adminFormatNumber(pct, 1)}%</span>`;
+          })
+          .join("");
+      }
+
+      function renderAdminControlTopRisks(rows) {
+        const list = document.getElementById("adminControlTopRisks");
+        if (!list) return;
+        if (!rows.length) {
+          list.innerHTML = '<p class="um-empty-state">Belum ada risiko perubahan.</p>';
+          return;
+        }
+        const maxScore = Math.max(...rows.map((row) => Number(row.max_risk || 0)), 1);
+        list.innerHTML = rows
+          .map((row) => {
+            const score = Number(row.max_risk || 0);
+            const width = Math.max(8, Math.round((score / maxScore) * 100));
+            const color = score >= 8 ? "#ef4444" : score >= 6 ? "#f59e0b" : "#10b981";
+            return `
+              <div class="risk-list-item">
+                <div><strong>${adminReportEscape(row.risk_name || "Risiko perubahan")}</strong><small>${adminReportEscape(row.risk_note || "Perlu mitigasi lanjutan")}</small></div>
+                <span class="risk-score">${adminFormatNumber(score)}</span>
+                <div class="risk-progress"><i style="width: ${width}%; background: ${color}"></i></div>
+              </div>
+            `;
+          })
+          .join("");
       }
 
       function adminEscapeAttr(value) {
@@ -12624,6 +14222,7 @@
                 stats.approved ?? 0;
               document.getElementById("pmdRejected").innerText =
                 stats.rejected ?? 0;
+              renderAdminControlDashboard(stats.control_dashboard || {});
 
               // 2. SINKRONISASI RENDERING LINIMASA (RECENT ACTIVITIES)
               const timelineContainer = document.getElementById("pmdTimeline");
@@ -12715,6 +14314,10 @@
           "projectArea",
           document.getElementById("editProjectArea").value,
         );
+        const editLocationFormat = document.getElementById("editLocationFormat");
+        if (editLocationFormat) {
+          formData.append("locationFormat", editLocationFormat.value);
+        }
         formData.append(
           "location",
           document.getElementById("editLocation").value,
