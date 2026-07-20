@@ -1,6 +1,28 @@
-# Block direct access to APS credentials file (server-side only, added alongside
-# BIM viewer APS integration — lihat integrasi-bim-viewer-catatan.txt)
-<Files ".env">
-  Order allow,deny
-  Deny from all
-</Files>
+Options -Indexes
+
+RewriteEngine On
+
+# Redirect users from page.html to page.
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
+
+# Internally map extensionless URLs back to matching .html files.
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [NC,L]
+
+# Block direct public access to server-side secrets and backend helper files.
+<FilesMatch "^(\.env|\.gitignore)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+  RewriteRule ^backend/(db_user|env|knowledge_base_auto|setup_users|test_session)\.php$ - [F,L,NC]
+  RewriteRule ^backend/.*\.(sql|md|log|ini|env|bak|tmp)$ - [F,L,NC]
+</IfModule>

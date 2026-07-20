@@ -14,4 +14,5 @@ function loadEnv(string $path): void {
         }
     }
 }
+loadEnv(__DIR__ . '/../.env');
 loadEnv(__DIR__ . '/.env');

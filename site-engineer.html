@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Form Site Engineer</title>
-    <link rel="icon" type="image/png" href="wylcore.png">
+    <link rel="icon" type="image/png" href="assets/wylcore.png">
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
@@ -3135,7 +3135,7 @@ Pilih variabel risiko</textarea
       let assignmentLogoutPromptShown = false;
 
       function performLogout() {
-        fetch("api_logout.php").finally(() => {
+        fetch("backend/api_logout.php").finally(() => {
           localStorage.clear();
           window.location.replace("login.html");
         });
@@ -3192,7 +3192,7 @@ Pilih variabel risiko</textarea
       }
 
       function fetchAssignedProjects() {
-        fetch("api_get_projects.php")
+        fetch("backend/api_get_projects.php")
           .then((response) => response.json())
           .then((res) => {
             // 2. Jika sukses dan user tersebut memang punya proyek
@@ -3915,7 +3915,7 @@ Pilih variabel risiko</textarea
         }
 
         // 5. FETCH KE UPDATE_DATA.PHP
-        fetch("update_data.php", { method: "POST", body: formData })
+        fetch("backend/update_data.php", { method: "POST", body: formData })
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
@@ -6864,7 +6864,7 @@ Pilih variabel risiko</textarea
         }
 
         // 5. Eksekusi pengiriman ke script PHP secara asynchronous
-        fetch("save_data.php", {
+        fetch("backend/save_data.php", {
           method: "POST",
           body: formData,
         })
@@ -7332,7 +7332,7 @@ Pilih variabel risiko</textarea
 
           // 2. Kirim nama user tersebut sebagai query parameter ke PHP
           const response = await fetch(
-            `get_data.php?user=${encodeURIComponent(currentUser)}`,
+            `backend/get_data.php?user=${encodeURIComponent(currentUser)}`,
           );
           const result = await response.json();
 
@@ -7356,7 +7356,7 @@ Pilih variabel risiko</textarea
       // Fungsi untuk mengambil nomor Change ID otomatis dari database
       async function generateAutoChangeId() {
         try {
-          const response = await fetch("get_next_id.php");
+          const response = await fetch("backend/get_next_id.php");
           const result = await response.json();
 
           if (result.status === "success") {
@@ -7726,7 +7726,7 @@ Pilih variabel risiko</textarea
         chip.textContent = '⟳ Menghubungkan Autodesk APS...';
         chip.className   = 'aps-status-chip connecting';
         try {
-          const res  = await fetch('api_aps_token.php');
+          const res  = await fetch('backend/api_aps_token.php');
           const data = await res.json();
           if (!data.access_token) throw new Error(data.message || 'Token APS tidak tersedia');
           apsToken = data.access_token;
@@ -7805,7 +7805,7 @@ Pilih variabel risiko</textarea
         const detailWrap = document.getElementById('bimOiDetailWrap');
         const detailBox  = document.getElementById('bimOiDetail');
         try {
-          const res  = await fetch(`api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
+          const res  = await fetch(`backend/api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
           const data = await res.json();
           document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
           document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;

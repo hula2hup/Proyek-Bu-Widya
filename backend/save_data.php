@@ -20,7 +20,7 @@ function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Tentukan direktori penyimpanan file upload (bukti foto/dokumen)
-    $target_dir = "uploads/";
+    $target_dir = __DIR__ . "/../uploads/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }

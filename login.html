@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login — WYLCORE</title>
-    <link rel="icon" type="image/png" href="wylcore.png">
+    <link rel="icon" type="image/png" href="assets/wylcore.png">
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -847,7 +847,7 @@
           // ================================================================
 
           // --- 3. KIRIM DATA KE BACKEND PHP (Menggantikan setTimeout mock & hardcoded array) ---
-          fetch('api_login.php', {
+          fetch('backend/api_login.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ username: username, password: password })

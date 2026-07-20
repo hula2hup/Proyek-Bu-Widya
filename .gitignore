@@ -1,2 +1,11 @@
-# Kredensial APS / server-side secrets — JANGAN pernah masuk git history
+# Server-side secrets - jangan pernah masuk git history
 .env
+backend/.env
+
+# Runtime uploads / generated files
+uploads/
+backend/uploads/
+
+# Local logs and temporary files
+*.log
+*.tmp

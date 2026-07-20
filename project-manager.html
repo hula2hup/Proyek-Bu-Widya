@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manager Workspace - BIM WBS System</title>
-  <link rel="icon" type="image/png" href="wylcore.png">
+  <link rel="icon" type="image/png" href="assets/wylcore.png">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
@@ -3917,7 +3917,7 @@ function renderPmRecentActivities(activities, page = 0) {
 }
 
 function fetchAssignedProjects() {
-    fetch('api_get_projects.php')
+    fetch('backend/api_get_projects.php')
         .then(response => response.json())
         .then(res => {
             if (res.status === 'success') {
@@ -4053,7 +4053,7 @@ function fetchSCurveData(projectId) {
     const canvas = document.getElementById('sCurveChart');
     if (!canvas || !projectId) return;
 
-    fetch(`api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`)
+    fetch(`backend/api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`)
         .then(response => response.json())
         .then(res => {
             if (res.status !== 'success') {
@@ -4522,7 +4522,7 @@ function generateFinalReport() {
 }
 // FUNGSI BARU: Mengambil angka statistik Under Review & Need Mitigation dari PHP
 function fetchDashboardStats(projectId) {
-    fetch(`api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`)
+    fetch(`backend/api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`)
         .then(response => response.json())
         .then(res => {
             if (res.status === 'success') {
@@ -5094,7 +5094,7 @@ function closeCrDetail() {
     const tbody = document.getElementById("pmKbTableBody");
     if (tbody) tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px;">Memuat Knowledge Base proyek...</td></tr>`;
     try {
-      const response = await fetch(`api_pm_knowledge_base.php?project_id=${encodeURIComponent(projectId)}`);
+      const response = await fetch(`backend/api_pm_knowledge_base.php?project_id=${encodeURIComponent(projectId)}`);
       const result = await response.json();
       pmKbDatabase = result.status === "success" ? (result.data || []).map(pmKbNormalizeDoc) : [];
       if (result.status !== "success") console.error("Gagal memuat Knowledge Base PM:", result.message);
@@ -5289,7 +5289,7 @@ function closeCrDetail() {
   function logout() {
     const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Workspace PM?");
     if (confirmLogout) {
-      fetch('api_logout.php')
+      fetch('backend/api_logout.php')
         .then(() => {
             localStorage.clear(); // Bersihkan localStorage frontend
             window.location.replace("login.html");
@@ -5478,7 +5478,7 @@ function closeCrDetail() {
     chip.textContent = '⟳ Menghubungkan Autodesk APS...';
     chip.className   = 'aps-status-chip connecting';
     try {
-      const res  = await fetch('api_aps_token.php');
+      const res  = await fetch('backend/api_aps_token.php');
       const data = await res.json();
       if (!data.access_token) throw new Error(data.message || 'Token APS tidak tersedia');
       apsToken = data.access_token;
@@ -5557,7 +5557,7 @@ function closeCrDetail() {
     const detailWrap = document.getElementById('bimOiDetailWrap');
     const detailBox  = document.getElementById('bimOiDetail');
     try {
-      const res  = await fetch(`api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
+      const res  = await fetch(`backend/api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
       const data = await res.json();
       document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
       document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;
@@ -5660,7 +5660,7 @@ function closeCrDetail() {
       if (reviewIdInput) {
           try {
               // Tarik nomor urut berikutnya dari backend
-              const response = await fetch('get_next_review_id.php');
+              const response = await fetch('backend/get_next_review_id.php');
               const data = await response.json();
               
               if (data.status === 'success') {
@@ -5720,7 +5720,7 @@ function closeCrDetail() {
 
     try {
         // 5. Kirim data ke API / backend PHP kita
-        const response = await fetch('save_approval.php', {
+        const response = await fetch('backend/save_approval.php', {
             method: 'POST',
             body: formData
         });

@@ -1,10 +1,10 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - Project Monitoring</title>
-    <link rel="icon" type="image/png" href="wylcore.png">
+    <link rel="icon" type="image/png" href="assets/wylcore.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
@@ -6860,7 +6860,7 @@
       function getRoleUsers(role) {
         if (!roleUserCache[role]) {
           roleUserCache[role] = fetch(
-            `api_get_users_by_role.php?role=${encodeURIComponent(role)}`,
+            `backend/api_get_users_by_role.php?role=${encodeURIComponent(role)}`,
             { credentials: "same-origin" },
           )
             .then((response) => response.json())
@@ -7173,7 +7173,7 @@
 
       // Fungsi untuk load Change Requests dari database dan populate crData
       function loadChangeRequests() {
-        fetch("api_get_change_requests.php")
+        fetch("backend/api_get_change_requests.php")
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -7286,7 +7286,7 @@
       }
 
       function syncProjectData() {
-        fetch("api_get_projects.php?view_as=Admin")
+        fetch("backend/api_get_projects.php?view_as=Admin")
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -7350,7 +7350,7 @@
         );
 
         // Di sini Anda bisa memanggil API lain untuk memfilter tabel change_requests di bawahnya
-        // Contoh: fetch(\`api_get_change_requests.php?project_id=\${projectId}\`)...
+        // Contoh: fetch(\`backend/api_get_change_requests.php?project_id=\${projectId}\`)...
       }
 
       // Fungsi untuk memperbarui grafik lingkaran / batang Chart.js Anda
@@ -7395,7 +7395,7 @@
         };
 
         // KIRIM DATA KE DATABASE VIA API PHP
-        fetch("api_add_project.php", {
+        fetch("backend/api_add_project.php", {
           method: "POST",
           credentials: "same-origin", // <--- TAMBAHKAN BARIS INI
           headers: {
@@ -9523,7 +9523,7 @@
         // ==========================================================
         // 2. FETCH DATA STATISTIK PERUBAHAN (DECISION SUMMARY & TIMELINE)
         // ==========================================================
-        fetch(`api_get_dashboard_stats.php?project_id=${projectId}`)
+        fetch(`backend/api_get_dashboard_stats.php?project_id=${projectId}`)
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -9572,7 +9572,7 @@
         // ==========================================================
         // 3. FETCH DATA KURVA S LALU KALKULASI SPI & RENDER CHART
         // ==========================================================
-        fetch(`api_get_scurve.php?project_id=${projectId}`)
+        fetch(`backend/api_get_scurve.php?project_id=${projectId}`)
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -10038,7 +10038,7 @@
         );
         if (reviewIdInput) {
           // Fetch next review ID dari API dengan type ADM untuk Admin
-          fetch("get_next_review_id.php?type=ADM")
+          fetch("backend/get_next_review_id.php?type=ADM")
             .then((response) => response.json())
             .then((res) => {
               if (res.status === "success") {
@@ -10087,7 +10087,7 @@
         document.getElementById("approvalInbox").style.display = "block";
       }
 
-      // Fungsi untuk submit approval decision ke save_approval.php
+      // Fungsi untuk submit approval decision ke backend/save_approval.php
       function submitApprovalDecision() {
         // 1. Kumpulkan data dari form
         const reviewId =
@@ -10143,8 +10143,8 @@
         formData.append("approvalNotes", approvalNotes);
         formData.append("approvalDecision", statusValue);
 
-        // 5. Kirim ke save_approval.php
-        fetch("save_approval.php", {
+        // 5. Kirim ke backend/save_approval.php
+        fetch("backend/save_approval.php", {
           method: "POST",
           body: formData,
         })
@@ -10338,7 +10338,7 @@
           tbody.innerHTML = `<tr class="no-data-row"><td colspan="7">Memuat data Change Request...</td></tr>`;
         }
 
-        fetch("api_get_change_requests.php")
+        fetch("backend/api_get_change_requests.php")
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -10835,7 +10835,7 @@
         modal.classList.add("show");
 
         // 2. Fetch data dari database
-        fetch(`api_get_project_detail.php?project_id=${projectId}`)
+        fetch(`backend/api_get_project_detail.php?project_id=${projectId}`)
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -10936,7 +10936,7 @@
         btnSubmit.innerText = "Menyimpan...";
         btnSubmit.disabled = true;
 
-        fetch("api_update_project.php", {
+        fetch("backend/api_update_project.php", {
           method: "POST",
           credentials: "same-origin",
           headers: { "Content-Type": "application/json" },
@@ -11436,7 +11436,7 @@
             submitBtn.disabled = true;
           }
 
-          fetch("update_data.php", {
+          fetch("backend/update_data.php", {
             method: "POST",
             body: formData,
           })
@@ -11504,7 +11504,7 @@
           submitBtn.disabled = true;
         }
 
-        fetch("save_data.php", {
+        fetch("backend/save_data.php", {
           method: "POST",
           body: formData,
         })
@@ -12343,10 +12343,10 @@
 
         try {
           if (options.sync) {
-            await fetch("api_knowledge_base.php?action=sync");
+            await fetch("backend/api_knowledge_base.php?action=sync");
           }
 
-          const response = await fetch("api_knowledge_base.php?action=list");
+          const response = await fetch("backend/api_knowledge_base.php?action=list");
           const result = await response.json();
 
           if (result.status === "success") {
@@ -12368,7 +12368,7 @@
 
       async function kbSyncAutoLessons() {
         try {
-          const response = await fetch("api_knowledge_base.php?action=sync");
+          const response = await fetch("backend/api_knowledge_base.php?action=sync");
           const result = await response.json();
 
           if (result.status !== "success") {
@@ -12545,7 +12545,7 @@
           formData.append("validationStatus", status);
           formData.append("description", desc);
 
-          const response = await fetch("api_knowledge_base.php?action=save", {
+          const response = await fetch("backend/api_knowledge_base.php?action=save", {
             method: "POST",
             body: formData,
           });
@@ -12967,7 +12967,7 @@
           formData.append("action", "delete");
           formData.append("docId", kbPendingDeleteId);
 
-          const response = await fetch("api_knowledge_base.php?action=delete", {
+          const response = await fetch("backend/api_knowledge_base.php?action=delete", {
             method: "POST",
             body: formData,
           });
@@ -13026,7 +13026,7 @@
         const trimmed = text.trim();
         if (trimmed.startsWith("<")) {
           throw new Error(
-            "Endpoint api_user_management.php belum tersedia di hosting atau ter-redirect ke halaman HTML.",
+            "Endpoint backend/api_user_management.php belum tersedia di hosting atau ter-redirect ke halaman HTML.",
           );
         }
         try {
@@ -13059,7 +13059,7 @@
         }
 
         try {
-          const result = await umFetchJson("api_user_management.php?action=list");
+          const result = await umFetchJson("backend/api_user_management.php?action=list");
           if (result.status !== "success") {
             throw new Error(result.message || "Gagal memuat data user management.");
           }
@@ -13386,7 +13386,7 @@
       }
 
       async function umPostAction(action, payload) {
-        const result = await umFetchJson("api_user_management.php", {
+        const result = await umFetchJson("backend/api_user_management.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ action, ...payload }),
@@ -13477,14 +13477,14 @@
         }
       });
 
-      // Fungsi utama untuk mengambil data dari get_dashboard_data_stats.php
+      // Fungsi utama untuk mengambil data dari backend/api_get_dashboard_stats.php
       async function fetchAdminDashboardStats(projectId) {
         const activitiesList = document.getElementById("recentActivitiesList");
 
         try {
           // Gunakan endpoint yang sama dan parameter project_id secara konsisten
           const response = await fetch(
-            `api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId || "")}`,
+            `backend/api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId || "")}`,
           );
           const result = await response.json();
 
@@ -14130,7 +14130,7 @@
           return globalProjectsData;
         }
 
-        const response = await fetch("api_get_projects.php?view_as=Admin");
+        const response = await fetch("backend/api_get_projects.php?view_as=Admin");
         const result = await response.json();
         if (result.status === "success") {
           globalProjectsData = result.data || [];
@@ -14142,7 +14142,7 @@
 
       async function fetchAdminReportSCurve(projectId) {
         const response = await fetch(
-          `api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`,
+          `backend/api_get_scurve.php?project_id=${encodeURIComponent(projectId)}`,
         );
         const result = await response.json();
         if (result.status !== "success") {
@@ -14194,7 +14194,7 @@
 
           const [statsResponse] = await Promise.all([
             fetch(
-              `api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`,
+              `backend/api_get_dashboard_stats.php?project_id=${encodeURIComponent(projectId)}`,
             ).then((response) => response.json()),
             fetchAdminReportSCurve(projectId),
           ]);
@@ -14322,7 +14322,7 @@
        * @param {string} projectId - ID Proyek pilihan untuk filter (opsional)
        */
       function loadDashboardStats(projectId = "") {
-        let url = "api_get_dashboard_stats.php";
+        let url = "backend/api_get_dashboard_stats.php";
         if (projectId) {
           url += `?project_id=${encodeURIComponent(projectId)}`;
         }
@@ -14605,7 +14605,7 @@
           btnSubmit.disabled = true;
         }
 
-        fetch("update_data.php", { method: "POST", body: formData })
+        fetch("backend/update_data.php", { method: "POST", body: formData })
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
@@ -14746,7 +14746,7 @@
         }
 
         // Panggil API dengan parameter bypass Admin agar menarik seluruh proyek
-        fetch("api_get_projects.php?view_as=Admin")
+        fetch("backend/api_get_projects.php?view_as=Admin")
           .then((response) => response.json())
           .then((res) => {
             if (res.status === "success") {
@@ -14807,7 +14807,7 @@
       }
 
       // Panggil API dengan parameter bypass Admin agar menarik seluruh proyek
-      fetch("api_get_projects.php?view_as=Admin")
+      fetch("backend/api_get_projects.php?view_as=Admin")
         .then((response) => response.json())
         .then((res) => {
           if (res.status === "success") {
@@ -14864,7 +14864,7 @@
         });
 
       // ==========================================================
-      // FUNGSI RENDER BARIS TABEL (Membaca key dari api_get_projects.php)
+      // FUNGSI RENDER BARIS TABEL (Membaca key dari backend/api_get_projects.php)
       // ==========================================================
       function renderProjectTable(projects) {
         const tbody = document.getElementById("projectTable");
@@ -15112,7 +15112,7 @@
         chip.textContent = '⟳ Menghubungkan Autodesk APS...';
         chip.className   = 'aps-status-chip connecting';
         try {
-          const res  = await fetch('api_aps_token.php');
+          const res  = await fetch('backend/api_aps_token.php');
           const data = await res.json();
           if (!data.access_token) throw new Error(data.message || 'Token APS tidak tersedia');
           apsToken = data.access_token;
@@ -15191,7 +15191,7 @@
         const detailWrap = document.getElementById('bimOiDetailWrap');
         const detailBox  = document.getElementById('bimOiDetail');
         try {
-          const res  = await fetch(`api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
+          const res  = await fetch(`backend/api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
           const data = await res.json();
           document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
           document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;

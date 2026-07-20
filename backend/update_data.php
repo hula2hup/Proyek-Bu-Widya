@@ -50,7 +50,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 3. PROSES INPUT FILE BUKTI BARU (Jika Ada)
-    $target_dir = "uploads/";
+    $target_dir = __DIR__ . "/../uploads/";
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
     $photo_evidence = $currentData['photoEvidence']; // Gunakan file lama sebagai default
 
     // ✅ PERBAIKAN DI SINI: Tambahkan is_array() agar tidak crash jika format form salah
