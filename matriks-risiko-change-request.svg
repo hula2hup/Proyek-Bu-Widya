@@ -1,0 +1,157 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1800" viewBox="0 0 2600 1800" role="img" aria-labelledby="title desc">
+  <title id="title">Matriks Risiko 5x5 Change Request Konstruksi</title>
+  <desc id="desc">Matriks risiko 5x5 dengan sumbu likelihood dan impact, menandai CR-003 pada area kritis dan CR-006 pada area aman rendah serta mengaitkan sumber data project change request.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .title { font: 800 48px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font: 400 24px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .section { font: 800 25px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .label { font: 700 22px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .small { font: 400 18px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .tiny { font: 700 15px Arial, sans-serif; fill: #334155; letter-spacing: 0; }
+      .cell-label { font: 800 18px Arial, sans-serif; fill: rgba(15, 23, 42, 0.62); letter-spacing: 0; }
+      .score { font: 800 22px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .axis { stroke: #1e293b; stroke-width: 3; marker-end: url(#arrow); }
+      .grid-stroke { stroke: #ffffff; stroke-width: 6; }
+      .code { font: 700 18px Consolas, monospace; fill: #334155; }
+      .pill-text { font: 800 19px Arial, sans-serif; letter-spacing: 0; }
+      .note { font: 400 17px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .note-strong { font: 800 17px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1e293b"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="2600" height="1800"/>
+  <text class="title" x="1300" y="86" text-anchor="middle">Matriks Risiko 5x5 Change Request Konstruksi</text>
+  <text class="subtitle" x="1300" y="126" text-anchor="middle">Pemetaan Likelihood x Impact untuk prioritisasi review dan mitigasi perubahan pekerjaan proyek</text>
+
+  <rect class="panel" x="110" y="170" width="2380" height="178" rx="8" filter="url(#shadow)"/>
+  <text class="section" x="150" y="220">Konteks Project</text>
+  <text class="small" x="150" y="258">Project: PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</text>
+  <text class="small" x="150" y="292">Sumber data utama: tabel change_requests pada backend/data_proyek.sql, ditampilkan melalui backend/api_get_change_requests.php</text>
+  <text class="small" x="150" y="326">Koneksi tampilan: admin.html memiliki risk matrix portofolio; project-manager.html memakai badge risiko untuk proses review CR</text>
+
+  <rect class="panel" x="1540" y="205" width="890" height="106" rx="8"/>
+  <text class="tiny" x="1580" y="238">Aturan pemetaan diagram</text>
+  <text class="small" x="1580" y="270">Likelihood memakai field priority skala 1-5; Impact dikonversi dari field risk skala 1-10 menjadi kelas 1-5.</text>
+  <text class="small" x="1580" y="300">Kelas impact: 1-2 Aman, 3-4 Rendah, 5-6 Sedang, 7-8 Tinggi, 9-10 Kritis.</text>
+
+  <!-- Chart frame -->
+  <rect class="panel" x="235" y="430" width="1500" height="1160" rx="8" filter="url(#shadow)"/>
+  <text class="section" x="985" y="492" text-anchor="middle">Matriks Risiko: Likelihood dan Impact</text>
+
+  <!-- Matrix dimensions: x=445 y=600 size=170 gap=0 -->
+  <g id="risk-matrix" transform="translate(445 600)">
+    <!-- row impact 5 -->
+    <rect x="0" y="0" width="170" height="170" fill="#facc15" class="grid-stroke"/>
+    <rect x="170" y="0" width="170" height="170" fill="#fb923c" class="grid-stroke"/>
+    <rect x="340" y="0" width="170" height="170" fill="#f97316" class="grid-stroke"/>
+    <rect x="510" y="0" width="170" height="170" fill="#dc2626" class="grid-stroke"/>
+    <rect x="680" y="0" width="170" height="170" fill="#991b1b" class="grid-stroke"/>
+    <!-- row impact 4 -->
+    <rect x="0" y="170" width="170" height="170" fill="#fef08a" class="grid-stroke"/>
+    <rect x="170" y="170" width="170" height="170" fill="#facc15" class="grid-stroke"/>
+    <rect x="340" y="170" width="170" height="170" fill="#fb923c" class="grid-stroke"/>
+    <rect x="510" y="170" width="170" height="170" fill="#f97316" class="grid-stroke"/>
+    <rect x="680" y="170" width="170" height="170" fill="#dc2626" class="grid-stroke"/>
+    <!-- row impact 3 -->
+    <rect x="0" y="340" width="170" height="170" fill="#bbf7d0" class="grid-stroke"/>
+    <rect x="170" y="340" width="170" height="170" fill="#fef08a" class="grid-stroke"/>
+    <rect x="340" y="340" width="170" height="170" fill="#facc15" class="grid-stroke"/>
+    <rect x="510" y="340" width="170" height="170" fill="#fb923c" class="grid-stroke"/>
+    <rect x="680" y="340" width="170" height="170" fill="#f97316" class="grid-stroke"/>
+    <!-- row impact 2 -->
+    <rect x="0" y="510" width="170" height="170" fill="#dcfce7" class="grid-stroke"/>
+    <rect x="170" y="510" width="170" height="170" fill="#bbf7d0" class="grid-stroke"/>
+    <rect x="340" y="510" width="170" height="170" fill="#fef08a" class="grid-stroke"/>
+    <rect x="510" y="510" width="170" height="170" fill="#facc15" class="grid-stroke"/>
+    <rect x="680" y="510" width="170" height="170" fill="#fb923c" class="grid-stroke"/>
+    <!-- row impact 1 -->
+    <rect x="0" y="680" width="170" height="170" fill="#ecfdf5" class="grid-stroke"/>
+    <rect x="170" y="680" width="170" height="170" fill="#dcfce7" class="grid-stroke"/>
+    <rect x="340" y="680" width="170" height="170" fill="#bbf7d0" class="grid-stroke"/>
+    <rect x="510" y="680" width="170" height="170" fill="#fef08a" class="grid-stroke"/>
+    <rect x="680" y="680" width="170" height="170" fill="#facc15" class="grid-stroke"/>
+
+    <!-- Scores -->
+    <g opacity="0.58">
+      <text class="cell-label" x="18" y="32">5</text><text class="cell-label" x="188" y="32">10</text><text class="cell-label" x="358" y="32">15</text><text class="cell-label" x="528" y="32">20</text><text class="cell-label" x="698" y="32">25</text>
+      <text class="cell-label" x="18" y="202">4</text><text class="cell-label" x="188" y="202">8</text><text class="cell-label" x="358" y="202">12</text><text class="cell-label" x="528" y="202">16</text><text class="cell-label" x="698" y="202">20</text>
+      <text class="cell-label" x="18" y="372">3</text><text class="cell-label" x="188" y="372">6</text><text class="cell-label" x="358" y="372">9</text><text class="cell-label" x="528" y="372">12</text><text class="cell-label" x="698" y="372">15</text>
+      <text class="cell-label" x="18" y="542">2</text><text class="cell-label" x="188" y="542">4</text><text class="cell-label" x="358" y="542">6</text><text class="cell-label" x="528" y="542">8</text><text class="cell-label" x="698" y="542">10</text>
+      <text class="cell-label" x="18" y="712">1</text><text class="cell-label" x="188" y="712">2</text><text class="cell-label" x="358" y="712">3</text><text class="cell-label" x="528" y="712">4</text><text class="cell-label" x="698" y="712">5</text>
+    </g>
+
+    <!-- Markers: CR-003 L=4 I=5, CR-006 L=4 I=1 -->
+    <g id="marker-cr-003" transform="translate(595 85)">
+      <circle r="32" fill="#111827" stroke="#ffffff" stroke-width="6"/>
+      <text class="pill-text" x="0" y="7" fill="#ffffff" text-anchor="middle">CR-003</text>
+      <path d="M36 0 C115 0 155 35 205 80" fill="none" stroke="#111827" stroke-width="3"/>
+    </g>
+    <g id="marker-cr-006" transform="translate(595 765)">
+      <circle r="32" fill="#0f766e" stroke="#ffffff" stroke-width="6"/>
+      <text class="pill-text" x="0" y="7" fill="#ffffff" text-anchor="middle">CR-006</text>
+      <path d="M36 0 C118 0 165 -34 210 -88" fill="none" stroke="#0f766e" stroke-width="3"/>
+    </g>
+  </g>
+
+  <!-- Axis labels and tick labels -->
+  <line class="axis" x1="425" y1="1460" x2="1360" y2="1460"/>
+  <line class="axis" x1="405" y1="1470" x2="405" y2="565"/>
+  <text class="label" x="895" y="1538" text-anchor="middle">Likelihood / Probabilitas Kejadian</text>
+  <text class="label" x="296" y="1045" transform="rotate(-90 296 1045)" text-anchor="middle">Impact / Dampak Perubahan</text>
+  <text class="tiny" x="530" y="1430" text-anchor="middle">1</text>
+  <text class="tiny" x="700" y="1430" text-anchor="middle">2</text>
+  <text class="tiny" x="870" y="1430" text-anchor="middle">3</text>
+  <text class="tiny" x="1040" y="1430" text-anchor="middle">4</text>
+  <text class="tiny" x="1210" y="1430" text-anchor="middle">5</text>
+  <text class="tiny" x="370" y="1290" text-anchor="middle">1</text>
+  <text class="tiny" x="370" y="1120" text-anchor="middle">2</text>
+  <text class="tiny" x="370" y="950" text-anchor="middle">3</text>
+  <text class="tiny" x="370" y="780" text-anchor="middle">4</text>
+  <text class="tiny" x="370" y="610" text-anchor="middle">5</text>
+
+  <!-- Labels outside matrix -->
+  <text class="small" x="445" y="540">Sangat rendah</text>
+  <text class="small" x="1168" y="540" text-anchor="end">Sangat tinggi</text>
+  <text class="small" x="1225" y="1410">Frekuensi/kemungkinan meningkat</text>
+  <text class="small" x="275" y="602" transform="rotate(-90 275 602)">Dampak meningkat</text>
+
+  <!-- Detail panels -->
+  <rect class="panel" x="1790" y="430" width="700" height="520" rx="8" filter="url(#shadow)"/>
+  <text class="section" x="1830" y="490">Contoh Change Request</text>
+  <rect x="1830" y="530" width="610" height="160" rx="8" fill="#fff7ed" stroke="#fb923c" stroke-width="2"/>
+  <text class="label" x="1860" y="570">CR-003 - Area Kritis</text>
+  <text class="small" x="1860" y="605">WBS: 6.1.2.2 Penghamparan Campuran Lapisan atas</text>
+  <text class="small" x="1860" y="638">Risk Variable: R5.1 - kebutuhan material utama</text>
+  <text class="small" x="1860" y="671">Likelihood = priority 4; Impact = risk 9 -> kelas 5</text>
+
+  <rect x="1830" y="720" width="610" height="160" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text class="label" x="1860" y="760">CR-006 - Area Aman/Rendah</text>
+  <text class="small" x="1860" y="795">WBS: 1.4.2.1 Survey selama pelaksanaan</text>
+  <text class="small" x="1860" y="828">Risk Variable: R1.2 - kesiapan area kerja/akses</text>
+  <text class="small" x="1860" y="861">Likelihood = priority 4; Impact = risk 2 -> kelas 1</text>
+
+  <rect class="panel" x="1790" y="990" width="700" height="300" rx="8"/>
+  <text class="section" x="1830" y="1050">Legenda Zona</text>
+  <rect x="1830" y="1092" width="40" height="28" fill="#dcfce7" stroke="#cbd5e1"/>
+  <text class="small" x="1890" y="1114">Hijau: Aman / rendah, dapat dipantau rutin</text>
+  <rect x="1830" y="1138" width="40" height="28" fill="#fef08a" stroke="#cbd5e1"/>
+  <text class="small" x="1890" y="1160">Kuning: Sedang, perlu klarifikasi teknis</text>
+  <rect x="1830" y="1184" width="40" height="28" fill="#fb923c" stroke="#cbd5e1"/>
+  <text class="small" x="1890" y="1206">Oranye: Tinggi, butuh rencana mitigasi</text>
+  <rect x="1830" y="1230" width="40" height="28" fill="#dc2626" stroke="#cbd5e1"/>
+  <text class="small" x="1890" y="1252">Merah: Kritis, prioritas review manajerial</text>
+
+  <rect class="panel" x="110" y="1640" width="2380" height="100" rx="8"/>
+  <text class="note-strong" x="150" y="1682">Kaitan Sistem Informasi:</text>
+  <text class="note" x="150" y="1716">Form Site Engineer pada admin.html/site-engineer.html mengirim priority, risk, riskCategory, riskVariable, wbsLevel5, dan bimObjectId ke backend/save_data.php.</text>
+  <text class="note" x="150" y="1746">Dashboard Admin dan Project Manager mengambil data melalui backend/api_get_change_requests.php untuk menampilkan status risiko, review CR, rekomendasi berbasis knowledge_repository, dan keputusan approval.</text>
+</svg>

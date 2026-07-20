@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1600" viewBox="0 0 2600 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Wireframe Dashboard Project Manager Review Change Request</title>
+  <desc id="desc">Wireframe UI dashboard Project Manager untuk review Change Request konstruksi pada sistem WYLCORE.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .panel { fill: #ffffff; stroke: #d0d5dd; stroke-width: 2; rx: 10; }
+      .panel-dark { fill: #f1f3f5; stroke: #b9c0ca; stroke-width: 2; rx: 10; }
+      .sidebar { fill: #111827; }
+      .sidebar-text { font: 600 18px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .sidebar-muted { font: 400 14px Arial, Helvetica, sans-serif; fill: #cbd5e1; letter-spacing: 0; }
+      .title { font: 700 34px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .subtitle { font: 400 17px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .section { font: 700 22px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .label { font: 400 15px Arial, Helvetica, sans-serif; fill: #334155; letter-spacing: 0; }
+      .label-strong { font: 700 16px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .tiny { font: 400 12.5px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .kpi-value { font: 700 38px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .kpi-title { font: 700 16px Arial, Helvetica, sans-serif; fill: #334155; letter-spacing: 0; }
+      .line { stroke: #d0d5dd; stroke-width: 2; }
+      .axis { stroke: #94a3b8; stroke-width: 2; }
+      .bar-safe { fill: #d9dee5; stroke: #111827; stroke-width: 1.5; }
+      .bar-high { fill: #aeb7c2; stroke: #111827; stroke-width: 1.5; }
+      .badge { fill: #f8fafc; stroke: #111827; stroke-width: 1.4; rx: 12; }
+      .button-approve { fill: #ffffff; stroke: #111827; stroke-width: 2.2; rx: 8; }
+      .button-reject { fill: #111827; stroke: #111827; stroke-width: 2.2; rx: 8; }
+      .button-text-dark { font: 700 16px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .button-text-light { font: 700 16px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .note { fill: #ffffff; stroke: #111827; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .note-text { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2600" height="1600"/>
+
+  <!-- App shell -->
+  <rect class="sidebar" x="70" y="70" width="310" height="1330" rx="18"/>
+  <text class="sidebar-text" x="110" y="125">WYLCORE</text>
+  <text class="sidebar-muted" x="110" y="155">Project Manager Workspace</text>
+  <line x1="100" y1="190" x2="350" y2="190" stroke="#334155" stroke-width="2"/>
+  <rect x="105" y="230" width="240" height="46" rx="8" fill="#ffffff" opacity="0.12"/>
+  <text class="sidebar-text" x="130" y="260">Dashboard</text>
+  <text class="sidebar-muted" x="130" y="325">Review Change Request</text>
+  <text class="sidebar-muted" x="130" y="380">Knowledge Base</text>
+  <text class="sidebar-muted" x="130" y="435">BIM Viewer</text>
+  <text class="sidebar-muted" x="130" y="490">Laporan</text>
+  <text class="sidebar-muted" x="110" y="1320">File: project-manager.html</text>
+  <text class="sidebar-muted" x="110" y="1350">Endpoint: backend/*.php</text>
+
+  <!-- Header -->
+  <text class="title" x="430" y="112">Dashboard Review Change Request</text>
+  <text class="subtitle" x="430" y="145">Ringkasan review PM, antrean CR, distribusi risiko, rekomendasi AI, dan keputusan approval.</text>
+  <rect class="panel" x="2005" y="84" width="470" height="70"/>
+  <text class="label-strong" x="2030" y="114">Project aktif</text>
+  <text class="label" x="2030" y="140">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</text>
+
+  <!-- KPI Cards -->
+  <g id="kpi">
+    <rect class="panel" x="430" y="195" width="460" height="150"/>
+    <text class="kpi-title" x="465" y="238">Under Review</text>
+    <text class="kpi-value" x="465" y="292">12</text>
+    <text class="tiny" x="465" y="322">change_requests.status = PENDING</text>
+
+    <rect class="panel" x="920" y="195" width="460" height="150"/>
+    <text class="kpi-title" x="955" y="238">Need Mitigation</text>
+    <text class="kpi-value" x="955" y="292">5</text>
+    <text class="tiny" x="955" y="322">risk &gt;= 7 dan status PENDING</text>
+
+    <rect class="panel" x="1410" y="195" width="460" height="150"/>
+    <text class="kpi-title" x="1445" y="238">Approved</text>
+    <text class="kpi-value" x="1445" y="292">18</text>
+    <text class="tiny" x="1445" y="322">status APPROVED, impact tercatat</text>
+
+    <rect class="panel" x="1900" y="195" width="460" height="150"/>
+    <text class="kpi-title" x="1935" y="238">Rejected</text>
+    <text class="kpi-value" x="1935" y="292">4</text>
+    <text class="tiny" x="1935" y="322">status REJECTED, catatan PM tersedia</text>
+  </g>
+
+  <!-- Chart panel -->
+  <rect class="panel" x="430" y="385" width="760" height="430"/>
+  <text class="section" x="465" y="428">Distribusi Risiko</text>
+  <text class="tiny" x="465" y="456">Chart.js | api_get_dashboard_stats.php | field: riskDistribution</text>
+  <circle cx="650" cy="615" r="135" fill="#ffffff" stroke="#111827" stroke-width="22"/>
+  <path d="M 650 480 A 135 135 0 0 1 778 572" fill="none" stroke="#6b7280" stroke-width="24"/>
+  <path d="M 778 572 A 135 135 0 0 1 707 737" fill="none" stroke="#9ca3af" stroke-width="24"/>
+  <path d="M 707 737 A 135 135 0 0 1 520 680" fill="none" stroke="#cbd5e1" stroke-width="24"/>
+  <text class="label-strong" x="650" y="607" text-anchor="middle">Risk</text>
+  <text class="label" x="650" y="632" text-anchor="middle">Profile</text>
+
+  <rect class="badge" x="850" y="520" width="235" height="38"/>
+  <text class="label" x="870" y="545">Aman/Rendah: 34%</text>
+  <rect class="badge" x="850" y="575" width="235" height="38"/>
+  <text class="label" x="870" y="600">Sedang: 28%</text>
+  <rect class="badge" x="850" y="630" width="235" height="38"/>
+  <text class="label" x="870" y="655">Tinggi: 24%</text>
+  <rect class="badge" x="850" y="685" width="235" height="38"/>
+  <text class="label" x="870" y="710">Kritis: 14%</text>
+
+  <!-- Trend/S-curve mini panel -->
+  <rect class="panel" x="1230" y="385" width="530" height="430"/>
+  <text class="section" x="1265" y="428">Ringkasan S-Curve dan Dampak</text>
+  <text class="tiny" x="1265" y="456">api_get_scurve.php | project_scurve + approved CR timeImpact</text>
+  <line class="axis" x1="1285" y1="715" x2="1705" y2="715"/>
+  <line class="axis" x1="1285" y1="500" x2="1285" y2="715"/>
+  <polyline points="1290,700 1350,665 1410,610 1470,560 1530,520 1590,495 1690,470" fill="none" stroke="#111827" stroke-width="4"/>
+  <polyline points="1290,705 1350,688 1410,655 1470,620 1530,590 1590,560 1690,535" fill="none" stroke="#777777" stroke-width="4" stroke-dasharray="10 7"/>
+  <text class="tiny" x="1290" y="755">Rencana kumulatif</text>
+  <line x1="1420" y1="750" x2="1480" y2="750" stroke="#111827" stroke-width="4"/>
+  <text class="tiny" x="1290" y="785">Realisasi kumulatif</text>
+  <line x1="1420" y1="780" x2="1480" y2="780" stroke="#777777" stroke-width="4" stroke-dasharray="10 7"/>
+  <rect class="panel-dark" x="1515" y="645" width="190" height="54"/>
+  <text class="tiny" x="1532" y="669">Delay approved CR</text>
+  <text class="label-strong" x="1532" y="691">+13 hari</text>
+
+  <!-- AI recommendation panel -->
+  <rect class="panel" x="1800" y="385" width="675" height="430"/>
+  <text class="section" x="1835" y="428">Panel Rekomendasi AI</text>
+  <text class="tiny" x="1835" y="456">Rule-based expert system | LEFT JOIN change_requests + knowledge_repository</text>
+  <rect class="panel-dark" x="1835" y="490" width="605" height="110"/>
+  <text class="label-strong" x="1865" y="526">CR-003 - Perubahan Mix Design Aspal</text>
+  <text class="label" x="1865" y="554">WBS: 6.1.2.2 Penghamparan Campuran Lapisan Atas</text>
+  <text class="label" x="1865" y="582">Risk Variable: R5.1 | Skor Risiko: 9 | Status: PENDING</text>
+  <rect class="panel" x="1835" y="625" width="605" height="120"/>
+  <text class="label-strong" x="1865" y="660">Insight</text>
+  <text class="label" x="1865" y="690">Kebutuhan material utama meningkat atau berubah dari rencana awal.</text>
+  <text class="label" x="1865" y="720">Validasi ulang mix design dan dampak mutu perlu diprioritaskan.</text>
+  <text class="tiny" x="1835" y="780">Sumber: knowledge_repository.insight + knowledge_repository.saran</text>
+
+  <!-- Pending CR table -->
+  <rect class="panel" x="430" y="855" width="1350" height="475"/>
+  <text class="section" x="465" y="898">Tabel Pending Change Request</text>
+  <text class="tiny" x="465" y="926">project-manager.html | api_get_change_requests.php | change_requests + knowledge_repository</text>
+  <rect class="panel-dark" x="465" y="955" width="1280" height="56"/>
+  <text class="label-strong" x="490" y="990">Change ID</text>
+  <text class="label-strong" x="670" y="990">Tanggal</text>
+  <text class="label-strong" x="840" y="990">WBS</text>
+  <text class="label-strong" x="1165" y="990">Risiko</text>
+  <text class="label-strong" x="1325" y="990">Kategori</text>
+  <text class="label-strong" x="1510" y="990">Aksi</text>
+  <line class="line" x1="465" y1="1068" x2="1745" y2="1068"/>
+  <line class="line" x1="465" y1="1134" x2="1745" y2="1134"/>
+  <line class="line" x1="465" y1="1200" x2="1745" y2="1200"/>
+  <line class="line" x1="465" y1="1266" x2="1745" y2="1266"/>
+  <text class="label" x="490" y="1052">CR-003</text>
+  <text class="label" x="670" y="1052">2026-06-27</text>
+  <text class="label" x="840" y="1052">6.1.2.2 Lapisan Aspal Atas</text>
+  <rect class="badge" x="1160" y="1027" width="115" height="34"/>
+  <text class="label-strong" x="1218" y="1050" text-anchor="middle">9 Kritis</text>
+  <text class="label" x="1325" y="1052">Material</text>
+  <text class="label-strong" x="1510" y="1052">Review</text>
+  <text class="label" x="490" y="1118">CR-006</text>
+  <text class="label" x="670" y="1118">2026-07-03</text>
+  <text class="label" x="840" y="1118">7.2.6.3 Erection Girder</text>
+  <rect class="badge" x="1160" y="1093" width="115" height="34"/>
+  <text class="label-strong" x="1218" y="1116" text-anchor="middle">8 Tinggi</text>
+  <text class="label" x="1325" y="1118">Metode</text>
+  <text class="label-strong" x="1510" y="1118">Review</text>
+  <text class="label" x="490" y="1184">CR-008</text>
+  <text class="label" x="670" y="1184">2026-07-09</text>
+  <text class="label" x="840" y="1184">1.7.1.1 SMK3L Proyek</text>
+  <rect class="badge" x="1160" y="1159" width="115" height="34"/>
+  <text class="label-strong" x="1218" y="1182" text-anchor="middle">6 Sedang</text>
+  <text class="label" x="1325" y="1184">K3</text>
+  <text class="label-strong" x="1510" y="1184">Review</text>
+  <text class="label" x="490" y="1250">CR-011</text>
+  <text class="label" x="670" y="1250">2026-07-15</text>
+  <text class="label" x="840" y="1250">1.1.1 Mobilisasi Material</text>
+  <rect class="badge" x="1160" y="1225" width="115" height="34"/>
+  <text class="label-strong" x="1218" y="1248" text-anchor="middle">3 Rendah</text>
+  <text class="label" x="1325" y="1250">Logistik</text>
+  <text class="label-strong" x="1510" y="1250">Review</text>
+  <text class="tiny" x="465" y="1302">Kolom data: changeId, changeDate, wbsLevel5, risk, riskCategory, riskVariable, status.</text>
+
+  <!-- Review detail and action panel -->
+  <rect class="panel" x="1810" y="855" width="665" height="475"/>
+  <text class="section" x="1845" y="898">Modal Review CR dan Keputusan</text>
+  <text class="tiny" x="1845" y="926">project-manager.html | save_approval.php | knowledge_base_auto.php</text>
+  <rect class="panel-dark" x="1845" y="960" width="595" height="86"/>
+  <text class="label-strong" x="1875" y="993">Detail CR Terpilih</text>
+  <text class="label" x="1875" y="1022">Deskripsi, ownerRequest, location, bimObjectId, evidence</text>
+  <rect class="panel" x="1845" y="1070" width="595" height="90"/>
+  <text class="label-strong" x="1875" y="1100">Impact Aktual</text>
+  <text class="label" x="1875" y="1128">costImpact dan timeImpact dicatat saat approval</text>
+  <rect class="panel" x="1845" y="1185" width="595" height="72"/>
+  <text class="label-strong" x="1875" y="1217">Approval Notes</text>
+  <text class="tiny" x="1875" y="1242">Catatan PM tersimpan di change_requests.approvalNotes</text>
+  <rect class="button-approve" x="1845" y="1280" width="180" height="52"/>
+  <text class="button-text-dark" x="1935" y="1312" text-anchor="middle">Approve</text>
+  <rect class="button-reject" x="2050" y="1280" width="180" height="52"/>
+  <text class="button-text-light" x="2140" y="1312" text-anchor="middle">Reject</text>
+  <rect class="button-approve" x="2255" y="1280" width="185" height="52"/>
+  <text class="button-text-dark" x="2348" y="1312" text-anchor="middle">Pending</text>
+
+  <!-- Bottom notes -->
+  <rect class="note" x="430" y="1375" width="620" height="135"/>
+  <text class="note-title" x="460" y="1410">Sumber Data Dashboard</text>
+  <text class="note-text" x="460" y="1440">backend/api_get_dashboard_stats.php mengolah change_requests, knowledge_base, project_scurve.</text>
+  <text class="note-text" x="460" y="1468">backend/api_get_change_requests.php mengambil CR pending dan rekomendasi.</text>
+
+  <rect class="note" x="1125" y="1375" width="620" height="135"/>
+  <text class="note-title" x="1155" y="1410">Makna UI bagi PM</text>
+  <text class="note-text" x="1155" y="1440">KPI memberi ringkasan beban review; tabel memberi detail; panel AI memberi konteks pakar.</text>
+  <text class="note-text" x="1155" y="1468">Tombol approve/reject/pending mengubah status formal CR.</text>
+
+  <rect class="note" x="1820" y="1375" width="655" height="135"/>
+  <text class="note-title" x="1850" y="1410">Informasi Project Terkait</text>
+  <text class="note-text" x="1850" y="1440">projects.project_id, project_assignments, change_requests.status, risk, WBS.</text>
+  <text class="note-text" x="1850" y="1468">Jika approved, lesson learned KM-xxx dibuat pada knowledge_base.</text>
+</svg>

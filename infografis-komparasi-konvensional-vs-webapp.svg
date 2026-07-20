@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1600" viewBox="0 0 2600 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Infografis Komparasi Sistem Konvensional dan Sistem Web App Change Request</title>
+  <desc id="desc">Infografis dua kolom yang membandingkan sistem konvensional berbasis Excel, email, dokumen terpisah, dan risiko manual dengan sistem web app berbasis database terpusat, dashboard, WBS, AI recommendation, BIM, dan knowledge base.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; }
+      .left-panel { fill: #ffffff; stroke: #94a3b8; stroke-width: 2; }
+      .right-panel { fill: #ffffff; stroke: #0f766e; stroke-width: 2; }
+      .title { font: 800 48px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font: 400 24px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .col-title { font: 800 34px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .item-title { font: 800 25px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .item-text { font: 400 20px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .small { font: 400 18px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .tiny { font: 700 15px Arial, sans-serif; fill: #64748b; letter-spacing: 0.02em; }
+      .code { font: 700 18px Consolas, monospace; fill: #334155; }
+      .note-strong { font: 800 18px Arial, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .note { font: 400 18px Arial, sans-serif; fill: #475569; letter-spacing: 0; }
+      .divider { stroke: #cbd5e1; stroke-width: 3; stroke-dasharray: 12 12; }
+      .arrow { stroke: #334155; stroke-width: 4; marker-end: url(#arrow); fill: none; }
+      .icon-stroke { fill: none; stroke: #334155; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .icon-left { fill: none; stroke: #64748b; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .icon-right { fill: none; stroke: #0f766e; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+    <marker id="arrow" markerWidth="14" markerHeight="14" refX="10" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#334155"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="9" flood-color="#0f172a" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <rect class="bg" width="2600" height="1600"/>
+  <text class="title" x="1300" y="82" text-anchor="middle">Komparasi Pengelolaan Change Request Konstruksi</text>
+  <text class="subtitle" x="1300" y="124" text-anchor="middle">Dari dokumentasi konvensional terfragmentasi menuju Sistem Informasi Web App terintegrasi</text>
+
+  <line class="divider" x1="1300" y1="185" x2="1300" y2="1290"/>
+
+  <!-- Left column -->
+  <rect class="left-panel" x="120" y="180" width="1090" height="1110" rx="8" filter="url(#shadow)"/>
+  <rect x="120" y="180" width="1090" height="116" rx="8" fill="#f1f5f9"/>
+  <text class="col-title" x="665" y="252" text-anchor="middle">Sistem Konvensional</text>
+  <text class="small" x="665" y="282" text-anchor="middle">Berbasis file, komunikasi manual, dan validasi tersebar</text>
+
+  <g transform="translate(190 360)">
+    <rect class="panel" x="0" y="0" width="950" height="130" rx="8"/>
+    <g transform="translate(34 32)">
+      <rect class="icon-left" x="0" y="0" width="60" height="72" rx="4"/>
+      <line class="icon-left" x1="14" y1="20" x2="46" y2="20"/>
+      <line class="icon-left" x1="14" y1="38" x2="46" y2="38"/>
+      <line class="icon-left" x1="14" y1="56" x2="46" y2="56"/>
+    </g>
+    <text class="item-title" x="124" y="46">Excel</text>
+    <text class="item-text" x="124" y="82">Data CR dan progres proyek dikelola dalam lembar kerja terpisah.</text>
+  </g>
+
+  <g transform="translate(190 525)">
+    <rect class="panel" x="0" y="0" width="950" height="130" rx="8"/>
+    <g transform="translate(34 36)">
+      <rect class="icon-left" x="0" y="0" width="68" height="50" rx="5"/>
+      <path class="icon-left" d="M3 6 L34 31 L65 6"/>
+    </g>
+    <text class="item-title" x="124" y="46">Email</text>
+    <text class="item-text" x="124" y="82">Approval dan klarifikasi berpindah melalui thread komunikasi.</text>
+  </g>
+
+  <g transform="translate(190 690)">
+    <rect class="panel" x="0" y="0" width="950" height="130" rx="8"/>
+    <g transform="translate(35 27)">
+      <path class="icon-left" d="M8 0 H48 L68 20 V76 H8 Z"/>
+      <path class="icon-left" d="M48 0 V20 H68"/>
+      <line class="icon-left" x1="20" y1="38" x2="54" y2="38"/>
+      <line class="icon-left" x1="20" y1="56" x2="54" y2="56"/>
+    </g>
+    <text class="item-title" x="124" y="46">Dokumen Terpisah</text>
+    <text class="item-text" x="124" y="82">Evidence, WBS, catatan review, dan laporan tidak berada dalam satu repositori.</text>
+  </g>
+
+  <g transform="translate(190 855)">
+    <rect class="panel" x="0" y="0" width="950" height="130" rx="8"/>
+    <g transform="translate(34 25)">
+      <path class="icon-left" d="M34 0 L70 70 H0 Z"/>
+      <line class="icon-left" x1="34" y1="24" x2="34" y2="42"/>
+      <circle cx="34" cy="56" r="3.5" fill="#64748b"/>
+    </g>
+    <text class="item-title" x="124" y="46">Risiko Manual</text>
+    <text class="item-text" x="124" y="82">Penilaian risiko bergantung pada interpretasi individu dan rekap manual.</text>
+  </g>
+
+  <g transform="translate(190 1040)">
+    <rect x="0" y="0" width="950" height="155" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
+    <text class="tiny" x="34" y="42">KONSEKUENSI INFORMASI</text>
+    <text class="item-text" x="34" y="80">Sulit menelusuri histori keputusan, hubungan WBS-risiko, dan pembelajaran proyek.</text>
+    <text class="item-text" x="34" y="116">Analisis portofolio CR menjadi lambat karena data tidak ternormalisasi.</text>
+  </g>
+
+  <!-- Right column -->
+  <rect class="right-panel" x="1390" y="180" width="1090" height="1110" rx="8" filter="url(#shadow)"/>
+  <rect x="1390" y="180" width="1090" height="116" rx="8" fill="#ecfdf5"/>
+  <text class="col-title" x="1935" y="252" text-anchor="middle">Sistem Web App</text>
+  <text class="small" x="1935" y="282" text-anchor="middle">Berbasis database, dashboard, rekomendasi, BIM, dan knowledge base</text>
+
+  <g transform="translate(1460 340)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(32 24)">
+      <ellipse class="icon-right" cx="35" cy="13" rx="34" ry="13"/>
+      <path class="icon-right" d="M1 13 V61 C1 68 69 68 69 61 V13"/>
+      <path class="icon-right" d="M1 37 C1 44 69 44 69 37"/>
+    </g>
+    <text class="item-title" x="124" y="42">Database Terpusat</text>
+    <text class="item-text" x="124" y="76">MySQL menyimpan users, projects, assignments, change_requests, dan project_scurve.</text>
+  </g>
+
+  <g transform="translate(1460 482)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(32 24)">
+      <rect class="icon-right" x="0" y="0" width="72" height="58" rx="5"/>
+      <path class="icon-right" d="M15 45 L28 32 L41 38 L58 18"/>
+    </g>
+    <text class="item-title" x="124" y="42">Dashboard</text>
+    <text class="item-text" x="124" y="76">admin.html dan project-manager.html merangkum KPI, status CR, risiko, dan S-Curve.</text>
+  </g>
+
+  <g transform="translate(1460 624)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(33 20)">
+      <path class="icon-right" d="M8 8 H64 V64 H8 Z"/>
+      <path class="icon-right" d="M8 26 H64"/>
+      <path class="icon-right" d="M26 8 V64"/>
+      <path class="icon-right" d="M46 8 V64"/>
+    </g>
+    <text class="item-title" x="124" y="42">WBS</text>
+    <text class="item-text" x="124" y="76">Form CR mengikat perubahan ke wbsLevel4, wbsLevel5, dan wbsLevel6.</text>
+  </g>
+
+  <g transform="translate(1460 766)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(34 22)">
+      <circle class="icon-right" cx="34" cy="34" r="28"/>
+      <path class="icon-right" d="M22 35 L32 45 L50 22"/>
+    </g>
+    <text class="item-title" x="124" y="42">AI Recommendation</text>
+    <text class="item-text" x="124" y="76">Rule-based expert system mencocokkan WBS dan riskVariable ke knowledge_repository.</text>
+  </g>
+
+  <g transform="translate(1460 908)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(30 20)">
+      <path class="icon-right" d="M36 0 L70 18 V56 L36 74 L2 56 V18 Z"/>
+      <path class="icon-right" d="M36 0 V37 L70 18"/>
+      <path class="icon-right" d="M36 37 L2 18"/>
+    </g>
+    <text class="item-title" x="124" y="42">BIM</text>
+    <text class="item-text" x="124" y="76">Autodesk Platform Services menghubungkan BIM Object ID dengan properti model.</text>
+  </g>
+
+  <g transform="translate(1460 1050)">
+    <rect class="panel" x="0" y="0" width="950" height="112" rx="8"/>
+    <g transform="translate(34 23)">
+      <path class="icon-right" d="M5 12 H27 L37 24 H69 V62 H5 Z"/>
+      <path class="icon-right" d="M17 42 H57"/>
+    </g>
+    <text class="item-title" x="124" y="42">Knowledge Base</text>
+    <text class="item-text" x="124" y="76">Approved CR menjadi lesson learned pada knowledge_base untuk proyek berikutnya.</text>
+  </g>
+
+  <!-- Transformation arrow -->
+  <path class="arrow" d="M1215 735 C1260 735 1335 735 1380 735"/>
+  <rect x="1208" y="678" width="184" height="58" rx="29" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text class="tiny" x="1300" y="714" text-anchor="middle">INTEGRASI</text>
+
+  <!-- Bottom connection panel -->
+  <rect class="panel" x="120" y="1360" width="2360" height="160" rx="8" filter="url(#shadow)"/>
+  <text class="note-strong" x="165" y="1405">Kaitan dengan project saat ini:</text>
+  <text class="note" x="165" y="1440">Frontend: index.html, login.html, admin.html, project-manager.html, site-engineer.html menyediakan pengalaman pengguna operasional untuk Admin, Project Manager, dan Site Engineer.</text>
+  <text class="note" x="165" y="1474">Backend: folder backend berisi API PHP seperti api_get_change_requests.php, save_data.php, save_approval.php, api_get_scurve.php, api_aps_properties.php, dan api_knowledge_base.php.</text>
+  <text class="note" x="165" y="1508">Data: backend/data_proyek.sql mendefinisikan users, projects, project_assignments, change_requests, knowledge_repository, knowledge_base, dan project_scurve sebagai basis integrasi.</text>
+</svg>

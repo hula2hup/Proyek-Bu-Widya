@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1600" viewBox="0 0 2600 1600" role="img" aria-labelledby="title desc">
+  <title id="title">ERD Sistem Change Request Konstruksi WYLCORE</title>
+  <desc id="desc">Entity Relationship Diagram untuk tabel users, projects, project_assignments, change_requests, knowledge_repository, knowledge_base, dan project_scurve.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#111111"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 42px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .subtitle { font: 400 20px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .entity { fill: #ffffff; stroke: #111111; stroke-width: 2.4; rx: 12; }
+      .header { fill: #f2f2f2; stroke: #111111; stroke-width: 2.4; rx: 12; }
+      .header-cut { fill: #f2f2f2; stroke: #111111; stroke-width: 0; }
+      .entity-title { font: 700 22px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .field { font: 400 16px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .field-strong { font: 700 16px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .field-note { font: 400 14px Arial, Helvetica, sans-serif; fill: #444444; letter-spacing: 0; }
+      .line { fill: none; stroke: #111111; stroke-width: 2.4; }
+      .line-dash { fill: none; stroke: #111111; stroke-width: 2.2; stroke-dasharray: 10 7; }
+      .rel-label { font: 700 15px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .rel-note { font: 400 14px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .note { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .note-text { font: 400 15px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+      .legend { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2600" height="1600"/>
+  <text class="title" x="1300" y="72" text-anchor="middle">ERD Sistem Change Request Konstruksi</text>
+  <text class="subtitle" x="1300" y="110" text-anchor="middle">Database MySQL WYLCORE | Sumber: backend/data_proyek.sql dan endpoint PHP pada folder backend/</text>
+
+  <!-- Entity users -->
+  <g id="users">
+    <rect class="entity" x="105" y="190" width="400" height="270"/>
+    <rect class="header" x="105" y="190" width="400" height="58"/>
+    <rect class="header-cut" x="107" y="226" width="396" height="22"/>
+    <text class="entity-title" x="305" y="226" text-anchor="middle">users</text>
+    <text class="field-strong" x="130" y="282">PK id : int</text>
+    <text class="field" x="130" y="315">UQ username : varchar(50)</text>
+    <text class="field" x="130" y="348">password : varchar(255)</text>
+    <text class="field" x="130" y="381">full_name : varchar(100)</text>
+    <text class="field" x="130" y="414">role : enum(Admin, PM, SE)</text>
+    <text class="field-note" x="130" y="444">File: api_login.php, api_user_management.php</text>
+  </g>
+
+  <!-- Entity project_assignments -->
+  <g id="project_assignments">
+    <rect class="entity" x="710" y="190" width="450" height="270"/>
+    <rect class="header" x="710" y="190" width="450" height="58"/>
+    <rect class="header-cut" x="712" y="226" width="446" height="22"/>
+    <text class="entity-title" x="935" y="226" text-anchor="middle">project_assignments</text>
+    <text class="field-strong" x="735" y="282">PK id : int</text>
+    <text class="field-strong" x="735" y="315">FK project_id : varchar(50)</text>
+    <text class="field-strong" x="735" y="348">FK user_id : int</text>
+    <text class="field" x="735" y="381">role_assigned : enum(Admin, PM, SE)</text>
+    <text class="field-note" x="735" y="414">Menghubungkan user dengan proyek</text>
+    <text class="field-note" x="735" y="444">File: api_get_projects.php, api_user_management.php</text>
+  </g>
+
+  <!-- Entity projects -->
+  <g id="projects">
+    <rect class="entity" x="1365" y="190" width="400" height="270"/>
+    <rect class="header" x="1365" y="190" width="400" height="58"/>
+    <rect class="header-cut" x="1367" y="226" width="396" height="22"/>
+    <text class="entity-title" x="1565" y="226" text-anchor="middle">projects</text>
+    <text class="field-strong" x="1390" y="282">PK project_id : varchar(50)</text>
+    <text class="field" x="1390" y="315">project_name : varchar(150)</text>
+    <text class="field" x="1390" y="348">status : varchar(50)</text>
+    <text class="field" x="1390" y="381">progress : int</text>
+    <text class="field-note" x="1390" y="414">Contoh: PRJ-001</text>
+    <text class="field-note" x="1390" y="444">File: api_add/update/save_project.php</text>
+  </g>
+
+  <!-- Entity project_scurve -->
+  <g id="project_scurve">
+    <rect class="entity" x="2000" y="190" width="430" height="270"/>
+    <rect class="header" x="2000" y="190" width="430" height="58"/>
+    <rect class="header-cut" x="2002" y="226" width="426" height="22"/>
+    <text class="entity-title" x="2215" y="226" text-anchor="middle">project_scurve</text>
+    <text class="field-strong" x="2025" y="282">PK id : int</text>
+    <text class="field-strong" x="2025" y="315">FK project_id : varchar(50)</text>
+    <text class="field" x="2025" y="348">periode_ke : int</text>
+    <text class="field" x="2025" y="381">tanggal_target : date</text>
+    <text class="field" x="2025" y="414">rencana_kumulatif : decimal</text>
+    <text class="field" x="2025" y="444">realisasi_kumulatif : decimal</text>
+  </g>
+
+  <!-- Entity change_requests -->
+  <g id="change_requests">
+    <rect class="entity" x="1030" y="650" width="570" height="520"/>
+    <rect class="header" x="1030" y="650" width="570" height="58"/>
+    <rect class="header-cut" x="1032" y="686" width="566" height="22"/>
+    <text class="entity-title" x="1315" y="686" text-anchor="middle">change_requests</text>
+    <text class="field-strong" x="1055" y="742">PK changeId : varchar(50)</text>
+    <text class="field" x="1055" y="775">changeDate : date</text>
+    <text class="field" x="1055" y="808">submittedBy : varchar(50)</text>
+    <text class="field-strong" x="1055" y="841">projectArea : varchar(50) [logical -> projects.project_id]</text>
+    <text class="field" x="1055" y="874">wbsLevel4, wbsLevel5, wbsLevel6 : varchar</text>
+    <text class="field" x="1055" y="907">changeCategory, priority, status : varchar</text>
+    <text class="field" x="1055" y="940">risk, riskCategory, riskVariable, riskDescription</text>
+    <text class="field" x="1055" y="973">locationFormat, location, bimObjectId</text>
+    <text class="field" x="1055" y="1006">impactCost, impactTime, impactScope : JSON/text</text>
+    <text class="field" x="1055" y="1039">impactQuality, impactSafety : JSON/text</text>
+    <text class="field" x="1055" y="1072">photoEvidence, timeImpact, costImpact</text>
+    <text class="field-strong" x="1055" y="1105">associatedKnowledge : varchar(50) [logical -> knowledge_base.docId]</text>
+    <text class="field" x="1055" y="1138">reviewId, approvalDate, approvalNotes</text>
+  </g>
+
+  <!-- Entity knowledge_repository -->
+  <g id="knowledge_repository">
+    <rect class="entity" x="300" y="865" width="500" height="305"/>
+    <rect class="header" x="300" y="865" width="500" height="58"/>
+    <rect class="header-cut" x="302" y="901" width="496" height="22"/>
+    <text class="entity-title" x="550" y="901" text-anchor="middle">knowledge_repository</text>
+    <text class="field-strong" x="325" y="957">PK id : bigint unsigned</text>
+    <text class="field" x="325" y="990">IDX wbs_kode : varchar(50)</text>
+    <text class="field" x="325" y="1023">wbs_nama : varchar(255)</text>
+    <text class="field" x="325" y="1056">IDX risk_kode : varchar(50)</text>
+    <text class="field" x="325" y="1089">risk_nama, risk_kategori</text>
+    <text class="field" x="325" y="1122">insight : text</text>
+    <text class="field" x="325" y="1155">saran : text</text>
+  </g>
+
+  <!-- Entity knowledge_base -->
+  <g id="knowledge_base">
+    <rect class="entity" x="1835" y="840" width="555" height="330"/>
+    <rect class="header" x="1835" y="840" width="555" height="58"/>
+    <rect class="header-cut" x="1837" y="876" width="551" height="22"/>
+    <text class="entity-title" x="2112" y="876" text-anchor="middle">knowledge_base</text>
+    <text class="field-strong" x="1860" y="932">PK docId : varchar(50)</text>
+    <text class="field-strong" x="1860" y="965">FK repository_reference_id : bigint unsigned</text>
+    <text class="field" x="1860" y="998">changeDate, documentName, knowledgeCategory</text>
+    <text class="field" x="1860" y="1031">submittedBy, validationStatus</text>
+    <text class="field" x="1860" y="1064">description, documentFile</text>
+    <text class="field-strong" x="1860" y="1097">changeRequestLink : varchar(50) [logical -> change_requests.changeId]</text>
+    <text class="field" x="1860" y="1130">riskVariableLink, actual_impact, applied_solution</text>
+    <text class="field-note" x="1860" y="1158">File: api_knowledge_base.php, knowledge_base_auto.php</text>
+  </g>
+
+  <!-- Relationships -->
+  <!-- users 1 to many project_assignments -->
+  <path class="line" d="M 505 325 H 710"/>
+  <text class="rel-label" x="535" y="313">1</text>
+  <text class="rel-label" x="680" y="313">N</text>
+  <text class="rel-note" x="607" y="354" text-anchor="middle">users.id -> project_assignments.user_id</text>
+
+  <!-- projects 1 to many project_assignments -->
+  <path class="line" d="M 1365 325 H 1160"/>
+  <text class="rel-label" x="1335" y="313">1</text>
+  <text class="rel-label" x="1190" y="313">N</text>
+  <text class="rel-note" x="1262" y="354" text-anchor="middle">projects.project_id -> project_assignments.project_id</text>
+
+  <!-- projects 1 to many project_scurve -->
+  <path class="line" d="M 1765 325 H 2000"/>
+  <text class="rel-label" x="1795" y="313">1</text>
+  <text class="rel-label" x="1970" y="313">N</text>
+  <text class="rel-note" x="1882" y="354" text-anchor="middle">projects.project_id -> project_scurve.project_id</text>
+
+  <!-- projects logical to change_requests -->
+  <path class="line-dash" d="M 1565 460 V 610 C 1565 635, 1515 660, 1600 760"/>
+  <text class="rel-label" x="1585" y="530">1</text>
+  <text class="rel-label" x="1608" y="740">N</text>
+  <text class="rel-note" x="1698" y="612">logical link: projects.project_id -> change_requests.projectArea</text>
+
+  <!-- knowledge_repository 1 to many knowledge_base -->
+  <path class="line" d="M 800 1017 H 1835"/>
+  <text class="rel-label" x="830" y="1005">1</text>
+  <text class="rel-label" x="1805" y="1005">N</text>
+  <text class="rel-note" x="1315" y="995" text-anchor="middle">knowledge_repository.id -> knowledge_base.repository_reference_id</text>
+
+  <!-- knowledge_repository logical to change_requests matching -->
+  <path class="line-dash" d="M 800 930 C 900 820, 940 805, 1030 805"/>
+  <text class="rel-note" x="882" y="830">logical match: wbs_kode + risk_kode</text>
+
+  <!-- change_requests logical to knowledge_base -->
+  <path class="line-dash" d="M 1600 1087 H 1835"/>
+  <text class="rel-label" x="1628" y="1075">1</text>
+  <text class="rel-label" x="1805" y="1075">0..1 / N</text>
+  <text class="rel-note" x="1718" y="1122" text-anchor="middle">change_requests.changeId -> knowledge_base.changeRequestLink</text>
+
+  <path class="line-dash" d="M 1835 1135 C 1735 1245, 1580 1215, 1420 1170"/>
+  <text class="rel-note" x="1650" y="1245" text-anchor="middle">logical back-reference: change_requests.associatedKnowledge -> knowledge_base.docId</text>
+
+  <!-- File implementation notes -->
+  <rect class="note" x="105" y="1265" width="720" height="190"/>
+  <text class="note-title" x="135" y="1300">Endpoint Implementasi Utama</text>
+  <text class="note-text" x="135" y="1332">Autentikasi dan user: backend/api_login.php, api_user_management.php</text>
+  <text class="note-text" x="135" y="1362">Proyek dan assignment: api_add_project.php, api_save_project.php, api_update_project.php</text>
+  <text class="note-text" x="135" y="1392">Change Request: save_data.php, update_data.php, api_get_change_requests.php</text>
+  <text class="note-text" x="135" y="1422">Approval dan knowledge: save_approval.php, api_knowledge_base.php, knowledge_base_auto.php</text>
+
+  <rect class="note" x="940" y="1265" width="720" height="190"/>
+  <text class="note-title" x="970" y="1300">Makna Relasi</text>
+  <text class="note-text" x="970" y="1332">Garis penuh: foreign key fisik dari SQL.</text>
+  <text class="note-text" x="970" y="1362">Garis putus: logical link yang digunakan query aplikasi.</text>
+  <text class="note-text" x="970" y="1392">Relasi CR ke proyek memakai projectArea, bukan FK fisik.</text>
+  <text class="note-text" x="970" y="1422">Relasi CR ke knowledge_base memakai changeRequestLink dan associatedKnowledge.</text>
+
+  <rect class="note" x="1775" y="1265" width="655" height="190"/>
+  <text class="note-title" x="1805" y="1300">Informasi yang Dikandung</text>
+  <text class="note-text" x="1805" y="1332">Proyek, role pengguna, assignment proyek, CR, WBS, risiko, bukti.</text>
+  <text class="note-text" x="1805" y="1362">Status approval, dampak biaya/waktu, S-Curve, rekomendasi pakar.</text>
+  <text class="note-text" x="1805" y="1392">Lesson learned, solusi diterapkan, dan linkage BIM melalui bimObjectId.</text>
+
+  <text class="legend" x="1300" y="1518" text-anchor="middle">Gaya ERD profesional: PK/FK ditandai pada atribut; relasi users-project_assignments-projects, projects-project_scurve, knowledge_repository-knowledge_base, dan logical link change_requests-knowledge_base ditampilkan eksplisit.</text>
+</svg>

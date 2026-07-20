@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1500" viewBox="0 0 2600 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Ilustrasi Konsep BIM Linkage WYLCORE</title>
+  <desc id="desc">Ilustrasi konsep hubungan elemen BIM jembatan/precast dengan Change Request lokal melalui BIM Object ID, WBS, status, dan rekomendasi risiko.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#111111"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 42px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .subtitle { font: 400 20px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .panel { fill: #ffffff; stroke: #111111; stroke-width: 2.2; rx: 14; }
+      .panel-soft { fill: #f4f5f7; stroke: #111111; stroke-width: 2.1; rx: 14; }
+      .viewer { fill: #f8fafc; stroke: #111111; stroke-width: 2.4; rx: 18; }
+      .bridge-part { fill: #d9dde3; stroke: #111111; stroke-width: 2.2; }
+      .bridge-dark { fill: #b8c0ca; stroke: #111111; stroke-width: 2.2; }
+      .highlight { fill: #111827; stroke: #111111; stroke-width: 2.4; }
+      .highlight-light { fill: #ffffff; stroke: #111111; stroke-width: 2.2; }
+      .text { font: 400 16px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+      .small { font: 400 13.5px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .tiny { font: 400 12.5px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .heading { font: 700 23px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .heading-light { font: 700 20px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .label { font: 700 15px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .code { font: 400 14px Consolas, 'Courier New', monospace; fill: #111111; letter-spacing: 0; }
+      .code-light { font: 400 14px Consolas, 'Courier New', monospace; fill: #ffffff; letter-spacing: 0; }
+      .line { fill: none; stroke: #111111; stroke-width: 2.4; marker-end: url(#arrow); }
+      .dash { fill: none; stroke: #111111; stroke-width: 2.1; stroke-dasharray: 9 7; marker-end: url(#arrow); }
+      .badge { fill: #ffffff; stroke: #111111; stroke-width: 1.5; rx: 16; }
+      .badge-dark { fill: #111827; stroke: #111827; stroke-width: 1.5; rx: 16; }
+      .note { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .note-text { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2600" height="1500"/>
+  <text class="title" x="1300" y="72" text-anchor="middle">Ilustrasi Konsep BIM Linkage</text>
+  <text class="subtitle" x="1300" y="110" text-anchor="middle">Autodesk Viewer -> API properties -> pencocokan BIM Object ID -> local change_requests -> rekomendasi risiko</text>
+
+  <!-- Viewer panel -->
+  <rect class="viewer" x="100" y="170" width="1480" height="840"/>
+  <text class="heading" x="140" y="220">Autodesk / Three.js BIM Viewer</text>
+  <text class="small" x="140" y="248">File UI: project-manager.html, admin.html, site-engineer.html | API: backend/api_aps_token.php dan backend/api_aps_properties.php</text>
+
+  <!-- Simple bridge/precast model -->
+  <g id="bridge" transform="translate(195 340)">
+    <!-- deck shadow/base -->
+    <polygon class="bridge-dark" points="120,270 1080,270 1210,335 250,335"/>
+    <polygon class="bridge-part" points="100,220 1060,220 1215,270 250,270"/>
+    <!-- segmented deck slabs -->
+    <polygon class="bridge-part" points="140,180 305,180 390,220 220,220"/>
+    <polygon class="bridge-part" points="320,180 485,180 570,220 405,220"/>
+    <polygon class="highlight" points="500,180 665,180 750,220 585,220"/>
+    <polygon class="bridge-part" points="680,180 845,180 930,220 765,220"/>
+    <polygon class="bridge-part" points="860,180 1025,180 1110,220 945,220"/>
+    <!-- girders -->
+    <polygon class="bridge-dark" points="170,270 270,270 380,320 280,320"/>
+    <polygon class="bridge-dark" points="430,270 530,270 640,320 540,320"/>
+    <polygon class="highlight" points="690,270 790,270 900,320 800,320"/>
+    <polygon class="bridge-dark" points="950,270 1050,270 1160,320 1060,320"/>
+    <!-- piers -->
+    <polygon class="bridge-part" points="270,335 350,335 350,560 270,560"/>
+    <polygon class="bridge-part" points="720,335 815,335 815,560 720,560"/>
+    <polygon class="bridge-part" points="1080,335 1160,335 1160,560 1080,560"/>
+    <!-- abutments -->
+    <polygon class="bridge-dark" points="70,335 170,335 170,560 70,560"/>
+    <polygon class="bridge-dark" points="1210,335 1310,335 1310,560 1210,560"/>
+    <!-- ground -->
+    <line x1="25" y1="560" x2="1345" y2="560" stroke="#111111" stroke-width="3"/>
+    <!-- highlight label line -->
+    <path class="dash" d="M 700 160 C 820 80, 940 60, 1060 90"/>
+    <rect class="badge-dark" x="1060" y="50" width="235" height="60"/>
+    <text class="heading-light" x="1178" y="86" text-anchor="middle">Elemen Disorot</text>
+    <text class="code-light" x="1178" y="106" text-anchor="middle">BIM-002</text>
+  </g>
+
+  <!-- Object property floating card -->
+  <rect class="panel" x="150" y="805" width="610" height="160"/>
+  <text class="heading" x="185" y="846">Selected Object</text>
+  <text class="text" x="185" y="880">dbId: 728 | Name: Pier P1 / Precast Element</text>
+  <text class="text" x="185" y="912">Property: BIM Object ID / Mark = BIM-002</text>
+  <text class="text" x="185" y="944">Viewer action: highlight affected object</text>
+
+  <!-- Side info panel -->
+  <rect class="panel" x="1650" y="170" width="850" height="840"/>
+  <text class="heading" x="1690" y="220">Panel Informasi BIM Linkage</text>
+  <text class="small" x="1690" y="248">Data hasil pencocokan properti BIM dengan data Change Request lokal</text>
+
+  <rect class="panel-soft" x="1690" y="290" width="770" height="120"/>
+  <text class="label" x="1725" y="328">BIM Object ID</text>
+  <text class="code" x="1725" y="360">BIM-002</text>
+  <text class="small" x="1725" y="390">Dibaca dari properti Revit: "BIM Object ID" atau "Mark"</text>
+
+  <rect class="panel-soft" x="1690" y="445" width="770" height="120"/>
+  <text class="label" x="1725" y="483">WBS</text>
+  <text class="code" x="1725" y="515">7.2.6.3 Pemasangan (Erection) dengan metode double crane</text>
+  <text class="small" x="1725" y="545">Sumber: change_requests.wbsLevel4, wbsLevel5, wbsLevel6</text>
+
+  <rect class="panel-soft" x="1690" y="600" width="370" height="112"/>
+  <text class="label" x="1725" y="638">Status Change Request</text>
+  <rect class="badge" x="1725" y="660" width="165" height="38"/>
+  <text class="label" x="1808" y="685" text-anchor="middle">REJECTED</text>
+  <text class="small" x="1725" y="724">Sumber: change_requests.status</text>
+
+  <rect class="panel-soft" x="2090" y="600" width="370" height="112"/>
+  <text class="label" x="2125" y="638">Skor Risiko</text>
+  <rect class="badge-dark" x="2125" y="660" width="155" height="38"/>
+  <text class="heading-light" x="2202" y="686" text-anchor="middle">4</text>
+  <text class="small" x="2125" y="724">Kategori: Metode Pelaksanaan</text>
+
+  <rect class="panel-soft" x="1690" y="750" width="770" height="175"/>
+  <text class="label" x="1725" y="790">Rekomendasi Risiko</text>
+  <text class="text" x="1725" y="824">Meninjau ulang metode pelaksanaan, kapasitas lifting,</text>
+  <text class="text" x="1725" y="854">method statement, dan koordinasi teknis sebelum pekerjaan.</text>
+  <text class="small" x="1725" y="895">Sumber: knowledge_repository.insight + knowledge_repository.saran</text>
+
+  <!-- Data flow bottom -->
+  <rect class="panel" x="100" y="1085" width="2400" height="235"/>
+  <text class="heading" x="140" y="1132">Alur Integrasi Data BIM dan Change Request</text>
+
+  <rect class="panel-soft" x="145" y="1175" width="360" height="92"/>
+  <text class="label" x="325" y="1210" text-anchor="middle">Autodesk Viewer</text>
+  <text class="small" x="325" y="1240" text-anchor="middle">dbId elemen terpilih</text>
+
+  <rect class="panel-soft" x="620" y="1175" width="415" height="92"/>
+  <text class="label" x="827" y="1210" text-anchor="middle">API Properties</text>
+  <text class="code" x="827" y="1240" text-anchor="middle">backend/api_aps_properties.php</text>
+
+  <rect class="panel-soft" x="1150" y="1175" width="415" height="92"/>
+  <text class="label" x="1357" y="1210" text-anchor="middle">Pencocokan Lokal</text>
+  <text class="code" x="1357" y="1240" text-anchor="middle">WHERE bimObjectId = BIM-002</text>
+
+  <rect class="panel-soft" x="1680" y="1175" width="360" height="92"/>
+  <text class="label" x="1860" y="1210" text-anchor="middle">change_requests</text>
+  <text class="small" x="1860" y="1240" text-anchor="middle">CR terkait objek BIM</text>
+
+  <rect class="panel-soft" x="2155" y="1175" width="300" height="92"/>
+  <text class="label" x="2305" y="1210" text-anchor="middle">Panel UI</text>
+  <text class="small" x="2305" y="1240" text-anchor="middle">WBS, status, rekomendasi</text>
+
+  <path class="line" d="M 505 1221 H 610"/>
+  <path class="line" d="M 1035 1221 H 1140"/>
+  <path class="line" d="M 1565 1221 H 1670"/>
+  <path class="line" d="M 2040 1221 H 2145"/>
+
+  <text class="tiny" x="562" y="1200" text-anchor="middle">dbId + token</text>
+  <text class="tiny" x="1090" y="1200" text-anchor="middle">BIM Object ID</text>
+  <text class="tiny" x="1622" y="1200" text-anchor="middle">SQL match</text>
+  <text class="tiny" x="2092" y="1200" text-anchor="middle">JSON</text>
+
+  <!-- Implementation notes -->
+  <rect class="note" x="100" y="1365" width="710" height="105"/>
+  <text class="note-title" x="130" y="1398">File Project</text>
+  <text class="note-text" x="130" y="1428">Viewer UI: admin.html, project-manager.html, site-engineer.html</text>
+  <text class="note-text" x="130" y="1455">APS API: backend/api_aps_token.php, backend/api_aps_properties.php</text>
+
+  <rect class="note" x="895" y="1365" width="710" height="105"/>
+  <text class="note-title" x="925" y="1398">Data yang Dikaitkan</text>
+  <text class="note-text" x="925" y="1428">change_requests.bimObjectId, changeId, status, wbsLevel4-6, risk.</text>
+  <text class="note-text" x="925" y="1455">knowledge_repository menyediakan insight dan saran berbasis WBS-risiko.</text>
+
+  <rect class="note" x="1690" y="1365" width="810" height="105"/>
+  <text class="note-title" x="1720" y="1398">Makna Konseptual</text>
+  <text class="note-text" x="1720" y="1428">BIM linkage mengubah model visual menjadi pintu masuk untuk menelusuri CR.</text>
+  <text class="note-text" x="1720" y="1455">Relasi bersifat eksplisit melalui BIM Object ID agar dapat diaudit.</text>
+</svg>

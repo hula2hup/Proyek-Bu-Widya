@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1600" viewBox="0 0 2400 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Diagram Siklus Knowledge Management Proyek Konstruksi</title>
+  <desc id="desc">Infografis akademis siklus knowledge management dari Change Request submitted sampai lesson learned digunakan kembali sebagai rekomendasi proyek masa depan.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#111111"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 42px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .subtitle { font: 400 20px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .cycle { fill: none; stroke: #111111; stroke-width: 3; marker-end: url(#arrow); }
+      .card { fill: #ffffff; stroke: #111111; stroke-width: 2.2; rx: 18; }
+      .card-soft { fill: #f5f6f8; stroke: #111111; stroke-width: 2.2; rx: 18; }
+      .center { fill: #111827; stroke: #111827; stroke-width: 2.2; rx: 22; }
+      .step-num { font: 700 24px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .step-title { font: 700 20px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .step-title-light { font: 700 22px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .text { font: 400 15px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+      .text-light { font: 400 15px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .small { font: 400 13px Arial, Helvetica, sans-serif; fill: #444444; letter-spacing: 0; }
+      .code { font: 400 13px Consolas, 'Courier New', monospace; fill: #111111; letter-spacing: 0; }
+      .code-light { font: 400 13px Consolas, 'Courier New', monospace; fill: #ffffff; letter-spacing: 0; }
+      .badge { fill: #111827; stroke: #111827; stroke-width: 1.5; rx: 18; }
+      .badge-soft { fill: #ffffff; stroke: #111111; stroke-width: 1.5; rx: 18; }
+      .line { fill: none; stroke: #111111; stroke-width: 2.2; marker-end: url(#arrow); }
+      .line-dash { fill: none; stroke: #111111; stroke-width: 2; stroke-dasharray: 9 7; marker-end: url(#arrow); }
+      .note { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .note-text { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2400" height="1600"/>
+  <text class="title" x="1200" y="72" text-anchor="middle">Siklus Knowledge Management Proyek Konstruksi</text>
+  <text class="subtitle" x="1200" y="110" text-anchor="middle">Dari Change Request lapangan menjadi lesson learned KM-xxx dan digunakan kembali sebagai rekomendasi proyek berikutnya</text>
+
+  <!-- Central concept -->
+  <rect class="center" x="875" y="620" width="650" height="210"/>
+  <text class="step-title-light" x="1200" y="675" text-anchor="middle">Knowledge Management Loop</text>
+  <text class="text-light" x="1200" y="710" text-anchor="middle">Data transaksi CR -> keputusan PM -> lesson learned -> basis rekomendasi</text>
+  <text class="code-light" x="1200" y="748" text-anchor="middle">change_requests + knowledge_repository + knowledge_base</text>
+  <text class="small-light" x="1200" y="786" text-anchor="middle">Sistem mengubah pengalaman proyek menjadi pengetahuan eksplisit yang dapat ditelusuri.</text>
+
+  <!-- Cards around cycle -->
+  <rect class="card" x="930" y="185" width="540" height="155"/>
+  <circle class="badge" cx="965" cy="225" r="22"/>
+  <text class="step-num" x="965" y="234" text-anchor="middle">1</text>
+  <text class="step-title" x="1005" y="223">Change Request Submitted</text>
+  <text class="text" x="965" y="260">Site Engineer mengajukan CR melalui form.</text>
+  <text class="code" x="965" y="290">site-engineer.html -> backend/save_data.php</text>
+  <text class="code" x="965" y="316">status awal: PENDING</text>
+
+  <rect class="card-soft" x="1615" y="345" width="555" height="160"/>
+  <circle class="badge" cx="1650" cy="386" r="22"/>
+  <text class="step-num" x="1650" y="395" text-anchor="middle">2</text>
+  <text class="step-title" x="1690" y="384">Reviewed by Project Manager</text>
+  <text class="text" x="1650" y="422">PM membaca detail CR, WBS, risiko, evidence, dan rekomendasi.</text>
+  <text class="code" x="1650" y="452">project-manager.html</text>
+  <text class="code" x="1650" y="478">backend/api_get_change_requests.php</text>
+
+  <rect class="card" x="1660" y="875" width="510" height="155"/>
+  <circle class="badge" cx="1695" cy="915" r="22"/>
+  <text class="step-num" x="1695" y="924" text-anchor="middle">3</text>
+  <text class="step-title" x="1735" y="913">Approved</text>
+  <text class="text" x="1695" y="950">PM menyetujui CR dan menulis catatan keputusan.</text>
+  <text class="code" x="1695" y="980">backend/save_approval.php</text>
+  <text class="code" x="1695" y="1006">change_requests.status = APPROVED</text>
+
+  <rect class="card-soft" x="930" y="1075" width="540" height="165"/>
+  <circle class="badge" cx="965" cy="1118" r="22"/>
+  <text class="step-num" x="965" y="1127" text-anchor="middle">4</text>
+  <text class="step-title" x="1005" y="1116">Actual Impact Recorded</text>
+  <text class="text" x="965" y="1154">Dampak final biaya/waktu dan catatan PM dicatat.</text>
+  <text class="code" x="965" y="1184">timeImpact, costImpact, approvalNotes</text>
+  <text class="code" x="965" y="1210">change_requests.reviewId, approvalDate</text>
+
+  <rect class="card" x="230" y="875" width="555" height="165"/>
+  <circle class="badge" cx="265" cy="918" r="22"/>
+  <text class="step-num" x="265" y="927" text-anchor="middle">5</text>
+  <text class="step-title" x="305" y="916">Lesson Learned Generated</text>
+  <text class="text" x="265" y="954">Sistem membentuk dokumen pengetahuan otomatis.</text>
+  <text class="code" x="265" y="984">knowledge_base_auto.php</text>
+  <text class="code" x="265" y="1010">docId: KM-xxx</text>
+
+  <rect class="card-soft" x="230" y="345" width="555" height="165"/>
+  <circle class="badge" cx="265" cy="388" r="22"/>
+  <text class="step-num" x="265" y="397" text-anchor="middle">6</text>
+  <text class="step-title" x="305" y="386">Stored in Knowledge Base</text>
+  <text class="text" x="265" y="424">Lesson learned disimpan dan dapat dikurasi Admin.</text>
+  <text class="code" x="265" y="454">backend/api_knowledge_base.php</text>
+  <text class="code" x="265" y="480">knowledge_base.docId, changeRequestLink</text>
+
+  <rect class="card" x="930" y="425" width="540" height="155"/>
+  <circle class="badge" cx="965" cy="465" r="22"/>
+  <text class="step-num" x="965" y="474" text-anchor="middle">7</text>
+  <text class="step-title" x="1005" y="463">Reused as Recommendation</text>
+  <text class="text" x="965" y="500">Pengetahuan dipakai sebagai referensi review CR berikutnya.</text>
+  <text class="code" x="965" y="530">knowledge_repository + knowledge_base</text>
+  <text class="code" x="965" y="556">insight, saran, applied_solution</text>
+
+  <!-- Cycle arrows -->
+  <path class="cycle" d="M 1470 260 C 1570 270, 1640 305, 1695 345"/>
+  <path class="cycle" d="M 1930 505 C 2020 610, 2025 770, 1965 875"/>
+  <path class="cycle" d="M 1660 975 C 1580 1035, 1505 1070, 1470 1125"/>
+  <path class="cycle" d="M 930 1160 C 845 1130, 775 1070, 730 1040"/>
+  <path class="cycle" d="M 390 875 C 315 760, 315 620, 390 510"/>
+  <path class="cycle" d="M 785 425 C 855 430, 900 445, 930 470"/>
+  <path class="cycle" d="M 1200 425 V 350"/>
+
+  <!-- Data transformation strips -->
+  <rect class="note" x="1605" y="620" width="575" height="165"/>
+  <text class="note-title" x="1635" y="655">Data yang dibawa ke review</text>
+  <text class="note-text" x="1635" y="685">changeId, description, WBS Level 4-6, risk, riskVariable.</text>
+  <text class="note-text" x="1635" y="715">photoEvidence, location, bimObjectId, impactCost/Time/Scope/Quality/Safety.</text>
+  <text class="note-text" x="1635" y="745">Insight dan saran dari knowledge_repository.</text>
+
+  <rect class="note" x="220" y="620" width="575" height="165"/>
+  <text class="note-title" x="250" y="655">Data yang menjadi knowledge</text>
+  <text class="note-text" x="250" y="685">documentName: Lesson Learned CR-xxx.</text>
+  <text class="note-text" x="250" y="715">actual_impact: timeImpact, costImpact, estimasi dampak.</text>
+  <text class="note-text" x="250" y="745">applied_solution: saran repository + approvalNotes PM.</text>
+
+  <!-- Bottom implementation links -->
+  <rect class="note" x="120" y="1320" width="680" height="150"/>
+  <text class="note-title" x="150" y="1355">File Project yang Terlibat</text>
+  <text class="note-text" x="150" y="1385">Input dan status: site-engineer.html, backend/save_data.php, backend/get_data.php</text>
+  <text class="note-text" x="150" y="1415">Review dan approval: project-manager.html, backend/save_approval.php</text>
+  <text class="note-text" x="150" y="1445">Knowledge: backend/api_knowledge_base.php, backend/knowledge_base_auto.php</text>
+
+  <rect class="note" x="860" y="1320" width="680" height="150"/>
+  <text class="note-title" x="890" y="1355">Tabel dan Field Kunci</text>
+  <text class="note-text" x="890" y="1385">change_requests: changeId, status, associatedKnowledge, reviewId, approvalDate.</text>
+  <text class="note-text" x="890" y="1415">knowledge_repository: id, wbs_kode, risk_kode, insight, saran.</text>
+  <text class="note-text" x="890" y="1445">knowledge_base: docId, repository_reference_id, changeRequestLink, actual_impact.</text>
+
+  <rect class="note" x="1600" y="1320" width="680" height="150"/>
+  <text class="note-title" x="1630" y="1355">Makna Siklus</text>
+  <text class="note-text" x="1630" y="1385">CR approved tidak berhenti sebagai transaksi, tetapi dikonversi menjadi knowledge.</text>
+  <text class="note-text" x="1630" y="1415">Knowledge digunakan ulang untuk mendukung keputusan PM pada proyek berikutnya.</text>
+  <text class="note-text" x="1630" y="1445">Siklus ini memperkuat organizational learning dan traceability keputusan.</text>
+</svg>

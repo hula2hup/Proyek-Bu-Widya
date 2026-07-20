@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1700" viewBox="0 0 2600 1700" role="img" aria-labelledby="title desc">
+  <title id="title">Wireframe Form Site Engineer Input Change Request</title>
+  <desc id="desc">Wireframe form Site Engineer untuk input Change Request konstruksi pada sistem WYLCORE.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .panel { fill: #ffffff; stroke: #d0d5dd; stroke-width: 2; rx: 10; }
+      .panel-soft { fill: #f1f3f5; stroke: #c8ced8; stroke-width: 2; rx: 10; }
+      .field { fill: #ffffff; stroke: #9aa4b2; stroke-width: 1.8; rx: 8; }
+      .field-tall { fill: #ffffff; stroke: #9aa4b2; stroke-width: 1.8; rx: 8; }
+      .sidebar { fill: #111827; }
+      .sidebar-text { font: 600 18px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .sidebar-muted { font: 400 14px Arial, Helvetica, sans-serif; fill: #cbd5e1; letter-spacing: 0; }
+      .title { font: 700 34px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .subtitle { font: 400 17px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .section { font: 700 21px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .label { font: 400 14px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .label-strong { font: 700 15px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .placeholder { font: 400 14px Arial, Helvetica, sans-serif; fill: #667085; letter-spacing: 0; }
+      .tiny { font: 400 12.5px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .button { fill: #111827; stroke: #111827; stroke-width: 2; rx: 8; }
+      .button-alt { fill: #ffffff; stroke: #111827; stroke-width: 2; rx: 8; }
+      .button-text { font: 700 15px Arial, Helvetica, sans-serif; fill: #ffffff; letter-spacing: 0; }
+      .button-text-dark { font: 700 15px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .chip { fill: #ffffff; stroke: #111827; stroke-width: 1.4; rx: 14; }
+      .line { stroke: #d0d5dd; stroke-width: 2; }
+      .note { fill: #ffffff; stroke: #111827; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .note-text { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2600" height="1700"/>
+
+  <!-- App shell -->
+  <rect class="sidebar" x="70" y="70" width="300" height="1430" rx="18"/>
+  <text class="sidebar-text" x="110" y="125">WYLCORE</text>
+  <text class="sidebar-muted" x="110" y="155">Site Engineer Workspace</text>
+  <line x1="100" y1="190" x2="340" y2="190" stroke="#334155" stroke-width="2"/>
+  <rect x="105" y="230" width="230" height="46" rx="8" fill="#ffffff" opacity="0.12"/>
+  <text class="sidebar-text" x="130" y="260">Input Change Request</text>
+  <text class="sidebar-muted" x="130" y="325">Riwayat CR</text>
+  <text class="sidebar-muted" x="130" y="380">Status Approval</text>
+  <text class="sidebar-muted" x="130" y="435">BIM Viewer</text>
+  <text class="sidebar-muted" x="110" y="1410">File: site-engineer.html</text>
+  <text class="sidebar-muted" x="110" y="1440">Submit: backend/save_data.php</text>
+  <text class="sidebar-muted" x="110" y="1470">Update: backend/update_data.php</text>
+
+  <!-- Header -->
+  <text class="title" x="430" y="112">Form Input Change Request</text>
+  <text class="subtitle" x="430" y="145">Form operasional untuk mencatat perubahan lapangan, WBS, risiko, dampak, lokasi, BIM Object ID, dan bukti pendukung.</text>
+  <rect class="panel" x="1930" y="84" width="520" height="76"/>
+  <text class="label-strong" x="1960" y="116">Proyek Terpilih</text>
+  <text class="label" x="1960" y="142">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</text>
+
+  <!-- Main form grid -->
+  <rect class="panel" x="430" y="205" width="2020" height="1145"/>
+
+  <!-- Section 1 identity -->
+  <rect class="panel-soft" x="470" y="245" width="940" height="250"/>
+  <text class="section" x="500" y="285">1. Identitas Change Request</text>
+  <text class="tiny" x="500" y="312">Field tersimpan pada tabel change_requests</text>
+  <text class="label-strong" x="500" y="350">Change ID</text>
+  <rect class="field" x="500" y="365" width="260" height="46"/>
+  <text class="placeholder" x="520" y="394">CR-xxx dari get_next_id.php</text>
+  <text class="label-strong" x="790" y="350">Tanggal</text>
+  <rect class="field" x="790" y="365" width="230" height="46"/>
+  <text class="placeholder" x="810" y="394">changeDate</text>
+  <text class="label-strong" x="1050" y="350">Submitted By</text>
+  <rect class="field" x="1050" y="365" width="300" height="46"/>
+  <text class="placeholder" x="1070" y="394">submittedBy / session user</text>
+  <text class="label-strong" x="500" y="435">Kategori Perubahan</text>
+  <rect class="field" x="500" y="450" width="300" height="46"/>
+  <text class="placeholder" x="520" y="479">changeCategory</text>
+  <text class="label-strong" x="830" y="435">Priority</text>
+  <rect class="field" x="830" y="450" width="190" height="46"/>
+  <text class="placeholder" x="850" y="479">priority</text>
+  <text class="label-strong" x="1050" y="435">Owner Request</text>
+  <rect class="field" x="1050" y="450" width="300" height="46"/>
+  <text class="placeholder" x="1070" y="479">ownerRequest</text>
+
+  <!-- Section 2 WBS and location -->
+  <rect class="panel-soft" x="1450" y="245" width="960" height="250"/>
+  <text class="section" x="1480" y="285">2. WBS, Lokasi, dan BIM</text>
+  <text class="tiny" x="1480" y="312">Mengikat CR ke pekerjaan, lokasi fisik, dan objek model</text>
+  <text class="label-strong" x="1480" y="350">WBS Level 4</text>
+  <rect class="field" x="1480" y="365" width="280" height="46"/>
+  <text class="placeholder" x="1500" y="394">wbsLevel4</text>
+  <text class="label-strong" x="1790" y="350">WBS Level 5</text>
+  <rect class="field" x="1790" y="365" width="280" height="46"/>
+  <text class="placeholder" x="1810" y="394">wbsLevel5</text>
+  <text class="label-strong" x="2100" y="350">WBS Level 6</text>
+  <rect class="field" x="2100" y="365" width="270" height="46"/>
+  <text class="placeholder" x="2120" y="394">wbsLevel6</text>
+  <text class="label-strong" x="1480" y="435">Format Lokasi</text>
+  <rect class="field" x="1480" y="450" width="210" height="46"/>
+  <text class="placeholder" x="1500" y="479">locationFormat</text>
+  <text class="label-strong" x="1720" y="435">Lokasi</text>
+  <rect class="field" x="1720" y="450" width="330" height="46"/>
+  <text class="placeholder" x="1740" y="479">STA / Pier / Abutment</text>
+  <text class="label-strong" x="2080" y="435">BIM Object ID</text>
+  <rect class="field" x="2080" y="450" width="290" height="46"/>
+  <text class="placeholder" x="2100" y="479">bimObjectId, contoh BIM-010</text>
+
+  <!-- Section 3 risk -->
+  <rect class="panel-soft" x="470" y="535" width="940" height="245"/>
+  <text class="section" x="500" y="575">3. Risiko</text>
+  <text class="tiny" x="500" y="602">Dipakai untuk badge risiko, risk matrix, dan AI recommendation</text>
+  <text class="label-strong" x="500" y="640">Kategori Risiko</text>
+  <rect class="field" x="500" y="655" width="270" height="46"/>
+  <text class="placeholder" x="520" y="684">riskCategory</text>
+  <text class="label-strong" x="800" y="640">Variabel Risiko</text>
+  <rect class="field" x="800" y="655" width="270" height="46"/>
+  <text class="placeholder" x="820" y="684">riskVariable, contoh R5.1</text>
+  <text class="label-strong" x="1100" y="640">Skor Risiko</text>
+  <rect class="field" x="1100" y="655" width="250" height="46"/>
+  <text class="placeholder" x="1120" y="684">risk 1-10</text>
+  <text class="label-strong" x="500" y="725">Deskripsi Risiko</text>
+  <rect class="field" x="500" y="740" width="850" height="46"/>
+  <text class="placeholder" x="520" y="769">riskDescription</text>
+
+  <!-- Section 4 description -->
+  <rect class="panel-soft" x="1450" y="535" width="960" height="245"/>
+  <text class="section" x="1480" y="575">4. Uraian Perubahan</text>
+  <text class="tiny" x="1480" y="602">Menjelaskan kondisi lapangan dan alasan perubahan</text>
+  <text class="label-strong" x="1480" y="640">Deskripsi Singkat</text>
+  <rect class="field" x="1480" y="655" width="890" height="46"/>
+  <text class="placeholder" x="1500" y="684">description</text>
+  <text class="label-strong" x="1480" y="725">Detail Deskripsi</text>
+  <rect class="field" x="1480" y="740" width="890" height="46"/>
+  <text class="placeholder" x="1500" y="769">descriptionDetail</text>
+
+  <!-- Impact sections -->
+  <rect class="panel-soft" x="470" y="820" width="620" height="360"/>
+  <text class="section" x="500" y="860">5. Dampak Biaya dan Waktu</text>
+  <text class="tiny" x="500" y="887">JSON: impactCost, impactTime</text>
+  <text class="label-strong" x="500" y="925">Dampak Biaya</text>
+  <rect class="field-tall" x="500" y="940" width="550" height="84"/>
+  <text class="placeholder" x="520" y="975">item, sifat, satuan, kuantitas, justifikasi</text>
+  <text class="label-strong" x="500" y="1060">Dampak Waktu</text>
+  <rect class="field-tall" x="500" y="1075" width="550" height="84"/>
+  <text class="placeholder" x="520" y="1110">aktivitas, durasi, kebutuhan, justifikasi</text>
+
+  <rect class="panel-soft" x="1125" y="820" width="620" height="360"/>
+  <text class="section" x="1155" y="860">6. Dampak Lingkup, Mutu, K3</text>
+  <text class="tiny" x="1155" y="887">JSON: impactScope, impactQuality, impactSafety</text>
+  <text class="label-strong" x="1155" y="925">Dampak Lingkup</text>
+  <rect class="field" x="1155" y="940" width="550" height="52"/>
+  <text class="placeholder" x="1175" y="972">pekerjaan baru / penambahan / pengurangan</text>
+  <text class="label-strong" x="1155" y="1025">Dampak Mutu</text>
+  <rect class="field" x="1155" y="1040" width="550" height="52"/>
+  <text class="placeholder" x="1175" y="1072">spek awal, spek baru, justifikasi</text>
+  <text class="label-strong" x="1155" y="1125">Dampak K3</text>
+  <rect class="field" x="1155" y="1140" width="550" height="52"/>
+  <text class="placeholder" x="1175" y="1172">aktivitas bahaya, kebutuhan mitigasi</text>
+
+  <rect class="panel-soft" x="1780" y="820" width="630" height="360"/>
+  <text class="section" x="1810" y="860">7. Upload Evidence</text>
+  <text class="tiny" x="1810" y="887">File disimpan via backend/save_data.php ke uploads/</text>
+  <rect class="field-tall" x="1810" y="925" width="560" height="150"/>
+  <text class="label-strong" x="2090" y="985" text-anchor="middle">Drop / pilih file bukti</text>
+  <text class="placeholder" x="2090" y="1015" text-anchor="middle">photo[] -> photoEvidence</text>
+  <text class="placeholder" x="2090" y="1045" text-anchor="middle">foto lapangan, PDF, dokumen pendukung</text>
+  <rect class="chip" x="1810" y="1105" width="160" height="38"/>
+  <text class="tiny" x="1890" y="1130" text-anchor="middle">Preview image</text>
+  <rect class="chip" x="1990" y="1105" width="160" height="38"/>
+  <text class="tiny" x="2070" y="1130" text-anchor="middle">PDF card</text>
+  <rect class="chip" x="2170" y="1105" width="200" height="38"/>
+  <text class="tiny" x="2270" y="1130" text-anchor="middle">Validasi ukuran file</text>
+
+  <!-- Submit row -->
+  <line class="line" x1="470" y1="1230" x2="2410" y2="1230"/>
+  <rect class="button-alt" x="1615" y="1260" width="230" height="58"/>
+  <text class="button-text-dark" x="1730" y="1295" text-anchor="middle">Simpan Draft</text>
+  <rect class="button" x="1875" y="1260" width="260" height="58"/>
+  <text class="button-text" x="2005" y="1295" text-anchor="middle">Submit Change Request</text>
+  <rect class="button-alt" x="2165" y="1260" width="205" height="58"/>
+  <text class="button-text-dark" x="2268" y="1295" text-anchor="middle">Reset Form</text>
+
+  <!-- Responsive mini view -->
+  <rect class="panel" x="430" y="1385" width="520" height="180"/>
+  <text class="section" x="460" y="1425">Responsif Mobile</text>
+  <text class="note-text" x="460" y="1455">Pada layar kecil, section berubah menjadi satu kolom:</text>
+  <text class="note-text" x="460" y="1482">Identitas -> WBS/Lokasi -> Risiko -> Dampak -> Evidence.</text>
+  <text class="note-text" x="460" y="1509">Tombol submit tetap berada setelah upload evidence.</text>
+
+  <rect class="note" x="1015" y="1385" width="660" height="180"/>
+  <text class="note-title" x="1045" y="1425">File dan Endpoint Project</text>
+  <text class="note-text" x="1045" y="1455">UI form: site-engineer.html</text>
+  <text class="note-text" x="1045" y="1482">Auto ID: backend/get_next_id.php</text>
+  <text class="note-text" x="1045" y="1509">Submit/update: backend/save_data.php, backend/update_data.php</text>
+  <text class="note-text" x="1045" y="1536">Riwayat/status: backend/get_data.php</text>
+
+  <rect class="note" x="1740" y="1385" width="710" height="180"/>
+  <text class="note-title" x="1770" y="1425">Informasi yang Dikandung</text>
+  <text class="note-text" x="1770" y="1455">Tabel utama: change_requests</text>
+  <text class="note-text" x="1770" y="1482">Field kunci: changeId, projectArea, WBS, risk, status, bimObjectId.</text>
+  <text class="note-text" x="1770" y="1509">Bukti: photoEvidence; dampak: impactCost/Time/Scope/Quality/Safety.</text>
+  <text class="note-text" x="1770" y="1536">Status awal setelah submit: PENDING untuk review Project Manager.</text>
+</svg>

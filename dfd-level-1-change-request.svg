@@ -1,0 +1,238 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2700" height="1700" viewBox="0 0 2700 1700" role="img" aria-labelledby="title desc">
+  <title id="title">DFD Level 1 Web App Change Request WYLCORE</title>
+  <desc id="desc">Data Flow Diagram level 1 untuk web app Change Request dengan proses autentikasi, pengajuan, review approval, AI recommendation, knowledge base, dan dashboard analytics.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#111111"/>
+    </marker>
+    <style>
+      .bg { fill: #ffffff; }
+      .title { font: 700 42px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .subtitle { font: 400 20px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .entity { fill: #ffffff; stroke: #111111; stroke-width: 2.5; }
+      .process { fill: #ffffff; stroke: #111111; stroke-width: 2.5; rx: 24; }
+      .store { fill: #ffffff; stroke: #111111; stroke-width: 2.5; }
+      .store-side { stroke: #111111; stroke-width: 2.5; }
+      .label-title { font: 700 21px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .label { font: 400 16px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .small { font: 400 13.5px Arial, Helvetica, sans-serif; fill: #333333; letter-spacing: 0; }
+      .flow { fill: none; stroke: #111111; stroke-width: 2.2; marker-end: url(#arrow); }
+      .flow-dash { fill: none; stroke: #111111; stroke-width: 2; stroke-dasharray: 9 7; marker-end: url(#arrow); }
+      .flow-label { font: 400 13px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .note { fill: #ffffff; stroke: #111111; stroke-width: 1.8; rx: 10; }
+      .note-title { font: 700 18px Arial, Helvetica, sans-serif; fill: #111111; letter-spacing: 0; }
+      .note-text { font: 400 14px Arial, Helvetica, sans-serif; fill: #222222; letter-spacing: 0; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="2700" height="1700"/>
+  <text class="title" x="1350" y="72" text-anchor="middle">DFD Level 1 Web App Change Request</text>
+  <text class="subtitle" x="1350" y="110" text-anchor="middle">Entitas eksternal, proses utama, data store, dan arus data pada sistem WYLCORE</text>
+
+  <!-- External entities -->
+  <rect class="entity" x="80" y="210" width="260" height="115"/>
+  <text class="label-title" x="210" y="252" text-anchor="middle">Admin</text>
+  <text class="small" x="210" y="282" text-anchor="middle">admin.html</text>
+  <text class="small" x="210" y="305" text-anchor="middle">kelola data dan laporan</text>
+
+  <rect class="entity" x="80" y="760" width="260" height="115"/>
+  <text class="label-title" x="210" y="802" text-anchor="middle">Site Engineer</text>
+  <text class="small" x="210" y="832" text-anchor="middle">site-engineer.html</text>
+  <text class="small" x="210" y="855" text-anchor="middle">input CR dan evidence</text>
+
+  <rect class="entity" x="2360" y="530" width="260" height="115"/>
+  <text class="label-title" x="2490" y="572" text-anchor="middle">Project Manager</text>
+  <text class="small" x="2490" y="602" text-anchor="middle">project-manager.html</text>
+  <text class="small" x="2490" y="625" text-anchor="middle">review dan approval</text>
+
+  <rect class="entity" x="2360" y="1030" width="260" height="125"/>
+  <text class="label-title" x="2490" y="1070" text-anchor="middle">Autodesk Platform</text>
+  <text class="label-title" x="2490" y="1095" text-anchor="middle">Services</text>
+  <text class="small" x="2490" y="1124" text-anchor="middle">viewer token, model properties</text>
+
+  <!-- Processes -->
+  <rect class="process" x="520" y="190" width="420" height="150"/>
+  <text class="label-title" x="730" y="238" text-anchor="middle">1.0 Autentikasi</text>
+  <text class="small" x="730" y="268" text-anchor="middle">login, session, role</text>
+  <text class="small" x="730" y="292" text-anchor="middle">backend/api_login.php</text>
+  <text class="small" x="730" y="316" text-anchor="middle">backend/api_logout.php</text>
+
+  <rect class="process" x="520" y="695" width="420" height="170"/>
+  <text class="label-title" x="730" y="742" text-anchor="middle">2.0 Pengajuan</text>
+  <text class="label-title" x="730" y="768" text-anchor="middle">Change Request</text>
+  <text class="small" x="730" y="798" text-anchor="middle">form CR, WBS, risiko, evidence</text>
+  <text class="small" x="730" y="822" text-anchor="middle">backend/save_data.php</text>
+  <text class="small" x="730" y="846" text-anchor="middle">backend/update_data.php</text>
+
+  <rect class="process" x="1135" y="485" width="430" height="170"/>
+  <text class="label-title" x="1350" y="532" text-anchor="middle">3.0 Review dan Approval</text>
+  <text class="small" x="1350" y="562" text-anchor="middle">detail CR, keputusan, catatan PM</text>
+  <text class="small" x="1350" y="586" text-anchor="middle">backend/save_approval.php</text>
+  <text class="small" x="1350" y="610" text-anchor="middle">status: PENDING/APPROVED/REJECTED</text>
+
+  <rect class="process" x="1135" y="785" width="430" height="170"/>
+  <text class="label-title" x="1350" y="832" text-anchor="middle">4.0 AI Recommendation</text>
+  <text class="small" x="1350" y="862" text-anchor="middle">rule-based expert system</text>
+  <text class="small" x="1350" y="886" text-anchor="middle">LEFT JOIN WBS + risk code</text>
+  <text class="small" x="1350" y="910" text-anchor="middle">api_get_change_requests.php</text>
+
+  <rect class="process" x="1135" y="1095" width="430" height="170"/>
+  <text class="label-title" x="1350" y="1142" text-anchor="middle">5.0 Knowledge Base</text>
+  <text class="small" x="1350" y="1172" text-anchor="middle">lesson learned, dokumen KM</text>
+  <text class="small" x="1350" y="1196" text-anchor="middle">api_knowledge_base.php</text>
+  <text class="small" x="1350" y="1220" text-anchor="middle">knowledge_base_auto.php</text>
+
+  <rect class="process" x="1810" y="300" width="420" height="170"/>
+  <text class="label-title" x="2020" y="347" text-anchor="middle">6.0 Dashboard</text>
+  <text class="label-title" x="2020" y="373" text-anchor="middle">Analytics</text>
+  <text class="small" x="2020" y="404" text-anchor="middle">KPI, risk matrix, S-Curve</text>
+  <text class="small" x="2020" y="428" text-anchor="middle">api_get_dashboard_stats.php</text>
+  <text class="small" x="2020" y="452" text-anchor="middle">api_get_scurve.php</text>
+
+  <rect class="process" x="1810" y="855" width="420" height="170"/>
+  <text class="label-title" x="2020" y="902" text-anchor="middle">7.0 BIM Viewer</text>
+  <text class="small" x="2020" y="932" text-anchor="middle">bimObjectId, APS properties</text>
+  <text class="small" x="2020" y="956" text-anchor="middle">api_aps_token.php</text>
+  <text class="small" x="2020" y="980" text-anchor="middle">api_aps_properties.php</text>
+
+  <!-- Data stores -->
+  <g id="store-users">
+    <rect class="store" x="470" y="430" width="340" height="76"/>
+    <line class="store-side" x1="500" y1="430" x2="500" y2="506"/>
+    <line class="store-side" x1="780" y1="430" x2="780" y2="506"/>
+    <text class="label-title" x="640" y="462" text-anchor="middle">D1 users</text>
+    <text class="small" x="640" y="488" text-anchor="middle">id, username, password, role</text>
+  </g>
+
+  <g id="store-projects">
+    <rect class="store" x="960" y="190" width="360" height="76"/>
+    <line class="store-side" x1="990" y1="190" x2="990" y2="266"/>
+    <line class="store-side" x1="1290" y1="190" x2="1290" y2="266"/>
+    <text class="label-title" x="1140" y="222" text-anchor="middle">D2 projects</text>
+    <text class="small" x="1140" y="248" text-anchor="middle">project_id, name, status, progress</text>
+  </g>
+
+  <g id="store-cr">
+    <rect class="store" x="960" y="665" width="360" height="92"/>
+    <line class="store-side" x1="990" y1="665" x2="990" y2="757"/>
+    <line class="store-side" x1="1290" y1="665" x2="1290" y2="757"/>
+    <text class="label-title" x="1140" y="700" text-anchor="middle">D3 change_requests</text>
+    <text class="small" x="1140" y="726" text-anchor="middle">CR, WBS, risiko, evidence</text>
+    <text class="small" x="1140" y="747" text-anchor="middle">status, impact, bimObjectId</text>
+  </g>
+
+  <g id="store-repo">
+    <rect class="store" x="960" y="970" width="360" height="92"/>
+    <line class="store-side" x1="990" y1="970" x2="990" y2="1062"/>
+    <line class="store-side" x1="1290" y1="970" x2="1290" y2="1062"/>
+    <text class="label-title" x="1140" y="1004" text-anchor="middle">D4 knowledge_repository</text>
+    <text class="small" x="1140" y="1030" text-anchor="middle">wbs_kode, risk_kode</text>
+    <text class="small" x="1140" y="1051" text-anchor="middle">insight, saran</text>
+  </g>
+
+  <g id="store-kb">
+    <rect class="store" x="1625" y="1145" width="370" height="92"/>
+    <line class="store-side" x1="1655" y1="1145" x2="1655" y2="1237"/>
+    <line class="store-side" x1="1965" y1="1145" x2="1965" y2="1237"/>
+    <text class="label-title" x="1810" y="1179" text-anchor="middle">D5 knowledge_base</text>
+    <text class="small" x="1810" y="1205" text-anchor="middle">docId, changeRequestLink</text>
+    <text class="small" x="1810" y="1226" text-anchor="middle">actual impact, applied solution</text>
+  </g>
+
+  <g id="store-scurve">
+    <rect class="store" x="1625" y="145" width="370" height="92"/>
+    <line class="store-side" x1="1655" y1="145" x2="1655" y2="237"/>
+    <line class="store-side" x1="1965" y1="145" x2="1965" y2="237"/>
+    <text class="label-title" x="1810" y="179" text-anchor="middle">D6 project_scurve</text>
+    <text class="small" x="1810" y="205" text-anchor="middle">periode, target date</text>
+    <text class="small" x="1810" y="226" text-anchor="middle">rencana/realisasi kumulatif</text>
+  </g>
+
+  <!-- Data flows -->
+  <path class="flow" d="M 340 255 H 510"/>
+  <text class="flow-label" x="425" y="239" text-anchor="middle">credential login</text>
+  <path class="flow" d="M 730 340 V 420"/>
+  <text class="flow-label" x="755" y="385">cek user</text>
+  <path class="flow" d="M 640 430 V 350 C 640 330, 635 330, 520 300"/>
+  <text class="flow-label" x="548" y="380">role/session</text>
+  <path class="flow" d="M 940 250 H 950"/>
+  <text class="flow-label" x="950" y="232">daftar proyek</text>
+
+  <path class="flow" d="M 340 818 H 510"/>
+  <text class="flow-label" x="425" y="800" text-anchor="middle">data CR + evidence</text>
+  <path class="flow" d="M 940 775 C 1000 760, 1030 745, 1080 757"/>
+  <text class="flow-label" x="1015" y="790">simpan/update CR</text>
+  <path class="flow" d="M 960 725 H 950"/>
+  <text class="flow-label" x="910" y="708" text-anchor="end">status CR</text>
+
+  <path class="flow" d="M 1320 706 C 1390 695, 1435 660, 1425 655"/>
+  <text class="flow-label" x="1438" y="695">data CR review</text>
+  <path class="flow" d="M 1565 570 H 2350"/>
+  <text class="flow-label" x="1960" y="552" text-anchor="middle">detail CR, risiko, rekomendasi</text>
+  <path class="flow" d="M 2360 608 H 1575"/>
+  <text class="flow-label" x="1970" y="632" text-anchor="middle">keputusan, catatan, cost/time impact</text>
+  <path class="flow" d="M 1350 655 V 665"/>
+  <text class="flow-label" x="1378" y="665">update approval</text>
+
+  <path class="flow" d="M 1320 730 C 1385 770, 1390 805, 1350 785"/>
+  <text class="flow-label" x="1448" y="760">CR pending</text>
+  <path class="flow" d="M 1200 970 V 955"/>
+  <text class="flow-label" x="1228" y="968">basis aturan</text>
+  <path class="flow" d="M 1350 785 C 1315 735, 1220 725, 1320 710"/>
+  <text class="flow-label" x="1455" y="748">insight + saran</text>
+
+  <path class="flow" d="M 1350 655 V 1085"/>
+  <text class="flow-label" x="1378" y="765">CR approved</text>
+  <path class="flow" d="M 1565 1180 H 1615"/>
+  <text class="flow-label" x="1590" y="1162" text-anchor="middle">KM-xxx</text>
+  <path class="flow" d="M 1625 1202 H 1575"/>
+  <text class="flow-label" x="1605" y="1227" text-anchor="middle">lesson learned</text>
+
+  <path class="flow" d="M 1320 700 C 1550 560, 1720 430, 1810 410"/>
+  <text class="flow-label" x="1585" y="535">agregasi CR</text>
+  <path class="flow" d="M 1320 230 H 1800"/>
+  <text class="flow-label" x="1560" y="214">data proyek</text>
+  <path class="flow" d="M 1810 237 V 290"/>
+  <text class="flow-label" x="1838" y="268">S-Curve</text>
+  <path class="flow" d="M 2230 385 C 2310 390, 2340 500, 2360 555"/>
+  <text class="flow-label" x="2318" y="455">dashboard PM</text>
+  <path class="flow" d="M 1810 360 C 1420 260, 640 210, 340 235"/>
+  <text class="flow-label" x="1120" y="245">dashboard admin/laporan</text>
+
+  <path class="flow-dash" d="M 2230 940 H 2350 C 2370 940, 2370 1030, 2360 1065"/>
+  <text class="flow-label" x="2290" y="922" text-anchor="middle">token/URN/dbId</text>
+  <path class="flow-dash" d="M 2360 1110 C 2290 1120, 2220 1050, 2200 1025"/>
+  <text class="flow-label" x="2298" y="1138" text-anchor="middle">model properties</text>
+  <path class="flow-dash" d="M 1810 930 C 1630 890, 1510 820, 1320 735"/>
+  <text class="flow-label" x="1620" y="850">linked CR by bimObjectId</text>
+
+  <path class="flow" d="M 340 280 C 430 340, 435 395, 510 450"/>
+  <text class="flow-label" x="398" y="375">kelola user</text>
+  <path class="flow" d="M 340 300 C 540 165, 785 165, 960 220"/>
+  <text class="flow-label" x="640" y="165">kelola proyek</text>
+  <path class="flow" d="M 340 305 C 650 625, 1000 1100, 1135 1160"/>
+  <text class="flow-label" x="690" y="1080">kelola knowledge base</text>
+
+  <!-- Notes -->
+  <rect class="note" x="80" y="1330" width="780" height="190"/>
+  <text class="note-title" x="110" y="1364">File Frontend</text>
+  <text class="note-text" x="110" y="1396">Admin: admin.html</text>
+  <text class="note-text" x="110" y="1424">Site Engineer: site-engineer.html</text>
+  <text class="note-text" x="110" y="1452">Project Manager: project-manager.html</text>
+  <text class="note-text" x="110" y="1480">Login dan entry point: login.html, index.html</text>
+
+  <rect class="note" x="960" y="1330" width="780" height="190"/>
+  <text class="note-title" x="990" y="1364">File Backend</text>
+  <text class="note-text" x="990" y="1396">Autentikasi: api_login.php, api_logout.php</text>
+  <text class="note-text" x="990" y="1424">CR: save_data.php, update_data.php, api_get_change_requests.php</text>
+  <text class="note-text" x="990" y="1452">Dashboard/S-Curve: api_get_dashboard_stats.php, api_get_scurve.php</text>
+  <text class="note-text" x="990" y="1480">Knowledge/BIM: api_knowledge_base.php, knowledge_base_auto.php, api_aps_*.php</text>
+
+  <rect class="note" x="1840" y="1330" width="780" height="190"/>
+  <text class="note-title" x="1870" y="1364">Informasi yang Mengalir</text>
+  <text class="note-text" x="1870" y="1396">Credential, role, project assignment, data proyek, data CR, WBS, risiko.</text>
+  <text class="note-text" x="1870" y="1424">Evidence, status approval, insight/saran, lesson learned, S-Curve.</text>
+  <text class="note-text" x="1870" y="1452">BIM Object ID, token APS, properti model, dan CR terkait objek.</text>
+
+  <text class="small" x="1350" y="1600" text-anchor="middle">Notasi DFD: kotak = entitas eksternal, rounded rectangle = proses, open-ended rectangle = data store, panah = arus data.</text>
+</svg>
