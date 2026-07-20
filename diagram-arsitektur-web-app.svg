@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1350" viewBox="0 0 2400 1350" role="img" aria-labelledby="title desc">
+  <title id="title">Diagram Arsitektur Web App WYLCORE</title>
+  <desc id="desc">Diagram horizontal alur pengguna, browser, frontend HTML CSS JavaScript, PHP API, PDO, MySQL, Autodesk Platform Services, Chart.js, dan Three.js.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#334155"/>
+    </marker>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 44px Arial, Helvetica, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font: 400 22px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .section-title { font: 700 24px Arial, Helvetica, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .box-title { font: 700 23px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .box-text { font: 400 17px Arial, Helvetica, sans-serif; fill: #334155; letter-spacing: 0; }
+      .small { font: 400 15px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .tiny { font: 400 13px Arial, Helvetica, sans-serif; fill: #64748b; letter-spacing: 0; }
+      .tag { font: 700 14px Arial, Helvetica, sans-serif; fill: #1e293b; letter-spacing: 0; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-blue { fill: #eff6ff; stroke: #93c5fd; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-green { fill: #f0fdf4; stroke: #86efac; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-amber { fill: #fffbeb; stroke: #fcd34d; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-slate { fill: #f1f5f9; stroke: #94a3b8; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-red { fill: #fff1f2; stroke: #fda4af; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .pill { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 15; }
+      .line { fill: none; stroke: #334155; stroke-width: 4; marker-end: url(#arrow); }
+      .line-soft { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); stroke-dasharray: 10 8; }
+      .line-green { fill: none; stroke: #15803d; stroke-width: 3.5; marker-end: url(#arrow); }
+      .line-amber { fill: none; stroke: #b45309; stroke-width: 3.5; marker-end: url(#arrow); }
+      .line-blue { fill: none; stroke: #2563eb; stroke-width: 3.5; marker-end: url(#arrow); }
+      .note { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 14; }
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="2400" height="1350"/>
+
+  <text class="title" x="1200" y="82" text-anchor="middle">Diagram Arsitektur Web App WYLCORE</text>
+  <text class="subtitle" x="1200" y="118" text-anchor="middle">Alur data Change Request: Pengguna -> Browser -> Frontend HTML/CSS/JavaScript -> PHP API -> PDO -> MySQL</text>
+
+  <rect class="note" x="80" y="145" width="2240" height="70"/>
+  <text class="small" x="110" y="176">Konteks project: halaman HTML berada di root, media publik di assets/, seluruh endpoint dan helper PHP berada di backend/, routing extensionless dan proteksi file diatur melalui .htaccess.</text>
+  <text class="small" x="110" y="202">Output sistem: dashboard, antrean Change Request, approval, risk matrix, S-Curve, BIM viewer, dan knowledge base/lesson learned.</text>
+
+  <!-- Main flow cards -->
+  <rect class="card-slate" x="85" y="300" width="260" height="210"/>
+  <text class="box-title" x="215" y="340" text-anchor="middle">Pengguna</text>
+  <text class="box-text" x="115" y="378">Aktor proyek:</text>
+  <text class="box-text" x="115" y="410">- Admin</text>
+  <text class="box-text" x="115" y="442">- Project Manager</text>
+  <text class="box-text" x="115" y="474">- Site Engineer</text>
+
+  <rect class="card" x="420" y="300" width="280" height="210"/>
+  <text class="box-title" x="560" y="340" text-anchor="middle">Browser</text>
+  <text class="box-text" x="450" y="378">HTTP/HTTPS</text>
+  <text class="box-text" x="450" y="410">Session pengguna</text>
+  <text class="box-text" x="450" y="442">Fetch API/AJAX</text>
+  <text class="box-text" x="450" y="474">Render DOM</text>
+
+  <rect class="card-blue" x="775" y="265" width="370" height="280"/>
+  <text class="box-title" x="960" y="305" text-anchor="middle">Frontend</text>
+  <text class="small" x="960" y="332" text-anchor="middle">HTML5, CSS3, JavaScript ES6+</text>
+  <rect class="pill" x="805" y="360" width="310" height="34"/>
+  <text class="small" x="960" y="383" text-anchor="middle">index.html dan login.html</text>
+  <rect class="pill" x="805" y="402" width="310" height="34"/>
+  <text class="small" x="960" y="425" text-anchor="middle">admin.html</text>
+  <rect class="pill" x="805" y="444" width="310" height="34"/>
+  <text class="small" x="960" y="467" text-anchor="middle">project-manager.html</text>
+  <rect class="pill" x="805" y="486" width="310" height="34"/>
+  <text class="small" x="960" y="509" text-anchor="middle">site-engineer.html</text>
+
+  <rect class="card-green" x="1225" y="265" width="375" height="280"/>
+  <text class="box-title" x="1412" y="305" text-anchor="middle">PHP API</text>
+  <text class="small" x="1412" y="332" text-anchor="middle">backend/*.php, respons JSON</text>
+  <text class="box-text" x="1255" y="372">- api_login.php</text>
+  <text class="box-text" x="1255" y="404">- api_get_projects.php</text>
+  <text class="box-text" x="1255" y="436">- api_get_change_requests.php</text>
+  <text class="box-text" x="1255" y="468">- api_get_dashboard_stats.php</text>
+  <text class="box-text" x="1255" y="500">- save_data.php, update_data.php</text>
+  <text class="box-text" x="1255" y="532">- save_approval.php, api_knowledge_base.php</text>
+
+  <rect class="card-amber" x="1680" y="300" width="260" height="210"/>
+  <text class="box-title" x="1810" y="340" text-anchor="middle">PDO</text>
+  <text class="box-text" x="1710" y="378">db_user.php</text>
+  <text class="box-text" x="1710" y="410">Prepared statement</text>
+  <text class="box-text" x="1710" y="442">Koneksi MySQL</text>
+  <text class="box-text" x="1710" y="474">Konfigurasi .env</text>
+
+  <rect class="card-red" x="2010" y="265" width="310" height="280"/>
+  <text class="box-title" x="2165" y="305" text-anchor="middle">MySQL</text>
+  <text class="small" x="2165" y="332" text-anchor="middle">Database relasional project</text>
+  <text class="box-text" x="2040" y="372">- users</text>
+  <text class="box-text" x="2040" y="404">- projects</text>
+  <text class="box-text" x="2040" y="436">- project_assignments</text>
+  <text class="box-text" x="2040" y="468">- change_requests</text>
+  <text class="box-text" x="2040" y="500">- knowledge_repository</text>
+  <text class="box-text" x="2040" y="532">- knowledge_base, project_scurve</text>
+
+  <!-- Main arrows -->
+  <path class="line" d="M 345 405 H 410"/>
+  <path class="line" d="M 700 405 H 765"/>
+  <path class="line" d="M 1145 405 H 1215"/>
+  <path class="line" d="M 1600 405 H 1670"/>
+  <path class="line" d="M 1940 405 H 2000"/>
+
+  <text class="tiny" x="380" y="386" text-anchor="middle">interaksi</text>
+  <text class="tiny" x="735" y="386" text-anchor="middle">halaman</text>
+  <text class="tiny" x="1180" y="386" text-anchor="middle">fetch()</text>
+  <text class="tiny" x="1640" y="386" text-anchor="middle">query</text>
+  <text class="tiny" x="1975" y="386" text-anchor="middle">SQL</text>
+
+  <!-- Feedback response line -->
+  <path class="line-soft" d="M 2010 595 C 1640 695, 1050 695, 500 595"/>
+  <text class="small" x="1260" y="710" text-anchor="middle">Respons balik: JSON -> render tabel, badge risiko, chart, modal detail, status approval</text>
+
+  <!-- Visualization branch -->
+  <rect class="card-blue" x="775" y="720" width="370" height="230"/>
+  <text class="box-title" x="960" y="760" text-anchor="middle">Visualisasi Data</text>
+  <text class="box-text" x="805" y="800">Chart.js:</text>
+  <text class="box-text" x="835" y="832">- Donut chart risiko</text>
+  <text class="box-text" x="835" y="864">- S-Curve</text>
+  <text class="box-text" x="835" y="896">- KPI dan ringkasan dashboard</text>
+  <text class="box-text" x="805" y="928">Three.js: model 3D representatif</text>
+
+  <path class="line-blue" d="M 960 545 V 710"/>
+  <text class="tiny" x="988" y="638">render visual</text>
+
+  <!-- APS branch -->
+  <rect class="card" x="1225" y="720" width="375" height="230"/>
+  <text class="box-title" x="1412" y="760" text-anchor="middle">BIM Viewer</text>
+  <text class="box-text" x="1255" y="800">Autodesk Viewer</text>
+  <text class="box-text" x="1255" y="832">Three.js fallback</text>
+  <text class="box-text" x="1255" y="864">bimObjectId sebagai penghubung</text>
+  <text class="box-text" x="1255" y="896">api_aps_token.php</text>
+  <text class="box-text" x="1255" y="928">api_aps_properties.php</text>
+
+  <rect class="card-slate" x="1680" y="720" width="360" height="230"/>
+  <text class="box-title" x="1860" y="760" text-anchor="middle">Autodesk Platform Services</text>
+  <text class="box-text" x="1710" y="800">Token server-side</text>
+  <text class="box-text" x="1710" y="832">URN model RVT</text>
+  <text class="box-text" x="1710" y="864">Properties object/dbId</text>
+  <text class="box-text" x="1710" y="896">Cocokkan BIM Object ID/Mark</text>
+
+  <path class="line-amber" d="M 1412 545 V 710"/>
+  <path class="line-amber" d="M 1600 835 H 1670"/>
+  <path class="line-soft" d="M 1860 720 C 1840 630, 1610 620, 1500 545"/>
+  <text class="tiny" x="1538" y="638">properti BIM</text>
+  <text class="tiny" x="1640" y="817">APS API</text>
+
+  <!-- Server config and assets -->
+  <rect class="card-slate" x="85" y="720" width="615" height="230"/>
+  <text class="box-title" x="392" y="760" text-anchor="middle">Konfigurasi Server dan Asset</text>
+  <text class="box-text" x="115" y="800">.htaccess:</text>
+  <text class="box-text" x="145" y="832">- URL tanpa ekstensi .html</text>
+  <text class="box-text" x="145" y="864">- Options -Indexes</text>
+  <text class="box-text" x="145" y="896">- blok helper backend sensitif</text>
+  <text class="box-text" x="410" y="800">assets/:</text>
+  <text class="box-text" x="440" y="832">- wylcore.png</text>
+  <text class="box-text" x="440" y="864">- Video Home Page.mp4</text>
+  <text class="box-text" x="440" y="896">- jembatan.jpg, parkirmotor.jpg</text>
+
+  <path class="line-soft" d="M 560 510 V 710"/>
+  <text class="tiny" x="590" y="625">load asset dan route</text>
+
+  <!-- Information outputs -->
+  <rect class="card-green" x="85" y="1030" width="2235" height="205"/>
+  <text class="section-title" x="1205" y="1072" text-anchor="middle">Informasi yang Dihasilkan Sistem</text>
+  <rect class="pill" x="130" y="1110" width="305" height="48"/>
+  <text class="tag" x="282" y="1140" text-anchor="middle">Change Request terstruktur</text>
+  <rect class="pill" x="465" y="1110" width="260" height="48"/>
+  <text class="tag" x="595" y="1140" text-anchor="middle">Risk score dan badge</text>
+  <rect class="pill" x="755" y="1110" width="260" height="48"/>
+  <text class="tag" x="885" y="1140" text-anchor="middle">Dashboard KPI</text>
+  <rect class="pill" x="1045" y="1110" width="300" height="48"/>
+  <text class="tag" x="1195" y="1140" text-anchor="middle">AI Recommendation Engine</text>
+  <rect class="pill" x="1375" y="1110" width="245" height="48"/>
+  <text class="tag" x="1498" y="1140" text-anchor="middle">Approval PM/Admin</text>
+  <rect class="pill" x="1650" y="1110" width="230" height="48"/>
+  <text class="tag" x="1765" y="1140" text-anchor="middle">S-Curve proyek</text>
+  <rect class="pill" x="1910" y="1110" width="245" height="48"/>
+  <text class="tag" x="2032" y="1140" text-anchor="middle">BIM object linkage</text>
+  <rect class="pill" x="930" y="1176" width="520" height="48"/>
+  <text class="tag" x="1190" y="1206" text-anchor="middle">Knowledge base dan lesson learned otomatis</text>
+
+  <!-- Footer -->
+  <text class="tiny" x="1200" y="1295" text-anchor="middle">WYLCORE - Sistem Informasi Change Request Konstruksi | HTML/CSS/JavaScript + PHP API + PDO + MySQL + APS + Chart.js + Three.js</text>
+</svg>

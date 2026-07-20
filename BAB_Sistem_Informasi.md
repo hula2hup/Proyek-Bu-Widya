@@ -7,6 +7,10 @@ Pengembangan sistem dilakukan dengan mempertimbangkan karakteristik proyek konst
 
 Secara teknis, sistem menggunakan arsitektur *client-server*. Antarmuka pengguna dikembangkan menggunakan HTML, CSS, dan JavaScript, sedangkan logika aplikasi dan akses data ditangani oleh API berbasis PHP. Basis data menggunakan MySQL dengan koneksi PDO. Untuk memperkuat penyajian informasi, sistem memanfaatkan Chart.js, integrasi S-Curve, serta visualisasi BIM melalui Autodesk Platform Services (APS) dan mode visual 3D berbasis Three.js. Pemilihan teknologi tersebut tidak semata-mata didasarkan pada ketersediaan teknis, tetapi juga pada pertimbangan kemudahan deployment, keterbacaan kode, kompatibilitas dengan lingkungan hosting umum, dan kebutuhan aplikasi yang berorientasi pada fungsi operasional proyek.
 
+Dari perspektif keilmuan sistem informasi, aplikasi ini dipandang sebagai sistem sosio-teknis yang mempertemukan manusia, proses, data, teknologi, dan mekanisme pengendalian. Aktor proyek tidak hanya menjadi pengguna antarmuka, tetapi juga menjadi sumber data, validator, pengambil keputusan, dan penerima umpan balik. Oleh karena itu, rancangan sistem tidak cukup dijelaskan melalui daftar fitur. Rancangan perlu dijelaskan sebagai transformasi data lapangan menjadi informasi manajerial, kemudian menjadi keputusan dan pengetahuan yang dapat digunakan kembali.
+
+Kerangka dasar sistem dapat dibaca melalui pola *input-process-output-control-feedback*. Input berasal dari data proyek, WBS, risiko, dampak perubahan, bukti lapangan, data pengguna, dan properti BIM. Proses meliputi validasi, penyimpanan, pencocokan knowledge repository, agregasi dashboard, approval, dan pembentukan lesson learned. Output berupa tabel CR, status keputusan, indikator risiko, visualisasi S-Curve, laporan, rekomendasi, dan knowledge base. Kontrol diwujudkan melalui role, project assignment, session, validasi status, dan pembatasan akses file server. Umpan balik terbentuk ketika keputusan approval dan lesson learned kembali memperkaya basis pengetahuan proyek.
+
 ## X.1 Landasan Teori
 
 ### X.1.1 Manajemen Proyek Konstruksi dan Pengendalian Perubahan
@@ -249,6 +253,20 @@ Untuk fitur BIM, alur diperluas menjadi:
 
 Penggunaan API PHP yang mengembalikan JSON dipilih karena memisahkan logika tampilan dari logika data. Pemisahan ini membuat halaman dapat memperbarui tabel, grafik, atau modal secara asinkron tanpa memuat ulang seluruh halaman. Namun, pola ini juga menuntut pengelolaan validasi yang lebih disiplin karena setiap endpoint API dapat menjadi pintu masuk data.
 
+Dalam arsitektur web app ini, pemisahan frontend dan backend bersifat logis, bukan sepenuhnya berbasis layanan mikro. Frontend tetap berada dalam file HTML mandiri, tetapi fungsi pengambilan dan penyimpanan data dilakukan melalui `fetch()` ke endpoint PHP. Pola tersebut menyerupai arsitektur REST karena setiap endpoint mewakili sumber daya atau operasi tertentu dan mengembalikan respons JSON. Namun, istilah REST digunakan secara hati-hati karena sistem belum menerapkan seluruh konvensi REST formal seperti penggunaan method resource-oriented yang konsisten, versioning API, dan representasi hypermedia.
+
+Alur informasi sistem dapat dijelaskan sebagai berikut. Data lapangan dikumpulkan melalui form Site Engineer, dikirim secara asinkron ke backend, divalidasi, lalu disimpan dalam database. Data tersebut kemudian dipanggil kembali oleh dashboard Project Manager dan Admin sebagai informasi operasional. Setelah PM memberikan keputusan, status CR diperbarui dan dapat menghasilkan lesson learned. Dengan demikian, arsitektur sistem tidak hanya menghubungkan browser dan database, tetapi juga membentuk siklus informasi yang mengubah transaksi lapangan menjadi dasar pengambilan keputusan.
+
+| Perspektif Arsitektur | Pertanyaan yang Dijawab | Implementasi pada Sistem |
+|---|---|---|
+| Struktur | Komponen apa saja yang membentuk sistem? | HTML per role, JavaScript, PHP API, PDO, MySQL, APS, Chart.js, Three.js |
+| Perilaku | Bagaimana data bergerak antar komponen? | Fetch API, JSON response, query database, render DOM dan chart |
+| Data | Informasi apa yang disimpan dan diolah? | Proyek, user, assignment, CR, WBS, risiko, S-Curve, repository, knowledge base |
+| Kontrol | Bagaimana akses dan integritas dijaga? | Session, role, project assignment, prepared statement, `.htaccess` |
+| Analitik | Bagaimana data menjadi informasi keputusan? | KPI, risk distribution, risk matrix, WBS terdampak, addendum summary |
+| Interoperabilitas | Bagaimana sistem terhubung dengan sumber eksternal? | Autodesk APS token, properties API, `bimObjectId` sebagai penghubung |
+| Evolusi | Bagaimana sistem dapat dikembangkan? | Folder `backend/`, folder `assets/`, endpoint terpisah, struktur relasional |
+
 ### X.3.2 Lapisan Sistem
 
 Sistem dibagi ke dalam beberapa lapisan agar tanggung jawab tiap komponen lebih jelas. Pembagian lapisan ini bukan hanya berguna untuk dokumentasi, tetapi juga untuk mengidentifikasi risiko teknis. Misalnya, kegagalan pada APS tidak seharusnya membuat fungsi approval tidak berjalan, karena keduanya berada pada lapisan dan tujuan yang berbeda.
@@ -261,6 +279,10 @@ Sistem dibagi ke dalam beberapa lapisan agar tanggung jawab tiap komponen lebih 
 | Data access layer | PDO pada `db_user.php` | Menghubungkan PHP dengan MySQL | PDO mendukung prepared statement dan konfigurasi koneksi yang lebih aman |
 | Data layer | MySQL | Menyimpan proyek, pengguna, assignment, CR, S-Curve, repository, dan knowledge base | RDBMS sesuai untuk data terstruktur dan relasi antarentitas |
 | External service layer | Autodesk Platform Services | Memberikan token viewer dan properti objek model BIM | Layanan eksternal dipakai untuk kapabilitas BIM yang sulit direplikasi lokal |
+
+Dilihat dari perspektif sistem informasi, lapisan-lapisan tersebut membentuk rantai nilai informasi. Presentation layer menangkap kebutuhan kognitif pengguna melalui form, tabel, badge, dan grafik. Client logic layer mengubah respons JSON menjadi representasi visual yang mudah dipahami. Application layer menerapkan aturan proses seperti autentikasi, assignment, penyimpanan CR, approval, dan sinkronisasi knowledge base. Data access layer menjaga komunikasi dengan database melalui PDO agar query lebih aman dan konsisten. Data layer menjadi repositori kebenaran operasional, sedangkan external service layer memperkaya konteks melalui informasi model BIM.
+
+Pembagian lapisan ini juga memudahkan analisis risiko sistem. Kegagalan antarmuka dapat menghambat input, kegagalan API dapat menghentikan proses transaksi, kegagalan database dapat menghilangkan akses terhadap data inti, sedangkan kegagalan APS hanya memengaruhi konteks visual BIM. Dengan pemetaan ini, prioritas pengujian dapat diarahkan pada komponen yang memiliki dampak paling besar terhadap integritas data dan keputusan proyek.
 
 ### X.3.3 Komponen Frontend
 
@@ -279,6 +301,10 @@ Artefak eksplorasi desain yang tidak tersambung dengan environment utama tidak d
 ### X.3.4 Komponen Backend/API
 
 Backend disusun sebagai kumpulan endpoint PHP. Pendekatan ini dipilih karena sederhana, mudah dipetakan dengan kebutuhan fitur, dan sesuai untuk aplikasi yang tidak memerlukan framework berat. Akan tetapi, pendekatan banyak endpoint juga memiliki konsekuensi: konsistensi validasi, format respons, dan pengelolaan error harus dijaga agar tidak berbeda antarfile.
+
+Setiap endpoint backend diperlakukan sebagai *service boundary* kecil antara antarmuka dan basis data. Batas ini penting karena frontend tidak berinteraksi langsung dengan database, melainkan melalui respons JSON yang sudah diformat. Dengan demikian, API menjalankan tiga fungsi utama: menerima request dari pengguna, menegakkan aturan proses, dan mengembalikan data dalam bentuk yang dapat dirender oleh browser. Dalam konteks sistem informasi, API menjadi lapisan transformasi dari data mentah menjadi informasi yang siap digunakan oleh antarmuka.
+
+Kontrak respons yang diharapkan bersifat konsisten, yaitu memuat indikator keberhasilan, pesan, dan data. Pola seperti `status`, `message`, dan `data` membantu frontend mengambil keputusan apakah harus merender tabel, menampilkan pesan error, membuka modal, atau memperbarui indikator. Konsistensi kontrak ini penting karena sistem menggunakan banyak halaman dan banyak endpoint. Tanpa kontrak respons yang konsisten, logika frontend akan mudah terfragmentasi dan sulit dirawat.
 
 | File API | Fungsi Utama | Pertimbangan Kritis |
 |---|---|---|
@@ -300,6 +326,8 @@ Backend disusun sebagai kumpulan endpoint PHP. Pendekatan ini dipilih karena sed
 | `api_aps_token.php` | Mengambil token Autodesk Platform Services secara server-side | Kredensial APS tidak dibuka langsung ke client |
 | `api_aps_properties.php` | Mengambil properti elemen BIM dan mencocokkannya dengan CR lokal | Menghubungkan model BIM dengan data lokal |
 | `api_user_management.php` | Manajemen pengguna dan assignment proyek | Menopang tata kelola akses |
+
+Selain endpoint utama, terdapat helper internal seperti `db_user.php`, `env.php`, dan `knowledge_base_auto.php`. Helper tersebut tidak dimaksudkan sebagai halaman publik karena berisi koneksi, konfigurasi, dan fungsi pembentukan pengetahuan otomatis. Pemisahan antara endpoint publik dan helper internal memperjelas batas permukaan akses sistem (*attack surface*) serta memperkuat maintainability.
 
 ### X.3.5 Alur Data Change Request
 
@@ -343,6 +371,10 @@ Pemisahan ini belum menggantikan kontrol keamanan aplikasi secara menyeluruh. Pr
 ### X.4.1 Entitas Utama
 
 Basis data menggunakan MySQL dengan pendekatan relasional. RDBMS dipilih karena data sistem memiliki hubungan yang jelas, seperti pengguna dengan proyek, proyek dengan S-Curve, CR dengan proyek, serta knowledge base dengan repository. Pendekatan relasional juga memudahkan penerapan *primary key*, *foreign key*, dan indeks untuk menjaga integritas serta performa query.
+
+Dalam perspektif sistem informasi, basis data tidak hanya berfungsi sebagai tempat penyimpanan, tetapi sebagai model representasi proses bisnis. Tabel `users` merepresentasikan aktor dan hak akses, `projects` merepresentasikan konteks pekerjaan, `change_requests` merepresentasikan peristiwa perubahan, `knowledge_repository` merepresentasikan pengetahuan referensial, dan `knowledge_base` merepresentasikan pengetahuan historis yang terbentuk dari keputusan. Dengan demikian, desain database menjadi jembatan antara realitas proyek dan struktur digital yang dapat dihitung, ditelusuri, dan divisualisasikan.
+
+Kualitas informasi dalam sistem dipengaruhi oleh empat aspek utama: kelengkapan, ketepatan, konsistensi, dan keterkinian data. Kelengkapan berkaitan dengan apakah CR memiliki WBS, risiko, dampak, lokasi, dan bukti. Ketepatan berkaitan dengan apakah pengguna memilih WBS dan variabel risiko yang sesuai. Konsistensi berkaitan dengan format kode, status, dan relasi antarentitas. Keterkinian berkaitan dengan apakah status approval, dampak biaya/waktu, dan lesson learned diperbarui sesuai kondisi terakhir. Oleh karena itu, desain basis data perlu dilihat sebagai instrumen pengendalian kualitas informasi, bukan sekadar struktur tabel.
 
 | Tabel | Fungsi | Primary Key | Relasi Penting | Alasan Desain |
 |---|---|---|---|---|
@@ -430,6 +462,8 @@ Fitur Admin meliputi:
 
 Dari sudut pandang desain sistem, dashboard Admin perlu menyeimbangkan kelengkapan dan keteraturan. Admin memerlukan banyak fungsi, tetapi antarmuka yang terlalu padat dapat meningkatkan risiko kesalahan konfigurasi. Oleh karena itu, fungsi dikelompokkan ke dalam menu seperti project management, knowledge base, user management, dan report.
 
+Secara akademis, dashboard Admin merepresentasikan fungsi *information governance*. Admin tidak hanya melihat data, tetapi juga mengatur siapa yang dapat membuat, membaca, memperbarui, dan menilai data. Karena itu, fitur user management dan project assignment memiliki nilai yang sama pentingnya dengan grafik dashboard. Tanpa tata kelola pengguna, data proyek dapat kehilangan konteks kepemilikan dan akuntabilitas.
+
 ### X.5.3 Implementasi Dashboard Project Manager
 
 Dashboard Project Manager dirancang untuk mendukung proses review dan pengambilan keputusan. PM tidak hanya membutuhkan daftar CR, tetapi juga membutuhkan indikator prioritas. Karena itu, data dashboard mencakup jumlah CR yang menunggu review, jumlah CR berisiko tinggi, jumlah approved, rejected, distribusi risiko, WBS terdampak, dan ringkasan dampak biaya/waktu.
@@ -447,6 +481,8 @@ Pemilihan format dashboard didasarkan pada kebutuhan PM untuk melakukan *scannin
 | `wbsImpacted` | Rekap WBS | Menunjukkan area pekerjaan paling terdampak | Membantu prioritisasi koordinasi teknis |
 | `addendumSummary` | CR approved | Menghitung kandidat adendum, dampak biaya, dan dampak waktu | Menghubungkan CR dengan konsekuensi kontraktual |
 | `riskMatrix` | Data risiko CR | Menyediakan visualisasi matriks risiko | Membantu klasifikasi prioritas |
+
+Dashboard PM dapat dipandang sebagai mekanisme *data-to-decision*. Data CR yang semula bersifat transaksional diolah menjadi indikator prioritas. Tabel pending request memberi detail, KPI memberi ringkasan, chart memberi pola, dan rekomendasi memberi konteks pengetahuan. Kombinasi ini penting karena keputusan manajerial jarang dibuat dari satu jenis informasi. PM membutuhkan bukti lapangan, skor risiko, dampak biaya/waktu, riwayat proyek, dan pertimbangan pakar secara bersamaan.
 
 ### X.5.4 Implementasi Site Engineer
 
@@ -481,6 +517,10 @@ ORDER BY cr.changeDate DESC;
 Penggunaan `LEFT JOIN` merupakan keputusan desain yang penting. Jika menggunakan `INNER JOIN`, CR yang tidak memiliki pasangan repository tidak akan tampil, padahal CR tersebut tetap perlu direview. Dengan `LEFT JOIN`, sistem menjaga agar data transaksi tetap menjadi prioritas, sementara rekomendasi diperlakukan sebagai pelengkap. Jika rekomendasi tidak ditemukan, sistem dapat menampilkan pesan default agar PM tetap melakukan peninjauan mandiri.
 
 Keterbatasan pendekatan ini terletak pada sensitivitas pencocokan kode. Perbedaan format WBS atau risk code dapat menyebabkan rekomendasi tidak muncul. Oleh karena itu, fungsi normalisasi kode, validasi input, dan kurasi repository menjadi bagian penting dari keberlanjutan sistem.
+
+Istilah *AI Recommendation Engine* dalam sistem ini perlu ditempatkan secara presisi. Sistem tidak melakukan pembelajaran mandiri dari data historis seperti *machine learning*, tetapi menggunakan pendekatan sistem pakar berbasis aturan. Nilai ilmiahnya terletak pada kemampuan menjadikan pengetahuan pakar eksplisit, terstruktur, dan dapat ditelusuri. Dengan cara ini, rekomendasi bukan produk intuisi tersembunyi, melainkan hasil pencocokan antara atribut CR dan basis pengetahuan.
+
+Model rekomendasi berbasis aturan memiliki tiga lapisan: basis fakta, basis pengetahuan, dan mekanisme inferensi sederhana. Basis fakta berasal dari CR, terutama WBS dan variabel risiko. Basis pengetahuan berasal dari `knowledge_repository`. Mekanisme inferensi dilakukan melalui pencocokan kode dan pengambilan `insight` serta `saran`. Arsitektur ini cocok untuk konteks awal karena transparan, tetapi memerlukan pemeliharaan repository agar rekomendasi tetap relevan.
 
 ### X.5.6 Implementasi Approval dan Lesson Learned Otomatis
 
@@ -524,6 +564,8 @@ Visualisasi data menggunakan Chart.js untuk grafik distribusi risiko, S-Curve, t
 
 Visualisasi dipakai karena data perubahan proyek memiliki banyak dimensi. Tabel dapat menampilkan detail, tetapi kurang efektif untuk melihat pola secara cepat. Grafik dan KPI membantu pengguna mengenali prioritas, sedangkan tabel dan modal detail tetap diperlukan untuk verifikasi. Dengan demikian, visualisasi tidak menggantikan data mentah, tetapi menjadi lapisan interpretasi.
 
+Secara keilmuan sistem informasi, visualisasi data berfungsi mengurangi beban kognitif pengguna. Pengguna tidak perlu membaca seluruh baris CR untuk memahami kecenderungan risiko, beban review, atau area WBS yang paling terdampak. Namun, visualisasi juga membawa risiko penyederhanaan berlebih. Oleh karena itu, setiap grafik perlu ditopang oleh akses ke data detail agar pengguna dapat menelusuri alasan di balik angka agregat.
+
 | Visualisasi | Data | Tujuan | Catatan Kritis |
 |---|---|---|---|
 | KPI cards | Jumlah CR, approved, rejected, pending, mitigation | Ringkasan kondisi proyek | Harus dihubungkan dengan data detail |
@@ -538,6 +580,8 @@ Visualisasi dipakai karena data perubahan proyek memiliki banyak dimensi. Tabel 
 ### X.6.1 Black-Box Testing
 
 Pengujian *black-box* dilakukan untuk memastikan fungsi sistem berjalan sesuai kebutuhan dari sudut pandang pengguna. Pendekatan ini dipilih karena penelitian berfokus pada kesesuaian fungsi aplikasi terhadap alur pengelolaan CR, bukan pada pembuktian formal struktur internal kode. Meski demikian, hasil *black-box testing* tetap perlu dikombinasikan dengan pemeriksaan teknis seperti validasi query, keamanan akses, dan konsistensi data.
+
+Pengujian black-box diposisikan sebagai validasi perilaku sistem terhadap kebutuhan fungsional. Setiap skenario uji harus memiliki kondisi awal, langkah uji, data masukan, keluaran yang diharapkan, dan status hasil. Dengan cara ini, pengujian tidak hanya menyatakan bahwa tombol atau halaman berfungsi, tetapi menunjukkan apakah sistem berhasil menjaga alur informasi dari input sampai output. Skenario seperti login, pembatasan role, input CR, approval, dan pembentukan lesson learned menjadi penting karena mewakili titik kontrol utama dalam arsitektur sistem.
 
 | No | Fungsi yang Diuji | Skenario | Keluaran yang Diharapkan | Status |
 |---|---|---|---|---|
@@ -561,6 +605,8 @@ Pengujian *black-box* dilakukan untuk memastikan fungsi sistem berjalan sesuai k
 
 UAT dilakukan untuk menilai apakah sistem sesuai dengan kebutuhan pengguna akhir. Pengujian ini penting karena sistem yang benar secara teknis belum tentu diterima secara operasional. Pengguna proyek cenderung menilai sistem dari kemudahan input, kecepatan memperoleh informasi, kejelasan dashboard, dan relevansi rekomendasi.
 
+Dalam konteks sistem informasi, UAT menilai kesesuaian antara artefak teknologi dan praktik kerja pengguna. Sistem dapat saja memenuhi kebutuhan fungsional, tetapi gagal diterima apabila istilah, urutan form, indikator risiko, atau tampilan dashboard tidak sesuai dengan cara pengguna memahami pekerjaan. Oleh karena itu, UAT sebaiknya dilakukan dengan skenario yang menyerupai proses nyata: pengajuan CR oleh Site Engineer, review oleh Project Manager, pengecekan dashboard, dan pencarian lesson learned.
+
 | Aspek UAT | Pertanyaan Evaluasi | Skala | Alasan Evaluasi |
 |---|---|---|---|
 | Kesesuaian proses | Apakah alur pengajuan dan approval sesuai proses proyek? | 1-5 | Memastikan sistem tidak bertentangan dengan SOP |
@@ -575,6 +621,8 @@ UAT dilakukan untuk menilai apakah sistem sesuai dengan kebutuhan pengguna akhir
 
 Pengujian performa dilakukan untuk mengetahui waktu respons halaman dan API. Performa menjadi penting karena dashboard menggabungkan beberapa query, agregasi, dan visualisasi. Apabila jumlah CR meningkat, query join dengan repository dan agregasi dashboard dapat menjadi beban sistem.
 
+Klaim performa perlu dibatasi oleh konteks pengujian. Pemuatan asinkron melalui Fetch API dapat meningkatkan persepsi responsivitas karena halaman tidak perlu dimuat ulang secara penuh. Namun, waktu respons aktual tetap dipengaruhi oleh ukuran data, kualitas query, kondisi server, koneksi jaringan, ukuran aset, serta layanan eksternal seperti APS. Oleh karena itu, performa tidak cukup dinyatakan "cepat", tetapi perlu diukur melalui parameter seperti waktu muat awal, waktu respons API, waktu render tabel, dan waktu muat viewer.
+
 | Parameter | Metode Ukur | Target Awal | Catatan Kritis |
 |---|---|---|---|
 | Waktu muat halaman login | Browser developer tools | Di bawah 3 detik pada jaringan lokal | Dipengaruhi ukuran aset halaman |
@@ -586,6 +634,8 @@ Pengujian performa dilakukan untuk mengetahui waktu respons halaman dan API. Per
 ### X.6.4 System Usability Scale
 
 Pengujian SUS dilakukan dengan 10 pernyataan standar yang diberi skala 1 sampai 5. SUS dipilih karena ringkas, mudah diterapkan, dan menghasilkan skor yang dapat dibandingkan secara umum. Namun, SUS tidak menjelaskan penyebab detail dari masalah usability. Oleh sebab itu, hasil SUS sebaiknya dilengkapi dengan komentar pengguna atau observasi saat pengguna menjalankan skenario.
+
+SUS dalam sistem ini terutama relevan untuk mengevaluasi apakah pengguna merasa mampu menjalankan pekerjaan tanpa beban kognitif berlebihan. Fitur badge risiko, dashboard KPI, box rekomendasi, modal detail, dan form bertahap perlu diuji bukan hanya dari sisi estetika, tetapi dari sisi apakah elemen tersebut mempercepat pemahaman dan mengurangi kesalahan keputusan. Apabila skor SUS rendah, analisis lanjutan perlu mencari apakah masalah berasal dari bahasa antarmuka, kepadatan form, urutan informasi, ukuran layar, atau ketidakjelasan indikator visual.
 
 | No | Pernyataan SUS | Skor Responden |
 |---|---|---|
@@ -620,6 +670,8 @@ Ketiga, sistem bergantung pada koneksi jaringan. Pengguna lapangan yang berada d
 
 Kelima, sistem belum memiliki beberapa fitur tata kelola yang lazim pada sistem produksi penuh, seperti audit trail terperinci, kontrol versi dokumen, notifikasi otomatis, CSRF protection eksplisit, dan workflow approval bertingkat. Keterbatasan ini tidak meniadakan nilai sistem, tetapi menjadi batas interpretasi hasil dan arah pengembangan selanjutnya.
 
+Dari evaluasi narasi akademis, terdapat beberapa celah yang perlu dijaga agar pembahasan sistem tidak berubah menjadi deskripsi teknis semata. Pertama, sistem perlu selalu dikaitkan dengan kualitas informasi: apakah data yang masuk lengkap, akurat, konsisten, tepat waktu, dan relevan untuk keputusan. Kedua, sistem perlu dikaitkan dengan tata kelola proses: siapa yang berhak membuat data, siapa yang meninjau, siapa yang menyetujui, dan bagaimana perubahan status dicatat. Ketiga, sistem perlu dikaitkan dengan pembelajaran organisasi: bagaimana pengalaman proyek berubah menjadi pengetahuan yang dapat digunakan kembali. Keempat, sistem perlu dikaitkan dengan batas otomatisasi: rekomendasi berbasis aturan membantu keputusan, tetapi tidak menggantikan pertimbangan profesional.
+
 ### X.7.3 Perbandingan dengan Sistem Konvensional
 
 Perbandingan dengan sistem konvensional diperlukan untuk menunjukkan posisi kontribusi sistem. Sistem konvensional tidak selalu buruk karena mudah digunakan, familiar, dan fleksibel. Namun, kelemahannya muncul ketika volume data meningkat, aktor bertambah, dan kebutuhan audit menjadi penting.
@@ -642,6 +694,8 @@ Perbandingan dengan sistem konvensional diperlukan untuk menunjukkan posisi kont
 Sistem ini menunjukkan bahwa pengelolaan perubahan proyek dapat ditingkatkan melalui integrasi data transaksi, risiko, WBS, BIM, dan pengetahuan proyek. Implikasi utamanya adalah perubahan tidak lagi diperlakukan sebagai dokumen terpisah, tetapi sebagai data yang dapat diolah, divisualisasikan, direview, dan digunakan kembali.
 
 Dari sisi manajerial, sistem dapat membantu PM memprioritaskan CR berdasarkan risiko dan dampaknya. Dari sisi teknis, WBS dan BIM membantu menghubungkan perubahan dengan objek pekerjaan. Dari sisi organisasi, knowledge base dapat menjadi fondasi pembelajaran lintas proyek.
+
+Dari sisi keilmuan sistem informasi, implikasi yang lebih luas adalah terbentuknya integrasi antara *transaction processing system*, *management information system*, *decision support system*, dan *knowledge management system* dalam satu aplikasi web. Fungsi input CR berperan sebagai pencatatan transaksi. Dashboard berperan sebagai sistem informasi manajerial. Risk matrix dan recommendation engine berperan sebagai pendukung keputusan. Knowledge base berperan sebagai repositori pembelajaran. Integrasi empat fungsi ini menjadi inti kontribusi sistem karena menunjukkan bahwa pengendalian perubahan proyek dapat diposisikan sebagai siklus informasi, bukan sekadar administrasi dokumen.
 
 Pengembangan lanjutan dapat diarahkan pada:
 
