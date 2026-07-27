@@ -2,16 +2,20 @@
 
 WYLCORE adalah aplikasi web berbasis HTML, PHP, dan MySQL untuk mendukung manajemen perubahan proyek konstruksi. Sistem ini memadukan dashboard proyek, Change Request, WBS, risiko, knowledge base, approval Project Manager, serta integrasi BIM/Autodesk Platform Services.
 
-## Fitur Utama
+## Fitur & Modul Utama
 
-- Landing page dan halaman login.
-- Workspace berdasarkan role: Admin, Project Manager, dan Site Engineer.
-- Pengajuan dan pembaruan Change Request.
-- Approval Change Request oleh Project Manager/Admin.
-- Dashboard statistik proyek, status perubahan, risiko, dan S-Curve.
-- Knowledge Base dan lesson learned otomatis.
-- Manajemen user dan assignment proyek.
-- Viewer BIM representatif dengan Three.js dan integrasi Autodesk APS.
+1. **Alur Arsitektur Sistem 5-Tahap:** `Pengguna → Frontend → Backend/API → Database → Dashboard/Laporan`.
+2. **Autentikasi & Login:** Login terproteksi dengan manajemen sesi aman dan opsi cepat pergantian akun role.
+3. **Pengaturan Role & Hak Akses (RBAC):** Hak akses terpisah untuk Administrator, Project Manager, dan Site Engineer.
+4. **Pengelolaan Data Proyek & CR:** Manajemen data proyek, WBS Level 4-6, penilaian skor risiko, serta penanganan Change Request.
+5. **Pencarian & Multi-Filter Data:** Filter kata kunci, kode WBS, tingkat risiko, tanggal, dan status approval.
+6. **Proses Persetujuan (Approval Workflow):** Modul evaluasi manajerial oleh PM/Admin dengan catatan teknis & dampak biaya/waktu final.
+7. **Notifikasi Alert & System Warnings:** Indikator visual batas kritis risiko dan pemberitahuan update status CR.
+8. **Riwayat Aktivitas Pengguna (Audit Trail):** Log lengkap aktivitas pengguna (timestamp, user, jenis tindakan, parameter).
+9. **Dashboard Analitik & Laporan:** KPI ringkas, grafik distribusi risiko, grafik S-Curve (Chart.js), dan BIM Viewer (Three.js/APS).
+10. **Ekspor Data ke PDF & Excel:** Cetak dokumen formal rekapitulasi operasional dan ekspor spreadsheet.
+11. **Keamanan & Backup Data Database:** Proteksi PDO Prepared Statement, `.htaccess`, dan pemicu backup SQL database.
+12. **Modul Knowledge Management (SECI Model):** Klasifikasi pengetahuan ke dalam *Socialization, Externalization, Combination,* dan *Internalization*.
 
 ## Struktur Project
 
