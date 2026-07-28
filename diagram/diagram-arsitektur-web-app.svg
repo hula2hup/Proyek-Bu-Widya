@@ -1,292 +1,188 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1500" viewBox="0 0 2400 1500" role="img" aria-labelledby="title desc">
-  <title id="title">Diagram Arsitektur Sistem Informasi WYLCORE</title>
-  <desc id="desc">Diagram alur kerja sistem informasi: Pengguna -> Frontend -> Backend/API -> Database -> Dashboard/Laporan beserta 11 modul pendukung dan SECI Knowledge Management.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1350" viewBox="0 0 2400 1350" role="img" aria-labelledby="title desc">
+  <title id="title">Diagram Arsitektur Web App WYLCORE</title>
+  <desc id="desc">Diagram horizontal alur pengguna, browser, frontend HTML CSS JavaScript, PHP API, PDO, MySQL, Autodesk Platform Services, Chart.js, dan Three.js.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="12" markerHeight="12" orient="auto-start-reverse">
-      <path d="M 1 1 L 11 6 L 1 11 z" fill="#0f172a"/>
+      <path d="M 1 1 L 11 6 L 1 11 z" fill="#334155"/>
     </marker>
-    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.06"/>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#0f172a" flood-opacity="0.12"/>
     </filter>
     <style>
       .bg { fill: #f8fafc; }
-      .title { font: 700 40px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .subtitle { font: 400 20px 'Segoe UI', Arial, sans-serif; fill: #475569; }
-      .section-title { font: 700 22px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .box-title { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .box-text { font: 400 15px 'Segoe UI', Arial, sans-serif; fill: #334155; }
-      .small { font: 400 14px 'Segoe UI', Arial, sans-serif; fill: #475569; }
-      .tiny { font: 400 12px 'Segoe UI', Arial, sans-serif; fill: #64748b; }
-      .tag { font: 600 14px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
-      .card-slate { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 8; filter: url(#softShadow); }
-      .card-blue { fill: #f0f9ff; stroke: #0284c7; stroke-width: 2; rx: 8; filter: url(#softShadow); }
-      .card-amber { fill: #fffbeb; stroke: #d97706; stroke-width: 2; rx: 8; filter: url(#softShadow); }
-      .card-green { fill: #f0fdf4; stroke: #16a34a; stroke-width: 2; rx: 8; filter: url(#softShadow); }
-      .card-purple { fill: #faf5ff; stroke: #9333ea; stroke-width: 2; rx: 8; filter: url(#softShadow); }
-      .pill { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 6; }
-      .line { fill: none; stroke: #0f172a; stroke-width: 3.5; marker-end: url(#arrow); }
-      .line-soft { fill: none; stroke: #64748b; stroke-width: 2.5; marker-end: url(#arrow); stroke-dasharray: 8 6; }
-      .note { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 8; }
-      .flow-header { fill: #1e293b; font: 700 16px 'Segoe UI', Arial, sans-serif; fill: #ffffff; text-anchor: middle; }
+      .title { font: 700 44px Arial, Helvetica, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .subtitle { font: 400 22px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .section-title { font: 700 24px Arial, Helvetica, sans-serif; fill: #0f172a; letter-spacing: 0; }
+      .box-title { font: 700 23px Arial, Helvetica, sans-serif; fill: #111827; letter-spacing: 0; }
+      .box-text { font: 400 17px Arial, Helvetica, sans-serif; fill: #334155; letter-spacing: 0; }
+      .small { font: 400 15px Arial, Helvetica, sans-serif; fill: #475569; letter-spacing: 0; }
+      .tiny { font: 400 13px Arial, Helvetica, sans-serif; fill: #64748b; letter-spacing: 0; }
+      .tag { font: 700 14px Arial, Helvetica, sans-serif; fill: #1e293b; letter-spacing: 0; }
+      .card { fill: #ffffff; stroke: #cbd5e1; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-blue { fill: #eff6ff; stroke: #93c5fd; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-green { fill: #f0fdf4; stroke: #86efac; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-amber { fill: #fffbeb; stroke: #fcd34d; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-slate { fill: #f1f5f9; stroke: #94a3b8; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .card-red { fill: #fff1f2; stroke: #fda4af; stroke-width: 2; rx: 18; filter: url(#softShadow); }
+      .pill { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 15; }
+      .line { fill: none; stroke: #334155; stroke-width: 4; marker-end: url(#arrow); }
+      .line-soft { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); stroke-dasharray: 10 8; }
+      .line-green { fill: none; stroke: #15803d; stroke-width: 3.5; marker-end: url(#arrow); }
+      .line-amber { fill: none; stroke: #b45309; stroke-width: 3.5; marker-end: url(#arrow); }
+      .line-blue { fill: none; stroke: #2563eb; stroke-width: 3.5; marker-end: url(#arrow); }
+      .note { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.5; rx: 14; }
     </style>
   </defs>
 
-  <rect class="bg" x="0" y="0" width="2400" height="1500"/>
+  <rect class="bg" x="0" y="0" width="2400" height="1350"/>
 
-  <text class="title" x="1200" y="65" text-anchor="middle">DIAGRAM ARSITEKTUR &amp; ALUR DATA SISTEM INFORMASI WYLCORE</text>
-  <text class="subtitle" x="1200" y="100" text-anchor="middle">Pengguna → Frontend → Backend / API → Database → Dashboard &amp; Laporan (Integrasi 11 Modul &amp; SECI Knowledge Management)</text>
+  <text class="title" x="1200" y="82" text-anchor="middle">Diagram Arsitektur Web App WYLCORE</text>
+  <text class="subtitle" x="1200" y="118" text-anchor="middle">Alur data Change Request: Pengguna -> Browser -> Frontend HTML/CSS/JavaScript -> PHP API -> PDO -> MySQL</text>
 
-  <!-- 5 STAGE FLOW HEADERS -->
-  <g transform="translate(60, 130)">
-    <rect x="0" y="0" width="410" height="42" fill="#0f172a" rx="6"/>
-    <text class="flow-header" x="205" y="27">1. PENGGUNA (ACTORS)</text>
+  <rect class="note" x="80" y="145" width="2240" height="70"/>
+  <text class="small" x="110" y="176">Konteks project: halaman HTML berada di root, media publik di assets/, seluruh endpoint dan helper PHP berada di backend/, routing extensionless dan proteksi file diatur melalui .htaccess.</text>
+  <text class="small" x="110" y="202">Output sistem: dashboard, antrean Change Request, approval, risk matrix, S-Curve, BIM viewer, dan knowledge base/lesson learned.</text>
 
-    <rect x="450" y="0" width="430" height="42" fill="#0284c7" rx="6"/>
-    <text class="flow-header" x="665" y="27">2. FRONTEND (PRESENTATION LAYER)</text>
+  <!-- Main flow cards -->
+  <rect class="card-slate" x="85" y="300" width="260" height="210"/>
+  <text class="box-title" x="215" y="340" text-anchor="middle">Pengguna</text>
+  <text class="box-text" x="115" y="378">Aktor proyek:</text>
+  <text class="box-text" x="115" y="410">- Admin</text>
+  <text class="box-text" x="115" y="442">- Project Manager</text>
+  <text class="box-text" x="115" y="474">- Site Engineer</text>
 
-    <rect x="920" y="0" width="450" height="42" fill="#d97706" rx="6"/>
-    <text class="flow-header" x="1145" y="27">3. BACKEND / API (LOGIC LAYER)</text>
+  <rect class="card" x="420" y="300" width="280" height="210"/>
+  <text class="box-title" x="560" y="340" text-anchor="middle">Browser</text>
+  <text class="box-text" x="450" y="378">HTTP/HTTPS</text>
+  <text class="box-text" x="450" y="410">Session pengguna</text>
+  <text class="box-text" x="450" y="442">Fetch API/AJAX</text>
+  <text class="box-text" x="450" y="474">Render DOM</text>
 
-    <rect x="1410" y="0" width="420" height="42" fill="#16a34a" rx="6"/>
-    <text class="flow-header" x="1620" y="27">4. DATABASE (DATA LAYER)</text>
+  <rect class="card-blue" x="775" y="265" width="370" height="280"/>
+  <text class="box-title" x="960" y="305" text-anchor="middle">Frontend</text>
+  <text class="small" x="960" y="332" text-anchor="middle">HTML5, CSS3, JavaScript ES6+</text>
+  <rect class="pill" x="805" y="360" width="310" height="34"/>
+  <text class="small" x="960" y="383" text-anchor="middle">index.html dan login.html</text>
+  <rect class="pill" x="805" y="402" width="310" height="34"/>
+  <text class="small" x="960" y="425" text-anchor="middle">admin.html</text>
+  <rect class="pill" x="805" y="444" width="310" height="34"/>
+  <text class="small" x="960" y="467" text-anchor="middle">project-manager.html</text>
+  <rect class="pill" x="805" y="486" width="310" height="34"/>
+  <text class="small" x="960" y="509" text-anchor="middle">site-engineer.html</text>
 
-    <rect x="1870" y="0" width="470" height="42" fill="#9333ea" rx="6"/>
-    <text class="flow-header" x="2105" y="27">5. DASHBOARD &amp; LAPORAN (OUTPUT)</text>
-  </g>
+  <rect class="card-green" x="1225" y="265" width="375" height="280"/>
+  <text class="box-title" x="1412" y="305" text-anchor="middle">PHP API</text>
+  <text class="small" x="1412" y="332" text-anchor="middle">backend/*.php, respons JSON</text>
+  <text class="box-text" x="1255" y="372">- api_login.php</text>
+  <text class="box-text" x="1255" y="404">- api_get_projects.php</text>
+  <text class="box-text" x="1255" y="436">- api_get_change_requests.php</text>
+  <text class="box-text" x="1255" y="468">- api_get_dashboard_stats.php</text>
+  <text class="box-text" x="1255" y="500">- save_data.php, update_data.php</text>
+  <text class="box-text" x="1255" y="532">- save_approval.php, api_knowledge_base.php</text>
 
-  <!-- STAGE 1: PENGGUNA -->
-  <g transform="translate(60, 195)">
-    <rect class="card-slate" x="0" y="0" width="410" height="520"/>
-    <text class="box-title" x="20" y="40">Peran &amp; Hak Akses (RBAC)</text>
-    <text class="small" x="20" y="65">Aktor sistem manajemen internal:</text>
+  <rect class="card-amber" x="1680" y="300" width="260" height="210"/>
+  <text class="box-title" x="1810" y="340" text-anchor="middle">PDO</text>
+  <text class="box-text" x="1710" y="378">db_user.php</text>
+  <text class="box-text" x="1710" y="410">Prepared statement</text>
+  <text class="box-text" x="1710" y="442">Koneksi MySQL</text>
+  <text class="box-text" x="1710" y="474">Konfigurasi .env</text>
 
-    <rect class="pill" x="20" y="85" width="370" height="120"/>
-    <text class="box-title" x="35" y="115" font-size="16">1. Administrator (Admin)</text>
-    <text class="small" x="35" y="140">• Kelola Pengguna, Role &amp; Proyek</text>
-    <text class="small" x="35" y="162">• Audit Trail &amp; Backup Data Database</text>
-    <text class="small" x="35" y="184">• Monitoring Keseluruhan Sistem</text>
+  <rect class="card-red" x="2010" y="265" width="310" height="280"/>
+  <text class="box-title" x="2165" y="305" text-anchor="middle">MySQL</text>
+  <text class="small" x="2165" y="332" text-anchor="middle">Database relasional project</text>
+  <text class="box-text" x="2040" y="372">- users</text>
+  <text class="box-text" x="2040" y="404">- projects</text>
+  <text class="box-text" x="2040" y="436">- project_assignments</text>
+  <text class="box-text" x="2040" y="468">- change_requests</text>
+  <text class="box-text" x="2040" y="500">- knowledge_repository</text>
+  <text class="box-text" x="2040" y="532">- knowledge_base, project_scurve</text>
 
-    <rect class="pill" x="20" y="220" width="370" height="120"/>
-    <text class="box-title" x="35" y="250" font-size="16">2. Project Manager (PM)</text>
-    <text class="small" x="35" y="275">• Evaluasi &amp; Approval Change Request</text>
-    <text class="small" x="35" y="297">• Analisis S-Curve, Risiko &amp; Biaya</text>
-    <text class="small" x="35" y="319">• Validasi Lesson Learned &amp; Knowledge</text>
+  <!-- Main arrows -->
+  <path class="line" d="M 345 405 H 410"/>
+  <path class="line" d="M 700 405 H 765"/>
+  <path class="line" d="M 1145 405 H 1215"/>
+  <path class="line" d="M 1600 405 H 1670"/>
+  <path class="line" d="M 1940 405 H 2000"/>
 
-    <rect class="pill" x="20" y="355" width="370" height="135"/>
-    <text class="box-title" x="35" y="385" font-size="16">3. Site Engineer (SE)</text>
-    <text class="small" x="35" y="410">• Input Data Change Request &amp; Bukti</text>
-    <text class="small" x="35" y="432">• Pemetaan WBS Level 4-6 &amp; BIM Object</text>
-    <text class="small" x="35" y="454">• Konsultasi SECI &amp; Forum Diskusi</text>
-    <text class="small" x="35" y="476">• Akses Panduan SOP &amp; Modul Kuis</text>
-  </g>
+  <text class="tiny" x="380" y="386" text-anchor="middle">interaksi</text>
+  <text class="tiny" x="735" y="386" text-anchor="middle">halaman</text>
+  <text class="tiny" x="1180" y="386" text-anchor="middle">fetch()</text>
+  <text class="tiny" x="1640" y="386" text-anchor="middle">query</text>
+  <text class="tiny" x="1975" y="386" text-anchor="middle">SQL</text>
 
-  <!-- STAGE 2: FRONTEND -->
-  <g transform="translate(510, 195)">
-    <rect class="card-blue" x="0" y="0" width="430" height="520"/>
-    <text class="box-title" x="20" y="40">Antarmuka Pengguna (Web UI)</text>
-    <text class="small" x="20" y="65">HTML5, CSS3 Vanilla, JS ES6+:</text>
+  <!-- Feedback response line -->
+  <path class="line-soft" d="M 2010 595 C 1640 695, 1050 695, 500 595"/>
+  <text class="small" x="1260" y="710" text-anchor="middle">Respons balik: JSON -> render tabel, badge risiko, chart, modal detail, status approval</text>
 
-    <rect class="pill" x="20" y="85" width="390" height="55"/>
-    <text class="tag" x="35" y="110">Halaman Portal Utama &amp; Login</text>
-    <text class="tiny" x="35" y="128">index.html, login.html (Session &amp; Auth)</text>
+  <!-- Visualization branch -->
+  <rect class="card-blue" x="775" y="720" width="370" height="230"/>
+  <text class="box-title" x="960" y="760" text-anchor="middle">Visualisasi Data</text>
+  <text class="box-text" x="805" y="800">Chart.js:</text>
+  <text class="box-text" x="835" y="832">- Donut chart risiko</text>
+  <text class="box-text" x="835" y="864">- S-Curve</text>
+  <text class="box-text" x="835" y="896">- KPI dan ringkasan dashboard</text>
+  <text class="box-text" x="805" y="928">Three.js: model 3D representatif</text>
 
-    <rect class="pill" x="20" y="150" width="390" height="55"/>
-    <text class="tag" x="35" y="175">Workspace Admin, PM &amp; Site Engineer</text>
-    <text class="tiny" x="35" y="193">admin.html, project-manager.html, site-engineer.html</text>
+  <path class="line-blue" d="M 960 545 V 710"/>
+  <text class="tiny" x="988" y="638">render visual</text>
 
-    <rect class="pill" x="20" y="215" width="390" height="65"/>
-    <text class="tag" x="35" y="240">Modul Pencarian &amp; Multi-Filter</text>
-    <text class="tiny" x="35" y="260">Filter Keyword, WBS, Tingkat Risiko, Date Range, Status</text>
+  <!-- APS branch -->
+  <rect class="card" x="1225" y="720" width="375" height="230"/>
+  <text class="box-title" x="1412" y="760" text-anchor="middle">BIM Viewer</text>
+  <text class="box-text" x="1255" y="800">Autodesk Viewer</text>
+  <text class="box-text" x="1255" y="832">Three.js fallback</text>
+  <text class="box-text" x="1255" y="864">bimObjectId sebagai penghubung</text>
+  <text class="box-text" x="1255" y="896">api_aps_token.php</text>
+  <text class="box-text" x="1255" y="928">api_aps_properties.php</text>
 
-    <rect class="pill" x="20" y="290" width="390" height="65"/>
-    <text class="tag" x="35" y="315">Modul Notifikasi &amp; Approval UI</text>
-    <text class="tiny" x="35" y="335">Popover alerts, persetujuan CR, catatan reviewer</text>
+  <rect class="card-slate" x="1680" y="720" width="360" height="230"/>
+  <text class="box-title" x="1860" y="760" text-anchor="middle">Autodesk Platform Services</text>
+  <text class="box-text" x="1710" y="800">Token server-side</text>
+  <text class="box-text" x="1710" y="832">URN model RVT</text>
+  <text class="box-text" x="1710" y="864">Properties object/dbId</text>
+  <text class="box-text" x="1710" y="896">Cocokkan BIM Object ID/Mark</text>
 
-    <rect class="pill" x="20" y="365" width="390" height="65"/>
-    <text class="tag" x="35" y="390">Modul Ekspor PDF / Excel</text>
-    <text class="tiny" x="35" y="410">Cetak Laporan Rekap, Form CR &amp; Data Tabel</text>
+  <path class="line-amber" d="M 1412 545 V 710"/>
+  <path class="line-amber" d="M 1600 835 H 1670"/>
+  <path class="line-soft" d="M 1860 720 C 1840 630, 1610 620, 1500 545"/>
+  <text class="tiny" x="1538" y="638">properti BIM</text>
+  <text class="tiny" x="1640" y="817">APS API</text>
 
-    <rect class="pill" x="20" y="440" width="390" height="65"/>
-    <text class="tag" x="35" y="465">Modul SECI Knowledge UI</text>
-    <text class="tiny" x="35" y="485">Forum Socialization, Form Externalization, Knowledge Base</text>
-  </g>
+  <!-- Server config and assets -->
+  <rect class="card-slate" x="85" y="720" width="615" height="230"/>
+  <text class="box-title" x="392" y="760" text-anchor="middle">Konfigurasi Server dan Asset</text>
+  <text class="box-text" x="115" y="800">.htaccess:</text>
+  <text class="box-text" x="145" y="832">- URL tanpa ekstensi .html</text>
+  <text class="box-text" x="145" y="864">- Options -Indexes</text>
+  <text class="box-text" x="145" y="896">- blok helper backend sensitif</text>
+  <text class="box-text" x="410" y="800">assets/:</text>
+  <text class="box-text" x="440" y="832">- wylcore.png</text>
+  <text class="box-text" x="440" y="864">- Video Home Page.mp4</text>
+  <text class="box-text" x="440" y="896">- jembatan.jpg, parkirmotor.jpg</text>
 
-  <!-- STAGE 3: BACKEND / API -->
-  <g transform="translate(980, 195)">
-    <rect class="card-amber" x="0" y="0" width="450" height="520"/>
-    <text class="box-title" x="20" y="40">Layanan Server (PHP Services)</text>
-    <text class="small" x="20" y="65">Restful JSON API &amp; Server Helper:</text>
+  <path class="line-soft" d="M 560 510 V 710"/>
+  <text class="tiny" x="590" y="625">load asset dan route</text>
 
-    <text class="small" x="20" y="95">• <b>Autentikasi:</b> api_login.php, api_logout.php</text>
-    <text class="small" x="20" y="125">• <b>Kelola Data:</b> api_save_project.php, api_update_project.php</text>
-    <text class="small" x="20" y="155">• <b>Pengajuan CR:</b> save_data.php, update_data.php</text>
-    <text class="small" x="20" y="185">• <b>Approval Workflow:</b> save_approval.php</text>
-    <text class="small" x="20" y="215">• <b>Riwayat Aktivitas:</b> api_user_management.php</text>
-    <text class="small" x="20" y="245">• <b>SECI Knowledge:</b> api_knowledge_base.php, api_pm_kb.php</text>
-    <text class="small" x="20" y="275">• <b>Dashboard Stats:</b> api_get_dashboard_stats.php</text>
-    <text class="small" x="20" y="305">• <b>S-Curve Data:</b> api_get_scurve.php</text>
-    <text class="small" x="20" y="335">• <b>BIM Integration:</b> api_aps_token.php, api_aps_props.php</text>
-    <text class="small" x="20" y="365">• <b>Backup &amp; Keamanan:</b> setup_users.php, .htaccess rules</text>
-    <text class="small" x="20" y="395">• <b>Konektor Database:</b> db_user.php (PDO Prepared Stmt)</text>
+  <!-- Information outputs -->
+  <rect class="card-green" x="85" y="1030" width="2235" height="205"/>
+  <text class="section-title" x="1205" y="1072" text-anchor="middle">Informasi yang Dihasilkan Sistem</text>
+  <rect class="pill" x="130" y="1110" width="305" height="48"/>
+  <text class="tag" x="282" y="1140" text-anchor="middle">Change Request terstruktur</text>
+  <rect class="pill" x="465" y="1110" width="260" height="48"/>
+  <text class="tag" x="595" y="1140" text-anchor="middle">Risk score dan badge</text>
+  <rect class="pill" x="755" y="1110" width="260" height="48"/>
+  <text class="tag" x="885" y="1140" text-anchor="middle">Dashboard KPI</text>
+  <rect class="pill" x="1045" y="1110" width="300" height="48"/>
+  <text class="tag" x="1195" y="1140" text-anchor="middle">AI Recommendation Engine</text>
+  <rect class="pill" x="1375" y="1110" width="245" height="48"/>
+  <text class="tag" x="1498" y="1140" text-anchor="middle">Approval PM/Admin</text>
+  <rect class="pill" x="1650" y="1110" width="230" height="48"/>
+  <text class="tag" x="1765" y="1140" text-anchor="middle">S-Curve proyek</text>
+  <rect class="pill" x="1910" y="1110" width="245" height="48"/>
+  <text class="tag" x="2032" y="1140" text-anchor="middle">BIM object linkage</text>
+  <rect class="pill" x="930" y="1176" width="520" height="48"/>
+  <text class="tag" x="1190" y="1206" text-anchor="middle">Knowledge base dan lesson learned otomatis</text>
 
-    <rect class="pill" x="20" y="430" width="410" height="70"/>
-    <text class="tag" x="35" y="455">Keamanan &amp; Validasi Server</text>
-    <text class="tiny" x="35" y="475">Proteksi Session, Prevention Injection SQL PDO, Security Log</text>
-  </g>
-
-  <!-- STAGE 4: DATABASE -->
-  <g transform="translate(1470, 195)">
-    <rect class="card-green" x="0" y="0" width="420" height="520"/>
-    <text class="box-title" x="20" y="40">Penyimpanan Relasional (MySQL)</text>
-    <text class="small" x="20" y="65">Basis data terpusat db_data_proyek:</text>
-
-    <rect class="pill" x="20" y="85" width="380" height="45"/>
-    <text class="tag" x="35" y="112">Tabel users &amp; project_assignments</text>
-
-    <rect class="pill" x="20" y="140" width="380" height="45"/>
-    <text class="tag" x="35" y="167">Tabel projects &amp; project_scurve</text>
-
-    <rect class="pill" x="20" y="195" width="380" height="55"/>
-    <text class="tag" x="35" y="220">Tabel change_requests</text>
-    <text class="tiny" x="35" y="238">Data CR, WBS Level 4-6, Cost/Time Impact, Status</text>
-
-    <rect class="pill" x="20" y="260" width="380" height="55"/>
-    <text class="tag" x="35" y="285">Tabel activity_logs (Audit Trail)</text>
-    <text class="tiny" x="35" y="303">Merekam Timestamp, User ID, Aktivitas &amp; Status</text>
-
-    <rect class="pill" x="20" y="325" width="380" height="55"/>
-    <text class="tag" x="35" y="350">Tabel knowledge_repository &amp; base</text>
-    <text class="tiny" x="35" y="368">Klasifikasi SECI: Soc, Ext, Comb, Int</text>
-
-    <rect class="pill" x="20" y="390" width="380" height="55"/>
-    <text class="tag" x="35" y="415">Tabel security_backups &amp; sessions</text>
-    <text class="tiny" x="35" y="433">Dump data backup SQL &amp; verifikasi token session</text>
-  </g>
-
-  <!-- STAGE 5: DASHBOARD & LAPORAN -->
-  <g transform="translate(1930, 195)">
-    <rect class="card-purple" x="0" y="0" width="410" height="520"/>
-    <text class="box-title" x="20" y="40">Dashboard &amp; Visualisasi Output</text>
-    <text class="small" x="20" y="65">Penyajian Informasi Manajerial:</text>
-
-    <rect class="pill" x="20" y="85" width="370" height="60"/>
-    <text class="tag" x="35" y="110">Dashboard Real-time &amp; KPI Metrics</text>
-    <text class="tiny" x="35" y="130">Total CR, Pending Approval, Cost/Time Impact</text>
-
-    <rect class="pill" x="20" y="155" width="370" height="60"/>
-    <text class="tag" x="35" y="180">Visualisasi Grafik (Chart.js &amp; S-Curve)</text>
-    <text class="tiny" x="35" y="200">Progress kumulatif, distribusi risiko &amp; WBS</text>
-
-    <rect class="pill" x="20" y="225" width="370" height="60"/>
-    <text class="tag" x="35" y="250">BIM 3D Model Viewer (Three.js / APS)</text>
-    <text class="tiny" x="35" y="270">Visualisasi elemen fisik &amp; bimObjectId link</text>
-
-    <rect class="pill" x="20" y="295" width="370" height="60"/>
-    <text class="tag" x="35" y="320">Matriks Klasifikasi SECI KM</text>
-    <text class="tiny" x="35" y="340">Socialization, Externalization, Comb, Int</text>
-
-    <rect class="pill" x="20" y="365" width="370" height="60"/>
-    <text class="tag" x="35" y="390">Ekspor Laporan PDF / Excel</text>
-    <text class="tiny" x="35" y="410">Cetak rekap operasional &amp; audit trail</text>
-  </g>
-
-  <!-- CONNECTING ARROWS BETWEEN STAGES -->
-  <path class="line" d="M 470 455 H 510"/>
-  <path class="line" d="M 940 455 H 980"/>
-  <path class="line" d="M 1430 455 H 1470"/>
-  <path class="line" d="M 1890 455 H 1930"/>
-
-  <text class="tiny" x="490" y="440" text-anchor="middle">1. Input/Action</text>
-  <text class="tiny" x="960" y="440" text-anchor="middle">2. Fetch/AJAX</text>
-  <text class="tiny" x="1450" y="440" text-anchor="middle">3. Query PDO</text>
-  <text class="tiny" x="1910" y="440" text-anchor="middle">4. Response</text>
-
-  <!-- SECI KNOWLEDGE MANAGEMENT CLASSIFICATION BOARD -->
-  <g transform="translate(60, 755)">
-    <rect class="card-slate" x="0" y="0" width="2280" height="340"/>
-    <text class="box-title" x="30" y="45" font-size="22">Integrasi Fitur Knowledge Management Berdasarkan Model SECI</text>
-    <text class="small" x="30" y="72">Pengelompokan fitur pengetahuan proyek konstruksi ke dalam 4 kuadran konversi pengetahuan Nonaka &amp; Takeuchi:</text>
-
-    <!-- Socialization -->
-    <rect class="card-blue" x="30" y="95" width="530" height="215"/>
-    <text class="box-title" x="50" y="130" font-size="18" fill="#0284c7">1. Socialization (Tacit → Tacit)</text>
-    <text class="small" x="50" y="155">Berbagi pengalaman langsung antarpengguna:</text>
-    <text class="small" x="50" y="185">• Forum Diskusi &amp; Tanya Jawab Isu Lapangan</text>
-    <text class="small" x="50" y="210">• Komentar &amp; Catatan Evaluasi pada Change Request</text>
-    <text class="small" x="50" y="235">• Mentoring Antara Project Manager &amp; Site Engineer</text>
-    <text class="small" x="50" y="260">• Sesi Sharing Experience Penanganan Risk Tinggi</text>
-
-    <!-- Externalization -->
-    <rect class="card-amber" x="590" y="95" width="530" height="215"/>
-    <text class="box-title" x="610" y="130" font-size="18" fill="#b45309">2. Externalization (Tacit → Explicit)</text>
-    <text class="small" x="610" y="155">Mengubah pengalaman menjadi dokumen tersurat:</text>
-    <text class="small" x="610" y="185">• Form Pengajuan &amp; Dokumentasi Change Request</text>
-    <text class="small" x="610" y="210">• Pembuatan Artikel Technical Note &amp; Lesson Learned</text>
-    <text class="small" x="610" y="235">• Pencatatan Solusi Masalah Geoteknik &amp; Struktur</text>
-    <text class="small" x="610" y="260">• Penyusunan Standar Operational Procedure (SOP)</text>
-
-    <!-- Combination -->
-    <rect class="card-green" x="1150" y="95" width="530" height="215"/>
-    <text class="box-title" x="1170" y="130" font-size="18" fill="#15803d">3. Combination (Explicit → Explicit)</text>
-    <text class="small" x="1170" y="155">Pengolahan &amp; pengorganisasian informasi:</text>
-    <text class="small" x="1170" y="185">• Engine Pencarian &amp; Multi-Filter Knowledge Base</text>
-    <text class="small" x="1170" y="210">• Pengelompokan Kategori Artikel &amp; Kode WBS</text>
-    <text class="small" x="1170" y="235">• Agregasi Rangkuman Laporan &amp; Rekapitulasi CR</text>
-    <text class="small" x="1170" y="260">• Rules Engine Matriks Risiko &amp; AI Recommendation</text>
-
-    <!-- Internalization -->
-    <rect class="card-purple" x="1710" y="95" width="540" height="215"/>
-    <text class="box-title" x="1730" y="130" font-size="18" fill="#7e22ce">4. Internalization (Explicit → Tacit)</text>
-    <text class="small" x="1730" y="155">Penyerapaan pengetahuan menjadi keterampilan:</text>
-    <text class="small" x="1730" y="185">• Modul Pembelajaran &amp; Digital Work Guidelines</text>
-    <text class="small" x="1730" y="210">• Video Instruction Operating Standard (Landing Media)</text>
-    <text class="small" x="1730" y="235">• Kuis Pemahaman &amp; Evaluasi Instruksi Teknis</text>
-    <text class="small" x="1730" y="260">• Panduan Praktis Lapangan &amp; Safety Induction</text>
-  </g>
-
-  <!-- SUMMARY OF 11 INTEGRATED SUPPORT MODULES -->
-  <g transform="translate(60, 1125)">
-    <rect class="card-slate" x="0" y="0" width="2280" height="280"/>
-    <text class="box-title" x="30" y="45" font-size="22">Rangkuman 11 Modul Pendukung Sistem Informasi Manajemen Internal</text>
-
-    <g transform="translate(30, 70)">
-      <rect class="pill" x="0" y="0" width="350" height="50"/>
-      <text class="tag" x="15" y="30">1. Autentikasi &amp; Login</text>
-
-      <rect class="pill" x="370" y="0" width="350" height="50"/>
-      <text class="tag" x="385" y="30">2. Pengaturan Role (RBAC)</text>
-
-      <rect class="pill" x="740" y="0" width="350" height="50"/>
-      <text class="tag" x="755" y="30">3. Pengelolaan Data Proyek/CR</text>
-
-      <rect class="pill" x="1110" y="0" width="350" height="50"/>
-      <text class="tag" x="1125" y="30">4. Pencarian &amp; Multi-Filter</text>
-
-      <rect class="pill" x="1480" y="0" width="350" height="50"/>
-      <text class="tag" x="1495" y="30">5. Proses Approval Workflow</text>
-
-      <rect class="pill" x="1850" y="0" width="370" height="50"/>
-      <text class="tag" x="1865" y="30">6. Notifikasi Alert &amp; Warnings</text>
-
-      <rect class="pill" x="0" y="70" width="350" height="50"/>
-      <text class="tag" x="15" y="100">7. Audit Trail Activity Log</text>
-
-      <rect class="pill" x="370" y="70" width="350" height="50"/>
-      <text class="tag" x="385" y="100">8. Dashboard &amp; Laporan KPI</text>
-
-      <rect class="pill" x="740" y="70" width="350" height="50"/>
-      <text class="tag" x="755" y="100">9. Ekspor Data PDF / Excel</text>
-
-      <rect class="pill" x="1110" y="70" width="350" height="50"/>
-      <text class="tag" x="1125" y="100">10. Keamanan &amp; Backup Data</text>
-
-      <rect class="pill" x="1480" y="70" width="740" height="50"/>
-      <text class="tag" x="1495" y="100">11. Modul Knowledge Management (Klasifikasi SECI Model)</text>
-    </g>
-
-    <text class="small" x="30" y="240">Setiap modul terhubung secara transparan dari lapisan Presentation (Frontend) hingga Storage (Database), memastikan keandalan operasional, auditabilitas, dan kemudahan penggunaan pengguna proyek.</text>
-  </g>
-
-  <!-- FOOTER -->
-  <text class="tiny" x="1200" y="1455" text-anchor="middle">WYLCORE Construction Information Management System | Standard Internal Management Architecture</text>
+  <!-- Footer -->
+  <text class="tiny" x="1200" y="1295" text-anchor="middle">WYLCORE - Sistem Informasi Change Request Konstruksi | HTML/CSS/JavaScript + PHP API + PDO + MySQL + APS + Chart.js + Three.js</text>
 </svg>
