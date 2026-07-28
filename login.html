@@ -1,13 +1,17 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <<<<<<< HEAD
+<<<<<<< HEAD
     <title>Login â€” WYLCORE</title>
 =======
     <title>Portal Autentikasi — WYLCORE Construction Management</title>
 >>>>>>> parent of 38f7089 (Revert changes back to previous state)
+=======
+    <title>Login — WYLCORE</title>
+>>>>>>> parent of 58c47d3 (ganti style css)
     <link rel="icon" type="image/png" href="assets/wylcore.png">
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
@@ -69,7 +73,7 @@
         font-size: 14px;
         padding: 10px 20px;
         border: 2px solid #00abf0;
-        border-radius: 4px;
+        border-radius: 50px;
         transition: 0.3s;
 =======
         font-weight: 500;
@@ -131,7 +135,7 @@
         background: rgba(0, 208, 255, 0.15);
         color: #00abf0;
         padding: 8px 16px;
-        border-radius: 4px;
+        border-radius: 50px;
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 2px;
@@ -246,7 +250,7 @@
         height: 52px;
         padding: 0 48px 0 48px;
         border: 1.5px solid #e5e7eb;
-        border-radius: 4px;
+        border-radius: 12px;
         font-size: 14px;
         font-family: "Poppins", sans-serif;
         color: #111;
@@ -314,7 +318,7 @@
         background: #00abf0;
         color: #fff;
         border: none;
-        border-radius: 4px;
+        border-radius: 12px;
         font-size: 15px;
 =======
       .panel-header h1 {
@@ -381,7 +385,7 @@
       .info-card {
         background: #fff8f4;
         border: 1px solid #ffe0cc;
-        border-radius: 4px;
+        border-radius: 12px;
         padding: 16px 18px;
         display: flex;
         align-items: flex-start;
@@ -407,7 +411,7 @@
       .accounts-hint {
         background: #f8fafc;
         border: 1px solid #e5e7eb;
-        border-radius: 4px;
+        border-radius: 12px;
         padding: 14px 18px;
         margin-top: 14px;
       }
@@ -427,7 +431,7 @@
       .role-badge {
         background: #fff;
         border: 1px solid #e5e7eb;
-        border-radius: 4px;
+        border-radius: 50px;
         padding: 4px 12px;
         font-size: 11px;
         color: #555;
@@ -464,6 +468,7 @@
         background: #111;
         color: #fff;
         padding: 14px 22px;
+<<<<<<< HEAD
         border-radius: 4px;
 =======
       .modules-grid {
@@ -477,6 +482,9 @@
         align-items: center;
         gap: 8px;
 >>>>>>> parent of 38f7089 (Revert changes back to previous state)
+=======
+        border-radius: 12px;
+>>>>>>> parent of 58c47d3 (ganti style css)
         font-size: 13px;
         color: #cbd5e1;
       }
@@ -578,7 +586,7 @@
           margin-bottom: 10px;
         }
         .input-wrapper input {
-          border-radius: 4px;
+          border-radius: 16px;
           font-size: 16px;
           height: 58px;
           padding-left: 52px;
@@ -604,12 +612,12 @@
           font-size: 13px;
         }
         .btn-login {
-          border-radius: 4px;
+          border-radius: 16px;
           font-size: 16px;
           height: 58px;
         }
         .info-card {
-          border-radius: 4px;
+          border-radius: 16px;
           gap: 14px;
           margin-top: 18px !important;
           padding: 18px 18px;
@@ -623,7 +631,7 @@
           line-height: 1.65;
         }
         .accounts-hint {
-          border-radius: 4px;
+          border-radius: 16px;
           padding: 16px;
         }
         .accounts-hint .roles {
@@ -759,8 +767,6 @@
         .right-panel { padding: 40px 20px; }
       }
     </style>
-  
-    <link rel="stylesheet" href="assets/global.css">
   </head>
   <body>
     <header class="topbar">
@@ -876,7 +882,7 @@
           </div>
 
           <div class="login-footer">
-            Â© 2026 WYLCORE â€” Integrated Change Control Information System
+            © 2026 WYLCORE — Integrated Change Control Information System
           </div>
 =======
 >>>>>>> parent of 38f7089 (Revert changes back to previous state)
@@ -916,18 +922,18 @@
 <<<<<<< HEAD
           // --- 1. BAGIAN VALIDASI KOSONG (Dipertahankan) ---
           if (!username && !password) {
-            showToast("âš   Please fill in your username and password.", "error");
+            showToast("⚠  Please fill in your username and password.", "error");
             setFieldError("username");
             setFieldError("password");
             return;
           }
           if (!username) {
-            showToast("âš   Username cannot be empty.", "error");
+            showToast("⚠  Username cannot be empty.", "error");
             setFieldError("username");
             return;
           }
           if (!password) {
-            showToast("âš   Password cannot be empty.", "error");
+            showToast("⚠  Password cannot be empty.", "error");
             setFieldError("password");
             return;
           }
@@ -937,12 +943,12 @@
           btn.textContent = "Verifying...";
 
           // ================================================================
-          // ðŸš€ SISIPKAN KODE BYPASS SEMENTARA DI SINI
+          // 🚀 SISIPKAN KODE BYPASS SEMENTARA DI SINI
           // ================================================================
 
           // Bypass untuk Project Manager
           //if (username === "manager" && password === "manager123") {
-          //    showToast("âœ“  [Bypass] Login Project Manager!", "success");
+          //    showToast("✓  [Bypass] Login Project Manager!", "success");
           //    setTimeout(() => {
           //        localStorage.setItem("isLoggedIn", "true"); 
           //        localStorage.setItem("username", "PM Tester"); 
@@ -954,7 +960,7 @@
 
           // Bypass untuk Site Engineer
           //if (username === "engineer" && password === "engineer123") {
-          //    showToast("âœ“  [Bypass] Login Site Engineer!", "success");
+          //    showToast("✓  [Bypass] Login Site Engineer!", "success");
           //    setTimeout(() => {
           //        localStorage.setItem("isLoggedIn", "true"); 
           //        localStorage.setItem("username", "SE Tester"); 
@@ -966,7 +972,7 @@
 
           // Bypass untuk Admin
           //if (username === "admin" && password === "admin123") {
-          //    showToast("âœ“  [Bypass] Login Admin!", "success");
+          //    showToast("✓  [Bypass] Login Admin!", "success");
           //    setTimeout(() => {
           //        localStorage.setItem("isLoggedIn", "true"); 
           //        localStorage.setItem("username", "Admin Tester"); 
@@ -990,7 +996,7 @@
           .then(data => {
               if (data.status === 'success') {
                   // --- 4A. JIKA LOGIN SUKSES (Struktur Toast & Delay Dipertahankan) ---
-                  showToast("âœ“  Login successful! Redirecting...", "success");
+                  showToast("✓  Login successful! Redirecting...", "success");
                   
                   setTimeout(() => {
                       // Simpan data dinamis dari database ke localStorage
@@ -1008,7 +1014,7 @@
                   btn.textContent = "Login";
 
                   // Tampilkan pesan error dari backend
-                  showToast("âœ—  " + data.message, "error"); 
+                  showToast("✗  " + data.message, "error"); 
                   setFieldError("username");
                   setFieldError("password");
                   document.getElementById("password").value = "";
@@ -1020,7 +1026,7 @@
               btn.textContent = "Login";
               
               console.error("Error:", error);
-              showToast("âš   System error. Cannot connect to server.", "error");
+              showToast("⚠  System error. Cannot connect to server.", "error");
           });
 =======
         btn.disabled = true;
