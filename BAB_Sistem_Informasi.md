@@ -366,6 +366,58 @@ Aturan `.htaccess` digunakan untuk menyembunyikan ekstensi `.html` sehingga hala
 
 Pemisahan ini belum menggantikan kontrol keamanan aplikasi secara menyeluruh. Proteksi server perlu dilengkapi dengan validasi session, pembatasan role, validasi input, pembatasan ukuran upload, CSRF protection, audit trail, dan konfigurasi HTTPS pada deployment produksi. Namun, dari sisi struktur awal, pemisahan folder membantu mengurangi risiko file sensitif tercampur dengan aset publik.
 
+### X.3.7 Perjelasan Alur Arsitektur Sistem dan Alur Data
+
+Sistem informasi WYLCORE dirancang dengan alur arsitektur lima tahap yang transparan untuk memastikan bahwa seluruh data transaksi operasional konstruksi dari lapangan dapat diolah secara terstruktur, disimpan dengan aman, dan disajikan sebagai informasi manajerial pendukung keputusan:
+
+```text
++------------------+     +-------------------+     +------------------+     +------------------+     +------------------------+
+| 1. PENGGUNA      |     | 2. FRONTEND       |     | 3. BACKEND / API |     | 4. DATABASE      |     | 5. DASHBOARD & LAPORAN |
+| (Admin, PM, SE)  | --> | (HTML/CSS/JS UI)  | --> | (PHP Services)   | --> | (MySQL DB)       | --> | (KPI, Charts, Reports) |
++------------------+     +-------------------+     +------------------+     +------------------+     +------------------------+
+```
+
+1. **Pengguna (User Layer):** Aktor proyek (Admin, Project Manager, dan Site Engineer) melakukan interaksi dengan sistem seperti login, penginputan formulir *Change Request*, evaluasi *approval*, pencarian data, serta partisipasi dalam forum *Knowledge Management*.
+2. **Frontend (Presentation Layer):** Halaman antarmuka berbasis HTML, Vanilla CSS, dan JavaScript ES6+ memverifikasi input secara *client-side*, merender komponen navigasi, menyediakan *toolbar* pencarian dan filter, serta mengirimkan permintaan data secara asinkron (`fetch` API) tanpa memuat ulang seluruh halaman.
+3. **Backend / API (Application & Logic Layer):** Layanan PHP di folder `backend/` menerima request HTTP/HTTPS, memverifikasi token sesi dan hak akses (RBAC), menjalankan aturan logika bisnis (seperti kalkulasi skor risiko, pembuatan *lesson learned* otomatis, dan *audit logging*), serta mengamankan query melalui konektor PDO prepared statement.
+4. **Database (Data Storage Layer):** Basis data relasional MySQL (`db_data_proyek`) menyimpan seluruh entitas permanen seperti `users`, `projects`, `change_requests`, `activity_logs`, `knowledge_repository`, dan `knowledge_base` secara konsisten dan terstruktur.
+5. **Dashboard & Laporan (Presentation & Output Layer):** Data yang telah diproses dikembalikan oleh API dalam format JSON untuk dirender menjadi metrik KPI visual, grafik distribusi risiko, grafik S-Curve (Chart.js), visualisasi elemen 3D (Three.js/APS Viewer), matriks klasifikasi SECI, serta dokumen ekspor PDF dan Excel.
+
+### X.3.8 Kelengkapan Komponen dan Modul Pendukung Sistem Informasi Manajemen Internal
+
+Untuk memenuhi kebutuhan manajemen internal operasional proyek konstruksi, sistem mengintegrasikan 11 modul pendukung utama ke dalam arsitektur sistem:
+
+1. **Autentikasi dan Login:** Modul gerbang keamanan untuk verifikasi identitas pengguna, pembuatan token session, dan manajemen logout.
+2. **Pengaturan Role dan Hak Akses (RBAC):** Modul otorisasi hirarkis yang membatasi hak akses pengguna berdasarkan 3 peran utama (Admin, Project Manager, dan Site Engineer).
+3. **Pengelolaan Data:** Modul manajemen CRUD untuk proyek, akun pengguna, *assignment* tim, data *Change Request*, referensi WBS, serta variabel risiko.
+4. **Pencarian dan Multi-Filter Data:** Modul *toolbar* pencarian kata kunci interaktif serta multi-filter berdasarkan kode WBS, status approval, tingkat risiko, dan rentang tanggal.
+5. **Proses Persetujuan (Approval Workflow):** Modul evaluasi manajerial oleh PM/Admin untuk memberikan keputusan `APPROVED`, `REJECTED`, atau `PENDING` disertai catatan teknis dan dampak biaya/waktu final.
+6. **Notifikasi Alert & Warning Systems:** Modul pengingat visual berupa *badge popover* dan indikator batas risiko tinggi (*critical threshold warning*).
+7. **Riwayat Aktivitas Pengguna (Audit Trail Activity Log):** Modul pencatat seluruh transaksi pengguna (*timestamp*, ID pengguna, jenis tindakan, dan parameter perubahan) untuk transparansi dan auditibilitas.
+8. **Dashboard dan Laporan Manajerial:** Modul visualisasi analitik proyek yang memuat kartu KPI ringkas, grafik distribusi risiko, visualisasi S-Curve, serta representasi visual BIM.
+9. **Ekspor Data ke PDF dan Excel:** Modul pencetakan dokumen formal dan unduhan file spreadsheet rekapitulasi data proyek untuk kebutuhan pelaporan operasional.
+10. **Keamanan dan Backup Data Database:** Modul pengamanan sistem melingkupi PDO *prepared statement*, `.htaccess` *server protection*, serta tombol pemicu unduhan *dump backup* SQL database.
+11. **Modul Knowledge Management (Model SECI):** Modul pengelolaan pengetahuan proyek yang mengklasifikasikan pengalaman teknis ke dalam kerangka konversi pengetahuan Nonaka & Takeuchi.
+
+### X.3.9 Klasifikasi Fitur Knowledge Management Berdasarkan Model SECI
+
+Modul *Knowledge Management* dalam sistem ini dikelompokkan berdasarkan model SECI (*Socialization, Externalization, Combination, Internalization*) untuk memastikan bahwa pengetahuan tidak hanya tersimpan secara kaku, tetapi mengalami konversi berkesinambungan antar pengguna proyek:
+
+| Nama Fitur Sistem | Kategori SECI | Penjelasan Keterkaitan & Alur Konversi Pengetahuan |
+|---|---|---|
+| **Forum Diskusi Isu Lapangan & Mentoring** | *Socialization* (Tacit → Tacit) | Memfasilitasi interaksi langsung antarpengguna (Site Engineer dan PM) untuk berbagi pengalaman teknis, kendala lapangan, serta saran mitigasi risiko secara terorganisir. |
+| **Komentar & Catatan Evaluasi CR** | *Socialization* (Tacit → Tacit) | Ruang diskusi kontekstual pada setiap pengajuan *Change Request* tempat PM dan Engineer bertukar pandangan sebelum keputusan *approval* diambil. |
+| **Form Pengajuan CR & Solusi Risiko** | *Externalization* (Tacit → Explicit) | Mengubah pengalaman tacit dan temuan masalah fisik di lapangan menjadi formulir terstruktur yang mencakup deskripsi, penyebab, WBS, serta estimasi dampak. |
+| **Pembuatan Artikel Technical Note & SOP** | *Externalization* (Tacit → Explicit) | Memungkinkan pengguna mendokumentasikan penanganan kasus khusus (misal: penanganan *landslide* atau revisi desain *girder*) menjadi dokumen artikel *lesson learned*. |
+| **Pencatatan Lesson Learned Otomatis** | *Externalization* (Tacit → Explicit) | Fitur sistem yang secara otomatis mengonversi data pengajuan CR yang disetujui (*APPROVED*) menjadi draf dokumen pengetahuan baru pada `knowledge_base`. |
+| **Pencarian & Multi-Filter Knowledge Base** | *Combination* (Explicit → Explicit) | Menggabungkan, mengelompokkan, dan menampilkan dokumen pengetahuan berdasarkan kata kunci, kategori artikel, kode WBS, dan tingkat risiko. |
+| **Agregasi Rangkuman & Rekapitulasi Laporan** | *Combination* (Explicit → Explicit) | Pengolahan data transaksi eksplisit CR menjadi ringkasan statistik, grafik S-Curve, serta laporan rekap yang dapat diekspor ke PDF/Excel. |
+| **AI Recommendation Rules Engine** | *Combination* (Explicit → Explicit) | Mengubungkan data eksplisit WBS dan risiko CR dengan *rules* pada `knowledge_repository` untuk menghasilkan rekomendasi tindakan secara otomatis. |
+| **Modul Pembelajaran & Digital Work Guidelines** | *Internalization* (Explicit → Tacit) | Menyediakan panduan kerja digital, instruksi teknis, dan SOP yang dapat dipelajari oleh Site Engineer baru untuk meningkatkan pemahaman operasional. |
+| **Video Interactive Guidance (Landing Media)** | *Internalization* (Explicit → Tacit) | Menyajikan video visual operasional penggunaan sistem dan panduan keselamatan kerja konstruksi agar pengguna dapat menginternalisasi prosedur dengan cepat. |
+| **Kuis Pemahaman & Evaluasi Instruksi Teknis** | *Internalization* (Explicit → Tacit) | Modul evaluasi interaktif yang menguji sejauh mana pengguna memahami panduan teknis dan standar pelaksanaan pekerjaan proyek konstruksi. |
+
+
 ## X.4 Perancangan Basis Data
 
 ### X.4.1 Entitas Utama

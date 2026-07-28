@@ -2122,6 +2122,13 @@
             Change History
           </div>
         </div>
+
+        <div class="menu-item" onclick="showPage('architecturePage', this)">
+          ⚙️ Arsitektur Sistem
+        </div>
+        <div class="menu-item" onclick="showPage('seciPage', this)">
+          🔄 Model SECI KM
+        </div>
       </div>
 
       <div class="sidebar-footer">
@@ -2943,6 +2950,109 @@ Pilih variabel risiko</textarea
                 </tr>
               </thead>
               <tbody id="historyTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: ARSITEKTUR SISTEM & DATA FLOW -->
+      <div id="architecturePage" class="content-page">
+        <div class="header-dashboard">
+          <div>
+            <div class="subtitle">SYSTEM SPECIFICATION • DATA ARCHITECTURE</div>
+            <h1>Arsitektur Sistem &amp; Alur Data Operasional</h1>
+            <p>
+              Gambaran alur data 5-tahap: Pengguna → Frontend → Backend API → Database → Dashboard/Laporan.
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 24px; margin-bottom: 20px;">
+          <h2 style="margin-bottom: 12px; color: #0f172a;">Tahapan Alur Kerja Data Terintegrasi</h2>
+          <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 24px;">
+            <div style="background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px;">
+              <div style="font-size: 10px; font-weight: 800; color: #d97706;">TAHAP 1</div>
+              <strong style="font-size: 12px; color: #0f172a; display: block; margin: 4px 0;">Pengguna (Actors)</strong>
+              <p style="font-size: 11px; color: #64748b; margin: 0;">Site Eng input form CR, bukti foto &amp; WBS.</p>
+            </div>
+            <div style="background: #f0f9ff; border: 1px solid #0284c7; padding: 12px; border-radius: 6px;">
+              <div style="font-size: 10px; font-weight: 800; color: #0284c7;">TAHAP 2</div>
+              <strong style="font-size: 12px; color: #0f172a; display: block; margin: 4px 0;">Frontend (Web UI)</strong>
+              <p style="font-size: 11px; color: #64748b; margin: 0;">HTML5, Vanilla CSS, JS ES6+ Fetch asinkron.</p>
+            </div>
+            <div style="background: #fffbeb; border: 1px solid #d97706; padding: 12px; border-radius: 6px;">
+              <div style="font-size: 10px; font-weight: 800; color: #d97706;">TAHAP 3</div>
+              <strong style="font-size: 12px; color: #0f172a; display: block; margin: 4px 0;">Backend API (PHP)</strong>
+              <p style="font-size: 11px; color: #64748b; margin: 0;">Verifikasi RBAC, Session, Audit Log &amp; PDO Query.</p>
+            </div>
+            <div style="background: #f0fdf4; border: 1px solid #16a34a; padding: 12px; border-radius: 6px;">
+              <div style="font-size: 10px; font-weight: 800; color: #16a34a;">TAHAP 4</div>
+              <strong style="font-size: 12px; color: #0f172a; display: block; margin: 4px 0;">Database (MySQL)</strong>
+              <p style="font-size: 11px; color: #64748b; margin: 0;">Storage terpusat db_data_proyek.</p>
+            </div>
+            <div style="background: #faf5ff; border: 1px solid #9333ea; padding: 12px; border-radius: 6px;">
+              <div style="font-size: 10px; font-weight: 800; color: #9333ea;">TAHAP 5</div>
+              <strong style="font-size: 12px; color: #0f172a; display: block; margin: 4px 0;">Dashboard &amp; Laporan</strong>
+              <p style="font-size: 11px; color: #64748b; margin: 0;">KPI metrics, Chart.js S-Curve, BIM 3D &amp; PDF/Excel.</p>
+            </div>
+          </div>
+
+          <div style="border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; background: #fff;">
+            <img src="diagram/diagram-arsitektur-web-app.svg" alt="Diagram Arsitektur Sistem WYLCORE" style="width: 100%; height: auto; display: block;" />
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE: SECI KNOWLEDGE MANAGEMENT MODEL -->
+      <div id="seciPage" class="content-page">
+        <div class="header-dashboard">
+          <div>
+            <div class="subtitle">KNOWLEDGE MANAGEMENT • SECI MODEL</div>
+            <h1>Matriks Klasifikasi Knowledge Management SECI</h1>
+            <p>
+              Pengelompokan fitur konversi pengetahuan (Socialization, Externalization, Combination, Internalization) untuk Site Engineer.
+            </p>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 24px;">
+          <h2 style="margin-bottom: 16px; color: #0f172a;">Tabel Klasifikasi Fitur SECI Model</h2>
+          <div style="overflow-x: auto;">
+            <table class="change-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="background: #0f172a; color: #fff;">
+                  <th style="padding: 12px; text-align: left;">Nama Fitur Sistem</th>
+                  <th style="padding: 12px; text-align: left;">Kategori SECI Model</th>
+                  <th style="padding: 12px; text-align: left;">Penjelasan Keterkaitan &amp; Alur Pengetahuan</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 12px; font-weight: 600;">Forum Diskusi &amp; Mentoring</td>
+                  <td style="padding: 12px;"><span style="background: #e0f2fe; color: #0369a1; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">Socialization</span></td>
+                  <td style="padding: 12px; color: #475569;">Diskusi teknis dengan Project Manager untuk konsultasi kendala lapangan.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: 600;">Form Pengajuan CR &amp; Mitigasi Risiko</td>
+                  <td style="padding: 12px;"><span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">Externalization</span></td>
+                  <td style="padding: 12px; color: #475569;">Pencatatan masalah tacit menjadi formulir terstruktur (WBS, deskripsi, foto bukti).</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: 600;">Pencatatan Lesson Learned Otomatis</td>
+                  <td style="padding: 12px;"><span style="background: #fef3c7; color: #b45309; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">Externalization</span></td>
+                  <td style="padding: 12px; color: #475569;">Otomatisasi pengubahan data pengajuan CR approved menjadi draf lesson learned.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: 600;">Engine Pencarian &amp; Multi-Filter KB</td>
+                  <td style="padding: 12px;"><span style="background: #dcfce7; color: #15803d; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">Combination</span></td>
+                  <td style="padding: 12px; color: #475569;">Penyaringan artikel panduan teknis berdasarkan kode WBS dan tingkat risiko.</td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px; font-weight: 600;">Digital Work Guidelines &amp; Video Instruction</td>
+                  <td style="padding: 12px;"><span style="background: #f3e8ff; color: #6b21a8; padding: 4px 8px; border-radius: 4px; font-weight: 700; font-size: 11px;">Internalization</span></td>
+                  <td style="padding: 12px; color: #475569;">Materi pembelajaran digital &amp; video panduan operasional keselamatan kerja K3.</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
