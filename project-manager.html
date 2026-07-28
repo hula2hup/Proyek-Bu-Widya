@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
@@ -83,7 +83,7 @@
       display: none;
     }
     .logo {
-      width: 44px; height: 44px; border-radius: 14px;
+      width: 44px; height: 44px; border-radius: 4px;
       background: linear-gradient(135deg, var(--warning), var(--danger));
       display: grid; place-items: center; font-weight: 800; font-size: 18px;
     }
@@ -92,7 +92,7 @@
     nav { flex: 1; }
     nav button {
       width: 100%; border: 0; background: transparent; color: #cbd5e1;
-      padding: 13px 14px; text-align: left; border-radius: 12px;
+      padding: 13px 14px; text-align: left; border-radius: 4px;
       margin: 4px 0; cursor: pointer; font-weight: 600; transition: 0.2s;
     }
     nav button.active, nav button:hover { background: #1e293b; color: white; border-left: 4px solid var(--accent); }
@@ -101,13 +101,13 @@
     .topbar {
       display: flex; justify-content: space-between; align-items: center;
       gap: 20px; margin-bottom: 22px;
-      background: var(--card); padding: 20px 24px; border-radius: 22px;
+      background: var(--card); padding: 20px 24px; border-radius: 4px;
       box-shadow: 0 10px 25px rgba(15,23,42,.03); border-top: 4px solid var(--accent);
     }
     .topbar h2 { margin: 0; font-size: 24px; color: #0f172a; }
     .topbar p { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
     .btn {
-      border: 0; border-radius: 10px; padding: 10px 16px; font-size: 13px;
+      border: 0; border-radius: 4px; padding: 10px 16px; font-size: 13px;
       background: var(--primary); color: white; font-weight: 700; cursor: pointer;
       box-shadow: 0 4px 12px rgba(29,78,216,.2); transition: 0.2s;
     }
@@ -120,7 +120,7 @@
     .cols-2 { grid-template-columns: 1.1fr 0.9fr; }
     .card {
       background: var(--card); border: 1px solid var(--line);
-      border-radius: 20px; padding: 20px;
+      border-radius: 4px; padding: 20px;
       box-shadow: 0 10px 25px rgba(15,23,42,.03);
     }
     .card h3 { margin: 0 0 16px; font-size: 16px; color: #0f172a; }
@@ -167,13 +167,13 @@
     .dashboard-risk-curve { grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); margin-bottom: 20px; align-items: stretch; }
     .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 6px; }
-    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font-family: inherit; background: #f8fafc; font-size: 13px; }
+    input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 4px; padding: 11px 12px; font-family: inherit; background: #f8fafc; font-size: 13px; }
     input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); background: white; }
     textarea { min-height: 80px; resize: vertical; }
     .full { grid-column: 1 / -1; }
     .wbs-mapping-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
     .wbs-result {
-      margin-top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: 14px;
+      margin-top: 18px; padding: 18px; border: 1px solid var(--line); border-radius: 4px;
       background: #f8fafc; color: #475569; font-size: 13px; line-height: 1.6;
     }
     .wbs-result h3 { margin: 0 0 12px; font-size: 15px; color: #0f172a; }
@@ -196,13 +196,13 @@
     .wbs-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 10px; border-radius: 999px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-size: 12px; font-weight: 800; cursor: help; }
     .wbs-chip small { color: #64748b; font-weight: 700; }
     .delay-status { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-    .delay-metric { padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #f8fafc; }
+    .delay-metric { padding: 12px; border: 1px solid var(--line); border-radius: 4px; background: #f8fafc; }
     .delay-metric span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
     .delay-metric b { color: #0f172a; font-size: 16px; }
     .risk-matrix-wrap { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; }
     .risk-axis-y { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
     .risk-matrix-grid { display: grid; grid-template-columns: repeat(5, minmax(58px, 1fr)); gap: 6px; }
-    .risk-cell { min-height: 62px; border-radius: 8px; padding: 6px; border: 1px solid rgba(15,23,42,.08); position: relative; overflow: hidden; }
+    .risk-cell { min-height: 62px; border-radius: 4px; padding: 6px; border: 1px solid rgba(15,23,42,.08); position: relative; overflow: hidden; }
     .risk-cell small { position: absolute; right: 7px; bottom: 5px; font-size: 10px; font-weight: 800; color: rgba(15,23,42,.45); }
     .risk-cell.low-zone { background: #dcfce7; }
     .risk-cell.medium-zone { background: #fef3c7; }
@@ -214,11 +214,11 @@
     .tornado-list { display: grid; gap: 10px; }
     .tornado-row { display: grid; grid-template-columns: minmax(110px, 190px) 1fr auto; gap: 12px; align-items: center; font-size: 12px; }
     .tornado-label { min-width: 0; font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tornado-track { height: 28px; background: #e2e8f0; border-radius: 8px; overflow: hidden; }
+    .tornado-track { height: 28px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
     .tornado-fill { height: 100%; min-width: 4px; background: linear-gradient(90deg, #2563eb, #ef4444); border-radius: inherit; }
     .tornado-meta { color: var(--muted); font-size: 11px; text-align: right; white-space: nowrap; }
     .bowtie { display: grid; grid-template-columns: 1fr 160px 1fr; gap: 12px; align-items: stretch; margin-top: 16px; }
-    .bowtie-wing, .bowtie-center { border: 1px solid var(--line); border-radius: 8px; background: #f8fafc; padding: 12px; }
+    .bowtie-wing, .bowtie-center { border: 1px solid var(--line); border-radius: 4px; background: #f8fafc; padding: 12px; }
     .bowtie-wing h4, .bowtie-center h4 { margin: 0 0 8px; font-size: 12px; color: #0f172a; text-transform: uppercase; letter-spacing: .04em; }
     .bowtie-item { border-left: 3px solid var(--primary); padding-left: 9px; margin-top: 8px; color: #475569; font-size: 12px; line-height: 1.45; }
     .bowtie-center { display: flex; flex-direction: column; justify-content: center; text-align: center; background: #fff7ed; border-color: #fed7aa; }
@@ -227,18 +227,18 @@
     @media (max-width: 1000px) { .wbs-mapping-grid { grid-template-columns: 1fr; } }
     @media (max-width: 1100px) { .dashboard-insight-grid, .dashboard-risk-curve { grid-template-columns: 1fr; } }
     @media (max-width: 900px) { .bowtie, .tornado-row { grid-template-columns: 1fr; } .risk-matrix-grid { grid-template-columns: repeat(5, minmax(44px, 1fr)); } }
-    .ai-box { background: linear-gradient(to right, #eff6ff, #faf5ff); border: 1px solid #c084fc; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .ai-box { background: linear-gradient(to right, #eff6ff, #faf5ff); border: 1px solid #c084fc; border-radius: 4px; padding: 16px; margin-bottom: 16px; }
     .ai-box h4 { margin: 0 0 8px; font-size: 13px; color: #6b21a8; display: flex; align-items: center; gap: 6px; }
 
-    /* ── BIM 3D VIEWER ── */
-    .bim-viewer-wrap { height: 420px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+    /* â”€â”€ BIM 3D VIEWER â”€â”€ */
+    .bim-viewer-wrap { height: 420px; border-radius: 4px; background: #0d1117; position: relative; overflow: hidden; }
     #bimThreeCanvas { width: 100%; height: 100%; display: block; }
     .bim-viewer-toolbar { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 8px; z-index: 10; }
-    .bim-viewer-toolbar button { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.15); color: #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 11px; cursor: pointer; font-weight: 700; }
+    .bim-viewer-toolbar button { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.15); color: #e2e8f0; border-radius: 4px; padding: 7px 12px; font-size: 11px; cursor: pointer; font-weight: 700; }
     .bim-viewer-toolbar button:hover { background: var(--primary); border-color: var(--primary); }
-    .bim-viewer-badge { position: absolute; top: 14px; left: 14px; background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.1); padding: 7px 14px; border-radius: 8px; font-size: 11px; color: #94a3b8; }
+    .bim-viewer-badge { position: absolute; top: 14px; left: 14px; background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.1); padding: 7px 14px; border-radius: 4px; font-size: 11px; color: #94a3b8; }
     .bim-viewer-badge b { color: #60a5fa; }
-    .bim-obj-info-panel { position: absolute; right: 14px; bottom: 14px; background: rgba(10,18,32,.92); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 14px; width: 290px; max-height: 380px; overflow-y: auto; z-index: 10; }
+    .bim-obj-info-panel { position: absolute; right: 14px; bottom: 14px; background: rgba(10,18,32,.92); border: 1px solid rgba(255,255,255,.12); border-radius: 4px; padding: 14px; width: 290px; max-height: 380px; overflow-y: auto; z-index: 10; }
     .bim-obj-info-panel .oi-title { font-size: 11px; color: #60a5fa; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
     .bim-obj-info-panel .oi-row { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
     .bim-obj-info-panel .oi-row:last-child { border: 0; }
@@ -249,10 +249,10 @@
     .oi-detail-empty { font-size: 11px; color: #64748b; font-style: italic; padding: 4px 0; }
     #forgeViewerDiv { width: 100%; height: 100%; display: none; }
 
-    /* ── VIEWER MODE SWITCH (topbar section BIM) ── */
+    /* â”€â”€ VIEWER MODE SWITCH (topbar section BIM) â”€â”€ */
     .viewer-mode-bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
     .mode-switch { display: flex; gap: 6px; }
-    .mode-btn { padding: 8px 12px; background: #fff; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; transition: .15s; white-space: nowrap; }
+    .mode-btn { padding: 8px 12px; background: #fff; border: 1px solid var(--line); border-radius: 4px; color: var(--muted); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; transition: .15s; white-space: nowrap; }
     .mode-btn:hover { border-color: var(--primary); color: var(--primary); }
     .mode-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
     .aps-status-chip { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
@@ -266,7 +266,7 @@
       .no-print { display: none !important; }
     }
     .icon-btn {
-      background: #f1f5f9; border: none; border-radius: 8px; width: 32px; height: 32px;
+      background: #f1f5f9; border: none; border-radius: 4px; width: 32px; height: 32px;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
       transition: 0.2s; font-size: 14px;
     }
@@ -279,7 +279,7 @@
     }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-content {
-      background: white; border-radius: 20px; width: 90%; max-width: 700px;
+      background: white; border-radius: 4px; width: 90%; max-width: 700px;
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       transform: translateY(20px); transition: 0.3s; overflow: hidden;
     }
@@ -299,7 +299,7 @@
     .hover-row:hover { background-color: #f8fafc; cursor: pointer; transition: 0.2s; }
     td { vertical-align: middle; }
 
-    /* ── SORT BUTTON ── */
+    /* â”€â”€ SORT BUTTON â”€â”€ */
     .sort-btn {
       background: none; border: none; cursor: pointer;
       padding: 2px 4px; margin-left: 4px; border-radius: 4px;
@@ -313,13 +313,13 @@
     .th-inner { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
     .no-results-row td { text-align: center; color: var(--muted); padding: 32px 12px; font-size: 13px; }
 
-    /* ── TOOLTIP ── */
+    /* â”€â”€ TOOLTIP â”€â”€ */
     .tt-wrapper { position: relative; display: inline-block; cursor: help; margin-left: 5px; }
     .tt-box {
       visibility: hidden; opacity: 0; position: absolute;
       top: 100%; left: 0; width: 180px;
       background: white; border: 1px solid #cbd5e1;
-      padding: 12px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 12px; border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       font-size: 12px; line-height: 1.5; color: #0f172a;
       text-transform: none; font-weight: 500; z-index: 9999;
       transition: all 0.2s ease; margin-top: 8px;
@@ -327,13 +327,13 @@
     .tt-wrapper:hover .tt-box { visibility: visible; opacity: 1; }
     .tt-icon { color: #2563eb; font-weight: bold; font-size: 13px; }
 
-    /* ── LOGOUT BUTTON ── */
+    /* â”€â”€ LOGOUT BUTTON â”€â”€ */
     .logout-btn {
       background: transparent;
       color: var(--danger);
       border: none;
       padding: 8px;
-      border-radius: 8px;
+      border-radius: 4px;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -375,7 +375,7 @@
       padding: 3px 8px;
       font-size: 11px;
       font-weight: 600;
-      border-radius: 12px;
+      border-radius: 4px;
       margin-right: 5px;
       margin-top: 5px;
       cursor: help;
@@ -404,7 +404,7 @@
       background-color: #0f172a;
       color: #ffffff;
       padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: 4px;
       font-size: 11px;
       font-weight: normal;
       white-space: pre-wrap; /* Mendukung baris baru \n */
@@ -447,7 +447,7 @@
       max-width: 320px;
       width: max-content;
       padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: 4px;
       background: #0f172a;
       color: #ffffff;
       box-shadow: 0 14px 30px rgba(15, 23, 42, 0.24);
@@ -458,7 +458,7 @@
       pointer-events: none;
     }
     .report-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
-    .report-paper { background: #ffffff; border: 1px solid var(--line); border-radius: 8px; padding: 34px 38px; color: #111827; font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.65; min-height: 520px; }
+    .report-paper { background: #ffffff; border: 1px solid var(--line); border-radius: 4px; padding: 34px 38px; color: #111827; font-family: "Times New Roman", Times, serif; font-size: 14px; line-height: 1.65; min-height: 520px; }
     .report-paper.empty { display: flex; align-items: center; justify-content: center; text-align: center; color: #64748b; font-family: Inter, "Segoe UI", Arial, sans-serif; font-size: 13px; background: #f8fafc; }
     .report-letterhead { text-align: center; border-bottom: 3px double #111827; padding-bottom: 12px; margin-bottom: 20px; }
     .report-letterhead h2, .report-letterhead p { margin: 0; }
@@ -474,7 +474,7 @@
     .report-signature-name { border-top: 1px solid #111827; padding-top: 6px; font-weight: 700; }
     .raci-control { max-width: 260px; margin: 0 auto; background: #ffffff; text-align: center; font-weight: 700; }
     .kb-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-bottom: 20px; }
-    .kb-kpi-card { background: #ffffff; border: 1px solid var(--line); border-radius: 18px; padding: 18px; border-left: 5px solid var(--primary); box-shadow: 0 10px 25px rgba(15,23,42,.03); }
+    .kb-kpi-card { background: #ffffff; border: 1px solid var(--line); border-radius: 4px; padding: 18px; border-left: 5px solid var(--primary); box-shadow: 0 10px 25px rgba(15,23,42,.03); }
     .kb-kpi-card h3 { margin: 0 0 8px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
     .kb-kpi-card .num { display: block; color: #0f172a; font-size: 30px; font-weight: 800; line-height: 1; }
     .kb-kpi-card small { display: block; margin-top: 8px; color: var(--muted); font-size: 12px; }
@@ -487,11 +487,11 @@
     .kb-detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-bottom: 16px; }
     .kb-view-field label { color: #94a3b8; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
     .kb-view-value { margin-top: 5px; color: #0f172a; font-size: 13px; font-weight: 600; line-height: 1.55; }
-    .kb-detail-box { padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 12px; background: #f8fafc; line-height: 1.65; white-space: pre-wrap; }
+    .kb-detail-box { padding: 14px 16px; border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 4px; background: #f8fafc; line-height: 1.65; white-space: pre-wrap; }
     .kb-pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
     .kb-impact-panel { display: grid; gap: 14px; margin-top: 8px; }
     .kb-impact-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .kb-impact-metric { padding: 14px 16px; border: 1px solid #dbeafe; border-radius: 12px; background: #f8fbff; }
+    .kb-impact-metric { padding: 14px 16px; border: 1px solid #dbeafe; border-radius: 4px; background: #f8fbff; }
     .kb-impact-metric span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
     .kb-impact-metric b { color: #0f2d52; font-size: 15px; }
     .kb-impact-table-wrap { overflow-x: auto; }
@@ -548,7 +548,7 @@
         align-items: center;
         background: rgba(255, 255, 255, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 12px;
+        border-radius: 4px;
         color: #ffffff;
         cursor: pointer;
         display: inline-flex;
@@ -600,7 +600,7 @@
       .mobile-user-card {
         background: #ffffff;
         border: 1px solid var(--line);
-        border-radius: 14px;
+        border-radius: 4px;
         box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
         color: #0f172a;
         display: none;
@@ -655,14 +655,14 @@
       main { padding: 14px 12px 40px; }
       .topbar {
         align-items: stretch;
-        border-radius: 16px;
+        border-radius: 4px;
         flex-direction: column;
         gap: 14px;
         padding: 16px;
       }
       .topbar h2 { font-size: 20px; line-height: 1.25; }
       .topbar p { font-size: 13px; }
-      .card { border-radius: 14px; padding: 14px; min-width: 0; }
+      .card { border-radius: 4px; padding: 14px; min-width: 0; }
       #dashboard > .grid.cols-4 {
         gap: 10px;
         margin-bottom: 16px !important;
@@ -702,7 +702,7 @@
       .risk-axis-y { writing-mode: horizontal-tb; transform: none; text-align: left; }
       .risk-matrix-grid, .risk-matrix-x { min-width: 300px; }
       .bowtie { gap: 10px; }
-      .bim-viewer-wrap { height: min(420px, 78vh); border-radius: 14px; }
+      .bim-viewer-wrap { height: min(420px, 78vh); border-radius: 4px; }
       .bim-viewer-toolbar {
         left: 10px;
         right: 10px;
@@ -723,7 +723,7 @@
       .mode-switch { flex-wrap: wrap; }
       .mode-btn { flex: 1 1 120px; }
       .modal-overlay { align-items: flex-start; padding: 12px; overflow-y: auto; }
-      .modal-content { width: 100%; max-width: none; border-radius: 14px; }
+      .modal-content { width: 100%; max-width: none; border-radius: 4px; }
       .modal-header, .modal-body { padding: 16px; }
       .modal-body { max-height: none; }
       .approval-list-modal {
@@ -737,7 +737,7 @@
         width: calc(100vw - 12px);
         max-width: calc(100vw - 12px);
         max-height: calc(100dvh - 96px - env(safe-area-inset-top));
-        border-radius: 12px;
+        border-radius: 4px;
         overflow: hidden;
       }
       .approval-list-content .modal-header {
@@ -1041,7 +1041,7 @@
       #knowledge-base .kb-kpi-card {
         min-height: 112px;
         padding: 14px 12px;
-        border-radius: 14px;
+        border-radius: 4px;
       }
       #knowledge-base .kb-kpi-card h3 {
         font-size: 10.5px;
@@ -1176,7 +1176,7 @@
     @media (max-width: 420px) {
       nav { grid-template-columns: 1fr; }
       .brand { align-items: flex-start; }
-      .logo { width: 38px; height: 38px; border-radius: 12px; flex: 0 0 38px; }
+      .logo { width: 38px; height: 38px; border-radius: 4px; flex: 0 0 38px; }
       .risk-row { grid-template-columns: 70px 1fr 28px; gap: 6px; }
       input, select, textarea { font-size: 16px; }
       #dashboard > .grid.cols-4 {
@@ -1287,7 +1287,9 @@
     }
     @media print { .report-paper { border: 0; border-radius: 0; padding: 0; min-height: auto; box-shadow: none; } .card.report-card { border: 0; box-shadow: none; padding: 0; } }
   </style>
-</head>
+
+    <link rel="stylesheet" href="assets/global.css">
+  </head>
 <body>
 <div class="app">
   <aside>
@@ -1311,11 +1313,11 @@
       <button class="mobile-user-toggle" type="button" onclick="toggleMobileUser()" aria-label="Lihat profil" aria-expanded="false">PM</button>
     </div>
     <nav>
-      <button class="active" onclick="showSection('dashboard', this)">📊 01. Dashboard Monitoring</button>
-      <button onclick="showSection('bim', this)">🏢 02. BIM & WBS Viewer</button>
-      <button onclick="showSection('approval', this)">⚖️ 03. Review & Approval</button>
-      <button onclick="showSection('laporan', this)">📑 04. Laporan Akhir Proyek</button>
-      <button onclick="showSection('knowledge-base', this)">📚 05. Knowledge Base</button>
+      <button class="active" onclick="showSection('dashboard', this)">ðŸ“Š 01. Dashboard Monitoring</button>
+      <button onclick="showSection('bim', this)">ðŸ¢ 02. BIM & WBS Viewer</button>
+      <button onclick="showSection('approval', this)">âš–ï¸ 03. Review & Approval</button>
+      <button onclick="showSection('laporan', this)">ðŸ“‘ 04. Laporan Akhir Proyek</button>
+      <button onclick="showSection('knowledge-base', this)">ðŸ“š 05. Knowledge Base</button>
     </nav>
    <div class="aside-footer no-print">
       
@@ -1357,13 +1359,13 @@
         <div class="card metric" style="border-color: var(--warning)">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div><h3>Pending Approval</h3><div class="num" id="cardUnderReview">-</div><small>Butuh keputusan PM</small></div>
-            <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">🡪</button>
+            <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">ðŸ¡ª</button>
           </div>
         </div>
         <div class="card metric" style="border-color: var(--danger)">
           <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div><h3>High Risk Exposure</h3><div class="num" id="cardNeedMitigation">-</div><small>Membutuhkan mitigasi segera</small></div>
-            <button class="icon-btn" onclick="openModal('modalRisk')" title="Lihat Daftar Risiko Tinggi">🡪</button>
+            <button class="icon-btn" onclick="openModal('modalRisk')" title="Lihat Daftar Risiko Tinggi">ðŸ¡ª</button>
           </div>
         </div>
         <div class="card metric" style="border-color: var(--primary)">
@@ -1457,7 +1459,7 @@
       </div>
       <div id="approvalInbox" class="card approval-inbox-card" style="margin-bottom: 24px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <h3 style="margin:0;">📥 Antrean Pengajuan (Pending Review)</h3>
+          <h3 style="margin:0;">ðŸ“¥ Antrean Pengajuan (Pending Review)</h3>
           <div class="no-print">
             <input type="text" id="searchInput" placeholder="Cari CR ID atau Pengaju..."
               style="width: 250px; padding: 8px 12px; font-size: 12px;"
@@ -1471,7 +1473,7 @@
               <th>Deskripsi Perubahan</th>
               <th>Diajukan Oleh</th>
               <th><span class="th-inner">Waktu Masuk<button class="sort-btn" id="sortBtn-waktu" onclick="toggleSort('waktu','main')" title="Urutkan Waktu Masuk"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-waktu"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-waktu"/></svg></button></span></th>
-              <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">ⓘ</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1–2 = Aman<br>3–4 = Rendah<br>5–6 = Sedang<br>7–8 = Tinggi<br>9–10 = Kritis</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')" title="Urutkan Skala Risiko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
+              <th><span class="th-inner">Skala Risiko<div class="tt-wrapper"><span class="tt-icon">â“˜</span><div class="tt-box"><b style="color:#1d4ed8;">Skala Risiko</b><br><br>1â€“2 = Aman<br>3â€“4 = Rendah<br>5â€“6 = Sedang<br>7â€“8 = Tinggi<br>9â€“10 = Kritis</div></div><button class="sort-btn" id="sortBtn-risiko" onclick="toggleSort('risiko','main')" title="Urutkan Skala Risiko"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L4 6h6L7 2z" fill="currentColor" opacity="0.4" id="arrow-up-risiko"/><path d="M7 12L4 8h6L7 12z" fill="currentColor" opacity="0.4" id="arrow-down-risiko"/></svg></button></span></th>
               <th style="text-align:center;">Aksi</th>
             </tr>
           </thead>
@@ -1479,7 +1481,7 @@
         </table>
       </div>
       <div id="approvalDetailView" class="approval-detail-view" style="display:none; animation: fadeIn 0.4s ease;">
-        <button class="btn secondary" onclick="closeCrDetail()" style="margin-bottom: 15px;">🡨 Kembali</button>
+        <button class="btn secondary" onclick="closeCrDetail()" style="margin-bottom: 15px;">ðŸ¡¨ Kembali</button>
         <div class="grid cols-2 approval-detail-grid">
           <div class="card approval-request-card">
             <h3 id="detailTitle">Detail Pengajuan: (Loading...)</h3>
@@ -1507,7 +1509,7 @@
               <tr><td><b>Risk Assessment</b></td><td><span class="badge high" id="detailRiskBadge">Loading...</span></td></tr>
             </table>
             <div class="ai-box">
-              <h4>✨ AI Recommendation Engine</h4>
+              <h4>âœ¨ AI Recommendation Engine</h4>
               <p style="font-size:12px;margin:0;color:#4c1d95;">Rekomendasi akan ditampilkan berdasarkan pencocokan WBS, risiko, dan Knowledge Base proyek dari database.</p>
             </div>
             <div id="pmBowtieDiagram"></div>
@@ -1523,8 +1525,8 @@
                     <label>Keputusan (Approval Decision)</label>
                     <select id="decisionSelect" style="font-weight:bold;">
                         <option value="">-- Pilih Keputusan --</option>
-                        <option value="APPROVED">🟢 Approved (Setuju)</option>
-                        <option value="REJECTED">🔴 Rejected (Tolak)</option>
+                        <option value="APPROVED">ðŸŸ¢ Approved (Setuju)</option>
+                        <option value="REJECTED">ðŸ”´ Rejected (Tolak)</option>
                     </select>
                 </div>
                 <div class="full"><label>Approval Notes / Instruksi PM</label><textarea id="approvalNotes" placeholder="Berikan arahan untuk mitigasi risiko atau alasan keputusan..."></textarea></div>
@@ -1641,30 +1643,30 @@
         <div><h2>BIM & WBS Viewer (Read-Only)</h2><p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p></div>
         <div class="viewer-mode-bar">
           <div class="mode-switch">
-            <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">🏗️ Autodesk BIM</button>
-            <button id="btnModeThree" class="mode-btn active" onclick="switchViewerMode('three')">🧊 Three.js</button>
+            <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">ðŸ—ï¸ Autodesk BIM</button>
+            <button id="btnModeThree" class="mode-btn active" onclick="switchViewerMode('three')">ðŸ§Š Three.js</button>
           </div>
           <span class="aps-status-chip off" id="apsStatusChip">Memuat...</span>
         </div>
       </div>
 
-      <div class="card" style="padding:0;overflow:hidden;border-radius:20px;">
+      <div class="card" style="padding:0;overflow:hidden;border-radius: 4px;">
         <div class="bim-viewer-wrap" id="bimViewerWrap">
           <canvas id="bimThreeCanvas"></canvas>
           <div id="forgeViewerDiv"></div>
-          <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">—</b></div>
+          <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">â€”</b></div>
           <div class="bim-viewer-toolbar">
-            <button onclick="bimResetCamera()">⟳ Reset</button>
-            <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
-            <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
+            <button onclick="bimResetCamera()">âŸ³ Reset</button>
+            <button onclick="bimToggleWireframe()">â¬¡ Wireframe</button>
+            <button onclick="bimHighlightAffected()">âš‘ Highlight Affected</button>
           </div>
           <div class="bim-obj-info-panel" id="bimObjInfoPanel">
             <div class="oi-title">Selected Object</div>
-            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">—</span></div>
-            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">—</span></div>
-            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">—</span></div>
-            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">—</span></div>
-            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">—</span></div>
+            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">â€”</span></div>
+            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">â€”</span></div>
+            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">â€”</span></div>
+            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">â€”</span></div>
+            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">â€”</span></div>
             <div id="bimOiDetailWrap" style="display:none;">
               <div class="oi-detail-title">Detail Properti Revit</div>
               <div id="bimOiDetail"></div>
@@ -1728,8 +1730,8 @@
     <div id="modalPending" class="modal-overlay approval-list-modal" onclick="closeModalOutside(event,'modalPending')">
       <div class="modal-content approval-list-content">
         <div class="modal-header">
-          <h3>⏳ Daftar Pending Approval</h3>
-          <button class="btn-close" onclick="closeModal('modalPending')">✖</button>
+          <h3>â³ Daftar Pending Approval</h3>
+          <button class="btn-close" onclick="closeModal('modalPending')">âœ–</button>
         </div>
         <div class="modal-body">
           <table class="approval-list-table">
@@ -1752,8 +1754,8 @@
     <div id="modalRisk" class="modal-overlay approval-list-modal" onclick="closeModalOutside(event,'modalRisk')">
       <div class="modal-content approval-list-content">
         <div class="modal-header">
-          <h3>⚠️ Daftar High Risk Exposure</h3>
-          <button class="btn-close" onclick="closeModal('modalRisk')">✖</button>
+          <h3>âš ï¸ Daftar High Risk Exposure</h3>
+          <button class="btn-close" onclick="closeModal('modalRisk')">âœ–</button>
         </div>
         <div class="modal-body">
           <table class="approval-list-table">
@@ -1777,7 +1779,7 @@
       <div class="modal-content" style="max-width:860px;">
         <div class="modal-header">
           <h3 id="pmKbModalTitle">Detail Knowledge Base</h3>
-          <button class="btn-close" onclick="closeModal('pmKbModal')">✖</button>
+          <button class="btn-close" onclick="closeModal('pmKbModal')">âœ–</button>
         </div>
         <div class="modal-body" id="pmKbModalBody"></div>
       </div>
@@ -3908,7 +3910,7 @@ function renderPmRecentActivities(activities, page = 0) {
                     </div>
                 </div>
                 <p style="font-size:12px; color:#475569; line-height:1.4; margin:0;">
-                    ${statusBadge} • <b>${escapeHtml(act.submittedBy || "-")}</b> (Site Engineer)
+                    ${statusBadge} â€¢ <b>${escapeHtml(act.submittedBy || "-")}</b> (Site Engineer)
                 </p>
             </div>
         </div>`;
@@ -3923,7 +3925,7 @@ function fetchAssignedProjects() {
             if (res.status === 'success') {
                 activeProjects = res.data;
                 
-                // 🚀 SINKRONISASI NAMA LANGSUNG DARI BACKEND SESSION (Anti Gagal)
+                // ðŸš€ SINKRONISASI NAMA LANGSUNG DARI BACKEND SESSION (Anti Gagal)
                 if (res.user_name) {
                     const nameDisplay = document.getElementById("userFullName");
                     const mobileNameDisplay = document.getElementById("mobileUserFullName");
@@ -4015,7 +4017,7 @@ function renderProjectDropdown(projects) {
     projects.forEach(proj => {
         const option = document.createElement('option');
         option.value = proj.project_id;
-        option.textContent = `${proj.project_id} – ${proj.project_name}`;
+        option.textContent = `${proj.project_id} â€“ ${proj.project_name}`;
         selector.appendChild(option);
     });
 
@@ -4386,7 +4388,9 @@ function printReportDraft(draftId) {
             .report-signature-box { min-height: 168px; display: flex; flex-direction: column; justify-content: space-between; }
             .report-signature-name { border-top: 1px solid #111827; padding-top: 6px; font-weight: 700; }
           </style>
-        </head>
+        
+    <link rel="stylesheet" href="assets/global.css">
+  </head>
         <body><main class="print-page" id="printRoot"></main></body>
       </html>`);
     doc.close();
@@ -4536,7 +4540,7 @@ function fetchDashboardStats(projectId) {
                 if (countMitigationEl) countMitigationEl.innerText = res.data.need_mitigation;
 
 
-                // === Bagian B: 🆕 Update Tabel Ringkasan DAN Card Matriks Sekaligus ===
+                // === Bagian B: ðŸ†• Update Tabel Ringkasan DAN Card Matriks Sekaligus ===
 
                 // 1. Definisikan Elemen untuk Tabel Ringkasan (Bawah)
                 const sumReviewEl = document.getElementById("summaryUnderReview");
@@ -4561,7 +4565,7 @@ function fetchDashboardStats(projectId) {
                 // === SINKRONISASI DATA REVIEW & APPROVAL KE SISTEM EKSISTING ===
                 const pendingRequests = res.data.pending_requests || [];
                 
-                // === Bagian C: 🆕 Populasikan Tabel Modal High Risk Exposure ===
+                // === Bagian C: ðŸ†• Populasikan Tabel Modal High Risk Exposure ===
 
                 const riskTbody = document.getElementById("riskTbody");
 
@@ -4577,7 +4581,7 @@ function fetchDashboardStats(projectId) {
                         const riskRows = highRiskData.map(cr => {
                             let riskVal = parseInt(cr.risk);
                             
-                            // 🎨 Menentukan Class CSS dan Teks berdasarkan level risiko
+                            // ðŸŽ¨ Menentukan Class CSS dan Teks berdasarkan level risiko
                             let badgeClass = '';
                             let badgeText = '';
                             
@@ -4621,7 +4625,7 @@ function fetchDashboardStats(projectId) {
                         riskTbody.innerHTML = `
                             <tr>
                                 <td colspan="5" style="text-align: center; padding: 40px; color: #6c757d;">
-                                    🎉 Luar biasa! Saat ini tidak ada pengajuan dengan risiko tinggi.
+                                    ðŸŽ‰ Luar biasa! Saat ini tidak ada pengajuan dengan risiko tinggi.
                                 </td>
                             </tr>
                         `;
@@ -4681,13 +4685,13 @@ function fetchDashboardStats(projectId) {
                         riskCategory: cr.riskCategory || cr.risk_kategori,
                         riskDescription: cr.riskDescription,
 
-                        // 🌟 TAMBAHKAN BARIS INI:
+                        // ðŸŒŸ TAMBAHKAN BARIS INI:
                         bimObjectId: cr.bimObjectId,
 
-                        // 🌟 PASTIKAN BARIS INI ADA AGAR BISA DIFILTER
+                        // ðŸŒŸ PASTIKAN BARIS INI ADA AGAR BISA DIFILTER
                         risk: cr.risk,
                         
-                        // 🌟 TAMBAHKAN DUA BARIS INI AGAR DATA DARI PHP TIDAK HILANG 🌟
+                        // ðŸŒŸ TAMBAHKAN DUA BARIS INI AGAR DATA DARI PHP TIDAK HILANG ðŸŒŸ
                         insight: cr.insight || cr.insightText || '',
                         saran: cr.saran || cr.saranText || '',
                         projectId: cr.projectArea || cr.projectId || ''
@@ -4774,7 +4778,7 @@ function openCrDetail(cr) {
         // Baris 3 (Index 2): BIM Object ID
         let bimid = data.bimObjectId || data.bimId;
         detailTable.rows[2].cells[1].innerHTML = bimid
-          ? `${bimid} <button class="btn secondary" style="padding:4px 10px;font-size:11px;margin-left:8px;" onclick="bimGoToViewer('${bimid}')">🏢 Lihat di Viewer</button>`
+          ? `${bimid} <button class="btn secondary" style="padding:4px 10px;font-size:11px;margin-left:8px;" onclick="bimGoToViewer('${bimid}')">ðŸ¢ Lihat di Viewer</button>`
           : '-';
         
         // Baris 4 (Index 3): WBS Mapping
@@ -4867,16 +4871,16 @@ function closeCrDetail() {
     document.getElementById("approvalInbox").style.display = "block";
     document.getElementById("approvalDetailView").style.display = "none";
 }
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // DATA
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // Ubah dari const menjadi let dan kosongkan isinya
   let crData = [];
 
   // High-risk subset
   const riskData = crData.filter(r => r.risikoScore >= 7);
 
-  // ── Per-scope sort states ──
+  // â”€â”€ Per-scope sort states â”€â”€
   const sortStates = {
     main:    { key: null, dir: 'asc' },
     pending: { key: null, dir: 'asc' },
@@ -4885,9 +4889,9 @@ function closeCrDetail() {
 
   function crIdNum(id) { return parseInt(id.replace(/\D/g,''), 10); }
 
-  // ══════════════════════════════════════════
-  // SORT — shared across all three scopes
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // SORT â€” shared across all three scopes
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function toggleSort(key, scope) {
     const st = sortStates[scope];
     if (st.key === key) {
@@ -4933,9 +4937,9 @@ function closeCrDetail() {
     });
   }
 
-  // ══════════════════════════════════════════
-  // SEARCH + SORT → main inbox
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // SEARCH + SORT â†’ main inbox
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function applySearchAndSort() {
     const query = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
     let rows = crData.filter(r => {
@@ -4949,14 +4953,14 @@ function closeCrDetail() {
     renderInbox(rows);
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER: main inbox
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function renderInbox(rows) {
     const tbody = document.getElementById('inboxTbody');
     if (!tbody) return;
     if (rows.length === 0) {
-      tbody.innerHTML = `<tr class="no-results-row"><td colspan="6"><div style="font-size:24px;margin-bottom:8px;">🔍</div>Tidak ada hasil yang cocok</td></tr>`;
+      tbody.innerHTML = `<tr class="no-results-row"><td colspan="6"><div style="font-size:24px;margin-bottom:8px;">ðŸ”</div>Tidak ada hasil yang cocok</td></tr>`;
       return;
     }
     tbody.innerHTML = rows.map(r => `
@@ -4970,9 +4974,9 @@ function closeCrDetail() {
       </tr>`).join('');
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER: pending modal
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function renderPending(rows) {
     const tbody = document.getElementById('pendingTbody');
     if (!tbody) return;
@@ -4986,9 +4990,9 @@ function closeCrDetail() {
       </tr>`).join('');
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // RENDER: risk modal
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function renderRisk(rows) {
     const tbody = document.getElementById('riskTbody');
     if (!tbody) return;
@@ -5002,9 +5006,9 @@ function closeCrDetail() {
       </tr>`).join('');
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // CR DETAIL
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   const crDetailMap = {};
 
   let pmKbDatabase = [];
@@ -5154,9 +5158,9 @@ function closeCrDetail() {
     openModal("pmKbModal");
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // NAVIGATION
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function showSection(id, btn) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -5264,14 +5268,14 @@ function closeCrDetail() {
   initMobileAutoHideNavbar();
   ensureMobileUserCardLayer();
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // MODAL
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function openModal(modalId) { document.getElementById(modalId).classList.add('active'); }
   function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
   function closeModalOutside(event, modalId) { if (event.target.id === modalId) closeModal(modalId); }
 
-  // Cari tombol nav berdasarkan section id-nya, bukan posisi/index —
+  // Cari tombol nav berdasarkan section id-nya, bukan posisi/index â€”
   // supaya urutan menu di sidebar bisa diubah tanpa merusak navigasi antar-fitur.
   function getNavButton(sectionId) {
     return document.querySelector(`nav button[onclick*="showSection('${sectionId}'"]`);
@@ -5283,9 +5287,9 @@ function closeCrDetail() {
     setTimeout(() => openCrDetail(crId), 300);
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // LOGOUT
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   function logout() {
     const confirmLogout = confirm("Apakah Anda yakin ingin keluar dari sistem Workspace PM?");
     if (confirmLogout) {
@@ -5297,9 +5301,9 @@ function closeCrDetail() {
     }
   }
   
-  // ══════════════════════════════════════════
-  // BIM 3D VIEWER — elemen jembatan representatif, terhubung ke Change Request
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // BIM 3D VIEWER â€” elemen jembatan representatif, terhubung ke Change Request
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   const bimParts = [
     { id: 'BIM-001', name: 'Abutment A1',      wbs: '1.1.1', geo: () => new THREE.BoxGeometry(1.6, 2.4, 4.4),         pos: [-6.4, 1.2, 0] },
     { id: 'BIM-002', name: 'Pier P1',          wbs: '7.2.6', geo: () => new THREE.CylinderGeometry(0.5, 0.6, 3.2, 16), pos: [-2.6, 1.6, 0] },
@@ -5430,11 +5434,11 @@ function closeCrDetail() {
   }
 
   function bimSelectObject(data) {
-    document.getElementById('bimOiId').textContent = data.bimId || '—';
-    document.getElementById('bimOiWbs').textContent = data.wbs || '—';
-    document.getElementById('bimOiType').textContent = data.name || '—';
-    document.getElementById('bimOiStatus').textContent = data.status || '—';
-    document.getElementById('bimTargetLabel').textContent = data.bimId || '—';
+    document.getElementById('bimOiId').textContent = data.bimId || 'â€”';
+    document.getElementById('bimOiWbs').textContent = data.wbs || 'â€”';
+    document.getElementById('bimOiType').textContent = data.name || 'â€”';
+    document.getElementById('bimOiStatus').textContent = data.status || 'â€”';
+    document.getElementById('bimTargetLabel').textContent = data.bimId || 'â€”';
 
     const related = (crData || []).filter(c => c.bimObjectId === data.bimId);
     const crCell = document.getElementById('bimOiCr');
@@ -5463,10 +5467,10 @@ function closeCrDetail() {
     });
   }
 
-  // ══════════════════════════════════════════
-  // AUTODESK APS — mode model RVT asli (alternatif dari Three.js representatif)
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // AUTODESK APS â€” mode model RVT asli (alternatif dari Three.js representatif)
   // Production mode: token diambil otomatis dari server (.env), tidak ada input manual.
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   const FORGE_URN = 'urn:adsk.objects:os.object:gbc1y5bytf1lnyjs9nj5-bimwbs-prod/FILE-P2.rvt';
   let apsMode  = false;
   let apsToken = null;
@@ -5475,7 +5479,7 @@ function closeCrDetail() {
 
   async function initApsAuto() {
     const chip = document.getElementById('apsStatusChip');
-    chip.textContent = '⟳ Menghubungkan Autodesk APS...';
+    chip.textContent = 'âŸ³ Menghubungkan Autodesk APS...';
     chip.className   = 'aps-status-chip connecting';
     try {
       const res  = await fetch('backend/api_aps_token.php');
@@ -5562,15 +5566,15 @@ function closeCrDetail() {
       document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
       document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;
       document.getElementById('bimOiWbs').textContent  = (data.linkedChanges && data.linkedChanges[0])
-        ? [data.linkedChanges[0].wbsLevel4, data.linkedChanges[0].wbsLevel5, data.linkedChanges[0].wbsLevel6].filter(Boolean).join(' → ')
-        : '—';
+        ? [data.linkedChanges[0].wbsLevel4, data.linkedChanges[0].wbsLevel5, data.linkedChanges[0].wbsLevel6].filter(Boolean).join(' â†’ ')
+        : 'â€”';
       document.getElementById('bimOiStatus').textContent = data.bimObjectId ? 'Terhubung ke data proyek' : 'Belum ada tag BIM Object ID di Revit';
       const crCell = document.getElementById('bimOiCr');
       crCell.innerHTML = (data.linkedChanges && data.linkedChanges.length)
         ? data.linkedChanges.map(c => `<a href="#" onclick="event.preventDefault(); bimGoToCr('${c.changeId}')">${c.changeId}</a>`).join(', ')
         : 'Tidak ada CR aktif';
 
-      // Properti Revit asli (Type Name, Volume, parameter konstruksi custom) —
+      // Properti Revit asli (Type Name, Volume, parameter konstruksi custom) â€”
       // tetap ditampilkan meski elemen belum ditandai BIM Object ID/Mark.
       detailWrap.style.display = 'block';
       const entries = Object.entries(data.detail || {});
@@ -5607,10 +5611,10 @@ function closeCrDetail() {
     } else {
       document.getElementById('bimTargetLabel').textContent = bimId + ' (belum dipetakan di viewer)';
       document.getElementById('bimOiId').textContent = bimId;
-      document.getElementById('bimOiWbs').textContent = '—';
+      document.getElementById('bimOiWbs').textContent = 'â€”';
       document.getElementById('bimOiType').textContent = 'Belum ada model 3D untuk ID ini';
-      document.getElementById('bimOiStatus').textContent = '—';
-      document.getElementById('bimOiCr').textContent = '—';
+      document.getElementById('bimOiStatus').textContent = 'â€”';
+      document.getElementById('bimOiCr').textContent = 'â€”';
     }
   }
 
@@ -5624,9 +5628,9 @@ function closeCrDetail() {
     setTimeout(() => openCrDetail(crId), 200);
   }
 
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   // INIT
-  // ══════════════════════════════════════════
+  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   document.addEventListener('DOMContentLoaded', function () {
     renderInbox(crData);
     renderPending(crData);
@@ -5729,11 +5733,11 @@ function closeCrDetail() {
 
         // 6. Tangani respon dari server
         if (result.status === 'success') {
-            alert("✅ Keputusan berhasil disahkan!");
+            alert("âœ… Keputusan berhasil disahkan!");
             // Refresh halaman atau redirect kembali ke tabel dashboard
             window.location.href = 'project-manager.html'; 
         } else {
-            alert("❌ Gagal menyimpan: " + result.message);
+            alert("âŒ Gagal menyimpan: " + result.message);
         }
     } catch (error) {
         console.error("Error:", error);
