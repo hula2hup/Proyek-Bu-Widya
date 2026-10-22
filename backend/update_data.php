@@ -2,6 +2,8 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/db_user.php';
+require_once __DIR__ . '/auth_guard.php';
+require_once __DIR__ . '/wbs_validator.php';
 
 function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
     static $columns = null;
@@ -18,6 +20,8 @@ function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
 // 2. PROSES UPDATE DATA (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
+    $currentUser = auth_require_role(['Site Engineer', 'Project Manager', 'Admin']);
+
     $changeId = $_POST['changeId'] ?? '';
 
     if (empty($changeId)) {
@@ -25,25 +29,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     }
 
-    // 🛑 VALIDASI BACKEND: Cek status data saat ini di database sebelum eksekusi!
-    $stmtCheck = $pdo->prepare("SELECT status, submittedBy, photoEvidence FROM change_requests WHERE changeId = :changeId");
+    // 🛑 VALIDASI BACKEND: Cek data saat ini di database
+    $stmtCheck = $pdo->prepare("SELECT status, projectArea, submittedBy, photoEvidence, lock_version FROM change_requests WHERE changeId = :changeId");
     $stmtCheck->execute(['changeId' => $changeId]);
     $currentData = $stmtCheck->fetch();
 
     if (!$currentData) {
+        http_response_code(404);
         echo json_encode(["status" => "error", "message" => "Data tidak ditemukan di database."]);
         exit();
     }
 
-    // Proteksi utama: data APPROVED hanya bisa dioverride dari Admin.
+    $projectArea = !empty($_POST['projectArea']) ? trim($_POST['projectArea']) : $currentData['projectArea'];
+    auth_require_project_access($pdo, $projectArea, $currentUser);
+
+    // T1: Validasi WBS jika diubah atau diperbarui
+    $wbsCandidate = !empty($_POST['wbsLevel5']) ? $_POST['wbsLevel5'] : ($_POST['wbsLevel4'] ?? '');
+    if ($wbsCandidate !== '') {
+        $wbsValidation = wbs_validate_reference($pdo, $projectArea, $wbsCandidate);
+        if (!$wbsValidation['valid']) {
+            http_response_code(422);
+            echo json_encode([
+                "status" => "error",
+                "error_code" => $wbsValidation['contract_status'], // INVALID_WBS atau CROSS_PROJECT
+                "message" => $wbsValidation['error']
+            ]);
+            exit();
+        }
+    }
+
+    // Proteksi utama: data APPROVED hanya bisa dioverride dari Admin
     $currentStatus = strtoupper($currentData['status']);
     $isAdminOverrideApproved = ($_POST['adminOverrideApproved'] ?? '') === '1';
-    if ($currentStatus === 'APPROVED' && !$isAdminOverrideApproved) {
-        echo json_encode(["status" => "error", "message" => "Akses ditolak. Data berstatus APPROVED tidak dapat dimodifikasi!"]);
+    if ($currentStatus === 'APPROVED' && !$isAdminOverrideApproved && $currentUser['role'] !== 'Admin') {
+        http_response_code(403);
+        echo json_encode([
+            "status" => "error",
+            "error_code" => "INVALID_STATE",
+            "message" => "Akses ditolak. Data berstatus APPROVED tidak dapat dimodifikasi tanpa override Admin!"
+        ]);
         exit();
     }
 
-    // 🔄 ALUR STATUS: Jika status sebelumnya REJECTED, otomatis kembalikan ke PENDING setelah di-edit agar bisa ditinjau ulang
+    // 🔄 ALUR STATUS: Jika status sebelumnya REJECTED, otomatis kembalikan ke PENDING setelah di-edit
     $newStatus = $currentStatus;
     if ($currentStatus === 'REJECTED') {
         $newStatus = 'PENDING';
@@ -54,9 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
-    $photo_evidence = $currentData['photoEvidence']; // Gunakan file lama sebagai default
+    $photo_evidence = $currentData['photoEvidence'];
 
-    // ✅ PERBAIKAN DI SINI: Tambahkan is_array() agar tidak crash jika format form salah
     if (isset($_FILES['photo']) && is_array($_FILES['photo']['name']) && !empty($_FILES['photo']['name'][0])) {
         $uploaded_files = [];
         foreach ($_FILES['photo']['name'] as $key => $name) {
@@ -69,24 +96,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
         if (!empty($uploaded_files)) {
-            $photo_evidence = implode(',', $uploaded_files); // Ganti string bukti dengan yang baru jika ada upload baru
+            $photo_evidence = implode(',', $uploaded_files);
         }
     }
 
-    // Menangkap Array Checkbox dari frontend
     $changeDrivers = isset($_POST['changeDrivers']) ? (is_array($_POST['changeDrivers']) ? implode(',', $_POST['changeDrivers']) : $_POST['changeDrivers']) : null;
     $locationFormatColumn = changeRequestColumnExists($pdo, 'locationFormat')
         ? 'locationFormat'
         : (changeRequestColumnExists($pdo, 'location_format') ? 'location_format' : null);
     $locationFormatSql = $locationFormatColumn ? "{$locationFormatColumn}    = :locationFormat,\n                " : "";
 
-    // 4. QUERY UPDATE SQL
+    // 4. QUERY UPDATE SQL dengan optimistic lock version increment
     $sql = "UPDATE change_requests SET 
                 changeDate        = :changeDate,
                 submittedBy       = :submittedBy,
                 wbsLevel4         = :wbsLevel4,
                 wbsLevel5         = :wbsLevel5,
                 wbsLevel6         = :wbsLevel6,
+                wbs_version       = :wbs_version,
                 changeCategory    = :changeCategory,
                 priority          = :priority,
                 risk              = :risk,
@@ -94,6 +121,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $locationFormatSql
                 location          = :location,
                 bimObjectId       = :bimObjectId,
+                bim_model_urn     = :bim_model_urn,
+                bim_model_version = :bim_model_version,
                 riskCategory      = :riskCategory,
                 riskVariable      = :riskVariable,
                 riskDescription   = :riskDescription,
@@ -107,7 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 impactSafety      = :impactSafety,
                 descriptionDetail = :descriptionDetail,
                 photoEvidence     = :photoEvidence,
-                status            = :status
+                status            = :status,
+                lock_version      = lock_version + 1
             WHERE changeId = :changeId";
 
     try {
@@ -118,12 +148,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
             'wbsLevel5'         => $_POST['wbsLevel5'] ?? null,
             'wbsLevel6'         => $_POST['wbsLevel6'] ?? null,
+            'wbs_version'       => $wbsValidation['version'] ?? 'v1.0',
             'changeCategory'    => $_POST['changeCategory'] ?? null,
             'priority'          => $_POST['priority'] ?? null,
             'risk'              => $_POST['risk'] ?? null,
-            'projectArea'       => $_POST['projectArea'] ?? null,
+            'projectArea'       => $projectArea,
             'location'          => $_POST['location'] ?? null,
             'bimObjectId'       => $_POST['bimObjectId'] ?? null,
+            'bim_model_urn'     => $_POST['bim_model_urn'] ?? null,
+            'bim_model_version' => $_POST['bim_model_version'] ?? 'v1',
             'riskCategory'      => $_POST['riskCategory'] ?? null,
             'riskVariable'      => $_POST['riskVariable'] ?? null,
             'riskDescription'   => $_POST['riskDescription'] ?? null,
@@ -148,7 +181,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($success) {
             echo json_encode([
                 "status" => "success", 
-                "message" => "Data change request berhasil diperbarui." . ($currentStatus === 'REJECTED' ? " Status dikembalikan ke PENDING untuk ditinjau ulang." : "") . ($currentStatus === 'APPROVED' && $isAdminOverrideApproved ? " Override admin untuk status APPROVED berhasil diterapkan." : "")
+                "contract_status" => "VALIDATED_REFERENCE",
+                "message" => "Data change request berhasil diperbarui." . ($currentStatus === 'REJECTED' ? " Status dikembalikan ke PENDING untuk ditinjau ulang." : "")
             ]);
         } else {
             echo json_encode(["status" => "error", "message" => "Gagal mengeksekusi pembaruan data ke database."]);
@@ -157,7 +191,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
     }
 } else {
-    // Jika diakses selain menggunakan metode POST
     echo json_encode(["status" => "error", "message" => "Metode tidak diizinkan. Gunakan POST."]);
 }
 ?>

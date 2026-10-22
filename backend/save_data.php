@@ -3,6 +3,8 @@
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/db_user.php';
+require_once __DIR__ . '/auth_guard.php';
+require_once __DIR__ . '/wbs_validator.php';
 
 function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
     static $columns = null;
@@ -19,6 +21,32 @@ function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
 // 2. PROSES DATA SAAT FORM DI-SUBMIT (POST)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
+    // Validasi otorisasi: Site Engineer, Project Manager, Admin
+    $currentUser = auth_require_role(['Site Engineer', 'Project Manager', 'Admin']);
+
+    $projectArea = trim($_POST['projectArea'] ?? '');
+    if ($projectArea === '') {
+        echo json_encode(["status" => "error", "message" => "Project Area / Project ID wajib diisi."]);
+        exit();
+    }
+
+    // Validasi penugasan user ke proyek
+    auth_require_project_access($pdo, $projectArea, $currentUser);
+
+    // T1: Validasi WBS terhadap controlled reference proyek
+    $wbsCandidate = !empty($_POST['wbsLevel5']) ? $_POST['wbsLevel5'] : ($_POST['wbsLevel4'] ?? '');
+    $wbsValidation = wbs_validate_reference($pdo, $projectArea, $wbsCandidate);
+
+    if (!$wbsValidation['valid']) {
+        http_response_code(422);
+        echo json_encode([
+            "status" => "error",
+            "error_code" => $wbsValidation['contract_status'], // INVALID_WBS atau CROSS_PROJECT
+            "message" => $wbsValidation['error']
+        ]);
+        exit();
+    }
+
     // Tentukan direktori penyimpanan file upload (bukti foto/dokumen)
     $target_dir = __DIR__ . "/../uploads/";
     if (!file_exists($target_dir)) {
@@ -26,7 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Proses multi-upload untuk file 'photo'
-    // WAJIB: Di HTML harus menggunakan name="photo[]"
     $uploaded_files = [];
     if (isset($_FILES['photo']) && is_array($_FILES['photo']['name']) && !empty($_FILES['photo']['name'][0])) {
         foreach ($_FILES['photo']['name'] as $key => $name) {
@@ -40,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
-    // Gabungkan nama-nama file menjadi string dipisahkan koma
     $photo_evidence = implode(',', $uploaded_files);
 
     // Menangkap Array Checkbox 
@@ -53,19 +79,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = [
         'changeId'          => $_POST['changeId'] ?? uniqid('CR-'),
         'changeDate'        => $_POST['changeDate'] ?? date('Y-m-d'),
-        'submittedBy'       => $_POST['submittedBy'] ?? 'SITE ENGINEER',
+        'submittedBy'       => $currentUser['full_name'] ?: ($_POST['submittedBy'] ?? 'SITE ENGINEER'),
         'wbsLevel4'         => $_POST['wbsLevel4'] ?? null,
         'wbsLevel5'         => $_POST['wbsLevel5'] ?? null,
         'wbsLevel6'         => $_POST['wbsLevel6'] ?? null,
+        'wbs_version'       => $wbsValidation['version'] ?? 'v1.0',
         'changeCategory'    => $_POST['changeCategory'] ?? null,
         'priority'          => $_POST['priority'] ?? null,
         'risk'              => $_POST['risk'] ?? null,
-        'projectArea'       => $_POST['projectArea'] ?? null,
+        'projectArea'       => $projectArea,
         'location'          => $_POST['location'] ?? null,
         'bimObjectId'       => $_POST['bimObjectId'] ?? null,
+        'bim_model_urn'     => $_POST['bim_model_urn'] ?? null,
+        'bim_model_version' => $_POST['bim_model_version'] ?? 'v1',
         'riskCategory'      => $_POST['riskCategory'] ?? null,
         'riskVariable'      => $_POST['riskVariable'] ?? null,
-        'riskDescription'      => $_POST['riskDescription'] ?? null,
+        'riskDescription'   => $_POST['riskDescription'] ?? null,
         'description'       => $_POST['description'] ?? null,
         'ownerRequest'      => $_POST['ownerRequest'] ?? null,
         'changeDrivers'     => $changeDrivers, 
@@ -88,14 +117,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Query INSERT 
     $sql = "INSERT INTO change_requests (
                 changeId, changeDate, submittedBy, wbsLevel4, wbsLevel5, 
-                wbsLevel6, changeCategory, priority, risk, projectArea, 
-                {$locationFormatColumn}location, bimObjectId, riskCategory, riskVariable, riskDescription, description,
+                wbsLevel6, wbs_version, changeCategory, priority, risk, projectArea, 
+                {$locationFormatColumn}location, bimObjectId, bim_model_urn, bim_model_version,
+                riskCategory, riskVariable, riskDescription, description,
                 ownerRequest, changeDrivers, impactCost, impactTime, 
                 impactScope, impactQuality, impactSafety, descriptionDetail, photoEvidence, status
             ) VALUES (
                 :changeId, :changeDate, :submittedBy, :wbsLevel4, :wbsLevel5, 
-                :wbsLevel6, :changeCategory, :priority, :risk, :projectArea, 
-                {$locationFormatValue}:location, :bimObjectId, :riskCategory, :riskVariable, :riskDescription, :description,
+                :wbsLevel6, :wbs_version, :changeCategory, :priority, :risk, :projectArea, 
+                {$locationFormatValue}:location, :bimObjectId, :bim_model_urn, :bim_model_version,
+                :riskCategory, :riskVariable, :riskDescription, :description,
                 :ownerRequest, :changeDrivers, :impactCost, :impactTime, 
                 :impactScope, :impactQuality, :impactSafety, :descriptionDetail, :photoEvidence, :status
             )";
@@ -105,16 +136,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $saved = $stmt->execute($data);
 
         if ($saved) {
-            echo json_encode(["status" => "success", "message" => "Data berhasil disimpan"]);
+            echo json_encode([
+                "status" => "success",
+                "contract_status" => "VALIDATED_REFERENCE",
+                "changeId" => $data['changeId'],
+                "wbs_version" => $data['wbs_version'],
+                "message" => "Data berhasil disimpan dengan referensi WBS tervalidasi."
+            ]);
             exit();
         }
     } catch (PDOException $e) {
-        // Balas dengan JSON jika ada error query (misal: tipe data salah, nama kolom tidak cocok)
         echo json_encode(["status" => "error", "message" => "Gagal menyimpan data: " . $e->getMessage()]);
         exit();
     }
 } else {
-    // Jika file diakses langsung dari URL tanpa disubmit
     echo json_encode(["status" => "error", "message" => "Metode tidak diizinkan. Gunakan POST."]);
     exit();
 }

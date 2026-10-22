@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id']) || !in_array($_SESSION['role'], ['Project Manag
 }
 
 require_once __DIR__ . '/db_user.php';
+require_once __DIR__ . '/recommendation_engine.php';
 
 function ensureProjectAccess(PDO $pdo, string $projectId): void {
     if ($projectId === '' || $_SESSION['role'] === 'Admin') {
@@ -146,6 +147,16 @@ try {
     ");
     $stmtPending->execute($params);
     $pendingRequests = $stmtPending->fetchAll();
+    foreach ($pendingRequests as &$pr) {
+        $rec = rec_match_candidates($pdo, $pr["wbsLevel5"] ?: $pr["wbsLevel4"], $pr["riskVariable"]);
+        $pr["rec_contract_status"] = $rec["status"];
+        if ($rec["selected_rule"]) {
+            $pr["insight"] = $rec["selected_rule"]["insight"];
+            $pr["saran"] = $rec["selected_rule"]["saran"];
+        } else {
+            $pr["saran"] = $rec["message"];
+        }
+    }
 
     // 7. Distribusi klasifikasi risiko seluruh Change Request pada proyek aktif
     $whereAllProject = !empty($projectId) ? "WHERE projectArea = :project_id" : "";
@@ -432,6 +443,9 @@ try {
                 "approved_changes" => (int)($controlTotals['approved_changes'] ?? 0),
                 "approval_rate" => (float)((int)($controlTotals['total_changes'] ?? 0) > 0 ? round(((int)($controlTotals['approved_changes'] ?? 0) / (int)$controlTotals['total_changes']) * 100, 1) : 0),
                 "controlled_delay_days" => (int)($controlTotals['controlled_delay_days'] ?? 0),
+                "indicative_cr_time_impact_days" => (int)($controlTotals['controlled_delay_days'] ?? 0),
+                "cpm_attribution" => false,
+                "cpm_disclaimer" => "Dampak waktu bersifat indikatif; penentuan durasi proyek kausal memerlukan CPM.",
                 "active_high_risk" => (int)($controlTotals['active_high_risk'] ?? 0),
                 "lesson_learned" => $lessonTotal,
                 "lesson_recent" => $lessonRecent,
