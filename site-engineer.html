@@ -2066,6 +2066,292 @@
           }
         }
       }
+          /* ══════════════════════════════════════════════════════════
+         FORM INPUT CHANGE REQUEST (BLUEPRINT SPECIFICATION)
+         ══════════════════════════════════════════════════════════ */
+      .cr-page-wrapper {
+        padding: 24px 30px 48px;
+        background: #f8fafc;
+        min-height: calc(100vh - 70px);
+      }
+      .cr-top-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 22px;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .cr-page-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f2d52;
+        margin: 0 0 4px 0;
+      }
+      .cr-page-subtitle {
+        font-size: 13px;
+        color: #64748b;
+        margin: 0;
+      }
+      .cr-project-card {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 8px 16px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      }
+      .cr-project-label {
+        font-size: 11px;
+        color: #94a3b8;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .cr-project-val {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f2d52;
+      }
+      .cr-form-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .cr-row-2col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      .cr-row-3col {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 18px;
+      }
+      .cr-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+        display: flex;
+        flex-direction: column;
+      }
+      .cr-card-header {
+        margin-bottom: 14px;
+        border-bottom: 1px solid #f1f5f9;
+        padding-bottom: 8px;
+      }
+      .cr-card-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f2d52;
+        margin: 0;
+      }
+      .cr-card-subtitle {
+        font-size: 11px;
+        color: #94a3b8;
+        margin: 2px 0 0 0;
+      }
+      .cr-fields-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .cr-field-group {
+        display: flex;
+        flex-direction: column;
+      }
+      .cr-field-group.full-width {
+        width: 100%;
+      }
+      .cr-field-group label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 5px;
+      }
+      .cr-field-group input,
+      .cr-field-group select,
+      .cr-field-group textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        padding: 9px 12px;
+        font-size: 13px;
+        color: #1e293b;
+        background: #ffffff;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+      .cr-field-group input:focus,
+      .cr-field-group select:focus,
+      .cr-field-group textarea:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(37,99,235,0.15);
+      }
+      .cr-input-readonly {
+        background-color: #f1f5f9 !important;
+        color: #64748b !important;
+        cursor: not-allowed;
+      }
+      .cr-dropzone {
+        border: 2px dashed #cbd5e1;
+        border-radius: 8px;
+        padding: 20px 14px;
+        text-align: center;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: border-color 0.2s ease, background-color 0.2s ease;
+      }
+      .cr-dropzone:hover {
+        border-color: #2563eb;
+        background: #f1f5f9;
+      }
+      .cr-dropzone-icon {
+        font-size: 26px;
+        margin-bottom: 4px;
+      }
+      .cr-dropzone-main {
+        font-weight: 700;
+        font-size: 13px;
+        color: #0f2d52;
+      }
+      .cr-dropzone-sub {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .cr-dropzone-hint {
+        font-size: 10px;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+      .cr-evidence-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .cr-pill-btn {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 4px;
+        padding: 4px 8px;
+        font-size: 11px;
+        font-weight: 500;
+        color: #475569;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .cr-pill-btn:hover {
+        background: #e2e8f0;
+        color: #1e293b;
+      }
+      .cr-evidence-gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .cr-evidence-thumb {
+        position: relative;
+        width: 52px;
+        height: 52px;
+        border-radius: 4px;
+        border: 1px solid #cbd5e1;
+        overflow: hidden;
+        background: #e2e8f0;
+      }
+      .cr-evidence-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .cr-action-bar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+      }
+      .cr-btn {
+        padding: 10px 22px;
+        font-size: 13px;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .cr-btn-draft {
+        background: #ffffff;
+        border: 1px solid #94a3b8;
+        color: #334155;
+      }
+      .cr-btn-draft:hover {
+        background: #f8fafc;
+        border-color: #64748b;
+      }
+      .cr-btn-primary {
+        background: #0f2d52;
+        border: 1px solid #0f2d52;
+        color: #ffffff;
+      }
+      .cr-btn-primary:hover {
+        background: #1e3a5f;
+      }
+      .cr-btn-reset {
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        color: #64748b;
+      }
+      .cr-btn-reset:hover {
+        background: #f1f5f9;
+        color: #334155;
+      }
+      .cr-ref-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 16px;
+        font-size: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      }
+      .cr-ref-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #0f2d52;
+        margin-bottom: 6px;
+      }
+      .cr-ref-text {
+        color: #64748b;
+        line-height: 1.5;
+      }
+      .cr-ref-text b {
+        color: #334155;
+      }
+      @media (max-width: 992px) {
+        .cr-row-2col,
+        .cr-row-3col {
+          grid-template-columns: 1fr !important;
+        }
+        .cr-fields-grid-3 {
+          grid-template-columns: 1fr !important;
+        }
+        .cr-top-header {
+          flex-direction: column !important;
+        }
+        .cr-action-bar {
+          flex-direction: column !important;
+          width: 100% !important;
+        }
+        .cr-btn {
+          width: 100% !important;
+          text-align: center !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2245,622 +2531,277 @@
         <p style="color:#64748b;font-size:13px;margin:0 0 18px 2px;">Klik elemen pada viewer untuk melihat detail Object ID, WBS, status, dan Change Request terkait yang pernah kamu ajukan. Mode "Autodesk BIM" memuat model RVT asli secara otomatis; kalau tidak tersedia, otomatis kembali ke mode Three.js.</p>
       </div>
 
-      <div id="newChangePage" class="page">
-        <div class="content-page">
-          <div class="stepper-container">
-            <div class="step-indicator active" id="step1-indicator">
-              <div class="step-number">1</div>
-              <h2>Identifikasi Perubahan</h2>
+            <div id="newChangePage" class="page">
+        <div class="content-page cr-page-wrapper">
+          
+          <!-- Top Header: Title & Selected Project -->
+          <div class="cr-top-header">
+            <div>
+              <h1 class="cr-page-title">Form Input Change Request</h1>
+              <p class="cr-page-subtitle">Form operasional untuk mencatat perubahan lapangan, WBS, risiko, dampak, lokasi, BIM Object ID, dan bukti pendukung.</p>
             </div>
-
-            <div class="stepper-line"></div>
-
-            <div class="step-indicator" id="step2-indicator">
-              <div class="step-number">2</div>
-              <h2>Register Change Request</h2>
-            </div>
-          </div>
-
-          <div id="identify" class="form-card">
-            <div class="form-grid wbs-grid">
-              <div class="form-group">
-                <label>WBS-Rumpun Pekerjaan</label>
-                <select id="wbsLevel2">
-                  <option value="">Pilih Rumpun Pekerjaan</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>WBS-Jenis Pekerjaan</label>
-                <select id="wbsLevel3">
-                  <option value="">Pilih Jenis Pekerjaan</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>WBS-Paket Pekerjaan</label>
-                <select id="wbsLevel4" required>
-                  <option value="">Pilih Paket Pekerjaan</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>WBS-Aktivitas</label>
-                <select id="wbsLevel5" required>
-                  <option value="">Pilih Aktivitas</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>WBS-Sumber Daya</label>
-                <select id="wbsLevel6" required>
-                  <option value="">Pilih Sumber Daya</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Kategori Perubahan</label>
-                <select id="changeCategory" required>
-                  <option value="">Pilih Kategori Perubahan</option>
-                  <option>Design</option>
-                  <option>Method</option>
-                  <option>Material</option>
-                  <option>Schedule</option>
-                  <option>Failure</option>
-                  <option>Econ-Reg</option>
-                  <option>Stakeholder</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>
-                  Priority
-                  <span class="tooltip">
-                    <span class="info-btn">ⓘ</span>
-                    <span class="tooltip-text">
-                      <b>Skala Priority</b><br /><br />
-                      1 = Sangat Rendah<br />
-                      2 = Rendah<br />
-                      3 = Sedang<br />
-                      4 = Tinggi<br />
-                      5 = Sangat Tinggi
-                    </span>
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  id="priority"
-                  min="1"
-                  max="5"
-                  step="1"
-                  placeholder="1 - 5"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label>
-                  Risk
-                  <span class="tooltip">
-                    <span class="info-btn">ⓘ</span>
-                    <span class="tooltip-text">
-                      <b>Skala Risk</b><br /><br />
-                      1-2 = Aman<br />
-                      3-4 = Rendah<br />
-                      5-6 = Sedang<br />
-                      7-8 = Tinggi<br />
-                      9-10 = Kritis
-                    </span>
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  id="risk"
-                  min="1"
-                  max="10"
-                  step="1"
-                  placeholder="1 - 10"
-                  required
-                />
-              </div>
-            </div>
-
-            <hr class="section-divider" />
-            <div style="height: 10px"></div>
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Change ID</label>
-                <input value="Loading..." id="changeId" readonly required />
-              </div>
-
-              <div class="form-group" style="position: relative">
-                <label>Date</label>
-
-                <!-- 1. Input Teks yang DILIHAT klien (Format Indonesia, tidak bisa diketik) -->
-                <input
-                  type="text"
-                  id="changeDateDisplay"
-                  placeholder="DD/MM/YYYY"
-                  readonly
-                  required
-                />
-
-                <!-- 2. Input Date ASLI untuk Kalender & SQL (Disembunyikan secara visual) -->
-                <input
-                  type="date"
-                  id="changeDate"
-                  name="changeDate"
-                  style="
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    width: 0;
-                    height: 0;
-                    opacity: 0;
-                    border: none;
-                    padding: 0;
-                  "
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Submitted By</label>
-                <input id="submittedBy" value="" readonly required />
-              </div>
-
-              <div class="form-group">
-                <label>Project Area</label>
-                <input
-                  type="text"
-                  placeholder="Masukkan Project Area (PRJ-ID)"
-                  value="Loading..."
-                  id="projectArea"
-                  readonly
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Format Lokasi</label>
-                <select id="locationFormat" required>
-                  <option value="">Pilih Format Lokasi</option>
-                  <option value="STA">STA</option>
-                  <option value="Pier/Abutment">Pier/Abutment</option>
-                  <option value="Span">Span</option>
-                  <option value="Zona Fabrikasi">Zona Fabrikasi</option>
-                  <option value="Stockyard">Stockyard</option>
-                  <option value="Titik Koordinat">Titik Koordinat</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Detail Lokasi</label>
-                <input
-                  type="text"
-                  placeholder="Masukkan Detail (Misal: STA 10+000 / Pier 2)"
-                  id="location"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label>BIM Object ID</label>
-                <input
-                  type="text"
-                  placeholder="Contoh : BIM-001"
-                  id="bimObjectId"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Kategori Risiko</label>
-                <select id="riskCategory" required>
-                  <option value="">Pilih Kategori Risiko</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Variabel Risiko</label>
-                <select id="riskVariable" required>
-                  <option value="">Pilih Variabel Risiko</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>Risk Status</label>
-                <div id="riskStatus" class="risk-status risk-safe">
-                  Belum Dipilih
-                </div>
-              </div>
-            </div>
-
-            <div class="full-width">
-              <label>Deskripsi Risiko</label>
-              <textarea id="riskDescription" readonly>
-Pilih variabel risiko</textarea
-              >
-            </div>
-
-            <div class="upload-section full-width">
-              <label>Photo Evidence</label>
-              <input
-                type="file"
-                id="photo"
-                accept="image/*,.pdf"
-                multiple
-                required
-              />
-              <div id="gallery"></div>
-            </div>
-
-            <div class="image-box">
-              <img id="preview" />
-              <div id="placeholder">
-                📷<br />
-                No Image Selected
-              </div>
-            </div>
-
-            <div id="pdfModal" class="image-modal">
-              <span class="close-image" id="closeImage">&times;</span>
-              <iframe
-                id="pdfViewer"
-                style="
-                  width: 100%;
-                  height: 100%;
-                  border: none;
-                  background: white;
-                "
-              ></iframe>
-            </div>
-
-            <button type="button" id="previewBtn" style="display: none">
-              🔍 Preview Image
-            </button>
-
-            <div id="imageModal" class="image-modal">
-              <span class="close-image" id="closeImageModal">&times;</span>
-              <div class="image-toolbar">
-                <button id="zoomIn">+</button>
-                <button id="zoomOut">−</button>
-                <button id="resetZoom">Reset</button>
-              </div>
-              <img id="modalImage" />
-            </div>
-
-            <div class="full-width">
-              <label>Risk Response Planning</label>
-              <textarea
-                rows="5"
-                placeholder="Jelaskan perubahan yang terjadi..."
-                id="description"
-                required
-              ></textarea>
-            </div>
-
-            <div class="button-group" style="justify-content: flex-end">
-              <button onclick="nextForm()">Next</button>
-            </div>
-
-            <div id="infoModal" class="modal">
-              <div class="modal-content">
-                <span onclick="closeInfo()">&times;</span>
-                <h3 id="infoTitle"></h3>
-                <p id="infoText"></p>
-              </div>
+            <div class="cr-project-card">
+              <span class="cr-project-label">Proyek Terpilih</span>
+              <span class="cr-project-val" id="selectedProjectDisplay">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</span>
+              <input type="hidden" id="projectArea" value="PRJ-001" />
             </div>
           </div>
 
-          <div id="register" class="form-card hidden">
-            <div
-              class="form-grid"
-              style="
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                align-items: start;
-              "
-            >
-              <div class="form-group">
-                <label style="font-weight: bold; color: #0f2d52"
-                  >Apakah ini atas Permintaan Owner / Konsultan?
-                  <span style="color: red">*</span></label
-                >
-                <div class="radio-checkbox-wrapper">
-                  <label class="compact-label">
-                    <input
-                      type="radio"
-                      name="ownerRequest"
-                      value="Ya"
-                      required
-                    />
-                    Ya (Potensi VO)
-                  </label>
-                  <label class="compact-label">
-                    <input type="radio" name="ownerRequest" value="Tidak" />
-                    Tidak (Internal/Kontraktor)
-                  </label>
+          <!-- Main Grid of Form Cards -->
+          <div class="cr-form-grid">
+            
+            <!-- Row 1: 1. Identitas & 2. WBS, Lokasi, BIM (2 Columns) -->
+            <div class="cr-row-2col">
+              
+              <!-- Card 1: Identitas Change Request -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">1. Identitas Change Request</h3>
+                  <p class="cr-card-subtitle">Field tersimpan pada tabel change_requests</p>
+                </div>
+                <div class="cr-fields-grid-3">
+                  <div class="cr-field-group">
+                    <label>Change ID</label>
+                    <input type="text" id="changeId" readonly placeholder="CR-xxx dari get_next_id.php" class="cr-input-readonly" />
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Tanggal</label>
+                    <input type="date" id="changeDate" required />
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Submitted By</label>
+                    <input type="text" id="submittedBy" readonly placeholder="submittedBy / session user" class="cr-input-readonly" />
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Kategori Perubahan</label>
+                    <select id="changeCategory" required>
+                      <option value="">Pilih Kategori</option>
+                      <option value="Design">Design</option>
+                      <option value="Method">Method</option>
+                      <option value="Material">Material</option>
+                      <option value="Schedule">Schedule</option>
+                      <option value="Failure">Failure</option>
+                      <option value="Econ-Reg">Econ-Reg</option>
+                      <option value="Stakeholder">Stakeholder</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Priority</label>
+                    <select id="priority" required>
+                      <option value="">Pilih Priority</option>
+                      <option value="1">1 - Sangat Rendah</option>
+                      <option value="2">2 - Rendah</option>
+                      <option value="3">3 - Sedang</option>
+                      <option value="4">4 - Tinggi</option>
+                      <option value="5">5 - Sangat Tinggi</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Owner Request</label>
+                    <select id="ownerRequest" required>
+                      <option value="">Pilih Opsi</option>
+                      <option value="Ya">Ya (Potensi VO)</option>
+                      <option value="Tidak">Tidak (Internal/Kontraktor)</option>
+                    </select>
+                  </div>
                 </div>
               </div>
 
-              <div class="form-group">
-                <label style="font-weight: bold; color: #0f2d52"
-                  >Akar Penyebab Utama <span style="color: red">*</span></label
-                >
-                <div class="radio-checkbox-wrapper">
-                  <label class="compact-label">
-                    <input
-                      type="checkbox"
-                      name="changeDrivers"
-                      value="Desain"
-                    />
-                    Kesalahan Desain / Gambar Kontrak
-                  </label>
-                  <label class="compact-label">
-                    <input
-                      type="checkbox"
-                      name="changeDrivers"
-                      value="Lapangan"
-                    />
-                    Kondisi Lapangan Aktual (Site Condition)
-                  </label>
-                  <label class="compact-label">
-                    <input
-                      type="checkbox"
-                      name="changeDrivers"
-                      value="Material"
-                    />
-                    Kelangkaan Material / Suplai
-                  </label>
-                  <label class="compact-label">
-                    <input
-                      type="checkbox"
-                      name="changeDrivers"
-                      value="Metode"
-                    />
-                    Usulan Optimasi Metode
-                  </label>
+              <!-- Card 2: WBS, Lokasi, dan BIM -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">2. WBS, Lokasi, dan BIM</h3>
+                  <p class="cr-card-subtitle">Mengikut CR ke pekerjaan, lokasi fisik, dan objek model</p>
+                </div>
+                <div class="cr-fields-grid-3">
+                  <div class="cr-field-group">
+                    <label>WBS Level 4</label>
+                    <select id="wbsLevel4" required>
+                      <option value="">Pilih Paket Pekerjaan</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>WBS Level 5</label>
+                    <select id="wbsLevel5" required>
+                      <option value="">Pilih Aktivitas</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>WBS Level 6</label>
+                    <select id="wbsLevel6">
+                      <option value="">Pilih Sumber Daya</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Format Lokasi</label>
+                    <select id="locationFormat" required>
+                      <option value="">Pilih Format Lokasi</option>
+                      <option value="STA">STA</option>
+                      <option value="Pier / Abutment">Pier / Abutment</option>
+                      <option value="Span">Span</option>
+                      <option value="Zona Fabrikasi">Zona Fabrikasi</option>
+                      <option value="Stockyard">Stockyard</option>
+                      <option value="Titik Koordinat">Titik Koordinat</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Lokasi</label>
+                    <input type="text" id="location" placeholder="STA / Pier / Abutment" required />
+                  </div>
+                  <div class="cr-field-group">
+                    <label>BIM Object ID</label>
+                    <input type="text" id="bimObjectId" placeholder="bimObjectId, contoh BIM-010" required />
+                  </div>
                 </div>
               </div>
+
             </div>
 
-            <hr class="section-divider" style="margin: 20px 0" />
-
-            <div class="form-group">
-              <label style="font-size: 16px; color: #0f2d52"
-                >Centang Parameter yang Terdampak:
-                <span style="color: red">*</span></label
-              >
-              <div
-                class="impact-parameter-grid"
-                style="
-                  display: flex;
-                  gap: 15px;
-                  flex-wrap: wrap;
-                  margin-top: 10px;
-                  padding: 10px;
-                  background: #f1f1f1;
-                  border-radius: 4px;
-                "
-              >
-                <label
-                  ><input
-                    type="checkbox"
-                    id="chk-cost"
-                    onchange="toggleTable('cost')"
-                  />
-                  Cost (Biaya)</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    id="chk-time"
-                    onchange="toggleTable('time')"
-                  />
-                  Time (Waktu)</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    id="chk-scope"
-                    onchange="toggleTable('scope')"
-                  />
-                  Scope (Lingkup)</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    id="chk-quality"
-                    onchange="toggleTable('quality')"
-                  />
-                  Quality (Mutu)</label
-                >
-                <label
-                  ><input
-                    type="checkbox"
-                    id="chk-safety"
-                    onchange="toggleTable('safety')"
-                  />
-                  Safety (K3)</label
-                >
+            <!-- Row 2: 3. Risiko & 4. Uraian Perubahan (2 Columns) -->
+            <div class="cr-row-2col">
+              
+              <!-- Card 3: Risiko -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">3. Risiko</h3>
+                  <p class="cr-card-subtitle">Dipakai untuk badge risiko, risk matrix, dan AI recommendation</p>
+                </div>
+                <div class="cr-fields-grid-3">
+                  <div class="cr-field-group">
+                    <label>Kategori Risiko</label>
+                    <select id="riskCategory" required>
+                      <option value="">Pilih Kategori Risiko</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Variabel Risiko</label>
+                    <select id="riskVariable" required>
+                      <option value="">Pilih Variabel (contoh R5.1)</option>
+                    </select>
+                  </div>
+                  <div class="cr-field-group">
+                    <label>Skor Risiko</label>
+                    <input type="number" id="risk" min="1" max="10" placeholder="risk 1-10" required />
+                  </div>
+                </div>
+                <div class="cr-field-group full-width" style="margin-top: 14px;">
+                  <label>Deskripsi Risiko</label>
+                  <textarea id="riskDescription" rows="2" placeholder="riskDescription"></textarea>
+                </div>
               </div>
+
+              <!-- Card 4: Uraian Perubahan -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">4. Uraian Perubahan</h3>
+                  <p class="cr-card-subtitle">Menjelaskan kondisi lapangan dan alasan perubahan</p>
+                </div>
+                <div class="cr-field-group full-width">
+                  <label>Deskripsi Singkat</label>
+                  <input type="text" id="description" placeholder="description" required />
+                </div>
+                <div class="cr-field-group full-width" style="margin-top: 14px;">
+                  <label>Detail Deskripsi</label>
+                  <textarea id="descriptionDetail" rows="3" placeholder="descriptionDetail" required></textarea>
+                </div>
+              </div>
+
             </div>
 
-            <div
-              id="table-cost"
-              class="impact-table-container"
-              style="border-left-color: #4e73df"
-            >
-              <label
-                ><strong>Rincian Kebutuhan Material/Jasa (COST)</strong></label
-              >
-              <table class="dynamic-table" id="dyn-cost">
-                <thead>
-                  <tr>
-                    <th>Item / Material</th>
-                    <th width="15%">Sifat</th>
-                    <th width="15%">Kuantitas</th>
-                    <th width="10%">Satuan</th>
-                    <th width="30%">Justifikasi</th>
-                    <th width="5%">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <button
-                type="button"
-                class="btn-add-row"
-                onclick="addRow('cost')"
-              >
-                + Tambah Item
-              </button>
+            <!-- Row 3: 5. Dampak Biaya, 6. Dampak Lingkup & K3, 7. Upload Evidence (3 Columns) -->
+            <!-- Catatan: Dampak Waktu dan Dampak Mutu Dihapus Sesuai Instruksi User -->
+            <div class="cr-row-3col">
+              
+              <!-- Card 5: Dampak Biaya -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">5. Dampak Biaya</h3>
+                  <p class="cr-card-subtitle">JSON: impactCost</p>
+                </div>
+                <div class="cr-field-group full-width">
+                  <label>Dampak Biaya</label>
+                  <textarea id="impactCost" rows="5" placeholder="item, sifat, satuan, kuantitas, justifikasi"></textarea>
+                </div>
+              </div>
+
+              <!-- Card 6: Dampak Lingkup, K3 -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">6. Dampak Lingkup, K3</h3>
+                  <p class="cr-card-subtitle">JSON: impactScope, impactSafety</p>
+                </div>
+                <div class="cr-field-group full-width">
+                  <label>Dampak Lingkup</label>
+                  <input type="text" id="impactScope" placeholder="pekerjaan baru / penambahan / pengurangan" />
+                </div>
+                <div class="cr-field-group full-width" style="margin-top: 14px;">
+                  <label>Dampak K3</label>
+                  <input type="text" id="impactSafety" placeholder="aktivitas bahaya, kebutuhan mitigasi" />
+                </div>
+              </div>
+
+              <!-- Card 7: Upload Evidence -->
+              <div class="cr-card">
+                <div class="cr-card-header">
+                  <h3 class="cr-card-title">7. Upload Evidence</h3>
+                  <p class="cr-card-subtitle">File disimpan via backend/save_data.php ke uploads/</p>
+                </div>
+                <div class="cr-dropzone" onclick="document.getElementById('photo').click()">
+                  <div class="cr-dropzone-icon">📁</div>
+                  <div class="cr-dropzone-main">Drop / pilih file bukti</div>
+                  <div class="cr-dropzone-sub">photo[] -&gt; photoEvidence</div>
+                  <div class="cr-dropzone-hint">foto lapangan, PDF, dokumen pendukung</div>
+                  <input type="file" id="photo" name="photo[]" accept="image/*,.pdf" multiple style="display:none;" onchange="handleEvidenceFileSelect(this)" />
+                </div>
+                <div class="cr-evidence-actions">
+                  <button type="button" class="cr-pill-btn" onclick="previewSelectedEvidence()">Preview image</button>
+                  <button type="button" class="cr-pill-btn" onclick="openPdfEvidenceModal()">PDF card</button>
+                  <button type="button" class="cr-pill-btn" id="evidenceSizeIndicator">Validasi ukuran file</button>
+                </div>
+                <div id="gallery" class="cr-evidence-gallery"></div>
+              </div>
+
             </div>
 
-            <div
-              id="table-time"
-              class="impact-table-container"
-              style="border-left-color: #4e73df"
-            >
-              <label><strong>Rincian Perubahan Waktu (TIME)</strong></label>
-              <table class="dynamic-table" id="dyn-time">
-                <thead>
-                  <tr>
-                    <th>Aktivitas Terdampak</th>
-                    <th width="20%">Sifat</th>
-                    <th width="15%">Waktu</th>
-                    <th width="10%">Satuan</th>
-                    <th width="30%">Justifikasi</th>
-                    <th width="5%">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <button
-                type="button"
-                class="btn-add-row"
-                onclick="addRow('time')"
-              >
-                + Tambah Item
-              </button>
-            </div>
-            <div
-              id="table-scope"
-              class="impact-table-container"
-              style="border-left-color: #4e73df"
-            >
-              <label><strong>Rincian Perubahan Lingkup (SCOPE)</strong></label>
-              <table class="dynamic-table" id="dyn-scope">
-                <thead>
-                  <tr>
-                    <th>Lingkup Pekerjaan</th>
-                    <th width="20%">Sifat</th>
-                    <th width="15%">Kuantitas</th>
-                    <th width="10%">Satuan</th>
-                    <th width="30%">Dokumen Acuan</th>
-                    <th width="5%">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <button
-                type="button"
-                class="btn-add-row"
-                onclick="addRow('scope')"
-              >
-                + Tambah Item
-              </button>
+            <!-- Form Action Buttons -->
+            <div class="cr-action-bar">
+              <button type="button" class="cr-btn cr-btn-draft" onclick="saveDraftCR()">Simpan Draft</button>
+              <button type="button" class="cr-btn cr-btn-primary" id="btnSubmitCR" onclick="submitCR(event)">Submit Change Request</button>
+              <button type="button" class="cr-btn cr-btn-reset" onclick="resetNewChangeFormAfterSubmit()">Reset Form</button>
             </div>
 
-            <div
-              id="table-quality"
-              class="impact-table-container"
-              style="border-left-color: #4e73df"
-            >
-              <label
-                ><strong>Rincian Perubahan Kualitas (QUALITY)</strong></label
-              >
-              <table class="dynamic-table" id="dyn-quality">
-                <thead>
-                  <tr>
-                    <th>Item Terdampak</th>
-                    <th width="15%">Spesifikasi Awal</th>
-                    <th width="15%">Spesifikasi Baru</th>
-                    <th width="15%">Tingkat Mutu</th>
-                    <th width="30%">Justifikasi</th>
-                    <th width="5%">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <button
-                type="button"
-                class="btn-add-row"
-                onclick="addRow('quality')"
-              >
-                + Tambah Item
-              </button>
+            <!-- Bottom 3 Reference Cards -->
+            <div class="cr-row-3col" style="margin-top: 24px;">
+              
+              <div class="cr-ref-card">
+                <div class="cr-ref-title">Responsif Mobile</div>
+                <div class="cr-ref-text">Pada layar kecil, section berubah menjadi satu kolom: Identitas → WBS/Lokasi → Risiko → Dampak → Evidence. Tombol submit tetap berada setelah upload evidence.</div>
+              </div>
+
+              <div class="cr-ref-card">
+                <div class="cr-ref-title">File dan Endpoint Project</div>
+                <div class="cr-ref-text">
+                  <div><b>UI form:</b> site-engineer.html</div>
+                  <div><b>Auto ID:</b> backend/get_next_id.php</div>
+                  <div><b>Submit/update:</b> backend/save_data.php, backend/update_data.php</div>
+                  <div><b>Riwayat/status:</b> backend/get_data.php</div>
+                </div>
+              </div>
+
+              <div class="cr-ref-card">
+                <div class="cr-ref-title">Informasi yang Dikandung</div>
+                <div class="cr-ref-text">
+                  <div><b>Tabel utama:</b> change_requests</div>
+                  <div><b>Field kunci:</b> changeId, projectArea, WBS, risk, status, bimObjectId.</div>
+                  <div><b>Bukti:</b> photoEvidence; <b>dampak:</b> impactCost, impactScope, impactSafety.</div>
+                  <div><b>Status awal setelah submit:</b> PENDING untuk review Project Manager.</div>
+                </div>
+              </div>
+
             </div>
 
-            <div
-              id="table-safety"
-              class="impact-table-container"
-              style="border-left-color: #4e73df"
-            >
-              <label
-                ><strong>Rincian Kebutuhan Keselamatan (SAFETY)</strong></label
-              >
-              <table class="dynamic-table" id="dyn-safety">
-                <thead>
-                  <tr>
-                    <th>Aktivitas Berisiko</th>
-                    <th width="15%">Sifat</th>
-                    <th width="30%">Kebutuhan</th>
-                    <th width="10%">Kuantitas</th>
-                    <th width="10%">Satuan</th>
-                    <th width="5%">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
-              <button
-                type="button"
-                class="btn-add-row"
-                onclick="addRow('safety')"
-              >
-                + Tambah Item
-              </button>
-            </div>
-
-            <div class="full-width" style="margin-top: 20px">
-              <label>Justifikasi Teknis & Narasi Lapangan</label>
-              <textarea
-                rows="4"
-                id="descriptionDetail"
-                required
-                placeholder="Jelaskan secara kronologis kejadian di lapangan..."
-              ></textarea>
-            </div>
-
-            <div
-              class="button-group"
-              style="justify-content: space-between; margin-top: 35px"
-            >
-              <button type="button" class="btn-back" onclick="backForm()">
-                Back
-              </button>
-              <button
-                type="button"
-                class="btn-submit"
-                onclick="submitCR(event)"
-              >
-                Submit Request
-              </button>
-            </div>
           </div>
+
         </div>
       </div>
 
@@ -6737,165 +6678,203 @@ Pilih variabel risiko</textarea
         );
       }
 
-      function submitCR(event) {
-        // 1. Mencegah form melakukan refresh otomatis (Ini sangat penting!)
-        if (event) {
-          event.preventDefault();
+            function handleEvidenceFileSelect(input) {
+        const gallery = document.getElementById("gallery");
+        const indicator = document.getElementById("evidenceSizeIndicator");
+        if (!gallery) return;
+        gallery.innerHTML = "";
+        if (!input.files || input.files.length === 0) {
+          if (indicator) indicator.innerText = "Validasi ukuran file";
+          return;
         }
-
-        if (hasAssignedProject !== true) {
-          if (hasAssignedProject === null) {
-            alert("Data assignment project masih dimuat. Coba lagi sebentar.");
-            return;
+        let totalSize = 0;
+        let valid = true;
+        Array.from(input.files).forEach(file => {
+          totalSize += file.size;
+          if (file.size > 15 * 1024 * 1024) valid = false; // max 15MB per file
+          
+          const thumb = document.createElement("div");
+          thumb.className = "cr-evidence-thumb";
+          if (file.type.startsWith("image/")) {
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            thumb.appendChild(img);
+          } else {
+            thumb.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:10px;font-weight:bold;color:#475569;text-align:center;">PDF</div>`;
           }
-          promptUnassignedProjectLogout();
+          gallery.appendChild(thumb);
+        });
+        const sizeMb = (totalSize / (1024 * 1024)).toFixed(1);
+        if (indicator) {
+          indicator.innerText = `${input.files.length} file (${sizeMb} MB) - ` + (valid ? "Valid" : "Melebihi batas!");
+          indicator.style.color = valid ? "#16a34a" : "#dc2626";
+        }
+      }
+
+      function previewSelectedEvidence() {
+        const input = document.getElementById("photo");
+        if (!input || !input.files || input.files.length === 0) {
+          alert("Pilih file bukti terlebih dahulu.");
+          return;
+        }
+        const firstImg = Array.from(input.files).find(f => f.type.startsWith("image/"));
+        if (!firstImg) {
+          alert("Tidak ada file gambar pada pilihan bukti.");
+          return;
+        }
+        const url = URL.createObjectURL(firstImg);
+        window.open(url, "_blank");
+      }
+
+      function openPdfEvidenceModal() {
+        const input = document.getElementById("photo");
+        if (!input || !input.files || input.files.length === 0) {
+          alert("Pilih file bukti terlebih dahulu.");
+          return;
+        }
+        const firstPdf = Array.from(input.files).find(f => f.name.toLowerCase().endsWith(".pdf") || f.type === "application/pdf");
+        if (!firstPdf) {
+          alert("Tidak ada dokumen PDF pada pilihan bukti.");
+          return;
+        }
+        const url = URL.createObjectURL(firstPdf);
+        window.open(url, "_blank");
+      }
+
+      function saveDraftCR() {
+        const changeId = document.getElementById("changeId")?.value || "CR-Draft";
+        alert("Draft " + changeId + " berhasil disimpan secara lokal pada peramban.");
+      }
+
+      function submitCR(event) {
+        if (event) event.preventDefault();
+
+        const changeId = document.getElementById("changeId")?.value;
+        const projectArea = document.getElementById("projectArea")?.value || "PRJ-001";
+        const wbsLevel4 = document.getElementById("wbsLevel4")?.value;
+        const wbsLevel5 = document.getElementById("wbsLevel5")?.value;
+        const wbsLevel6 = document.getElementById("wbsLevel6")?.value;
+        const changeCategory = document.getElementById("changeCategory")?.value;
+        const priority = document.getElementById("priority")?.value;
+        const risk = document.getElementById("risk")?.value;
+        const locationFormat = document.getElementById("locationFormat")?.value;
+        const location = document.getElementById("location")?.value;
+        const bimObjectId = document.getElementById("bimObjectId")?.value;
+        const description = document.getElementById("description")?.value;
+        const descriptionDetail = document.getElementById("descriptionDetail")?.value;
+        const ownerRequest = document.getElementById("ownerRequest")?.value || "Tidak";
+
+        if (!changeId || changeId === "Loading...") {
+          alert("Mohon tunggu Change ID otomatis dimuat.");
+          return;
+        }
+        if (!wbsLevel4 || !wbsLevel5) {
+          alert("WBS Level 4 dan WBS Level 5 wajib dipilih.");
+          return;
+        }
+        if (!changeCategory) {
+          alert("Kategori Perubahan wajib dipilih.");
+          return;
+        }
+        if (!priority) {
+          alert("Priority wajib diisi.");
+          return;
+        }
+        if (!risk) {
+          alert("Skor Risiko wajib diisi.");
+          return;
+        }
+        if (!location) {
+          alert("Detail Lokasi wajib diisi.");
+          return;
+        }
+        if (!bimObjectId) {
+          alert("BIM Object ID wajib diisi.");
+          return;
+        }
+        if (!description) {
+          alert("Deskripsi Singkat wajib diisi.");
           return;
         }
 
-        const requiredFields = document.querySelectorAll(
-          "#identify input[required], #identify select[required], #identify textarea[required], #register input[required], #register select[required], #register textarea[required]",
-        );
-        for (let field of requiredFields) {
-          if (!field.disabled && (!field.value || field.value.trim() === "")) {
-            alert("Semua field pada Change Request wajib diisi.");
-            field.focus();
-            return;
-          }
+        const formData = new FormData();
+        formData.append("changeId", changeId);
+        formData.append("changeDate", document.getElementById("changeDate")?.value || new Date().toISOString().split("T")[0]);
+        formData.append("submittedBy", document.getElementById("submittedBy")?.value || "SITE ENGINEER");
+        formData.append("projectArea", projectArea);
+        formData.append("wbsLevel4", wbsLevel4);
+        formData.append("wbsLevel5", wbsLevel5);
+        formData.append("wbsLevel6", wbsLevel6 || "");
+        formData.append("changeCategory", changeCategory);
+        formData.append("priority", priority);
+        formData.append("ownerRequest", ownerRequest);
+        formData.append("locationFormat", locationFormat || "STA");
+        formData.append("location", location);
+        formData.append("bimObjectId", bimObjectId);
+        formData.append("riskCategory", document.getElementById("riskCategory")?.value || "");
+        formData.append("riskVariable", document.getElementById("riskVariable")?.value || "");
+        formData.append("risk", risk);
+        formData.append("riskDescription", document.getElementById("riskDescription")?.value || "");
+        formData.append("description", description);
+        formData.append("descriptionDetail", descriptionDetail || "");
+
+        // Dampak Biaya, Lingkup, K3 (Dampak waktu dan dampak mutu DIHAPUS sesuai instruksi)
+        const costVal = document.getElementById("impactCost")?.value?.trim() || "";
+        if (costVal) {
+          formData.append("impactCost", JSON.stringify([{ description: costVal }]));
+        }
+        const scopeVal = document.getElementById("impactScope")?.value?.trim() || "";
+        if (scopeVal) {
+          formData.append("impactScope", JSON.stringify([{ description: scopeVal }]));
+        }
+        const safetyVal = document.getElementById("impactSafety")?.value?.trim() || "";
+        if (safetyVal) {
+          formData.append("impactSafety", JSON.stringify([{ description: safetyVal }]));
         }
 
-        // 1. Inisialisasi FormData (mendukung pengiriman teks & upload file sekaligus)
-        const formData = new FormData();
-
-        // 2. Ambil data dari elemen Tahap 1 (Identify)
-        formData.append(
-          "wbsLevel4",
-          document.getElementById("wbsLevel4").value,
-        );
-        formData.append(
-          "wbsLevel5",
-          document.getElementById("wbsLevel5").value,
-        );
-        formData.append(
-          "wbsLevel6",
-          document.getElementById("wbsLevel6").value,
-        );
-        formData.append(
-          "changeCategory",
-          document.getElementById("changeCategory").value,
-        );
-        formData.append("priority", document.getElementById("priority").value);
-        formData.append("risk", document.getElementById("risk").value);
-        formData.append("changeId", document.getElementById("changeId").value);
-        formData.append(
-          "changeDate",
-          document.getElementById("changeDate").value,
-        );
-        formData.append(
-          "submittedBy",
-          document.getElementById("submittedBy").value,
-        );
-        formData.append(
-          "projectArea",
-          document.getElementById("projectArea").value,
-        );
-        formData.append("location", document.getElementById("location").value);
-        formData.append(
-          "bimObjectId",
-          document.getElementById("bimObjectId").value,
-        );
-        formData.append(
-          "riskCategory",
-          document.getElementById("riskCategory").value,
-        );
-        formData.append(
-          "riskVariable",
-          document.getElementById("riskVariable").value,
-        );
-        const createRiskDescription =
-          document.getElementById("riskDescription");
-        formData.append(
-          "riskDescription",
-          createRiskDescription ? createRiskDescription.value : "",
-        );
-        formData.append(
-          "description",
-          document.getElementById("description").value,
-        );
-
-        // 3. Ambil data dari elemen Tahap 2 (Register)
-
-        const ownerReq = document.querySelector(
-          'input[name="ownerRequest"]:checked',
-        );
-        formData.append("ownerRequest", ownerReq ? ownerReq.value : "Tidak");
-        const drivers = [];
-        document
-          .querySelectorAll('input[name="changeDrivers"]:checked')
-          .forEach((cb) => drivers.push(cb.value));
-        formData.append("changeDrivers", drivers.join(", "));
-
-        // 3. Panen Data JSON dari masing-masing Tabel Dinamis
-        const costData = extractTableData("cost");
-        if (costData) formData.append("impactCost", costData);
-
-        const timeData = extractTableData("time");
-        if (timeData) formData.append("impactTime", timeData);
-
-        const scopeData = extractTableData("scope");
-        if (scopeData) formData.append("impactScope", scopeData);
-
-        const qualityData = extractTableData("quality");
-        if (qualityData) formData.append("impactQuality", qualityData);
-
-        const safetyData = extractTableData("safety");
-        if (safetyData) formData.append("impactSafety", safetyData);
-
-        formData.append(
-          "descriptionDetail",
-          document.getElementById("descriptionDetail").value,
-        );
-
-        // 4. Ambil file Foto / PDF (Mendukung multiple files)
         const fileInput = document.getElementById("photo");
-        if (fileInput.files.length > 0) {
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
           for (let i = 0; i < fileInput.files.length; i++) {
             formData.append("photo[]", fileInput.files[i]);
           }
         }
 
-        // 5. Eksekusi pengiriman ke script PHP secara asynchronous
+        const submitBtn = document.getElementById("btnSubmitCR");
+        const origText = submitBtn ? submitBtn.innerText : "Submit";
+        if (submitBtn) {
+          submitBtn.innerText = "Mengirim...";
+          submitBtn.disabled = true;
+        }
+
         fetch("backend/save_data.php", {
           method: "POST",
-          body: formData,
+          body: formData
         })
-          .then((response) => response.json()) // Mengharapkan respon dalam format JSON balik dari PHP
-          .then((data) => {
+          .then(r => r.json())
+          .then(data => {
             if (data.status === "success") {
-              alert("Change Request berhasil disimpan ke database!");
-
-              // 6. Setelah sukses, Anda bisa melakukan tindakan tambahan seperti mereset form, memperbarui tampilan, atau mengambil data terbaru untuk dashboard.
+              alert("✅ Change Request " + changeId + " berhasil disimpan ke database!");
               try {
-                fetchDashboardData();
+                if (typeof fetchDashboardData === "function") fetchDashboardData();
                 resetNewChangeFormAfterSubmit();
                 generateAutoChangeId();
-                // Mengalihkan view SPA Anda kembali ke halaman History setelah sukses
-                showPage("historyPage");
-              } catch (uiError) {
-                console.error(
-                  "Data tersimpan, tetapi UI gagal di-reset:",
-                  uiError,
-                );
+                if (typeof showPage === "function") showPage("historyPage");
+              } catch (e) {
+                console.error(e);
               }
-
-              // Anda juga bisa memanggil fungsi renderTables() atau updateDashboard()
-              // untuk memperbarui tampilan dashboard jika datanya di-load dinamis.
             } else {
-              alert("Gagal menyimpan data ke database: " + data.message);
+              alert("❌ Gagal menyimpan Change Request: " + (data.message || data.error || "Terjadi kesalahan."));
             }
           })
-          .catch((error) => {
-            console.error("Error:", error);
+          .catch(err => {
+            console.error("Error submit CR:", err);
             alert("Terjadi kesalahan sistem saat mengirim data.");
+          })
+          .finally(() => {
+            if (submitBtn) {
+              submitBtn.innerText = origText;
+              submitBtn.disabled = false;
+            }
           });
       }
 

@@ -6,6 +6,16 @@ require_once __DIR__ . '/db_user.php';
 require_once __DIR__ . '/auth_guard.php';
 require_once __DIR__ . '/wbs_validator.php';
 
+function safe_impact_json($raw) {
+    if ($raw === null || $raw === '') return null;
+    if (is_array($raw)) return json_encode($raw);
+    json_decode($raw);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        return $raw;
+    }
+    return json_encode([['description' => (string)$raw]]);
+}
+
 function changeRequestColumnExists(PDO $pdo, string $columnName): bool {
     static $columns = null;
     if ($columns === null) {
