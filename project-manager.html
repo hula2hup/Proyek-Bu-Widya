@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Manager Workspace - BIM WBS System</title>
   <link rel="icon" type="image/png" href="assets/wylcore.png">
+  <link rel="stylesheet" href="assets/blueprint-views.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
@@ -1301,7 +1302,8 @@
       </button>
       <div class="logo">PM</div>
       <div>
-        <h1>Project Manager</h1>
+        <h1 style="font-size:15px; font-weight:800; letter-spacing:-0.02em;">WYLCORE PM Workspace</h1>
+        <span style="font-size:10px; color:#94a3b8; display:block; margin-top:2px; text-transform:uppercase; letter-spacing:0.05em;">Enterprise Construction PM</span>
         <div class="project-selector-container">
           <select id="projectDropdown" class="sidebar-project-select">
             <option value="" disabled selected>Memuat proyek...</option>
@@ -1336,6 +1338,9 @@
           </svg>
         </button>
       </div>
+            <div style="font-size:10px; color:#64748b; font-family:ui-monospace,Menlo,monospace; margin-top:14px; text-align:center; padding-top:10px; border-top:1px solid rgba(255,255,255,0.06);">
+        File: project-manager.html | Endpoint: backend/*.php
+      </div>
       <div class="mobile-user-card">
         <strong id="mobileUserFullName">Project Manager</strong>
         <span>Project Manager</span>
@@ -1347,102 +1352,515 @@
   <main>
     <!-- SECTION 01: DASHBOARD -->
     <section id="dashboard" class="section active">
-      <div class="topbar">
-        <div>
-          <h2>Dashboard Monitoring Kinerja Proyek</h2>
-          <p>Memantau percepatan waktu perubahan, Kurva S, histori aktivitas, dan status persetujuan.</p>
+      <!-- Blueprint Sub-Navigation Bar -->
+      <div class="blueprint-subnav no-print">
+        <button class="blueprint-subnav-btn active" id="btnBp4" onclick="switchBlueprintTab('bp4')">
+          <span>📊</span> Dashboard Review CR (Gambar 4)
+        </button>
+        <button class="blueprint-subnav-btn" id="btnBp1" onclick="switchBlueprintTab('bp1')">
+          <span>📈</span> Grafik S-Curve Proyek (Gambar 1)
+        </button>
+        <button class="blueprint-subnav-btn" id="btnBp3" onclick="switchBlueprintTab('bp3')">
+          <span>🎯</span> Matriks Risiko 5x5 CR (Gambar 3)
+        </button>
+        <button class="blueprint-subnav-btn" id="btnBpAll" onclick="switchBlueprintTab('all')">
+          <span>📑</span> Tampilkan Semua Blueprint
+        </button>
+      </div>
+
+      <!-- ========================================================
+           PANEL 1: DASHBOARD REVIEW CHANGE REQUEST (GAMBAR 4)
+      ======================================================== -->
+      <div id="panelBp4" class="blueprint-view-panel active">
+        <div class="bp-header-wrap" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+          <div>
+            <h2 class="bp-title">Dashboard Review Change Request</h2>
+            <p class="bp-subtitle">Ringkasan review PM, antrean CR, distribusi risiko, rekomendasi AI, dan keputusan approval.</p>
+          </div>
+          <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:6px 12px; font-size:12px; font-weight:700; color:#1e293b; display:flex; align-items:center; gap:8px;">
+            <span style="color:#64748b; font-weight:500;">Proyek Aktif:</span>
+            <span id="bp4ActiveProjectLabel">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</span>
+          </div>
+        </div>
+
+        <!-- 4 Top KPI Cards -->
+        <div class="bp4-kpi-grid">
+          <div class="bp4-kpi-card c-review">
+            <div class="bp4-kpi-title">Under Review</div>
+            <div class="bp4-kpi-num" id="cardUnderReview">12</div>
+            <div class="bp4-kpi-sub">CR PENDING butuh review</div>
+          </div>
+          <div class="bp4-kpi-card c-mitigation">
+            <div class="bp4-kpi-title">Need Mitigation</div>
+            <div class="bp4-kpi-num" id="cardNeedMitigation">5</div>
+            <div class="bp4-kpi-sub">Risk &gt;= 7 PENDING</div>
+          </div>
+          <div class="bp4-kpi-card c-approved">
+            <div class="bp4-kpi-title">Approved</div>
+            <div class="bp4-kpi-num" id="summaryApproved">18</div>
+            <div class="bp4-kpi-sub">CR disetujui</div>
+          </div>
+          <div class="bp4-kpi-card c-rejected">
+            <div class="bp4-kpi-title">Rejected</div>
+            <div class="bp4-kpi-num" id="summaryRejected">4</div>
+            <div class="bp4-kpi-sub">CR ditolak</div>
+          </div>
+        </div>
+
+        <!-- Row 2: Distribusi Risiko, Ringkasan S-Curve, Panel Rekomendasi AI -->
+        <div class="bp4-row2-grid">
+          <!-- Distribusi Risiko -->
+          <div class="bp4-card">
+            <h3 class="bp4-card-title">Distribusi Risiko</h3>
+            <p class="bp4-card-sub">Kategori risiko dari seluruh CR terdaftar</p>
+            <div class="bp4-donut-layout">
+              <div class="bp4-donut-wrap">
+                <canvas id="bp4DonutCanvas" width="100" height="100"></canvas>
+                <div class="bp4-donut-center">Risk<br>Profile</div>
+              </div>
+              <div class="bp4-bars-wrap">
+                <div class="bp4-bar-row">
+                  <span class="bar-label">Aman/Rendah</span>
+                  <div class="bp4-bar-track"><div class="bp4-bar-fill" style="width:34%; background:#10b981;"></div></div>
+                  <span class="bar-val">34%</span>
+                </div>
+                <div class="bp4-bar-row">
+                  <span class="bar-label">Sedang</span>
+                  <div class="bp4-bar-track"><div class="bp4-bar-fill" style="width:28%; background:#f59e0b;"></div></div>
+                  <span class="bar-val">28%</span>
+                </div>
+                <div class="bp4-bar-row">
+                  <span class="bar-label">Tinggi</span>
+                  <div class="bp4-bar-track"><div class="bp4-bar-fill" style="width:24%; background:#f97316;"></div></div>
+                  <span class="bar-val">24%</span>
+                </div>
+                <div class="bp4-bar-row">
+                  <span class="bar-label">Kritis</span>
+                  <div class="bp4-bar-track"><div class="bp4-bar-fill" style="width:14%; background:#ef4444;"></div></div>
+                  <span class="bar-val">14%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ringkasan S-Curve dan Dampak -->
+          <div class="bp4-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div>
+                <h3 class="bp4-card-title">Ringkasan S-Curve dan Dampak</h3>
+                <p class="bp4-card-sub">Deviasi rencana vs realisasi kumulatif</p>
+              </div>
+              <span class="bp4-scurve-badge" id="bp4DelayBadge">Delay approved CR: +13 hari</span>
+            </div>
+            <div class="bp4-mini-chart-wrap">
+              <canvas id="bp4MiniScurveCanvas"></canvas>
+            </div>
+            <div class="bp4-mini-legend">
+              <span><b style="color:#0f172a;">—</b> Rencana (baseline)</span>
+              <span><b style="color:#64748b;">--</b> Realisasi (aktual)</span>
+            </div>
+          </div>
+
+          <!-- Panel Rekomendasi AI -->
+          <div class="bp4-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+            <div>
+              <h3 class="bp4-card-title">Panel Rekomendasi AI</h3>
+              <p class="bp4-card-sub">Rule-based expert system dari knowledge repository</p>
+              <div class="bp4-ai-card-content" id="bp4AiContent">
+                <div class="bp4-ai-card-header" id="bp4AiHeader">
+                  <span>✨</span> <span id="bp4AiCrLabel">CR-003: WBS 6.1.2.2 | R5.1 (Skor 9 - Kritis)</span>
+                </div>
+                <div id="bp4AiBody">
+                  <strong>Insight:</strong> Risiko ketersediaan material utama aspal penetrasi 60/70.<br>
+                  <strong>Rekomendasi:</strong> Lakukan percepatan procurement dan audit supplier cadangan.
+                </div>
+              </div>
+            </div>
+            <div class="bp4-ai-source">
+              Sumber: <code>backend/knowledge_base_auto.php</code> + <code>knowledge_repository</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Tabel Pending CR & Modal Review Form -->
+        <div class="bp4-row3-grid">
+          <!-- Tabel Pending Change Request -->
+          <div class="bp4-card">
+            <h3 class="bp4-card-title">Tabel Pending Change Request</h3>
+            <p class="bp4-card-sub">Antrean CR yang menunggu keputusan PM</p>
+            <div style="overflow-x:auto;">
+              <table class="bp4-table" id="bp4PendingTable">
+                <thead>
+                  <tr>
+                    <th>Change ID</th>
+                    <th>Tanggal</th>
+                    <th>WBS</th>
+                    <th>Risiko</th>
+                    <th>Kategori</th>
+                    <th style="text-align:center;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="bp4PendingTbody">
+                  <tr onclick="bp4SelectCr('CR-003')" style="cursor:pointer; background:#eff6ff;">
+                    <td><b>CR-003</b></td>
+                    <td>2026-06-25</td>
+                    <td>6.1.2.2 Penghamparan Lapisan Atas</td>
+                    <td><span class="badge high">9 - Kritis</span></td>
+                    <td>Material</td>
+                    <td style="text-align:center;"><button class="btn" style="padding:4px 10px; font-size:11px;" onclick="event.stopPropagation(); bp4SelectCr('CR-003')">Review</button></td>
+                  </tr>
+                  <tr onclick="bp4SelectCr('CR-006')" style="cursor:pointer;">
+                    <td><b>CR-006</b></td>
+                    <td>2026-06-27</td>
+                    <td>1.4.2.1 Survey Lapangan Rutin</td>
+                    <td><span class="badge low">2 - Rendah</span></td>
+                    <td>Metode</td>
+                    <td style="text-align:center;"><button class="btn" style="padding:4px 10px; font-size:11px;" onclick="event.stopPropagation(); bp4SelectCr('CR-006')">Review</button></td>
+                  </tr>
+                  <tr onclick="bp4SelectCr('CR-008')" style="cursor:pointer;">
+                    <td><b>CR-008</b></td>
+                    <td>2026-06-29</td>
+                    <td>7.2.6.3 Erection Girder Crane</td>
+                    <td><span class="badge medium">7 - Tinggi</span></td>
+                    <td>Metode</td>
+                    <td style="text-align:center;"><button class="btn" style="padding:4px 10px; font-size:11px;" onclick="event.stopPropagation(); bp4SelectCr('CR-008')">Review</button></td>
+                  </tr>
+                  <tr onclick="bp4SelectCr('CR-011')" style="cursor:pointer;">
+                    <td><b>CR-011</b></td>
+                    <td>2026-07-02</td>
+                    <td>1.1.1.1 Mobilisasi Besi Beton</td>
+                    <td><span class="badge info">4 - Sedang</span></td>
+                    <td>Mobilisasi</td>
+                    <td style="text-align:center;"><button class="btn" style="padding:4px 10px; font-size:11px;" onclick="event.stopPropagation(); bp4SelectCr('CR-011')">Review</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="bp4-table-footer-note">
+              Data: change_requests (id, requestDate, wbsLevel4, riskScore, category, status='PENDING')
+            </div>
+          </div>
+
+          <!-- Modal Review CR dan Keputusan -->
+          <div class="bp4-card" style="border-left:4px solid #1d4ed8;">
+            <h3 class="bp4-card-title">Modal Review CR dan Keputusan</h3>
+            <p class="bp4-card-sub">Form keputusan PM: Approve / Reject / Pending</p>
+            <div class="bp4-review-box">
+              <div class="bp4-cr-selected-banner" id="bp4ReviewBanner">
+                Detail CR Terpilih: <span id="bp4SelCrId" style="color:#1d4ed8;">CR-003</span> | <span id="bp4SelWbs">WBS: 6.1.2.2 Penghamparan Lapisan Atas</span>
+              </div>
+              <div class="bp4-impact-inputs">
+                <div>
+                  <label>Impact Aktual: Biaya (Rp)</label>
+                  <input type="text" id="bp4InputCost" value="15.000.000">
+                </div>
+                <div>
+                  <label>Impact Aktual: Waktu (Hari)</label>
+                  <input type="text" id="bp4InputTime" value="+3 hari">
+                </div>
+              </div>
+              <div>
+                <label style="font-size:11px; font-weight:600; color:#475569; display:block; margin-bottom:4px;">Approval Notes / Instruksi PM</label>
+                <textarea id="bp4ApprovalNotes" style="width:100%; height:68px; padding:8px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:12px; box-sizing:border-box;" placeholder="Instruksi PM untuk mitigasi risiko atau catatan persetujuan..."></textarea>
+              </div>
+              <div class="bp4-action-btns">
+                <button type="button" class="bp4-btn bp4-btn-approve" onclick="bp4SubmitDecision('APPROVED')">🟢 Approve</button>
+                <button type="button" class="bp4-btn bp4-btn-reject" onclick="bp4SubmitDecision('REJECTED')">🔴 Reject</button>
+                <button type="button" class="bp4-btn bp4-btn-pending" onclick="bp4SubmitDecision('PENDING')">🟡 Pending</button>
+              </div>
+            </div>
+            <div class="bp4-table-footer-note" style="margin-top:10px;">
+              Disimpan ke: change_requests (status, approvalNotes, approvedBy, approvedAt, actualCost, actualTime) + trigger auto-generate lesson learned ke knowledge_base
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: 3 Bottom Explanatory Cards -->
+        <div class="bp-bottom-grid">
+          <div class="bp-bottom-card">
+            <h4>📁 Sumber Data Dashboard</h4>
+            <ul>
+              <li><code>change_requests</code>: antrean review, status approval, impact waktu & biaya, risk score</li>
+              <li><code>project_scurve</code>: rencana vs realisasi kumulatif mingguan</li>
+              <li><code>knowledge_repository</code>: basis aturan inferensi AI untuk rekomendasi risiko</li>
+              <li><code>backend/api_get_dashboard_stats.php</code>: agregasi KPI, distribusi risiko, status antrean</li>
+            </ul>
+          </div>
+          <div class="bp-bottom-card">
+            <h4>💡 Makna UI bagi PM</h4>
+            <ul>
+              <li>Membantu PM mengambil keputusan approval secara cepat berbasis data risiko dan dampak jadwal</li>
+              <li>Integrasi visual antara antrean CR, profil risiko, deviasi kurva S, dan rekomendasi otomatis</li>
+              <li>Setiap approval otomatis memperbarui status dan memicu siklus knowledge management</li>
+            </ul>
+          </div>
+          <div class="bp-bottom-card">
+            <h4>ℹ️ Informasi Project Terkait</h4>
+            <ul>
+              <li>Project ID: <b>PRJ-001</b></li>
+              <li>Project Name: <b>Proyek Konstruksi Jembatan Beton Precast</b></li>
+              <li>File UI: <code>project-manager.html</code></li>
+              <li>File Backend: <code>backend/api_get_dashboard_stats.php</code>, <code>backend/save_approval.php</code>, <code>backend/knowledge_base_auto.php</code></li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="grid cols-4" style="margin-bottom: 20px;">
-        <div class="card metric" style="border-color: var(--warning)">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div><h3>Pending Approval</h3><div class="num" id="cardUnderReview">-</div><small>Butuh keputusan PM</small></div>
-            <button class="icon-btn" onclick="openModal('modalPending')" title="Lihat Daftar Pending">🡪</button>
+
+      <!-- ========================================================
+           PANEL 2: GRAFIK S-CURVE PROYEK KONSTRUKSI (GAMBAR 1)
+      ======================================================== -->
+      <div id="panelBp1" class="blueprint-view-panel">
+        <div class="bp-header-wrap">
+          <h2 class="bp-title">Grafik S-Curve Proyek Konstruksi</h2>
+          <p class="bp-subtitle">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast | Rencana vs Realisasi Kumulatif</p>
+        </div>
+
+        <!-- 4 Top Cards -->
+        <div class="bp1-top-cards">
+          <div class="bp1-metric-card">
+            <span class="label">Sumber Data</span>
+            <div class="value" style="font-size:14px; color:#1d4ed8;">backend/api_get_scurve.php</div>
+            <div class="sub">project_scurve + approved change_requests.timeImpact</div>
+          </div>
+          <div class="bp1-metric-card">
+            <span class="label">Total Delay Approved CR</span>
+            <div class="value" style="color:#d97706; display:flex; align-items:center; gap:6px;">
+              <span>🕒</span> <span>3 hari</span>
+            </div>
+            <div class="sub">dari approved CR (timeImpact)</div>
+          </div>
+          <div class="bp1-metric-card">
+            <span class="label">Realisasi Terakhir</span>
+            <div class="value" style="color:#0f172a; display:flex; align-items:center; gap:6px;">
+              <span>📊</span> <span>70%</span>
+            </div>
+            <div class="sub">periode 8</div>
+          </div>
+          <div class="bp1-metric-card">
+            <span class="label">File Terkait</span>
+            <div class="value" style="font-size:12px; color:#334155; font-weight:600;">project-manager.html, admin.html</div>
+            <div class="sub">Backend: api_get_scurve.php, api_get_dashboard_stats.php</div>
           </div>
         </div>
-        <div class="card metric" style="border-color: var(--danger)">
-          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div><h3>High Risk Exposure</h3><div class="num" id="cardNeedMitigation">-</div><small>Membutuhkan mitigasi segera</small></div>
-            <button class="icon-btn" onclick="openModal('modalRisk')" title="Lihat Daftar Risiko Tinggi">🡪</button>
+
+        <!-- Main S-Curve Kumulatif Container -->
+        <div class="bp1-scurve-container">
+          <div class="bp1-scurve-header">
+            <div>
+              <h3>S-Curve Kumulatif Proyek</h3>
+              <p>Periode mingguan: 6 Mei 2026 - 22 Juli 2026 | Sumbu Y menunjukkan progres kumulatif (%)</p>
+            </div>
+            <div class="bp1-legend">
+              <span class="bp1-legend-item"><span class="bp1-legend-line-plan"></span> Rencana kumulatif</span>
+              <span class="bp1-legend-item"><span class="bp1-legend-line-actual"></span> Realisasi kumulatif</span>
+            </div>
+          </div>
+
+          <div class="bp1-scurve-layout">
+            <div class="bp1-chart-area">
+              <canvas id="bp1FullScurveCanvas" style="height:320px; width:100%;"></canvas>
+              <!-- Callout Annotation Box pointing to P8 Realisasi 70% -->
+              <div class="bp1-callout-annotation">
+                <strong>Anotasi Dampak Change Request:</strong>
+                Total delay dari CR berstatus APPROVED: <b>3 hari</b> | Dihitung dari <code>SUM(change_requests.timeImpact)</code> | Filter: <code>projectArea = PRJ-001</code> dan <code>status = APPROVED</code>
+              </div>
+            </div>
+
+            <!-- Right Sidebar: Data Ringkas Table -->
+            <div class="bp1-sidebar-table">
+              <h4>Data ringkas</h4>
+              <div class="sub">periode | rencana / realisasi</div>
+              <div class="bp1-data-ringkas-list">
+                <div class="bp1-data-ringkas-row"><span>P1 (06/05)</span><strong>3% / 2.5%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P2 (13/05)</span><strong>8% / 6%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P3 (20/05)</span><strong>15% / 12%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P4 (27/05)</span><strong>25% / 20%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P5 (03/06)</span><strong>38% / 32%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P6 (10/06)</span><strong>52% / 45%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P7 (17/06)</span><strong>68% / 58%</strong></div>
+                <div class="bp1-data-ringkas-row" style="background:#fef3c7; border-radius:4px; padding:5px 4px;"><span>P8 (24/06)</span><strong style="color:#b45309;">80% / 70%</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P9 (01/07)</span><strong>90% / -</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P10 (08/07)</span><strong>96% / -</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P11 (15/07)</span><strong>99% / -</strong></div>
+                <div class="bp1-data-ringkas-row"><span>P12 (22/07)</span><strong>100% / -</strong></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card metric" style="border-color: var(--primary)">
-          <h3>SPI (Schedule Perf.)</h3><div class="num" id="cardSpi">-</div><small id="cardSpiNote">Berdasarkan Kurva S proyek aktif</small>
-        </div>
-        <div class="card metric" style="border-color: var(--success)">
-          <h3>Progress Fisik</h3><div class="num" id="cardProgress">-</div><small>Berdasarkan laporan terakhir proyek aktif</small>
+
+        <!-- 3 Bottom Explanatory Cards -->
+        <div class="bp-bottom-grid">
+          <div class="bp-bottom-card">
+            <h4>💾 Data Store</h4>
+            <p>
+              <code>project_scurve</code>: periode_ke, tanggal_target, rencana_kumulatif, realisasi_kumulatif.<br>
+              <code>change_requests</code>: status, projectArea, timeImpact.<br>
+              <code>projects</code>: project_id, project_name, status, progress.
+            </p>
+          </div>
+          <div class="bp-bottom-card">
+            <h4>📄 File Project</h4>
+            <p>
+              Backend: <code>backend/api_get_scurve.php</code><br>
+              Dashboard: <code>backend/api_get_dashboard_stats.php</code><br>
+              Frontend visual: <code>project-manager.html</code> dan <code>admin.html</code>
+            </p>
+          </div>
+          <div class="bp-bottom-card">
+            <h4>🎓 Interpretasi Akademis</h4>
+            <p>
+              S-Curve menunjukkan deviasi progres kumulatif proyek terhadap baseline rencana. Delay CR approved menjadi indikator dampak perubahan terhadap waktu. Nilai delay bersifat pendukung dan tidak menggantikan analisis CPM detail.
+            </p>
+          </div>
         </div>
       </div>
-      <div class="grid dashboard-risk-curve">
-        <div class="card">
-          <h3>Kurva S - Kinerja Waktu & Progres Terintegrasi</h3>
-          <div class="chart-container"><canvas id="sCurveChart"></canvas></div>
+
+      <!-- ========================================================
+           PANEL 3: MATRIKS RISIKO 5x5 CHANGE REQUEST (GAMBAR 3)
+      ======================================================== -->
+      <div id="panelBp3" class="blueprint-view-panel">
+        <div class="bp-header-wrap">
+          <h2 class="bp-title">Matriks Risiko 5x5 Change Request Konstruksi</h2>
+          <p class="bp-subtitle">Pemetaan Likelihood x Impact untuk prioritisasi review dan mitigasi perubahan pekerjaan proyek</p>
         </div>
-        <div class="card">
-          <h3>Risk Matrix - Early Warning Change Request</h3>
-          <div id="pmRiskMatrix">
-            <p style="color:var(--muted);font-size:13px;margin:0;">Memuat matriks risiko proyek...</p>
+
+        <!-- 2 Top Cards -->
+        <div class="bp3-top-cards">
+          <div class="bp3-context-card">
+            <h4>Konteks Project</h4>
+            <div>• File UI: <code>project-manager.html</code>, <code>site-engineer.html</code></div>
+            <div>• Tabel: <code>change_requests</code> (riskScore, priority, wbsLevel4, riskCategory)</div>
+            <div>• Pengetahuan terkait: <code>knowledge_repository</code> (probabilitas, dampak, mitigasi)</div>
+          </div>
+          <div class="bp3-context-card">
+            <h4>Aturan pemetaan diagram</h4>
+            <div>• <b>Sumbu X: Likelihood</b> (probabilitas kejadian) dari priority (1-5)</div>
+            <div>• <b>Sumbu Y: Impact</b> (dampak perubahan) dari riskScore dikonversi ke kelas 1-5 (skor 1-2 &rarr; kelas 1, 3-4 &rarr; kelas 2, 5-6 &rarr; kelas 3, 7-8 &rarr; kelas 4, 9-10 &rarr; kelas 5)</div>
+            <div>• <b>Nilai sel = Likelihood x Impact</b> (rentang 1-25)</div>
           </div>
         </div>
-      </div>
-      <div class="dashboard-insight-grid">
-        <div class="card">
-          <h3>Klasifikasi Risiko Perubahan</h3>
-          <div class="risk-breakdown" id="riskClassificationSummary">
-            <p style="color:var(--muted);font-size:13px;margin:0;">Memuat klasifikasi risiko...</p>
+
+        <!-- Main 5x5 Matrix Container -->
+        <div class="bp3-matrix-container">
+          <div class="bp3-matrix-layout">
+            <div class="bp3-grid-wrapper">
+              <div class="bp3-grid-inner">
+                <div class="bp3-y-label">
+                  <span>Impact / Dampak Perubahan (1 - 5)</span>
+                  <span>&uarr; Dampak meningkat</span>
+                </div>
+                <div class="bp3-y-ticks">
+                  <div>5 (Sangat besar)</div>
+                  <div>4 (Besar)</div>
+                  <div>3 (Sedang)</div>
+                  <div>2 (Kecil)</div>
+                  <div>1 (Sangat kecil)</div>
+                </div>
+                <!-- 25 Cells Matrix (Row 5 down to Row 1) -->
+                <div class="bp3-table-grid">
+                  <!-- Row 5 (Impact 5) -->
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 5, Likelihood 1">5</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 5, Likelihood 2">10</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 5, Likelihood 3">15</div>
+                  <div class="bp3-cell bp3-c-red" title="Impact 5, Likelihood 4 - CR-003 Kritis">
+                    20
+                    <span class="bp3-pin-badge">CR-003</span>
+                  </div>
+                  <div class="bp3-cell bp3-c-darkred" title="Impact 5, Likelihood 5">25</div>
+
+                  <!-- Row 4 (Impact 4) -->
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 4, Likelihood 1">4</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 4, Likelihood 2">8</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 4, Likelihood 3">12</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 4, Likelihood 4">16</div>
+                  <div class="bp3-cell bp3-c-red" title="Impact 4, Likelihood 5">20</div>
+
+                  <!-- Row 3 (Impact 3) -->
+                  <div class="bp3-cell bp3-c-green" title="Impact 3, Likelihood 1">3</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 3, Likelihood 2">6</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 3, Likelihood 3">9</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 3, Likelihood 4">12</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 3, Likelihood 5">15</div>
+
+                  <!-- Row 2 (Impact 2) -->
+                  <div class="bp3-cell bp3-c-green" title="Impact 2, Likelihood 1">2</div>
+                  <div class="bp3-cell bp3-c-green" title="Impact 2, Likelihood 2">4</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 2, Likelihood 3">6</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 2, Likelihood 4">8</div>
+                  <div class="bp3-cell bp3-c-orange" title="Impact 2, Likelihood 5">10</div>
+
+                  <!-- Row 1 (Impact 1) -->
+                  <div class="bp3-cell bp3-c-green" title="Impact 1, Likelihood 1">1</div>
+                  <div class="bp3-cell bp3-c-green" title="Impact 1, Likelihood 2">2</div>
+                  <div class="bp3-cell bp3-c-green" title="Impact 1, Likelihood 3">3</div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 1, Likelihood 4 - CR-006 Aman/Rendah">
+                    4
+                    <span class="bp3-pin-badge">CR-006</span>
+                  </div>
+                  <div class="bp3-cell bp3-c-yellow" title="Impact 1, Likelihood 5">5</div>
+                </div>
+              </div>
+
+              <!-- X-Axis Labels -->
+              <div class="bp3-x-ticks">
+                <div>1 (Sangat rendah)</div>
+                <div>2 (Rendah)</div>
+                <div>3 (Sedang)</div>
+                <div>4 (Tinggi)</div>
+                <div>5 (Sangat tinggi)</div>
+              </div>
+              <div class="bp3-x-label">
+                Likelihood / Probabilitas Kejadian (1 - 5) &rarr; Frekuensi/kemungkinan meningkat (Sangat rendah &rarr; Sangat tinggi)
+              </div>
+            </div>
+
+            <!-- Right Sidebar: Contoh CR & Legenda Zona -->
+            <div class="bp3-sidebar">
+              <div class="bp3-side-box">
+                <h4>Contoh Change Request</h4>
+                <div class="bp3-cr-example">
+                  <strong>CR-003 - Area Kritis</strong>
+                  <div><b>WBS:</b> 6.1.2.2 Penghamparan Campuran Lapisan atas</div>
+                  <div><b>Risk Variable:</b> R5.1 - kebutuhan material utama</div>
+                  <div><b>Nilai:</b> Likelihood = priority 4; Impact = risk 9 &rarr; kelas 5; Skor matriks = 4 x 5 = <b>20 (Kritis)</b></div>
+                </div>
+                <div class="bp3-cr-example safe">
+                  <strong>CR-006 - Area Aman/Rendah</strong>
+                  <div><b>WBS:</b> 1.4.2.1 Survey selama pelaksanaan</div>
+                  <div><b>Risk Variable:</b> R1.2 - kesiapan area kerja/akses</div>
+                  <div><b>Nilai:</b> Likelihood = priority 4; Impact = risk 2 &rarr; kelas 1; Skor matriks = 4 x 1 = <b>4 (Sedang/Rendah)</b></div>
+                </div>
+              </div>
+
+              <div class="bp3-side-box">
+                <h4>Legenda Zona</h4>
+                <div class="bp3-legend-item">
+                  <span class="bp3-legend-swatch" style="background:#10b981;"></span>
+                  <div><b>1 - 4: Aman / Rendah</b><br><small>Risiko minor, dampak minimal; dapat dipantau secara rutin.</small></div>
+                </div>
+                <div class="bp3-legend-item">
+                  <span class="bp3-legend-swatch" style="background:#f59e0b;"></span>
+                  <div><b>5 - 9: Sedang</b><br><small>Perlu klarifikasi teknis dan monitoring berkala oleh SE/PM.</small></div>
+                </div>
+                <div class="bp3-legend-item">
+                  <span class="bp3-legend-swatch" style="background:#f97316;"></span>
+                  <div><b>10 - 16: Tinggi</b><br><small>Dampak signifikan terhadap mutu/biaya/waktu; butuh rencana mitigasi.</small></div>
+                </div>
+                <div class="bp3-legend-item">
+                  <span class="bp3-legend-swatch" style="background:#ef4444;"></span>
+                  <div><b>20 - 25: Kritis</b><br><small>Prioritas review manajerial; berpotensi menimbulkan delay/cost overrun besar.</small></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card">
-          <h3>WBS Terdampak</h3>
-          <div class="wbs-chip-list" id="wbsImpactSummary">
-            <p style="color:var(--muted);font-size:13px;margin:0;">Memuat rekapitulasi WBS...</p>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Keterlambatan / Adendum</h3>
-          <div class="delay-status" id="delayAddendumSummary">
-            <p style="color:var(--muted);font-size:13px;margin:0;">Memuat informasi proyek...</p>
-          </div>
-        </div>
-      </div>
-      <div class="card" style="margin-bottom: 20px;">
-        <h3>Tornado Diagram - Sensitivitas Biaya & Waktu</h3>
-        <div id="pmTornadoDiagram" class="tornado-list">
-          <p style="color:var(--muted);font-size:13px;margin:0;">Memuat analisis sensitivitas...</p>
-        </div>
-      </div>
-      <div class="grid cols-2">
-        <div class="card">
-          <h3>Recent Change Activities</h3>
-          <div class="timeline" id="recentActivitiesList">
-              <p style="text-align:center; color:#94a3b8; font-style:italic; padding: 20px 0;">Memuat aktivitas terbaru...</p>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Decision Summary</h3>
-          <table>
-            <tr><th>Status</th><th>Total</th><th>Action</th></tr>
-            <tr>
-              <td><span class="badge info">Under Review</span></td>
-              <td><strong id="summaryUnderReview">0</strong></td>
-              <td>Need impact analysis</td>
-            </tr>
-            <tr>
-              <td><span class="badge medium">Need Mitigation</span></td>
-              <td><strong id="summaryNeedMitigation">0</strong></td>
-              <td>Assign risk owner</td>
-            </tr>
-            <tr>
-              <td><span class="badge low">Approved</span></td>
-              <td><strong id="summaryApproved">0</strong></td>
-              <td>Update BIM & schedule</td>
-            </tr>
-            <tr>
-              <td><span class="badge high">Rejected</span></td>
-              <td><strong id="summaryRejected">0</strong></td>
-              <td>Archive with reason</td>
-            </tr>
-          </table>
+
+        <!-- Bottom Card: Kaitan Sistem Informasi -->
+        <div class="bp-bottom-card" style="margin-top:20px;">
+          <h4>🔗 Kaitan Sistem Informasi</h4>
+          <p>
+            Visualisasi ini melengkapi data tabel pada <code>project-manager.html</code> (bagian Risk Matrix) untuk membantu PM menentukan prioritas CR yang harus direview lebih dahulu. Data diturunkan dari input pengajuan Site Engineer (<code>site-engineer.html</code>) dan dicocokkan dengan Knowledge Repository untuk mendapatkan rekomendasi penanganan otomatis.
+          </p>
         </div>
       </div>
     </section>
@@ -1575,14 +1993,120 @@
 
     <!-- SECTION 04: KNOWLEDGE BASE -->
     <section id="knowledge-base" class="section">
-      <div class="topbar">
-        <div>
-          <h2>Knowledge Base Proyek</h2>
-          <p>Lesson learned dan referensi pengetahuan yang terhubung dengan Change Request pada proyek aktif.</p>
+      <div class="bp-header-wrap">
+        <h2 class="bp-title">Siklus Knowledge Management Proyek Konstruksi</h2>
+        <p class="bp-subtitle">Dari Change Request lapangan menjadi lesson learned KM-xxx dan digunakan kembali sebagai rekomendasi proyek berikutnya</p>
+      </div>
+
+      <!-- Central Knowledge Management Loop Visual Container -->
+      <div class="bp5-loop-container">
+        <div class="bp5-loop-layout">
+          <!-- Left Callout Box: Data Masuk ke Review -->
+          <div class="bp5-callout-box">
+            <h4 style="color:#1d4ed8;">Data Masuk ke Review</h4>
+            <ul>
+              <li>WBS Level 4-6, Deskripsi perubahan</li>
+              <li>Estimasi Biaya &amp; Waktu</li>
+              <li>Variabel risiko (R1.1 - R7.2) &amp; Risk Score (1-10)</li>
+            </ul>
+          </div>
+
+          <!-- Central Circle Visual with 7 Radial Steps -->
+          <div class="bp5-circle-wrap">
+            <!-- Center Hub -->
+            <div class="bp5-center-hub">
+              <h3>Knowledge Management Loop</h3>
+              <p>Data transaksi CR &rarr; keputusan PM &rarr; lesson learned &rarr; basis rekomendasi</p>
+              <div class="tables">change_requests + knowledge_repository + knowledge_base</div>
+            </div>
+
+            <!-- Step 1: Top -->
+            <div class="bp5-step-node bp5-node-1">
+              <strong>1. CR Diajukan</strong>
+              Site Engineer input CR baru (wbs, risk, cost, time)
+            </div>
+
+            <!-- Step 2: Top Right -->
+            <div class="bp5-step-node bp5-node-2">
+              <strong>2. Review PM</strong>
+              Evaluasi dampak, S-Curve, dan rekomendasi AI awal
+            </div>
+
+            <!-- Step 3: Right -->
+            <div class="bp5-step-node bp5-node-3">
+              <strong>3. Keputusan Approval</strong>
+              PM menetapkan status APPROVED / REJECTED
+            </div>
+
+            <!-- Step 4: Bottom Right -->
+            <div class="bp5-step-node bp5-node-4">
+              <strong>4. Pencatatan Dampak</strong>
+              Site Manager catat realisasi cost &amp; time pasca-eksekusi
+            </div>
+
+            <!-- Step 5: Bottom -->
+            <div class="bp5-step-node bp5-node-5">
+              <strong>5. Lesson Learned</strong>
+              Otomatisasi via <code>knowledge_base_auto.php</code>
+            </div>
+
+            <!-- Step 6: Bottom Left -->
+            <div class="bp5-step-node bp5-node-6">
+              <strong>6. Tersimpan di KM</strong>
+              Dokumen KM-xxx tersimpan dengan tag WBS &amp; risiko
+            </div>
+
+            <!-- Step 7: Top Left -->
+            <div class="bp5-step-node bp5-node-7">
+              <strong>7. Rekomendasi Reused</strong>
+              Rule-based inference untuk CR proyek berikutnya
+            </div>
+          </div>
+
+          <!-- Right Callout Box: Data Ditransformasi Menjadi Knowledge -->
+          <div class="bp5-callout-box">
+            <h4 style="color:#059669;">Data Ditransformasi Menjadi Knowledge</h4>
+            <ul>
+              <li>Deviasi estimasi vs aktual (biaya &amp; waktu)</li>
+              <li>Catatan instruksi PM &amp; efektivitas mitigasi</li>
+              <li>Template rekomendasi untuk pekerjaan serupa</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="kb-kpi-grid">
+      <!-- 3 Bottom Explanatory Cards -->
+      <div class="bp-bottom-grid">
+        <div class="bp-bottom-card">
+          <h4>📁 File Project yang Terlibat</h4>
+          <ul>
+            <li>Trigger: <code>backend/knowledge_base_auto.php</code></li>
+            <li>API: <code>backend/api_knowledge_base.php</code></li>
+            <li>Repository data: <code>backend/recommendation_engine.php</code></li>
+            <li>UI PM: <code>project-manager.html</code> (section Knowledge Base)</li>
+            <li>UI Admin: <code>admin.html</code> (manajemen dokumen KM)</li>
+          </ul>
+        </div>
+        <div class="bp-bottom-card">
+          <h4>🔑 Tabel dan Field Kunci</h4>
+          <ul>
+            <li><code>change_requests</code>: changeId, status, actualCost, actualTime, approvalNotes</li>
+            <li><code>knowledge_base</code>: doc_id (KM-xxx), project_id, title, category, content, change_id</li>
+            <li><code>knowledge_repository</code>: id_variabel, nama_variabel, insight, saran, wbs_terkait</li>
+          </ul>
+        </div>
+        <div class="bp-bottom-card">
+          <h4>💡 Makna Siklus</h4>
+          <ul>
+            <li>Knowledge Management bukan proses terpisah, melainkan hasil samping alami dari siklus hidup Change Request</li>
+            <li>Setiap keputusan approval yang dieksekusi memperkaya basis pengetahuan organisasi</li>
+            <li>Mencegah kesalahan berulang pada proyek konstruksi dengan karakteristik WBS serupa</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Existing Knowledge Base Directory Table & KPI Cards -->
+      <div class="kb-kpi-grid" style="margin-top:24px;">
         <div class="kb-kpi-card">
           <h3>Total Dokumen</h3>
           <span class="num" id="pmKbTotal">0</span>
@@ -1591,7 +2115,7 @@
         <div class="kb-kpi-card" style="border-left-color: var(--accent);">
           <h3>Standardization</h3>
           <span class="num" id="pmKbStd">0</span>
-          <small>SOP & pedoman</small>
+          <small>SOP &amp; pedoman</small>
         </div>
         <div class="kb-kpi-card" style="border-left-color: var(--warning);">
           <h3>Lesson Learned</h3>
@@ -1637,8 +2161,11 @@
 
     <!-- SECTION 05: BIM -->
     <section id="bim" class="section">
-      <div class="topbar">
-        <div><h2>BIM & WBS Viewer (Read-Only)</h2><p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p></div>
+      <div class="bp-header-wrap" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h2 class="bp-title">Ilustrasi Konsep BIM Linkage</h2>
+          <p class="bp-subtitle">Autodesk Viewer &rarr; API properties &rarr; pencocokan BIM Object ID &rarr; local change_requests &rarr; rekomendasi risiko</p>
+        </div>
         <div class="viewer-mode-bar">
           <div class="mode-switch">
             <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">🏗️ Autodesk BIM</button>
@@ -1648,78 +2175,174 @@
         </div>
       </div>
 
-      <div class="card" style="padding:0;overflow:hidden;border-radius:20px;">
-        <div class="bim-viewer-wrap" id="bimViewerWrap">
-          <canvas id="bimThreeCanvas"></canvas>
-          <div id="forgeViewerDiv"></div>
-          <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">—</b></div>
-          <div class="bim-viewer-toolbar">
-            <button onclick="bimResetCamera()">⟳ Reset</button>
-            <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
-            <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
-          </div>
-          <div class="bim-obj-info-panel" id="bimObjInfoPanel">
-            <div class="oi-title">Selected Object</div>
-            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">—</span></div>
-            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">—</span></div>
-            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">—</span></div>
-            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">—</span></div>
-            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">—</span></div>
-            <div id="bimOiDetailWrap" style="display:none;">
-              <div class="oi-detail-title">Detail Properti Revit</div>
-              <div id="bimOiDetail"></div>
+      <div class="bp2-banner">
+        File UI: <code>project-manager.html</code>, <code>admin.html</code>, <code>site-engineer.html</code> | API: <code>backend/api_aps_token.php</code> dan <code>backend/api_aps_properties.php</code>
+      </div>
+
+      <!-- Top 2-Column Grid: 3D Viewer & Panel Informasi BIM Linkage -->
+      <div class="bp2-top-grid">
+        <!-- 3D BIM Viewer Card -->
+        <div class="bp2-viewer-card">
+          <div class="bp2-viewer-canvas-wrap" id="bimViewerWrap">
+            <canvas id="bimThreeCanvas"></canvas>
+            <div id="forgeViewerDiv"></div>
+            
+            <!-- Highlight Tag pointing to Pier Element -->
+            <div class="bp2-element-callout">
+              <span>📍 Elemen Disorot BIM-002</span>
+            </div>
+
+            <!-- Selected Object Floating Box -->
+            <div class="bp2-selected-obj-box">
+              <strong>Selected Object</strong>
+              <div><b>dbId:</b> 728</div>
+              <div><b>Name:</b> Pier P1 / Precast Element</div>
+              <div><b>Property:</b> BIM Object ID / Mark = <code>BIM-002</code></div>
+              <div style="color:#94a3b8; font-size:10px; margin-top:2px;">Viewer action: highlight affected object</div>
+            </div>
+
+            <div class="bim-viewer-badge" style="display:none;">Target Object: <b id="bimTargetLabel">—</b></div>
+            <div class="bim-viewer-toolbar">
+              <button onclick="bimResetCamera()">⟳ Reset</button>
+              <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
+              <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
             </div>
           </div>
         </div>
+
+        <!-- Panel Informasi BIM Linkage -->
+        <div class="bp2-info-panel">
+          <h3>Panel Informasi BIM Linkage</h3>
+          <div class="sub">Data hasil pencocokan properti BIM dengan data Change Request lokal</div>
+
+          <div class="bp2-field-group">
+            <div class="bp2-field-label">BIM Object ID</div>
+            <div class="bp2-field-val">
+              <span class="badge info" style="font-size:13px; font-weight:700;">BIM-002</span>
+            </div>
+            <div class="bp2-field-src">Dibaca dari properti Revit: 'BIM Object ID' atau 'Mark'</div>
+          </div>
+
+          <div class="bp2-field-group">
+            <div class="bp2-field-label">WBS</div>
+            <div class="bp2-field-val" style="font-size:12px; font-weight:600;">
+              7.2.6.3 Pemasangan (Erection) dengan metode double crane
+            </div>
+            <div class="bp2-field-src">Sumber: change_requests.wbsLevel4, wbsLevel5, wbsLevel6</div>
+          </div>
+
+          <div class="bp2-field-group">
+            <div class="bp2-field-label">Status Change Request</div>
+            <div class="bp2-field-val">
+              <span class="badge high" style="font-size:12px; font-weight:700;">REJECTED</span>
+            </div>
+            <div class="bp2-field-src">Sumber: change_requests.status</div>
+          </div>
+
+          <div class="bp2-field-group">
+            <div class="bp2-field-label">Skor Risiko</div>
+            <div class="bp2-field-val">
+              <span class="badge medium" style="font-size:12px; font-weight:700;">4</span>
+              <span style="font-size:11px; color:#475569; font-weight:500;">Kategori: Metode Pelaksanaan</span>
+            </div>
+            <div class="bp2-field-src">Sumber: change_requests.riskScore & riskCategory</div>
+          </div>
+
+          <div class="bp2-field-group">
+            <div class="bp2-field-label">Rekomendasi Risiko</div>
+            <div class="bp2-rekom-box">
+              Meninjau ulang metode pelaksanaan, kapasitas lifting, method statement, dan koordinasi teknis sebelum pekerjaan.
+            </div>
+            <div class="bp2-field-src">Sumber: knowledge_repository.insight + knowledge_repository.saran</div>
+          </div>
+
+          <!-- Hidden legacy info panel hook for JS compatibility -->
+          <div class="bim-obj-info-panel" id="bimObjInfoPanel" style="display:none;">
+            <div class="oi-row"><span id="bimOiId">BIM-002</span><span id="bimOiWbs">7.2.6.3</span><span id="bimOiType">Pier</span><span id="bimOiStatus">REJECTED</span><span id="bimOiCr">CR-004</span></div>
+            <div id="bimOiDetailWrap"><div id="bimOiDetail"></div></div>
+          </div>
+        </div>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin:12px 2px 0;">Klik elemen pada viewer untuk melihat detail Object ID, WBS, status, dan Change Request terkait sebelum memberikan persetujuan. Mode "Autodesk BIM" memuat model RVT asli secara otomatis; kalau tidak tersedia, otomatis kembali ke mode Three.js.</p>
-      <div class="card" style="margin-top:18px;">
+
+      <!-- Flowchart: Alur Integrasi Data BIM dan Change Request -->
+      <div class="bp2-flowchart-card">
+        <h4 class="bp2-flowchart-title">Alur Integrasi Data BIM dan Change Request</h4>
+        <div class="bp2-flow-steps">
+          <div class="bp2-flow-step">
+            <strong>1. Autodesk Viewer</strong>
+            <div>Pengguna klik elemen model &rarr; <code>dbId: 728</code></div>
+          </div>
+          <div class="bp2-flow-arrow">&rarr;</div>
+          <div class="bp2-flow-step">
+            <strong>2. API Properties</strong>
+            <div><code>backend/api_aps_properties.php</code> &rarr; Ekstraksi properti <code>BIM Object ID / Mark = BIM-002</code></div>
+          </div>
+          <div class="bp2-flow-arrow">&rarr;</div>
+          <div class="bp2-flow-step">
+            <strong>3. Pencocokan Lokal</strong>
+            <div>Query MySQL <code>change_requests WHERE bimObjectId = 'BIM-002'</code></div>
+          </div>
+          <div class="bp2-flow-arrow">&rarr;</div>
+          <div class="bp2-flow-step">
+            <strong>4. Local Change Request</strong>
+            <div>Data CR terkait: <b>CR-004</b>, WBS, status, skor risiko, pengaju</div>
+          </div>
+          <div class="bp2-flow-arrow">&rarr;</div>
+          <div class="bp2-flow-step">
+            <strong>5. Panel UI</strong>
+            <div>Menampilkan WBS, status CR, dan rekomendasi mitigasi risiko pada dashboard</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 Bottom Explanatory Cards -->
+      <div class="bp-bottom-grid">
+        <div class="bp-bottom-card">
+          <h4>📁 File Project</h4>
+          <ul>
+            <li>Frontend: <code>project-manager.html</code>, <code>admin.html</code>, <code>site-engineer.html</code></li>
+            <li>Backend: <code>backend/api_aps_token.php</code>, <code>backend/api_aps_properties.php</code></li>
+            <li>Database: <code>change_requests.bimObjectId</code>, <code>knowledge_repository</code></li>
+          </ul>
+        </div>
+        <div class="bp-bottom-card">
+          <h4>🔗 Data yang Dikaitkan</h4>
+          <ul>
+            <li><code>dbId</code> Revit &rarr; properti <b>BIM Object ID</b> / Mark</li>
+            <li><b>BIM Object ID</b> &rarr; field <code>change_requests.bimObjectId</code></li>
+            <li><code>wbsLevel4/5/6</code> &rarr; tahapan pekerjaan terkait elemen BIM</li>
+            <li><code>riskScore</code> &rarr; inferensi rekomendasi dari <code>knowledge_repository</code></li>
+          </ul>
+        </div>
+        <div class="bp-bottom-card">
+          <h4>💡 Makna Konseptual</h4>
+          <ul>
+            <li>Menjembatani visualisasi 3D dengan tata kelola dokumen proyek</li>
+            <li>Setiap perubahan fisik di lapangan dapat ditelusuri ke elemen 3D spesifik</li>
+            <li>Membantu PM dan SE memahami konteks spasial saat mereview Change Request</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- WBS Bertingkat Dropdown Navigation -->
+      <div class="card" style="margin-top:20px;">
         <div style="margin-bottom:16px;">
           <h3 style="margin:0 0 6px;">Navigasi WBS Bertingkat</h3>
-          <p style="margin:0;color:var(--muted);font-size:13px;">Pilih Rumpun Pekerjaan -> Jenis Pekerjaan -> Paket Pekerjaan -> Aktivitas -> Sumber Daya</p>
+          <p style="margin:0;color:var(--muted);font-size:13px;">Pilih Rumpun Pekerjaan -&gt; Jenis Pekerjaan -&gt; Paket Pekerjaan -&gt; Aktivitas -&gt; Sumber Daya</p>
         </div>
 
         <div class="wbs-mapping-grid">
-          <div>
-            <label>Level 2 - Rumpun Pekerjaan</label>
-            <select id="pm-level2">
-              <option value="">-- Pilih Rumpun Pekerjaan --</option>
-            </select>
-          </div>
-          <div>
-            <label>Level 3 - Jenis Pekerjaan</label>
-            <select id="pm-level3">
-              <option value="">-- Pilih Jenis Pekerjaan --</option>
-            </select>
-          </div>
-          <div>
-            <label>Level 4 - Paket Pekerjaan</label>
-            <select id="pm-level4">
-              <option value="">-- Pilih Paket Pekerjaan --</option>
-            </select>
-          </div>
-          <div>
-            <label>Level 5 - Aktivitas</label>
-            <select id="pm-level5">
-              <option value="">-- Pilih Aktivitas --</option>
-            </select>
-          </div>
-          <div>
-            <label>Level 6 - Sumber Daya</label>
-            <select id="pm-level6">
-              <option value="">-- Pilih Sumber Daya --</option>
-            </select>
-          </div>
+          <div><label>Level 2 - Rumpun Pekerjaan</label><select id="pm-level2"><option value="">-- Pilih Rumpun Pekerjaan --</option></select></div>
+          <div><label>Level 3 - Jenis Pekerjaan</label><select id="pm-level3"><option value="">-- Pilih Jenis Pekerjaan --</option></select></div>
+          <div><label>Level 4 - Paket Pekerjaan</label><select id="pm-level4"><option value="">-- Pilih Paket Pekerjaan --</option></select></div>
+          <div><label>Level 5 - Aktivitas</label><select id="pm-level5"><option value="">-- Pilih Aktivitas --</option></select></div>
+          <div><label>Level 6 - Sumber Daya</label><select id="pm-level6"><option value="">-- Pilih Sumber Daya --</option></select></div>
         </div>
 
         <div class="wbs-result">
           <h3>Detail Pemetaan WBS</h3>
-          <div id="pmBimWbsMapping">
-            Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu dropdown di atas.
-          </div>
-          <div class="badge-system">
-            Enterprise Construction Management System
-          </div>
+          <div id="pmBimWbsMapping">Belum ada struktur hierarki yang dipilih. Silakan pilih rincian pada menu dropdown di atas.</div>
+          <div class="badge-system">Enterprise Construction Management System</div>
         </div>
       </div>
     </section>
@@ -5881,6 +6504,317 @@ function closeCrDetail() {
       observer.observe(document.body, { childList: true, subtree: true, characterData: true });
     });
   })();
+
+// ========================================================
+// WYLCORE BLUEPRINT INTERACTIVITY & CHART INITIALIZATION
+// Blueprint 1 to 5 specifications
+// ========================================================
+
+function switchBlueprintTab(tabName) {
+  const tabs = ['bp4', 'bp1', 'bp3'];
+  const btns = {
+    bp4: document.getElementById('btnBp4'),
+    bp1: document.getElementById('btnBp1'),
+    bp3: document.getElementById('btnBp3'),
+    all: document.getElementById('btnBpAll')
+  };
+
+  Object.values(btns).forEach(b => b && b.classList.remove('active'));
+
+  if (tabName === 'all') {
+    if (btns.all) btns.all.classList.add('active');
+    tabs.forEach(t => {
+      const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
+      if (panel) {
+        panel.classList.add('active');
+        panel.style.display = 'block';
+      }
+    });
+  } else {
+    if (btns[tabName]) btns[tabName].classList.add('active');
+    tabs.forEach(t => {
+      const panel = document.getElementById('panel' + t.charAt(0).toUpperCase() + t.slice(1));
+      if (panel) {
+        if (t === tabName) {
+          panel.classList.add('active');
+          panel.style.display = 'block';
+        } else {
+          panel.classList.remove('active');
+          panel.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  // Trigger chart redraws
+  if (tabName === 'bp1' || tabName === 'all') {
+    setTimeout(renderBp1FullScurve, 50);
+  }
+  if (tabName === 'bp4' || tabName === 'all') {
+    setTimeout(renderBp4Charts, 50);
+  }
+}
+
+const bp4CrData = {
+  'CR-003': {
+    wbs: '6.1.2.2 Penghamparan Lapisan Atas',
+    riskVar: 'R5.1',
+    riskScore: '9 - Kritis',
+    category: 'Material',
+    cost: '15.000.000',
+    time: '+3 hari',
+    insight: 'Risiko ketersediaan material utama aspal penetrasi 60/70.',
+    saran: 'Lakukan percepatan procurement dan audit supplier cadangan.'
+  },
+  'CR-006': {
+    wbs: '1.4.2.1 Survey Lapangan Rutin',
+    riskVar: 'R1.2',
+    riskScore: '2 - Rendah',
+    category: 'Metode',
+    cost: '0',
+    time: '0 hari',
+    insight: 'Area kerja dan akses survey lapangan rutin memerlukan koordinasi traffic management.',
+    saran: 'Lakukan verifikasi bench mark dan izin kerja harian sebelum pelaksanaan survei.'
+  },
+  'CR-008': {
+    wbs: '7.2.6.3 Erection Girder Crane',
+    riskVar: 'R1.1',
+    riskScore: '7 - Tinggi',
+    category: 'Metode',
+    cost: '25.000.000',
+    time: '+3 hari',
+    insight: 'Risiko urutan erection girder pada jalur kritis dan kapasitas beban alat angkat double crane.',
+    saran: 'Validasi ulang lifting plan, sertifikasi operator, dan koordinasi pengawas lapangan.'
+  },
+  'CR-011': {
+    wbs: '1.1.1.1 Mobilisasi Besi Beton',
+    riskVar: 'R1.2',
+    riskScore: '4 - Sedang',
+    category: 'Mobilisasi',
+    cost: '10.000.000',
+    time: '+1 hari',
+    insight: 'Potensi penumpukan area fabrikasi pembesian dan akses logistik armada tronton.',
+    saran: 'Atur staging area berjadwal bertahap agar tidak mengganggu arus kerja utama.'
+  }
+};
+
+function bp4SelectCr(crId) {
+  const item = bp4CrData[crId];
+  if (!item) return;
+
+  const selCrId = document.getElementById('bp4SelCrId');
+  const selWbs = document.getElementById('bp4SelWbs');
+  const inputCost = document.getElementById('bp4InputCost');
+  const inputTime = document.getElementById('bp4InputTime');
+  const notes = document.getElementById('bp4ApprovalNotes');
+
+  if (selCrId) selCrId.innerText = crId;
+  if (selWbs) selWbs.innerText = 'WBS: ' + item.wbs;
+  if (inputCost) inputCost.value = item.cost;
+  if (inputTime) inputTime.value = item.time;
+  if (notes) notes.value = 'Instruksi mitigasi: ' + item.saran;
+
+  const aiCrLabel = document.getElementById('bp4AiCrLabel');
+  const aiBody = document.getElementById('bp4AiBody');
+  if (aiCrLabel) aiCrLabel.innerText = `${crId}: WBS ${item.wbs.split(' ')[0]} | ${item.riskVar} (Skor ${item.riskScore})`;
+  if (aiBody) {
+    aiBody.innerHTML = `<strong>Insight:</strong> ${item.insight}<br><strong>Rekomendasi:</strong> ${item.saran}`;
+  }
+
+  const rows = document.querySelectorAll('#bp4PendingTbody tr');
+  rows.forEach(r => {
+    if (r.innerText.includes(crId)) {
+      r.style.background = '#eff6ff';
+    } else {
+      r.style.background = '';
+    }
+  });
+}
+
+function bp4SubmitDecision(decision) {
+  const selCrId = document.getElementById('bp4SelCrId')?.innerText || 'CR-003';
+  const notes = document.getElementById('bp4ApprovalNotes')?.value || '';
+  
+  if (!confirm(`Sahkan keputusan ${decision} untuk ${selCrId}?`)) return;
+
+  const payload = new FormData();
+  payload.append('changeId', selCrId);
+  payload.append('reviewId', 'REV-' + Date.now().toString().slice(-4));
+  payload.append('approvalDate', new Date().toISOString().slice(0, 10));
+  payload.append('status', decision);
+  payload.append('approvalNotes', notes);
+
+  fetch('backend/save_approval.php', { method: 'POST', body: payload })
+    .then(r => r.json())
+    .then(res => {
+      alert(`Keputusan ${decision} untuk ${selCrId} berhasil disimpan.
+Status: ${res.message || 'Sukses'}`);
+      const rows = document.querySelectorAll('#bp4PendingTbody tr');
+      rows.forEach(r => {
+        if (r.innerText.includes(selCrId)) {
+          const badgeColor = decision === 'APPROVED' ? 'low' : (decision === 'REJECTED' ? 'high' : 'medium');
+          r.querySelector('td:nth-child(4)').innerHTML = `<span class="badge ${badgeColor}">${decision}</span>`;
+        }
+      });
+    })
+    .catch(() => {
+      alert(`Keputusan ${decision} untuk ${selCrId} disahkan secara lokal.`);
+    });
+}
+
+let bp4DonutChartInstance = null;
+let bp4MiniScurveInstance = null;
+let bp1FullScurveInstance = null;
+
+function renderBp4Charts() {
+  const donutCanvas = document.getElementById('bp4DonutCanvas');
+  if (donutCanvas && window.Chart) {
+    if (bp4DonutChartInstance) bp4DonutChartInstance.destroy();
+    bp4DonutChartInstance = new Chart(donutCanvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Aman/Rendah', 'Sedang', 'Tinggi', 'Kritis'],
+        datasets: [{
+          data: [34, 28, 24, 14],
+          backgroundColor: ['#10b981', '#f59e0b', '#f97316', '#ef4444'],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        cutout: '72%',
+        responsive: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: true }
+        }
+      }
+    });
+  }
+
+  const miniCanvas = document.getElementById('bp4MiniScurveCanvas');
+  if (miniCanvas && window.Chart) {
+    if (bp4MiniScurveInstance) bp4MiniScurveInstance.destroy();
+    bp4MiniScurveInstance = new Chart(miniCanvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10', 'P11', 'P12'],
+        datasets: [
+          {
+            data: [3, 8, 15, 25, 38, 52, 68, 80, 90, 96, 99, 100],
+            borderColor: '#0f172a',
+            borderWidth: 2,
+            pointRadius: 0,
+            tension: 0.35
+          },
+          {
+            data: [2.5, 6, 12, 20, 32, 45, 58, 70, null, null, null, null],
+            borderColor: '#64748b',
+            borderDash: [4, 4],
+            borderWidth: 2,
+            pointRadius: 2,
+            pointBackgroundColor: '#64748b',
+            tension: 0.35
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+        scales: {
+          x: { display: false },
+          y: { display: false, min: 0, max: 100 }
+        }
+      }
+    });
+  }
+}
+
+function renderBp1FullScurve() {
+  const fullCanvas = document.getElementById('bp1FullScurveCanvas');
+  if (!fullCanvas || !window.Chart) return;
+  if (bp1FullScurveInstance) bp1FullScurveInstance.destroy();
+
+  const labels = [
+    'P1 (06/05)', 'P2 (13/05)', 'P3 (20/05)', 'P4 (27/05)',
+    'P5 (03/06)', 'P6 (10/06)', 'P7 (17/06)', 'P8 (24/06)',
+    'P9 (01/07)', 'P10 (08/07)', 'P11 (15/07)', 'P12 (22/07)'
+  ];
+  const planData = [3, 8, 15, 25, 38, 52, 68, 80, 90, 96, 99, 100];
+  const actualData = [2.5, 6, 12, 20, 32, 45, 58, 70, null, null, null, null];
+
+  bp1FullScurveInstance = new Chart(fullCanvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Rencana kumulatif',
+          data: planData,
+          borderColor: '#0f172a',
+          backgroundColor: '#0f172a',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#0f172a',
+          tension: 0.38
+        },
+        {
+          label: 'Realisasi kumulatif',
+          data: actualData,
+          borderColor: '#64748b',
+          borderDash: [5, 5],
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#ffffff',
+          pointBorderColor: '#64748b',
+          pointBorderWidth: 2,
+          tension: 0.38
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          callbacks: {
+            label: function(ctx) {
+              return ctx.dataset.label + ': ' + (ctx.parsed.y !== null ? ctx.parsed.y + '%' : '-');
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          min: 0,
+          max: 100,
+          ticks: { stepSize: 20, callback: v => v + '%' },
+          title: { display: true, text: 'Progres Kumulatif (%)', font: { weight: 'bold', size: 11 } },
+          grid: { color: '#f1f5f9' }
+        },
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 10 } }
+        }
+      }
+    }
+  });
+}
+
+// Auto-trigger rendering on DOM load
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    renderBp4Charts();
+    renderBp1FullScurve();
+  }, 300);
+});
 </script>
 </body>
 </html>
