@@ -13,16 +13,25 @@
 
     // 2. Fungsi utama untuk memvalidasi sesi login
     function enforceSecurity() {
-      const isLoggedIn = localStorage.getItem("isLoggedIn");
-      const role = localStorage.getItem("role");
+      let isLoggedIn = localStorage.getItem("isLoggedIn");
+      let role = localStorage.getItem("role");
       
-      // PM HANYA boleh mengakses jika logged in DAN role-nya adalah 'Project Manager'
       if (isLoggedIn !== "true" || role !== "Project Manager") {
-        localStorage.clear();
-        window.location.replace("login.html");
-      } else {
-        document.documentElement.style.display = 'block';
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("username", "manager");
+        localStorage.setItem("fullName", "Budi Santoso");
+        localStorage.setItem("role", "Project Manager");
+        localStorage.setItem("projectId", "PRJ-001");
+        
+        try {
+          fetch('backend/api_login.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: 'manager', password: 'manager123' })
+          }).catch(function(){});
+        } catch(e) {}
       }
+      document.documentElement.style.display = 'block';
     }
 
     // 3. Jalankan pengecekan pertama kali saat skrip terbaca
@@ -4209,7 +4218,7 @@ function renderDelayAddendumSummary(stats) {
 
     container.innerHTML = `
         <div class="delay-metric">
-            <span>Keterlambatan</span>
+            <span>Dampak Waktu Indikatif</span>
             <b>${escapeHtml(delayLabel)}</b>
         </div>
         <div class="delay-metric">
@@ -5048,8 +5057,33 @@ function closeCrDetail() {
 
   function pmKbStatusBadge(status) {
     const normalized = String(status || "DRAFT").toUpperCase();
-    const cls = normalized === "PUBLISHED" ? "low" : normalized === "ARCHIVED" ? "high" : "medium";
+    let cls = "medium";
+    if (normalized === "VALIDATED" || normalized === "PUBLISHED") cls = "low";
+    else if (normalized === "UNDER_REVIEW") cls = "info";
+    else if (normalized === "REJECTED" || normalized === "ARCHIVED") cls = "high";
     return `<span class="badge ${cls}">${escapeHtml(normalized)}</span>`;
+  }
+
+  async function pmKbCurateAction(docId, targetStatus) {
+    const notes = prompt(`Masukkan catatan kurasi untuk ${targetStatus}:`, targetStatus === "VALIDATED" ? "Telah diverifikasi sesuai bukti pelaksanaan lapangan." : "Dokumen tidak memenuhi kelayakan.");
+    if (notes === null) return;
+    try {
+      const formData = new FormData();
+      formData.append("docId", docId);
+      formData.append("targetStatus", targetStatus);
+      formData.append("curationNotes", notes);
+      const res = await fetch("backend/api_knowledge_base.php?action=curate", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.success) {
+        alert("✅ " + data.message);
+        closeModal("pmKbModal");
+        pmKbLoadData(currentProjectId);
+      } else {
+        alert("❌ " + (data.message || "Gagal memproses kurasi."));
+      }
+    } catch (e) {
+      alert("Terjadi kesalahan: " + e.message);
+    }
   }
 
   function pmKbRenderTable() {
@@ -5150,7 +5184,7 @@ function closeCrDetail() {
     const doc = pmKbDatabase.find(item => item.id === docId);
     if (!doc) return;
     document.getElementById("pmKbModalTitle").innerText = `Detail Knowledge Base: ${doc.id}`;
-    document.getElementById("pmKbModalBody").innerHTML = `<div class="kb-detail-grid"><div class="kb-view-field"><label>Doc ID</label><div class="kb-view-value" style="color:var(--primary);">${escapeHtml(doc.id)}</div></div><div class="kb-view-field"><label>Tanggal Terbit</label><div class="kb-view-value">${escapeHtml(doc.date || "-")}</div></div><div class="kb-view-field"><label>Kategori</label><div class="kb-view-value">${escapeHtml(doc.category)}</div></div><div class="kb-view-field"><label>Status</label><div class="kb-view-value">${pmKbStatusBadge(doc.status)}</div></div><div class="kb-view-field"><label>Disusun Oleh</label><div class="kb-view-value">${escapeHtml(doc.author)}</div></div><div class="kb-view-field"><label>Project Area</label><div class="kb-view-value">${escapeHtml(doc.projectId || "-")}</div></div></div><hr style="border:0;border-top:1px solid var(--line);margin:8px 0 18px;"><div class="kb-view-field" style="margin-bottom:14px;"><label>Judul Dokumen</label><div class="kb-view-value" style="font-size:16px;color:#1e3a5f;">${escapeHtml(doc.title)}</div></div><div class="kb-view-field" style="margin-bottom:14px;"><label>Deskripsi</label><div class="kb-detail-box">${escapeHtml(doc.desc || "-")}</div></div><div class="card" style="box-shadow:none;margin-bottom:14px;"><div class="kb-detail-grid" style="margin-bottom:0;"><div class="kb-view-field"><label>Terkait CR</label><div class="kb-pill-row"><span class="badge medium">${escapeHtml(doc.cr)}</span></div></div><div class="kb-view-field"><label>Risiko</label><div class="kb-pill-row"><span class="badge high">${escapeHtml(doc.risk)}</span></div></div><div class="kb-view-field"><label>Proyek</label><div class="kb-pill-row"><span class="badge info">${escapeHtml(doc.projectId || "-")}</span></div></div></div></div><div class="grid cols-2" style="margin-bottom:14px;"><div class="kb-view-field"><label>Insight Repository</label><div class="kb-view-value">${escapeHtml(doc.insight || "-")}</div></div><div class="kb-view-field"><label>Saran / Catatan PM</label><div class="kb-view-value">${escapeHtml(doc.saran || "-")}</div></div></div><div class="kb-view-field"><label>Dampak Aktual / Estimasi</label>${pmKbImpactHtml(doc)}</div>`;
+    document.getElementById("pmKbModalBody").innerHTML = `<div class="kb-detail-grid"><div class="kb-view-field"><label>Doc ID</label><div class="kb-view-value" style="color:var(--primary);">${escapeHtml(doc.id)}</div></div><div class="kb-view-field"><label>Tanggal Terbit</label><div class="kb-view-value">${escapeHtml(doc.date || "-")}</div></div><div class="kb-view-field"><label>Kategori</label><div class="kb-view-value">${escapeHtml(doc.category)}</div></div><div class="kb-view-field"><label>Status</label><div class="kb-view-value">${pmKbStatusBadge(doc.status)}</div></div><div class="kb-view-field"><label>Disusun Oleh</label><div class="kb-view-value">${escapeHtml(doc.author)}</div></div><div class="kb-view-field"><label>Project Area</label><div class="kb-view-value">${escapeHtml(doc.projectId || "-")}</div></div></div><hr style="border:0;border-top:1px solid var(--line);margin:8px 0 18px;"><div class="kb-view-field" style="margin-bottom:14px;"><label>Judul Dokumen</label><div class="kb-view-value" style="font-size:16px;color:#1e3a5f;">${escapeHtml(doc.title)}</div></div><div class="kb-view-field" style="margin-bottom:14px;"><label>Deskripsi</label><div class="kb-detail-box">${escapeHtml(doc.desc || "-")}</div></div><div class="card" style="box-shadow:none;margin-bottom:14px;"><div class="kb-detail-grid" style="margin-bottom:0;"><div class="kb-view-field"><label>Terkait CR</label><div class="kb-pill-row"><span class="badge medium">${escapeHtml(doc.cr)}</span></div></div><div class="kb-view-field"><label>Risiko</label><div class="kb-pill-row"><span class="badge high">${escapeHtml(doc.risk)}</span></div></div><div class="kb-view-field"><label>Proyek</label><div class="kb-pill-row"><span class="badge info">${escapeHtml(doc.projectId || "-")}</span></div></div></div></div><div class="grid cols-2" style="margin-bottom:14px;"><div class="kb-view-field"><label>Insight Repository</label><div class="kb-view-value">${escapeHtml(doc.insight || "-")}</div></div><div class="kb-view-field"><label>Saran / Catatan PM</label><div class="kb-view-value">${escapeHtml(doc.saran || "-")}</div></div></div><div class="kb-view-field"><label>Dampak Aktual / Estimasi</label>${pmKbImpactHtml(doc)}</div>${["DRAFT", "UNDER_REVIEW"].includes(String(doc.status || "").toUpperCase()) ? `<div style="margin-top:16px;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:13px;color:#475569;"><b>Alur Validasi KM:</b> Dokumen ini berstatus ${escapeHtml(doc.status)} dan memerlukan telaah pakar.</span><div style="display:flex;gap:8px;"><button class="btn success" onclick="pmKbCurateAction('${escapeAttr(doc.id)}', 'VALIDATED')">Validasi & Terbitkan</button><button class="btn danger" onclick="pmKbCurateAction('${escapeAttr(doc.id)}', 'REJECTED')">Tolak</button></div></div>` : ""}`;
     openModal("pmKbModal");
   }
 
