@@ -58,3 +58,4 @@ header('Access-Control-Allow-Origin: *');
 header_remove('X-Frame-Options');
 header('X-Frame-Options: ALLOWALL');
 echo $body;
+
