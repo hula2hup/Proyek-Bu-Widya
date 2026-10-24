@@ -211,9 +211,12 @@ try {
             cr.changeId,
             MAX(cr.projectArea) AS projectArea,
             MAX(cr.risk) AS risk,
+            MAX(cr.priority) AS priority,
             MAX(cr.riskVariable) AS riskVariable,
             MAX(cr.riskCategory) AS riskCategory,
             MAX(cr.riskDescription) AS riskDescription,
+            MAX(cr.description) AS description,
+            MAX(cr.wbsLevel5) AS wbsLevel5,
             MAX(cr.costImpact) AS costImpact,
             MAX(cr.timeImpact) AS timeImpact,
             MAX(cr.status) AS status,
@@ -233,11 +236,11 @@ try {
     $tornadoMap = [];
     foreach ($riskVisualRows as $row) {
         $riskScore = max(0, min(10, (int)($row['risk'] ?? 0)));
-        $likelihood = max(1, min(5, (int)ceil(max(1, $riskScore) / 2)));
+        $priorityScore = (int)($row['priority'] ?? 0);
+        $likelihood = max(1, min(5, $priorityScore > 0 ? $priorityScore : 1));
         $costImpact = (float)($row['costImpact'] ?? 0);
         $timeImpact = (int)($row['timeImpact'] ?? 0);
-        $impactBase = max($riskScore, $costImpact > 0 ? 7 : 0, $timeImpact > 0 ? 6 : 0);
-        $impact = max(1, min(5, (int)ceil(max(1, $impactBase) / 2)));
+        $impact = max(1, min(5, (int)ceil(max(1, $riskScore) / 2)));
         $riskCode = trim((string)($row['riskVariable'] ?? ''));
         $riskName = trim((string)($row['risk_nama'] ?? ''));
         $riskLabel = $riskCode !== '' ? $riskCode : ($riskName !== '' ? $riskName : 'Risiko belum dikodekan');
@@ -246,11 +249,15 @@ try {
             "changeId" => $row['changeId'],
             "projectArea" => $row['projectArea'] ?? '',
             "riskScore" => $riskScore,
+            "priority" => $priorityScore,
             "likelihood" => $likelihood,
             "impact" => $impact,
+            "impactScore" => $impact,
             "riskVariable" => $riskCode,
             "riskName" => $riskName,
             "riskCategory" => $row['riskCategory'] ?: ($row['risk_kategori'] ?? ''),
+            "description" => $row['description'] ?? '',
+            "wbsLevel5" => $row['wbsLevel5'] ?? '',
             "status" => $row['status'] ?? ''
         ];
 

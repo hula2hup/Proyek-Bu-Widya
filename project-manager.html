@@ -174,6 +174,26 @@
     .timeline-item p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
     .chart-container { position: relative; height: 280px; width: 100%; }
     .dashboard-risk-curve { grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); margin-bottom: 20px; align-items: stretch; }
+    .dashboard-risk-curve > .card { min-width: 0; }
+    .scurve-meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 14px; }
+    .scurve-meta-card { min-width: 0; padding: 11px 12px; border: 1px solid var(--line); border-left: 3px solid var(--primary); border-radius: 12px; background: #fff; }
+    .scurve-meta-card h4 { margin: 0 0 5px; color: var(--muted); font-size: 11px; font-weight: 700; }
+    .scurve-meta-card strong { display: block; color: #0f172a; font-size: 16px; line-height: 1.25; overflow-wrap: anywhere; }
+    .scurve-meta-card small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.4; overflow-wrap: anywhere; }
+    .scurve-meta-card.files { border-left-color: var(--accent); }
+    .scurve-meta-card.realization { border-left-color: var(--success); }
+    .scurve-meta-card.impact { border-left-color: var(--warning); }
+    .scurve-subtitle { margin: -8px 0 12px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .scurve-summary-wrap { max-height: 190px; margin-top: 12px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+    .scurve-summary-table { min-width: 280px; font-size: 11px; }
+    .scurve-summary-table th, .scurve-summary-table td { padding: 7px 9px; }
+    .scurve-summary-table th { position: sticky; top: 0; z-index: 1; }
+    .scurve-note-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+    .scurve-note { min-width: 0; padding: 10px 11px; border-radius: 10px; background: #f8fafc; border: 1px solid var(--line); }
+    .scurve-note h4 { margin: 0 0 5px; color: #0f172a; font-size: 11px; }
+    .scurve-note p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+    .scurve-impact-note { margin: 10px 0 0; padding: 9px 11px; border-left: 3px solid var(--warning); border-radius: 8px; background: #fffbeb; color: #78350f; font-size: 11px; line-height: 1.5; }
+    @media (max-width: 760px) { .scurve-note-grid { grid-template-columns: 1fr; } }
     .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
     label { font-size: 12px; font-weight: 700; color: #475569; display: block; margin-bottom: 6px; }
     input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; font-family: inherit; background: #f8fafc; font-size: 13px; }
@@ -212,6 +232,50 @@
     .risk-axis-y { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; color: var(--muted); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
     .risk-matrix-grid { display: grid; grid-template-columns: repeat(5, minmax(58px, 1fr)); gap: 6px; }
     .risk-cell { min-height: 62px; border-radius: 8px; padding: 6px; border: 1px solid rgba(15,23,42,.08); position: relative; overflow: hidden; }
+    .pm-risk-matrix-card { margin-bottom: 20px; }
+    .pm-risk-matrix-subtitle { margin: -8px 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .pm-risk-context-grid { display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px; }
+    .pm-risk-context, .pm-risk-rules { padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+    .pm-risk-context h4, .pm-risk-rules h4, .pm-risk-section-title { margin: 0 0 7px; color: #0f172a; font-size: 12px; }
+    .pm-risk-context p, .pm-risk-rules p { margin: 3px 0; color: #475569; font-size: 10px; line-height: 1.55; }
+    .pm-risk-visual-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-items: stretch; }
+    .pm-risk-chart-panel, .pm-risk-side-panel { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+    .pm-risk-chart-title { margin: 0 0 8px; color: #0f172a; font-size: 13px; text-align: center; }
+    .pm-risk-direction { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 7px 48px; color: var(--muted); font-size: 9px; }
+    .pm-risk-plot { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; align-items: stretch; }
+    .pm-risk-y-axis { display: grid; grid-template-columns: 16px 1fr; gap: 3px; align-items: stretch; }
+    .pm-risk-y-label { writing-mode: vertical-rl; transform: rotate(180deg); text-align: center; color: #0f172a; font-size: 10px; font-weight: 800; }
+    .pm-risk-y-scale { display: grid; grid-template-rows: repeat(5, minmax(54px, 1fr)); align-items: center; text-align: center; color: #475569; font-size: 10px; font-weight: 800; }
+    .pm-risk-grid { display: grid; grid-template-columns: repeat(5, minmax(42px, 1fr)); grid-template-rows: repeat(5, minmax(54px, 1fr)); gap: 4px; }
+    .pm-risk-matrix-card .risk-cell { min-height: 54px; border-radius: 3px; padding: 5px; }
+    .pm-risk-matrix-card .risk-cell.green-zone { background: #bbf7d0; }
+    .pm-risk-matrix-card .risk-cell.yellow-zone { background: #fde68a; }
+    .pm-risk-matrix-card .risk-cell.orange-zone { background: #fb923c; }
+    .pm-risk-matrix-card .risk-cell.red-zone { background: #dc2626; color: #fff; }
+    .pm-risk-matrix-card .risk-cell small { top: 5px; right: auto; bottom: auto; left: 7px; color: inherit; }
+    .pm-risk-matrix-card .risk-cell.red-zone small { color: rgba(255,255,255,.8); }
+    .pm-risk-matrix-card .risk-dot-stack { margin-top: 16px; justify-content: center; }
+    .pm-risk-matrix-card .risk-point { min-width: 34px; height: 20px; padding: 0 5px; background: #fff; color: #0f172a; border-color: rgba(15,23,42,.2); font-size: 9px; }
+    .pm-risk-x-scale { display: grid; grid-template-columns: repeat(5, minmax(42px, 1fr)); gap: 4px; margin: 5px 0 0 44px; text-align: center; color: #475569; font-size: 10px; font-weight: 800; }
+    .pm-risk-axis-label { margin: 7px 0 0 44px; color: #0f172a; font-size: 11px; font-weight: 800; text-align: center; }
+    .pm-risk-side-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .pm-risk-examples { display: grid; gap: 8px; }
+    .pm-risk-example { padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: #f8fafc; }
+    .pm-risk-example.red-zone { border-color: #dc2626; background: #fef2f2; }
+    .pm-risk-example.orange-zone { border-color: #fb923c; background: #fff7ed; }
+    .pm-risk-example.yellow-zone { border-color: #facc15; background: #fefce8; }
+    .pm-risk-example.green-zone { border-color: #34d399; background: #ecfdf5; }
+    .pm-risk-example strong { display: block; margin-bottom: 5px; color: #0f172a; font-size: 11px; }
+    .pm-risk-example p { margin: 3px 0; color: #475569; font-size: 10px; line-height: 1.45; overflow-wrap: anywhere; }
+    .pm-risk-legend { display: grid; gap: 7px; }
+    .pm-risk-legend-row { display: flex; align-items: flex-start; gap: 8px; color: #475569; font-size: 10px; line-height: 1.4; }
+    .pm-risk-swatch { flex: 0 0 16px; width: 16px; height: 16px; border: 1px solid rgba(15,23,42,.12); border-radius: 2px; }
+    .pm-risk-swatch.green-zone { background: #bbf7d0; }
+    .pm-risk-swatch.yellow-zone { background: #fde68a; }
+    .pm-risk-swatch.orange-zone { background: #fb923c; }
+    .pm-risk-swatch.red-zone { background: #dc2626; }
+    .pm-risk-system-note { margin-top: 12px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #f8fafc; color: #475569; font-size: 10px; line-height: 1.55; }
+    .pm-risk-system-note p { margin: 3px 0; }
     .risk-cell small { position: absolute; right: 7px; bottom: 5px; font-size: 10px; font-weight: 800; color: rgba(15,23,42,.45); }
     .risk-cell.low-zone { background: #dcfce7; }
     .risk-cell.medium-zone { background: #fef3c7; }
@@ -236,11 +300,14 @@
     @media (max-width: 1000px) { .wbs-mapping-grid { grid-template-columns: 1fr; } }
     @media (max-width: 1100px) { .dashboard-insight-grid, .dashboard-risk-curve { grid-template-columns: 1fr; } }
     @media (max-width: 900px) { .bowtie, .tornado-row { grid-template-columns: 1fr; } .risk-matrix-grid { grid-template-columns: repeat(5, minmax(44px, 1fr)); } }
+    @media (max-width: 900px) { .pm-risk-context-grid, .pm-risk-visual-grid, .pm-risk-side-panel { grid-template-columns: 1fr; } }
     .ai-box { background: linear-gradient(to right, #eff6ff, #faf5ff); border: 1px solid #c084fc; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
     .ai-box h4 { margin: 0 0 8px; font-size: 13px; color: #6b21a8; display: flex; align-items: center; gap: 6px; }
 
     /* ── BIM 3D VIEWER ── */
-    .bim-viewer-wrap { height: 420px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+    .bim-viewer-wrap { height: 540px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+    #forgeViewerDiv { width: 100%; height: 100%; display: block; position: relative; }
+    .bim-embed-frame { width: 100%; height: 100%; border: 0; display: block; background: #0d1117; }
     #bimThreeCanvas { width: 100%; height: 100%; display: block; }
     .bim-viewer-toolbar { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 8px; z-index: 10; }
     .bim-viewer-toolbar button { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.15); color: #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 11px; cursor: pointer; font-weight: 700; }
@@ -710,6 +777,9 @@
       .risk-matrix-wrap { grid-template-columns: 1fr; overflow-x: auto; }
       .risk-axis-y { writing-mode: horizontal-tb; transform: none; text-align: left; }
       .risk-matrix-grid, .risk-matrix-x { min-width: 300px; }
+      .pm-risk-chart-panel { overflow-x: auto; }
+      .pm-risk-plot, .pm-risk-x-scale, .pm-risk-axis-label { min-width: 400px; }
+      .pm-risk-grid, .pm-risk-x-scale { grid-template-columns: repeat(5, minmax(58px, 1fr)); }
       .bowtie { gap: 10px; }
       .bim-viewer-wrap { height: min(420px, 78vh); border-radius: 14px; }
       .bim-viewer-toolbar {
@@ -1383,15 +1453,109 @@
         </div>
       </div>
       <div class="grid dashboard-risk-curve">
-        <div class="card">
+        <div class="card pm-scurve-dashboard-card">
           <h3>Kurva S - Kinerja Waktu & Progres Terintegrasi</h3>
-          <div class="chart-container"><canvas id="sCurveChart"></canvas></div>
-        </div>
-        <div class="card">
-          <h3>Risk Matrix - Early Warning Change Request</h3>
-          <div id="pmRiskMatrix">
-            <p style="color:var(--muted);font-size:13px;margin:0;">Memuat matriks risiko proyek...</p>
+          <p class="scurve-subtitle" id="sCurveSubtitle">Periode target dan progres kumulatif proyek aktif.</p>
+          <div class="scurve-meta-grid">
+            <div class="scurve-meta-card">
+              <h4>Sumber Data</h4>
+              <strong id="sCurveSourceName">Kurva S proyek</strong>
+              <small id="sCurveSourceNote">backend/api_get_scurve.php · baseline rencana vs realisasi</small>
+            </div>
+            <div class="scurve-meta-card impact">
+              <h4>Dampak Waktu CR Approved</h4>
+              <strong id="sCurveApprovedImpact">-</strong>
+              <small id="sCurveApprovedCount">Hanya Change Request berstatus APPROVED</small>
+            </div>
+            <div class="scurve-meta-card realization">
+              <h4>Realisasi Terakhir</h4>
+              <strong id="sCurveLastActual">-</strong>
+              <small id="sCurveLastPeriod">Belum ada realisasi</small>
+            </div>
+            <div class="scurve-meta-card files">
+              <h4>File Terkait</h4>
+              <strong>Frontend & API</strong>
+              <small>project-manager.html · backend/api_get_scurve.php · backend/api_get_dashboard_stats.php</small>
+            </div>
           </div>
+          <div class="chart-container"><canvas id="sCurveChart"></canvas></div>
+          <p class="scurve-impact-note" id="sCurveImpactAnnotation">Dampak waktu CR yang disetujui bersifat indikatif; tidak sama dengan keterlambatan total proyek.</p>
+          <div class="scurve-summary-wrap">
+            <table class="scurve-summary-table">
+              <thead><tr><th>Periode</th><th>Tanggal Target</th><th>Rencana Kumulatif</th><th>Realisasi Kumulatif</th></tr></thead>
+              <tbody id="sCurveSummaryBody"><tr><td colspan="4">Memuat data Kurva S...</td></tr></tbody>
+            </table>
+          </div>
+          <div class="scurve-note-grid">
+            <div class="scurve-note">
+              <h4>Data Store</h4>
+              <p>project_scurve: periode_ke, tanggal_target, rencana_kumulatif, realisasi_kumulatif. change_requests: projectArea, status, timeImpact.</p>
+            </div>
+            <div class="scurve-note">
+              <h4>File Project</h4>
+              <p>Grafik mengambil baseline dan realisasi dari api_get_scurve.php; statistik dashboard tersedia melalui api_get_dashboard_stats.php.</p>
+            </div>
+            <div class="scurve-note">
+              <h4>Interpretasi</h4>
+              <p>Kurva membandingkan progres kumulatif aktual dengan baseline. Dampak CR tidak menggantikan analisis CPM atau perhitungan jalur kritis.</p>
+            </div>
+          </div>
+        </div>
+          <div class="card pm-risk-matrix-card">
+        <h3>Matriks Risiko 5×5 Change Request</h3>
+        <p class="pm-risk-matrix-subtitle">Pemetaan Likelihood × Impact untuk membantu prioritisasi review dan mitigasi perubahan pekerjaan proyek.</p>
+        <div class="pm-risk-context-grid">
+          <div class="pm-risk-context">
+            <h4>Konteks Project</h4>
+            <p><b>Project:</b> <span id="pmRiskProjectContext">Memuat proyek...</span></p>
+            <p><b>Sumber data:</b> tabel change_requests (backend/data_proyek.sql) melalui backend/api_get_dashboard_stats.php; tampilan mengikuti proyek aktif.</p>
+            <p><b>Alur tampilan:</b> Site Engineer mengirim Change Request; Project Manager memetakan risiko untuk membantu proses review dan mitigasi.</p>
+          </div>
+          <div class="pm-risk-rules">
+            <h4>Aturan Pemetaan Diagram</h4>
+            <p><b>Likelihood:</b> nilai Priority pada form (skala 1–5).</p>
+            <p><b>Impact:</b> skor Risk 1–10 dipetakan ke skala 1–5 dengan pembulatan ke atas.</p>
+            <p><b>Skor sel:</b> Likelihood × Impact. Label CR pada matriks dapat diarahkan untuk melihat detail.</p>
+          </div>
+        </div>
+        <div class="pm-risk-visual-grid">
+          <div class="pm-risk-chart-panel">
+            <h4 class="pm-risk-chart-title">Matriks Risiko: Likelihood dan Impact</h4>
+            <div class="pm-risk-direction"><span>Dampak meningkat</span><span>Sangat tinggi</span></div>
+            <div class="pm-risk-plot">
+              <div class="pm-risk-y-axis">
+                <span class="pm-risk-y-label">Impact / Dampak</span>
+                <div class="pm-risk-y-scale" aria-hidden="true"><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+              </div>
+              <div class="pm-risk-grid" id="pmRiskMatrix">
+                <p style="grid-column:1/-1;color:var(--muted);font-size:13px;margin:0;">Memuat matriks risiko proyek...</p>
+              </div>
+            </div>
+            <div class="pm-risk-x-scale" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+            <div class="pm-risk-axis-label">Likelihood / Probabilitas Kejadian</div>
+          </div>
+          <div class="pm-risk-side-panel">
+            <section>
+              <h4 class="pm-risk-section-title">Contoh Change Request</h4>
+              <div class="pm-risk-examples" id="pmRiskExamples">
+                <p style="color:var(--muted);font-size:11px;margin:0;">Memuat contoh CR...</p>
+              </div>
+            </section>
+            <section>
+              <h4 class="pm-risk-section-title">Legenda Zona</h4>
+              <div class="pm-risk-legend">
+                <div class="pm-risk-legend-row"><span class="pm-risk-swatch green-zone"></span><span><b>Hijau:</b> aman / rendah, dapat dipantau rutin (skor 1–4).</span></div>
+                <div class="pm-risk-legend-row"><span class="pm-risk-swatch yellow-zone"></span><span><b>Kuning:</b> sedang, perlu klarifikasi teknis (skor 5–9).</span></div>
+                <div class="pm-risk-legend-row"><span class="pm-risk-swatch orange-zone"></span><span><b>Oranye:</b> tinggi, butuh rencana mitigasi (skor 10–15).</span></div>
+                <div class="pm-risk-legend-row"><span class="pm-risk-swatch red-zone"></span><span><b>Merah:</b> kritis, prioritas review manajerial (skor 16–25).</span></div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <div class="pm-risk-system-note">
+          <p><b>Kaitan Sistem Informasi:</b> Form Site Engineer menyimpan priority, risk, riskCategory, riskVariable, wbsLevel5, dan bimObjectId melalui backend/save_data.php.</p>
+          <p>Project Manager mengambil data risiko melalui backend/api_get_dashboard_stats.php untuk menampilkan pemetaan matriks, status, dan konteks Change Request proyek aktif.</p>
+        </div>
         </div>
       </div>
       <div class="dashboard-insight-grid">
@@ -1650,30 +1814,45 @@
         <div><h2>BIM & WBS Viewer (Read-Only)</h2><p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p></div>
         <div class="viewer-mode-bar">
           <div class="mode-switch">
-            <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">🏗️ Autodesk BIM</button>
-            <button id="btnModeThree" class="mode-btn active" onclick="switchViewerMode('three')">🧊 Three.js</button>
+            <button id="btnModeAps" class="mode-btn active" onclick="switchViewerMode('aps')" title="Overpass Lingkar Pekanbaru (https://autode.sk/4yBQZAy)">🏗️ Autodesk BIM (Overpass)</button>
+            <button id="btnModeThree" class="mode-btn" onclick="switchViewerMode('three')" title="Underpass Betung-Jambi Seksi 4 (https://autode.sk/47G5Yym)">🧊 Autodesk BIM (Underpass)</button>
+            <button id="btnModeLocal" class="mode-btn" onclick="switchViewerMode('local')" title="Model 3D Interaktif Lokal">🧱 Three.js 3D (Lokal)</button>
           </div>
-          <span class="aps-status-chip off" id="apsStatusChip">Memuat...</span>
+          <span class="aps-status-chip on" id="apsStatusChip">Autodesk Viewer Aktif</span>
         </div>
       </div>
 
       <div class="card" style="padding:0;overflow:hidden;border-radius:20px;">
-        <div class="bim-viewer-wrap" id="bimViewerWrap">
-          <canvas id="bimThreeCanvas"></canvas>
-          <div id="forgeViewerDiv"></div>
-          <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">—</b></div>
+        <div class="bim-viewer-wrap" id="bimViewerWrap" style="height: 540px; position: relative;">
+          <canvas id="bimThreeCanvas" style="width: 100%; height: 100%; display: none;"></canvas>
+          <div id="forgeViewerDiv" style="width: 100%; height: 100%; position: relative; display: block;">
+            <iframe id="bimAutodeskIframe"
+                    class="bim-embed-frame"
+                    src="backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F4yBQZAy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
+                    allowfullscreen="true"
+                    webkitallowfullscreen="true"
+                    mozallowfullscreen="true"></iframe>
+          </div>
+          <div class="bim-viewer-badge" id="bimViewerBadge">Model: <b id="bimTargetLabel">Overpass Lingkar Pekanbaru (STA 200+780)</b></div>
           <div class="bim-viewer-toolbar">
-            <button onclick="bimResetCamera()">⟳ Reset</button>
-            <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
-            <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
+            <button onclick="bimResetCamera()" id="btnBimReset" title="Reset Tampilan / Muat Ulang">⟳ Reset</button>
+            <button onclick="bimToggleWireframe()" id="btnBimWireframe" style="display:none;">⬡ Wireframe</button>
+            <button onclick="bimHighlightAffected()" id="btnBimHighlight" style="display:none;">⚑ Highlight Affected</button>
+            <button onclick="openAutodeskExternal()" id="btnBimExternal" style="background:#2563eb;color:#fff;border-color:#1d4ed8;" title="Buka model di Autodesk Viewer resmi tab baru">↗ Buka di Tab Baru</button>
+            <button onclick="toggleBimFullscreen()" id="btnBimFullscreen" title="Layar Penuh">⛶ Fullscreen</button>
+            <button onclick="toggleBimInfoPanel()" id="btnBimTogglePanel" title="Sembunyikan / Tampilkan Panel">📋 Info</button>
           </div>
           <div class="bim-obj-info-panel" id="bimObjInfoPanel">
-            <div class="oi-title">Selected Object</div>
-            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">—</span></div>
-            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">—</span></div>
-            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">—</span></div>
-            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">—</span></div>
-            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">—</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div class="oi-title" style="margin:0;">Selected Object</div>
+              <button type="button" onclick="toggleBimInfoPanel()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:12px;padding:0 4px;" title="Tutup panel">✕</button>
+            </div>
+            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">OVERPASS-STA200</span></div>
+            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">7.2.6 Struktur Jembatan</span></div>
+            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">Overpass Lingkar Pekanbaru</span></div>
+            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">Model Revit Terhubung</span></div>
+            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr"><a href="https://autode.sk/4yBQZAy" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline;">autode.sk/4yBQZAy ↗</a></span></div>
             <div id="bimOiDetailWrap" style="display:none;">
               <div class="oi-detail-title">Detail Properti Revit</div>
               <div id="bimOiDetail"></div>
@@ -1681,7 +1860,9 @@
           </div>
         </div>
       </div>
-      <p style="color:var(--muted);font-size:13px;margin:12px 2px 0;">Klik elemen pada viewer untuk melihat detail Object ID, WBS, status, dan Change Request terkait sebelum memberikan persetujuan. Mode "Autodesk BIM" memuat model RVT asli secara otomatis; kalau tidak tersedia, otomatis kembali ke mode Three.js.</p>
+        </div>
+      </div>
+      <p style="color:var(--muted);font-size:13px;margin:12px 2px 0;">Pada Three.js, drag untuk memutar model dan klik komponen untuk melihat nama serta WBS. Autodesk Viewer akan menampilkan model Revit langsung di area yang sama setelah model terhubung ke APS.</p>
       <div class="card" style="margin-top:18px;">
         <div style="margin-bottom:16px;">
           <h3 style="margin:0 0 6px;">Navigasi WBS Bertingkat</h3>
@@ -4069,16 +4250,25 @@ function fetchSCurveData(projectId) {
                 console.error("Gagal memuat Kurva S:", res.message);
                 renderSCurveChart([], [], []);
                 updateSCurveCards(null, null, 0);
+                renderSCurveDetails(null, [], res.message || "Data Kurva S tidak dapat dimuat.");
                 return;
             }
 
             const rows = Array.isArray(res.curve_data) ? res.curve_data : [];
             const delayDays = Number(res.total_delay_days || 0);
-            const labels = rows.map(row => `Mg ${row.periode_ke}`);
+            renderSCurveDetails(res, rows);
+            const labels = rows.map(row => {
+                const date = formatSCurveDate(row.tanggal_target, false);
+                return date ? [`P${row.periode_ke}`, date] : `P${row.periode_ke}`;
+            });
             const plan = rows.map(row => row.rencana_kumulatif === null ? null : Number(row.rencana_kumulatif));
             const actual = rows.map(row => row.realisasi_kumulatif === null ? null : Number(row.realisasi_kumulatif));
 
-            renderSCurveChart(labels, plan, actual);
+            renderSCurveChart(labels, plan, actual, {
+                projectId,
+                indicativeTimeImpact: delayDays,
+                approvedCrCount: Number(res.approved_cr_count || 0)
+            });
 
             const lastActualIndex = actual.map(v => v !== null && !Number.isNaN(v)).lastIndexOf(true);
             if (lastActualIndex >= 0) {
@@ -4094,10 +4284,103 @@ function fetchSCurveData(projectId) {
             console.error("Error fetching Kurva S:", error);
             renderSCurveChart([], [], []);
             updateSCurveCards(null, null, 0);
+            renderSCurveDetails(null, [], "Koneksi ke data Kurva S gagal. Silakan muat ulang halaman.");
         });
 }
 
-function renderSCurveChart(labels, plan, actual) {
+function formatSCurveDate(value, includeYear = true) {
+    if (!value) return "";
+    const rawDate = String(value).slice(0, 10);
+    const parts = rawDate.split("-");
+    if (parts.length !== 3) return "";
+    const date = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    if (Number.isNaN(date.getTime())) return "";
+    return new Intl.DateTimeFormat("id-ID", includeYear
+        ? { day: "numeric", month: "long", year: "numeric" }
+        : { day: "2-digit", month: "2-digit" }).format(date);
+}
+
+function formatSCurvePercent(value) {
+    if (value === null || value === undefined || value === "") return "-";
+    const number = Number(value);
+    return Number.isFinite(number) ? `${number.toLocaleString("id-ID", { maximumFractionDigits: 1 })}%` : "-";
+}
+
+function renderSCurveDetails(response, rows, errorMessage = "") {
+    const subtitle = document.getElementById("sCurveSubtitle");
+    const approvedImpact = document.getElementById("sCurveApprovedImpact");
+    const approvedCount = document.getElementById("sCurveApprovedCount");
+    const sourceName = document.getElementById("sCurveSourceName");
+    const sourceNote = document.getElementById("sCurveSourceNote");
+    const lastActualEl = document.getElementById("sCurveLastActual");
+    const lastPeriodEl = document.getElementById("sCurveLastPeriod");
+    const annotation = document.getElementById("sCurveImpactAnnotation");
+    const summaryBody = document.getElementById("sCurveSummaryBody");
+    if (!subtitle || !approvedImpact || !approvedCount || !sourceName || !sourceNote || !lastActualEl || !lastPeriodEl || !annotation || !summaryBody) return;
+
+    const project = activeProjects.find(item => item.project_id === currentProjectId);
+    const projectLabel = project ? `${project.project_id} — ${project.project_name}` : currentProjectId || "Proyek aktif";
+    const isSourceSchedule = response?.project_id === "PRJ-001";
+    sourceName.textContent = isSourceSchedule ? "Master Schedule Add VII Rev01" : "Kurva S proyek";
+    sourceNote.textContent = isSourceSchedule
+        ? "Addendum VII · 10 Maret 2026 · rencana mingguan Juni–Desember 2026"
+        : "backend/api_get_scurve.php · baseline rencana vs realisasi";
+    const firstDate = formatSCurveDate(rows[0]?.tanggal_target);
+    const lastDate = formatSCurveDate(rows[rows.length - 1]?.tanggal_target);
+    const dateRange = firstDate && lastDate ? `${firstDate} – ${lastDate}` : "tanggal target belum tersedia";
+    subtitle.textContent = `${projectLabel} · Periode target: ${dateRange} · Sumbu Y: progres kumulatif (%)`;
+
+    if (errorMessage) {
+        approvedImpact.textContent = "-";
+        approvedCount.textContent = "Informasi CR tidak tersedia";
+        lastActualEl.textContent = "-";
+        lastPeriodEl.textContent = "Data realisasi tidak tersedia";
+        annotation.textContent = errorMessage;
+        summaryBody.innerHTML = `<tr><td colspan="4">${escapeHtml(errorMessage)}</td></tr>`;
+        return;
+    }
+
+    const impact = Number(response?.indicative_cr_time_impact_days ?? response?.total_delay_days ?? 0);
+    const approvedCrCount = Number(response?.approved_cr_count || 0);
+    const impactPrefix = impact > 0 ? "+" : "";
+    approvedImpact.textContent = `${impactPrefix}${impact} hari`;
+    approvedCount.textContent = `${approvedCrCount} Change Request berstatus APPROVED`;
+
+    const lastActualIndex = rows.reduce((lastIndex, row, index) => {
+        const value = row.realisasi_kumulatif;
+        return value !== null && value !== "" && Number.isFinite(Number(value)) ? index : lastIndex;
+    }, -1);
+    if (lastActualIndex >= 0) {
+        const row = rows[lastActualIndex];
+        lastActualEl.textContent = formatSCurvePercent(row.realisasi_kumulatif);
+        lastPeriodEl.textContent = `Periode ${row.periode_ke}${formatSCurveDate(row.tanggal_target) ? ` · ${formatSCurveDate(row.tanggal_target)}` : ""}`;
+    } else {
+        lastActualEl.textContent = "-";
+        lastPeriodEl.textContent = "Belum ada realisasi";
+    }
+
+    const impactExplanation = response?.scientific_boundary?.interpretation_limit
+        || `Dampak waktu CR yang disetujui sebesar ${impact} hari bersifat indikatif terhadap aktivitas terdampak.`;
+    const cpmDisclaimer = response?.scientific_boundary?.cpm_disclaimer
+        || "Nilai ini tidak menyatakan keterlambatan total proyek dan tidak menggantikan analisis Critical Path Method (CPM).";
+    annotation.textContent = `${impactExplanation} ${cpmDisclaimer}`;
+
+    if (!rows.length) {
+        const message = response?.period_warning || "Baseline Kurva S belum tersedia untuk proyek ini.";
+        summaryBody.innerHTML = `<tr><td colspan="4">${escapeHtml(message)}</td></tr>`;
+        return;
+    }
+
+    summaryBody.innerHTML = rows.map(row => `
+        <tr>
+          <td>P${escapeHtml(row.periode_ke)}</td>
+          <td>${escapeHtml(formatSCurveDate(row.tanggal_target) || "-")}</td>
+          <td>${escapeHtml(formatSCurvePercent(row.rencana_kumulatif))}</td>
+          <td>${escapeHtml(formatSCurvePercent(row.realisasi_kumulatif))}</td>
+        </tr>`).join("");
+}
+
+function renderSCurveChart(labels, plan, actual, impactDetails = {}) {
     const canvas = document.getElementById('sCurveChart');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -4109,15 +4392,76 @@ function renderSCurveChart(labels, plan, actual) {
       data: {
         labels: labels.length ? labels : ['Belum ada data'],
         datasets: [
-          { label:'Rencana (Plan %)', data: plan.length ? plan : [0], borderColor:'#64748b', borderWidth:3, borderDash:[5,5], tension:0.4, pointBackgroundColor:'#64748b' },
+          { label:'Rencana (Plan %)', data: plan.length ? plan : [0], borderColor:'#64748b', borderWidth:3, borderDash:[5,5], tension:0.4, pointBackgroundColor:'#64748b', pointRadius:4, pointHoverRadius:6 },
           { label:'Realisasi Aktual (Actual %)', data: actual.length ? actual : [0], borderColor:'#1d4ed8', backgroundColor:'rgba(29,78,216,0.1)', borderWidth:4, tension:0.4, fill:true, pointBackgroundColor:'#1d4ed8', pointRadius:5, pointHoverRadius:7, spanGaps:false }
         ]
       },
+      plugins: [{
+        id: 'sCurvePointLabels',
+        afterDatasetsDraw(chart) {
+          const context = chart.ctx;
+          context.save();
+          context.fillStyle = '#334155';
+          context.font = '600 8px Inter, "Segoe UI", Arial, sans-serif';
+          context.textAlign = 'center';
+          chart.data.datasets.forEach((dataset, datasetIndex) => {
+            const meta = chart.getDatasetMeta(datasetIndex);
+            if (meta.hidden) return;
+            meta.data.forEach((point, index) => {
+              const value = dataset.data[index];
+              if (value === null || value === undefined || !Number.isFinite(Number(value))) return;
+              const yOffset = datasetIndex === 0
+                ? (index % 2 === 0 ? -10 : -20)
+                : (index % 2 === 0 ? 12 : 22);
+              context.fillText(formatSCurvePercent(value), point.x, point.y + yOffset);
+            });
+          });
+          context.restore();
+        }
+      }],
       options: {
         responsive:true, maintainAspectRatio:false,
-        plugins: { legend:{ position:'bottom', labels:{ font:{ family:'Inter', weight:'bold' } } }, tooltip:{ mode:'index', intersect:false } },
+        plugins: {
+          legend:{ position:'bottom', labels:{ font:{ family:'Inter', weight:'bold' } } },
+          tooltip:{
+            mode:'index',
+            intersect:false,
+            callbacks:{
+              title(items) {
+                const label = labels[items[0]?.dataIndex];
+                return Array.isArray(label) ? label.join(' · ') : String(label || 'Detail periode');
+              },
+              label(context) {
+                const value = context.parsed.y;
+                return value === null || !Number.isFinite(value)
+                  ? `${context.dataset.label}: belum ada data`
+                  : `${context.dataset.label}: ${formatSCurvePercent(value)}`;
+              },
+              afterBody(items) {
+                const index = items[0]?.dataIndex;
+                if (index === undefined) return [];
+                const planned = plan[index];
+                const realized = actual[index];
+                if (planned === null || realized === null || !Number.isFinite(planned) || !Number.isFinite(realized)) return [];
+                const variance = realized - planned;
+                const sign = variance > 0 ? "+" : "";
+                return [`Selisih realisasi - rencana: ${sign}${formatSCurvePercent(variance)}`];
+              },
+              footer() {
+                const impact = Number(impactDetails.indicativeTimeImpact || 0);
+                const count = Number(impactDetails.approvedCrCount || 0);
+                const sign = impact > 0 ? "+" : "";
+                return [
+                  `Dampak CR APPROVED proyek: ${sign}${impact} hari (${count} CR)`,
+                  `Sumber: SUM(timeImpact), projectArea=${impactDetails.projectId || currentProjectId}, status=APPROVED`,
+                  "Dampak bersifat indikatif, bukan keterlambatan total proyek."
+                ];
+              }
+            }
+          }
+        },
         scales: {
-          y:{ beginAtZero:true, max:100, title:{ display:true, text:'Progress Fisik (%)', font:{ weight:'bold' } }, grid:{ color:'#e2e8f0' } },
+          y:{ beginAtZero:true, max:100, title:{ display:true, text:'Progres Kumulatif (%)', font:{ weight:'bold' } }, grid:{ color:'#e2e8f0' } },
           x:{ grid:{ display:false } }
         },
         interaction:{ mode:'nearest', axis:'x', intersect:false }
@@ -4245,44 +4589,73 @@ function renderDelayAddendumSummary(stats) {
 
 function getRiskZoneClass(likelihood, impact) {
     const score = Number(likelihood || 1) * Number(impact || 1);
-    if (score >= 20) return "critical-zone";
-    if (score >= 12) return "high-zone";
-    if (score >= 6) return "medium-zone";
-    return "low-zone";
+    if (score >= 16) return "red-zone";
+    if (score >= 10) return "orange-zone";
+    if (score >= 5) return "yellow-zone";
+    return "green-zone";
 }
 
 function renderRiskMatrix(containerId, points = []) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    if (!points.length) {
-        container.innerHTML = '<p style="color:var(--muted);font-size:13px;margin:0;">Belum ada Change Request untuk dipetakan.</p>';
-        return;
-    }
-
     const cells = [];
     for (let y = 5; y >= 1; y--) {
         for (let x = 1; x <= 5; x++) {
             const cellPoints = points.filter(item => Number(item.likelihood) === x && Number(item.impact) === y);
             const dots = cellPoints.slice(0, 9).map(item => {
-                const label = item.riskVariable || item.riskName || item.changeId || "CR";
-                const shortLabel = String(label).replace(/^R/i, "R").slice(0, 8);
-                const tooltip = `Change Request: ${item.changeId || "-"}\nProject: ${item.projectArea || "-"}\nVariabel Risiko: ${item.riskVariable || "-"}\nNama Risiko: ${item.riskName || "-"}\nKategori: ${item.riskCategory || "-"}\nSkor Risiko: ${item.riskScore || 0}\nStatus: ${item.status || "-"}`;
+                const shortLabel = String(item.changeId || "CR").slice(0, 9);
+                const tooltip = `Change Request: ${item.changeId || "-"}\nProject: ${item.projectArea || "-"}\nWBS: ${item.wbsLevel5 || "-"}\nRisiko: ${item.riskVariable || item.riskName || "-"}\nKategori: ${item.riskCategory || "-"}\nPriority / Likelihood: ${item.priority || "belum diisi"} / ${item.likelihood}\nRisk / Impact: ${item.riskScore || 0} / ${item.impact}\nSkor matriks: ${x * y}\nStatus: ${item.status || "-"}`;
                 return `<span class="risk-point" data-tooltip="${escapeAttr(tooltip)}">${escapeHtml(shortLabel)}</span>`;
             }).join("");
             const extra = cellPoints.length > 9 ? `<span class="risk-point" data-tooltip="${cellPoints.length - 9} CR lain di sel ini">+${cellPoints.length - 9}</span>` : "";
-            cells.push(`<div class="risk-cell ${getRiskZoneClass(x, y)}"><div class="risk-dot-stack">${dots}${extra}</div><small>${x}x${y}</small></div>`);
+            cells.push(`<div class="risk-cell ${getRiskZoneClass(x, y)}"><small>${x * y}</small><div class="risk-dot-stack">${dots}${extra}</div></div>`);
         }
     }
 
-    container.innerHTML = `
-        <div class="risk-matrix-wrap">
-            <div class="risk-axis-y">Dampak</div>
-            <div class="risk-matrix-grid">${cells.join("")}</div>
-            <div></div>
-            <div class="risk-matrix-x"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
-        </div>
-        <div style="margin-top:8px;color:var(--muted);font-size:11px;font-weight:800;text-align:center;text-transform:uppercase;">Probabilitas</div>`;
+    container.innerHTML = cells.join("");
+
+    const activeProject = activeProjects.find(project => project.project_id === currentProjectId);
+    const projectContext = document.getElementById("pmRiskProjectContext");
+    if (projectContext) {
+        projectContext.textContent = activeProject
+            ? `${activeProject.project_id} - ${activeProject.project_name}`
+            : currentProjectId || "Proyek aktif";
+    }
+
+    const examples = document.getElementById("pmRiskExamples");
+    if (!examples) return;
+    if (!points.length) {
+        examples.innerHTML = '<p style="color:var(--muted);font-size:11px;margin:0;">Belum ada Change Request pada proyek ini untuk ditampilkan sebagai contoh.</p>';
+        return;
+    }
+
+    const ranked = [...points].sort((a, b) =>
+        (Number(b.likelihood) * Number(b.impact)) - (Number(a.likelihood) * Number(a.impact))
+    );
+    const highRisk = ranked[0];
+    const highRiskScore = Number(highRisk.likelihood) * Number(highRisk.impact);
+    const lowerRisk = [...ranked].reverse().find(item =>
+        item.changeId !== highRisk.changeId
+        && Number(item.likelihood) * Number(item.impact) < highRiskScore
+    );
+    const comparisonRisk = lowerRisk || [...ranked].reverse().find(item => item.changeId !== highRisk.changeId);
+    const renderExample = (item, title) => {
+        if (!item) {
+            return `<div class="pm-risk-example"><strong>${title}</strong><p>Belum ada CR pembanding pada proyek ini.</p></div>`;
+        }
+        const matrixScore = Number(item.likelihood) * Number(item.impact);
+        const riskLabel = item.riskVariable || item.riskName || "Risiko belum dikodekan";
+        return `
+            <div class="pm-risk-example ${getRiskZoneClass(item.likelihood, item.impact)}">
+              <strong>${escapeHtml(item.changeId || "Change Request")} · Skor matriks ${matrixScore} (${title})</strong>
+              <p>WBS: ${escapeHtml(item.wbsLevel5 || "-")}</p>
+              <p>Risiko: ${escapeHtml(riskLabel)} · ${escapeHtml(item.riskCategory || "Kategori belum diisi")}</p>
+              <p>Likelihood = Priority ${escapeHtml(item.priority || "belum diisi")} → ${escapeHtml(item.likelihood)}; Impact = Risk ${escapeHtml(item.riskScore || 0)} → ${escapeHtml(item.impact)} · Status ${escapeHtml(item.status || "-")}</p>
+            </div>`;
+    };
+    examples.innerHTML = renderExample(highRisk, "Prioritas tertinggi")
+        + renderExample(comparisonRisk, lowerRisk ? "Skor lebih rendah" : "CR pembanding");
 }
 
 function renderTornadoDiagram(stats) {
@@ -5412,20 +5785,41 @@ function closeCrDetail() {
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     let prevMouse = { x: 0, y: 0 };
+    let dragMoved = false;
+    let suppressClickUntil = 0;
 
-    canvas.addEventListener('mousedown', e => { prevMouse = { x: e.clientX, y: e.clientY }; });
-    canvas.addEventListener('mousemove', e => {
-      if (e.buttons === 1) {
-        const dx = e.clientX - prevMouse.x;
-        camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), -dx * 0.005);
-        prevMouse = { x: e.clientX, y: e.clientY };
-      }
+    canvas.addEventListener('pointerdown', e => {
+      prevMouse = { x: e.clientX, y: e.clientY };
+      dragMoved = false;
     });
+    canvas.addEventListener('pointermove', e => {
+      if (e.buttons !== 1) return;
+      const dx = e.clientX - prevMouse.x;
+      const dy = e.clientY - prevMouse.y;
+      if (Math.abs(dx) + Math.abs(dy) > 1) dragMoved = true;
+      const target = new THREE.Vector3(0, 2, 0);
+      const offset = camera.position.clone().sub(target);
+      const orbit = new THREE.Spherical().setFromVector3(offset);
+      orbit.theta -= dx * 0.005;
+      orbit.phi = THREE.MathUtils.clamp(orbit.phi + THREE.MathUtils.clamp(dy, -40, 40) * 0.005, 0.12, Math.PI - 0.12);
+      camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));
+      prevMouse = { x: e.clientX, y: e.clientY };
+    });
+    canvas.addEventListener('pointerup', () => {
+      if (dragMoved) suppressClickUntil = performance.now() + 200;
+      dragMoved = false;
+    });
+    canvas.style.touchAction = 'none';
     canvas.addEventListener('wheel', e => {
-      camera.position.multiplyScalar(1 + e.deltaY * 0.001);
+      const target = new THREE.Vector3(0, 2, 0);
+      const offset = camera.position.clone().sub(target);
+      const orbit = new THREE.Spherical().setFromVector3(offset);
+      orbit.radius = THREE.MathUtils.clamp(orbit.radius * (1 + e.deltaY * 0.001), 6, 40);
+      camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));
       e.preventDefault();
     }, { passive: false });
     canvas.addEventListener('click', e => {
+      if (performance.now() < suppressClickUntil) return;
       const rect = canvas.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -5507,124 +5901,124 @@ function closeCrDetail() {
   let apsUrn   = FORGE_URN;
   let apsViewer = null;
 
-  async function initApsAuto() {
-    const chip = document.getElementById('apsStatusChip');
-    chip.textContent = '⟳ Menghubungkan Autodesk APS...';
-    chip.className   = 'aps-status-chip connecting';
-    try {
-      const res  = await fetch('backend/api_aps_token.php');
-      const data = await res.json();
-      if (!data.access_token) throw new Error(data.message || 'Token APS tidak tersedia');
-      apsToken = data.access_token;
-      await loadForgeViewer();
-    } catch (e) {
-      console.warn('[APS] fallback ke Three.js:', e.message);
-      chip.textContent = 'Three.js Mode (APS tidak tersedia)';
-      chip.className   = 'aps-status-chip off';
-      switchViewerMode('three');
+  const autodeskLinks = {
+    aps: {
+      key: 'aps',
+      name: 'Overpass Lingkar Pekanbaru (STA 200+780)',
+      shortUrl: 'https://autode.sk/4yBQZAy',
+      embedUrl: 'backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F4yBQZAy',
+      directId: 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI0OTNfNjY2ZDlhMTAtZTc1MS00NWQwLTg2Y2UtZWJkNDJjNDgyYjY5LnJ2dA',
+      defaultWbs: '7.2.6 Pekerjaan Struktur Jembatan Overpass'
+    },
+    three: {
+      key: 'three',
+      name: 'Underpass Betung-Jambi Seksi 4 (STA 161+650)',
+      shortUrl: 'https://autode.sk/47G5Yym',
+      embedUrl: 'backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F47G5Yym',
+      directId: 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI5MzBfOTBlYzA0NDMtZjFkNi00YzRkLWI5MTgtYWVlMzg2NDE4ZGRhLnJ2dA',
+      defaultWbs: '3.2.6 Galian Struktur & Box Underpass'
     }
+  };
+  let currentBimMode = 'aps';
+
+  function initApsAuto() {
+    switchViewerMode('aps');
   }
 
   function switchViewerMode(mode) {
-    if (mode === 'aps' && !apsToken) return;
-    apsMode = mode === 'aps';
-    setBimViewerMode(mode);
-    document.getElementById('btnModeAps').classList.toggle('active', apsMode);
-    document.getElementById('btnModeThree').classList.toggle('active', !apsMode);
-  }
-
-  function setBimViewerMode(mode) {
-    document.getElementById('bimThreeCanvas').style.display = mode === 'three' ? 'block' : 'none';
-    document.getElementById('forgeViewerDiv').style.display  = mode === 'aps'   ? 'block' : 'none';
-  }
-
-  function loadForgeViewer() {
-    return new Promise((resolve, reject) => {
-      if (!apsToken || !apsUrn) { reject(new Error('Token/URN APS tidak tersedia')); return; }
-      const div = document.getElementById('forgeViewerDiv');
-      const go = () => initForgeViewer(div, resolve, reject);
-      if (!window.Autodesk) {
-        const link = document.createElement('link');
-        link.rel  = 'stylesheet';
-        link.href = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css';
-        document.head.appendChild(link);
-
-        const script  = document.createElement('script');
-        script.src    = 'https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js';
-        script.onload = go;
-        document.head.appendChild(script);
-      } else {
-        go();
-      }
-    });
-  }
-
-  function initForgeViewer(div, resolve, reject) {
+    currentBimMode = mode;
+    const btnAps = document.getElementById('btnModeAps');
+    const btnThree = document.getElementById('btnModeThree');
+    const btnLocal = document.getElementById('btnModeLocal');
     const chip = document.getElementById('apsStatusChip');
-    const opts = { env: 'AutodeskProduction', api: 'derivativeV2', getAccessToken: cb => cb(apsToken, 3600) };
-    Autodesk.Viewing.Initializer(opts, () => {
-      apsViewer = new Autodesk.Viewing.GuiViewer3D(div);
-      apsViewer.start();
-      const docUrn = apsUrn.startsWith('urn:') ? btoa(apsUrn).replace(/=/g, '') : apsUrn;
-      Autodesk.Viewing.Document.load('urn:' + docUrn, doc => {
-        const viewable = doc.getRoot().getDefaultGeometry();
-        apsViewer.loadDocumentNode(doc, viewable).then(() => {
-          apsViewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, onForgeSelect);
-          switchViewerMode('aps');
-          chip.textContent = 'Autodesk APS Aktif';
-          chip.className   = 'aps-status-chip on';
-          resolve();
-        });
-      }, err => {
-        chip.textContent = 'Model APS gagal dimuat';
-        chip.className   = 'aps-status-chip error';
-        switchViewerMode('three');
-        reject(new Error(String(err)));
-      });
-    });
-  }
+    const threeCanvas = document.getElementById('bimThreeCanvas');
+    const forgeDiv = document.getElementById('forgeViewerDiv');
+    const iframe = document.getElementById('bimAutodeskIframe');
+    const badge = document.getElementById('bimTargetLabel');
+    const btnWireframe = document.getElementById('btnBimWireframe');
+    const btnHighlight = document.getElementById('btnBimHighlight');
+    const btnReset = document.getElementById('btnBimReset');
+    const btnExternal = document.getElementById('btnBimExternal');
 
-  async function onForgeSelect(e) {
-    if (!e.dbIdArray || !e.dbIdArray.length) return;
-    const dbId = e.dbIdArray[0];
-    document.getElementById('bimTargetLabel').textContent = 'dbId ' + dbId;
-    const detailWrap = document.getElementById('bimOiDetailWrap');
-    const detailBox  = document.getElementById('bimOiDetail');
-    try {
-      const res  = await fetch(`backend/api_aps_properties.php?dbId=${dbId}&token=${apsToken}&urn=${encodeURIComponent(apsUrn)}`);
-      const data = await res.json();
-      document.getElementById('bimOiId').textContent   = data.bimObjectId || ('dbId ' + dbId);
-      document.getElementById('bimOiType').textContent = data.name || 'Elemen ' + dbId;
-      document.getElementById('bimOiWbs').textContent  = (data.linkedChanges && data.linkedChanges[0])
-        ? [data.linkedChanges[0].wbsLevel4, data.linkedChanges[0].wbsLevel5, data.linkedChanges[0].wbsLevel6].filter(Boolean).join(' → ')
-        : '—';
-      document.getElementById('bimOiStatus').textContent = data.bimObjectId ? 'Terhubung ke data proyek' : 'Belum ada tag BIM Object ID di Revit';
-      const crCell = document.getElementById('bimOiCr');
-      crCell.innerHTML = (data.linkedChanges && data.linkedChanges.length)
-        ? data.linkedChanges.map(c => `<a href="#" onclick="event.preventDefault(); bimGoToCr('${c.changeId}')">${c.changeId}</a>`).join(', ')
-        : 'Tidak ada CR aktif';
+    if (btnAps) btnAps.classList.toggle('active', mode === 'aps');
+    if (btnThree) btnThree.classList.toggle('active', mode === 'three');
+    if (btnLocal) btnLocal.classList.toggle('active', mode === 'local');
 
-      // Properti Revit asli (Type Name, Volume, parameter konstruksi custom) —
-      // tetap ditampilkan meski elemen belum ditandai BIM Object ID/Mark.
-      detailWrap.style.display = 'block';
-      const entries = Object.entries(data.detail || {});
-      if (entries.length) {
-        detailBox.innerHTML = entries.map(([k, v]) =>
-          `<div class="oi-row"><span class="oi-label">${k}</span><span class="oi-val">${v}</span></div>`
-        ).join('');
-      } else if (data.name) {
-        detailBox.innerHTML = '<div class="oi-detail-empty">Tidak ada parameter tambahan untuk elemen ini.</div>';
-      } else {
-        detailBox.innerHTML = '<div class="oi-detail-empty">Elemen ini tidak punya data properti (kemungkinan node grup/instance, bukan elemen tunggal).</div>';
+    if (mode === 'local') {
+      if (threeCanvas) threeCanvas.style.display = 'block';
+      if (forgeDiv) forgeDiv.style.display = 'none';
+      if (chip) {
+        chip.textContent = 'Three.js 3D Lokal Aktif';
+        chip.className = 'aps-status-chip on';
       }
-    } catch (err) {
-      document.getElementById('bimOiId').textContent = 'dbId ' + dbId;
-      document.getElementById('bimOiType').textContent = 'Gagal memuat properti';
-      detailWrap.style.display = 'none';
+      if (badge) badge.textContent = 'Model 3D Lokal (Klik elemen jembatan)';
+      if (btnWireframe) btnWireframe.style.display = 'inline-block';
+      if (btnHighlight) btnHighlight.style.display = 'inline-block';
+      if (btnReset) btnReset.style.display = 'inline-block';
+      if (btnExternal) btnExternal.style.display = 'none';
+      if (typeof bimViewerInit === 'function') bimViewerInit();
+    } else {
+      const model = autodeskLinks[mode] || autodeskLinks.aps;
+      if (threeCanvas) threeCanvas.style.display = 'none';
+      if (forgeDiv) forgeDiv.style.display = 'block';
+      if (chip) {
+        chip.textContent = 'Autodesk BIM Aktif';
+        chip.className = 'aps-status-chip on';
+      }
+      if (badge) badge.textContent = model.name;
+      if (btnWireframe) btnWireframe.style.display = 'none';
+      if (btnHighlight) btnHighlight.style.display = 'none';
+      if (btnReset) btnReset.style.display = 'inline-block';
+      if (btnExternal) {
+        btnExternal.style.display = 'inline-block';
+        btnExternal.textContent = '↗ Buka ' + (mode === 'aps' ? 'Overpass' : 'Underpass');
+      }
+
+      if (iframe) {
+        const isLocalHttp = window.location.protocol.startsWith('http');
+        const targetSrc = isLocalHttp ? model.embedUrl : `https://viewer.autodesk.com/id/${model.directId}`;
+        if (iframe.getAttribute('data-active-mode') !== mode) {
+          iframe.setAttribute('data-active-mode', mode);
+          iframe.src = targetSrc;
+        }
+      }
+
+      const oiId = document.getElementById('bimOiId');
+      const oiType = document.getElementById('bimOiType');
+      const oiWbs = document.getElementById('bimOiWbs');
+      const oiStatus = document.getElementById('bimOiStatus');
+      const oiCr = document.getElementById('bimOiCr');
+      if (oiId) oiId.textContent = (mode === 'aps') ? 'OVERPASS-STA200' : 'UNDERPASS-STA161';
+      if (oiType) oiType.textContent = model.name;
+      if (oiWbs) oiWbs.textContent = model.defaultWbs;
+      if (oiStatus) oiStatus.textContent = 'Model Revit Terhubung (Bisa klik komponen langsung)';
+      if (oiCr) oiCr.innerHTML = `<a href="${model.shortUrl}" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline;">${model.shortUrl} ↗</a>`;
     }
   }
 
-  // Dipanggil dari tombol "Lihat di Viewer" pada detail Change Request
+  function openAutodeskExternal() {
+    const model = autodeskLinks[currentBimMode] || autodeskLinks.aps;
+    window.open(model.shortUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  function toggleBimFullscreen() {
+    const wrap = document.getElementById('bimViewerWrap');
+    if (!wrap) return;
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (wrap.requestFullscreen) wrap.requestFullscreen();
+      else if (wrap.webkitRequestFullscreen) wrap.webkitRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    }
+  }
+
+  function toggleBimInfoPanel() {
+    const panel = document.getElementById('bimObjInfoPanel');
+    if (!panel) return;
+    panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
+  }
+
   function bimFocusObjectById(bimId) {
     if (!bimId) return;
     bimViewerInit();
@@ -5889,5 +6283,6 @@ function closeCrDetail() {
     });
   })();
 </script>
+  <script src="assets/bim-aps-models.js" defer></script>
 </body>
 </html>

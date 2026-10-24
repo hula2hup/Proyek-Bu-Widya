@@ -13899,22 +13899,42 @@ CREATE TABLE IF NOT EXISTS `project_scurve` (
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   CONSTRAINT `project_scurve_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `projects` (`project_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Dumping data for table db_data_proyek.project_scurve: ~12 rows (approximately)
+-- Dumping data for table db_data_proyek.project_scurve: ~32 rows (approximately)
 INSERT INTO `project_scurve` (`id`, `project_id`, `periode_ke`, `tanggal_target`, `rencana_kumulatif`, `realisasi_kumulatif`) VALUES
-	(13, 'PRJ-001', 1, '2026-05-06', 3.00, 2.50),
-	(14, 'PRJ-001', 2, '2026-05-13', 8.00, 6.00),
-	(15, 'PRJ-001', 3, '2026-05-20', 15.00, 12.00),
-	(16, 'PRJ-001', 4, '2026-05-27', 25.00, 20.00),
-	(17, 'PRJ-001', 5, '2026-06-03', 38.00, 32.00),
-	(18, 'PRJ-001', 6, '2026-06-10', 52.00, 45.00),
-	(19, 'PRJ-001', 7, '2026-06-17', 68.00, 58.00),
-	(20, 'PRJ-001', 8, '2026-06-24', 80.00, 70.00),
-	(21, 'PRJ-001', 9, '2026-07-01', 90.00, NULL),
-	(22, 'PRJ-001', 10, '2026-07-08', 96.00, NULL),
-	(23, 'PRJ-001', 11, '2026-07-15', 99.00, NULL),
-	(24, 'PRJ-001', 12, '2026-07-22', 100.00, NULL);
+	(13, 'PRJ-001', 1, '2026-06-07', NULL, 68.70),
+	(14, 'PRJ-001', 2, '2026-06-14', 68.71, NULL),
+	(15, 'PRJ-001', 3, '2026-06-21', 68.71, NULL),
+	(16, 'PRJ-001', 4, '2026-06-28', 68.72, NULL),
+	(17, 'PRJ-001', 5, '2026-07-07', 68.73, NULL),
+	(18, 'PRJ-001', 6, '2026-07-14', 68.74, NULL),
+	(19, 'PRJ-001', 7, '2026-07-21', 68.76, NULL),
+	(20, 'PRJ-001', 8, '2026-07-28', 68.76, NULL),
+	(21, 'PRJ-001', 9, '2026-08-07', 68.88, NULL),
+	(22, 'PRJ-001', 10, '2026-08-14', 69.02, NULL),
+	(23, 'PRJ-001', 11, '2026-08-21', 69.16, NULL),
+	(24, 'PRJ-001', 12, '2026-08-28', 69.30, NULL),
+	(25, 'PRJ-001', 13, '2026-08-31', 69.45, NULL),
+	(26, 'PRJ-001', 14, '2026-09-07', 69.64, NULL),
+	(27, 'PRJ-001', 15, '2026-09-14', 69.93, NULL),
+	(28, 'PRJ-001', 16, '2026-09-21', 70.22, NULL),
+	(29, 'PRJ-001', 17, '2026-09-28', 70.61, NULL),
+	(30, 'PRJ-001', 18, '2026-09-30', 70.87, NULL),
+	(31, 'PRJ-001', 19, '2026-10-07', 71.77, NULL),
+	(32, 'PRJ-001', 20, '2026-10-14', 72.73, NULL),
+	(33, 'PRJ-001', 21, '2026-10-21', 73.74, NULL),
+	(34, 'PRJ-001', 22, '2026-10-28', 74.73, NULL),
+	(35, 'PRJ-001', 23, '2026-11-07', 76.00, NULL),
+	(36, 'PRJ-001', 24, '2026-11-14', 79.64, NULL),
+	(40, 'PRJ-001', 25, '2026-11-21', 82.38, NULL),
+	(41, 'PRJ-001', 26, '2026-11-28', 84.19, NULL),
+	(42, 'PRJ-001', 27, '2026-11-30', 84.66, NULL),
+	(43, 'PRJ-001', 28, '2026-12-07', 86.65, NULL),
+	(44, 'PRJ-001', 29, '2026-12-14', 88.80, NULL),
+	(45, 'PRJ-001', 30, '2026-12-21', 91.97, NULL),
+	(46, 'PRJ-001', 31, '2026-12-28', 95.28, NULL),
+	(47, 'PRJ-001', 32, '2026-12-31', 100.00, NULL);
 
 -- Dumping structure for table db_data_proyek.users
 CREATE TABLE IF NOT EXISTS `users` (

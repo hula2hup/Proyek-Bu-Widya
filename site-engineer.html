@@ -1156,7 +1156,9 @@
       }
 
       /* ── BIM 3D VIEWER (read-only, sama dengan Project Manager/Admin) ── */
-      .bim-viewer-wrap { height: 420px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+      .bim-viewer-wrap { height: 540px; border-radius: 20px; background: #0d1117; position: relative; overflow: hidden; }
+    #forgeViewerDiv { width: 100%; height: 100%; display: block; position: relative; }
+    .bim-embed-frame { width: 100%; height: 100%; border: 0; display: block; background: #0d1117; }
       #bimThreeCanvas { width: 100%; height: 100%; display: block; }
       .bim-viewer-toolbar { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 8px; z-index: 10; }
       .bim-viewer-toolbar button { background: rgba(15,23,42,.85); border: 1px solid rgba(255,255,255,.15); color: #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 11px; cursor: pointer; font-weight: 700; }
@@ -2114,6 +2116,28 @@
         font-weight: 700;
         color: #0f2d52;
       }
+      .cr-project-load-error {
+        display: none;
+        margin: 0 0 16px;
+        padding: 11px 14px;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        background: #fef2f2;
+        color: #991b1b;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .cr-project-load-error button {
+        margin-left: 8px;
+        border: 1px solid #fca5a5;
+        border-radius: 6px;
+        padding: 4px 9px;
+        background: #fff;
+        color: #991b1b;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
       .cr-form-grid {
         display: flex;
         flex-direction: column;
@@ -2209,6 +2233,10 @@
       .cr-dropzone:hover {
         border-color: #2563eb;
         background: #f1f5f9;
+      }
+      .cr-dropzone.is-dragover {
+        border-color: #2563eb;
+        background: #eff6ff;
       }
       .cr-dropzone-icon {
         font-size: 26px;
@@ -2495,40 +2523,57 @@
             <p>Lihat visualisasi elemen jembatan dan cek Object ID sebelum mengajukan Change Request.</p>
           </div>
           <div class="viewer-mode-bar">
-            <div class="mode-switch">
-              <button id="btnModeAps" class="mode-btn" onclick="switchViewerMode('aps')">🏗️ Autodesk BIM</button>
-              <button id="btnModeThree" class="mode-btn active" onclick="switchViewerMode('three')">🧊 Three.js</button>
-            </div>
-            <span class="aps-status-chip off" id="apsStatusChip">Memuat...</span>
+          <div class="mode-switch">
+            <button id="btnModeAps" class="mode-btn active" onclick="switchViewerMode('aps')" title="Overpass Lingkar Pekanbaru (https://autode.sk/4yBQZAy)">🏗️ Autodesk BIM (Overpass)</button>
+            <button id="btnModeThree" class="mode-btn" onclick="switchViewerMode('three')" title="Underpass Betung-Jambi Seksi 4 (https://autode.sk/47G5Yym)">🧊 Autodesk BIM (Underpass)</button>
+            <button id="btnModeLocal" class="mode-btn" onclick="switchViewerMode('local')" title="Model 3D Interaktif Lokal">🧱 Three.js 3D (Lokal)</button>
           </div>
+          <span class="aps-status-chip on" id="apsStatusChip">Autodesk Viewer Aktif</span>
         </div>
+      </div>
 
         <div class="card" style="padding:0;overflow:hidden;border-radius:20px;margin-bottom:18px;">
-          <div class="bim-viewer-wrap" id="bimViewerWrap">
-            <canvas id="bimThreeCanvas"></canvas>
-            <div id="forgeViewerDiv"></div>
-            <div class="bim-viewer-badge">Target Object: <b id="bimTargetLabel">—</b></div>
-            <div class="bim-viewer-toolbar">
-              <button onclick="bimResetCamera()">⟳ Reset</button>
-              <button onclick="bimToggleWireframe()">⬡ Wireframe</button>
-              <button onclick="bimHighlightAffected()">⚑ Highlight Affected</button>
+          <div class="bim-viewer-wrap" id="bimViewerWrap" style="height: 540px; position: relative;">
+          <canvas id="bimThreeCanvas" style="width: 100%; height: 100%; display: none;"></canvas>
+          <div id="forgeViewerDiv" style="width: 100%; height: 100%; position: relative; display: block;">
+            <iframe id="bimAutodeskIframe"
+                    class="bim-embed-frame"
+                    src="backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F4yBQZAy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
+                    allowfullscreen="true"
+                    webkitallowfullscreen="true"
+                    mozallowfullscreen="true"></iframe>
+          </div>
+          <div class="bim-viewer-badge" id="bimViewerBadge">Model: <b id="bimTargetLabel">Overpass Lingkar Pekanbaru (STA 200+780)</b></div>
+          <div class="bim-viewer-toolbar">
+            <button onclick="bimResetCamera()" id="btnBimReset" title="Reset Tampilan / Muat Ulang">⟳ Reset</button>
+            <button onclick="bimToggleWireframe()" id="btnBimWireframe" style="display:none;">⬡ Wireframe</button>
+            <button onclick="bimHighlightAffected()" id="btnBimHighlight" style="display:none;">⚑ Highlight Affected</button>
+            <button onclick="openAutodeskExternal()" id="btnBimExternal" style="background:#2563eb;color:#fff;border-color:#1d4ed8;" title="Buka model di Autodesk Viewer resmi tab baru">↗ Buka di Tab Baru</button>
+            <button onclick="toggleBimFullscreen()" id="btnBimFullscreen" title="Layar Penuh">⛶ Fullscreen</button>
+            <button onclick="toggleBimInfoPanel()" id="btnBimTogglePanel" title="Sembunyikan / Tampilkan Panel">📋 Info</button>
+          </div>
+          <div class="bim-obj-info-panel" id="bimObjInfoPanel">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div class="oi-title" style="margin:0;">Selected Object</div>
+              <button type="button" onclick="toggleBimInfoPanel()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:12px;padding:0 4px;" title="Tutup panel">✕</button>
             </div>
-            <div class="bim-obj-info-panel" id="bimObjInfoPanel">
-              <div class="oi-title">Selected Object</div>
-              <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">—</span></div>
-              <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">—</span></div>
-              <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">—</span></div>
-              <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">—</span></div>
-              <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr">—</span></div>
+            <div class="oi-row"><span class="oi-label">Object ID</span><span class="oi-val" id="bimOiId">OVERPASS-STA200</span></div>
+            <div class="oi-row"><span class="oi-label">WBS</span><span class="oi-val" id="bimOiWbs">7.2.6 Struktur Jembatan</span></div>
+            <div class="oi-row"><span class="oi-label">Elemen</span><span class="oi-val" id="bimOiType">Overpass Lingkar Pekanbaru</span></div>
+            <div class="oi-row"><span class="oi-label">Status</span><span class="oi-val" id="bimOiStatus">Model Revit Terhubung</span></div>
+            <div class="oi-row"><span class="oi-label">CR Terkait</span><span class="oi-val" id="bimOiCr"><a href="https://autode.sk/4yBQZAy" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline;">autode.sk/4yBQZAy ↗</a></span></div>
               <button type="button" class="oi-cr-btn" id="btnOpenChangeFromObj" onclick="openChangeRequestFromViewer()" disabled>📝 Buat Change Request untuk Objek Ini</button>
-              <div id="bimOiDetailWrap" style="display:none;">
-                <div class="oi-detail-title">Detail Properti Revit</div>
-                <div id="bimOiDetail"></div>
-              </div>
+            <div id="bimOiDetailWrap" style="display:none;">
+              <div class="oi-detail-title">Detail Properti Revit</div>
+              <div id="bimOiDetail"></div>
             </div>
           </div>
         </div>
-        <p style="color:#64748b;font-size:13px;margin:0 0 18px 2px;">Klik elemen pada viewer untuk melihat detail Object ID, WBS, status, dan Change Request terkait yang pernah kamu ajukan. Mode "Autodesk BIM" memuat model RVT asli secara otomatis; kalau tidak tersedia, otomatis kembali ke mode Three.js.</p>
+      </div>
+          </div>
+        </div>
+        <p style="color:#64748b;font-size:13px;margin:0 0 18px 2px;">Pada Three.js, drag untuk memutar model dan klik komponen untuk melihat nama serta WBS. Autodesk Viewer akan menampilkan model Revit langsung di area yang sama setelah model terhubung ke APS.</p>
       </div>
 
             <div id="newChangePage" class="page">
@@ -2542,9 +2587,13 @@
             </div>
             <div class="cr-project-card">
               <span class="cr-project-label">Proyek Terpilih</span>
-              <span class="cr-project-val" id="selectedProjectDisplay">PRJ-001 - Proyek Konstruksi Jembatan Beton Precast</span>
-              <input type="hidden" id="projectArea" value="PRJ-001" />
+              <span class="cr-project-val" id="selectedProjectDisplay">Memuat proyek...</span>
+              <input type="hidden" id="projectArea" value="" />
             </div>
+          </div>
+          <div class="cr-project-load-error" id="projectAssignmentError" role="status" aria-live="polite">
+            <span id="projectAssignmentErrorMessage">Proyek belum berhasil dimuat.</span>
+            <button type="button" onclick="fetchAssignedProjects()">Coba lagi</button>
           </div>
 
           <!-- Main Grid of Form Cards -->
@@ -2709,35 +2758,42 @@
             </div>
 
             <!-- Row 3: 5. Dampak Biaya, 6. Dampak Lingkup & K3, 7. Upload Evidence (3 Columns) -->
-            <!-- Catatan: Dampak Waktu dan Dampak Mutu Dihapus Sesuai Instruksi User -->
             <div class="cr-row-3col">
               
-              <!-- Card 5: Dampak Biaya -->
-              <div class="cr-card">
-                <div class="cr-card-header">
-                  <h3 class="cr-card-title">5. Dampak Biaya</h3>
-                  <p class="cr-card-subtitle">JSON: impactCost</p>
-                </div>
-                <div class="cr-field-group full-width">
-                  <label>Dampak Biaya</label>
-                  <textarea id="impactCost" rows="5" placeholder="item, sifat, satuan, kuantitas, justifikasi"></textarea>
-                </div>
+            <!-- Card 5: Dampak Biaya dan Waktu -->
+            <div class="cr-card">
+              <div class="cr-card-header">
+                <h3 class="cr-card-title">5. Dampak Biaya dan Waktu</h3>
+                <p class="cr-card-subtitle">JSON: impactCost, impactTime</p>
               </div>
+              <div class="cr-field-group full-width">
+                <label>Dampak Biaya</label>
+                <textarea id="impactCost" rows="5" placeholder="item, sifat, satuan, kuantitas, justifikasi"></textarea>
+              </div>
+              <div class="cr-field-group full-width" style="margin-top: 14px;">
+                <label>Dampak Waktu</label>
+                <textarea id="impactTime" rows="4" placeholder="aktivitas, durasi, kebutuhan, justifikasi"></textarea>
+              </div>
+            </div>
 
-              <!-- Card 6: Dampak Lingkup, K3 -->
-              <div class="cr-card">
-                <div class="cr-card-header">
-                  <h3 class="cr-card-title">6. Dampak Lingkup, K3</h3>
-                  <p class="cr-card-subtitle">JSON: impactScope, impactSafety</p>
-                </div>
-                <div class="cr-field-group full-width">
-                  <label>Dampak Lingkup</label>
-                  <input type="text" id="impactScope" placeholder="pekerjaan baru / penambahan / pengurangan" />
-                </div>
-                <div class="cr-field-group full-width" style="margin-top: 14px;">
-                  <label>Dampak K3</label>
-                  <input type="text" id="impactSafety" placeholder="aktivitas bahaya, kebutuhan mitigasi" />
-                </div>
+            <!-- Card 6: Dampak Lingkup, Mutu, dan K3 -->
+            <div class="cr-card">
+              <div class="cr-card-header">
+                <h3 class="cr-card-title">6. Dampak Lingkup, Mutu, K3</h3>
+                <p class="cr-card-subtitle">JSON: impactScope, impactQuality, impactSafety</p>
+              </div>
+              <div class="cr-field-group full-width">
+                <label>Dampak Lingkup</label>
+                <input type="text" id="impactScope" placeholder="pekerjaan baru / penambahan / pengurangan" />
+              </div>
+              <div class="cr-field-group full-width" style="margin-top: 14px;">
+                <label>Dampak Mutu</label>
+                <input type="text" id="impactQuality" placeholder="spek awal, spek baru, justifikasi" />
+              </div>
+              <div class="cr-field-group full-width" style="margin-top: 14px;">
+                <label>Dampak K3</label>
+                <input type="text" id="impactSafety" placeholder="aktivitas bahaya, kebutuhan mitigasi" />
+              </div>
               </div>
 
               <!-- Card 7: Upload Evidence -->
@@ -2746,7 +2802,7 @@
                   <h3 class="cr-card-title">7. Upload Evidence</h3>
                   <p class="cr-card-subtitle">File disimpan via backend/save_data.php ke uploads/</p>
                 </div>
-                <div class="cr-dropzone" onclick="document.getElementById('photo').click()">
+                <div class="cr-dropzone" onclick="document.getElementById('photo').click()" ondragover="event.preventDefault(); this.classList.add('is-dragover')" ondragleave="this.classList.remove('is-dragover')" ondrop="handleEvidenceDrop(event)">
                   <div class="cr-dropzone-icon">📁</div>
                   <div class="cr-dropzone-main">Drop / pilih file bukti</div>
                   <div class="cr-dropzone-sub">photo[] -&gt; photoEvidence</div>
@@ -2756,7 +2812,7 @@
                 <div class="cr-evidence-actions">
                   <button type="button" class="cr-pill-btn" onclick="previewSelectedEvidence()">Preview image</button>
                   <button type="button" class="cr-pill-btn" onclick="openPdfEvidenceModal()">PDF card</button>
-                  <button type="button" class="cr-pill-btn" id="evidenceSizeIndicator">Validasi ukuran file</button>
+                  <button type="button" class="cr-pill-btn" id="evidenceSizeIndicator" onclick="validateEvidenceFiles(true)">Validasi ukuran file</button>
                 </div>
                 <div id="gallery" class="cr-evidence-gallery"></div>
               </div>
@@ -2793,7 +2849,7 @@
                 <div class="cr-ref-text">
                   <div><b>Tabel utama:</b> change_requests</div>
                   <div><b>Field kunci:</b> changeId, projectArea, WBS, risk, status, bimObjectId.</div>
-                  <div><b>Bukti:</b> photoEvidence; <b>dampak:</b> impactCost, impactScope, impactSafety.</div>
+                  <div><b>Bukti:</b> photoEvidence; <b>dampak:</b> impactCost, impactTime, impactScope, impactQuality, impactSafety.</div>
                   <div><b>Status awal setelah submit:</b> PENDING untuk review Project Manager.</div>
                 </div>
               </div>
@@ -3133,44 +3189,64 @@
       }
 
       function fetchAssignedProjects() {
+        const errorBanner = document.getElementById("projectAssignmentError");
+        const errorMessage = document.getElementById("projectAssignmentErrorMessage");
+        if (errorBanner) errorBanner.style.display = "none";
         fetch("backend/api_get_projects.php")
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Server proyek merespons HTTP ${response.status}.`);
+            }
+            return response.json();
+          })
           .then((res) => {
-            // 2. Jika sukses dan user tersebut memang punya proyek
-            if (res.status === "success" && res.data.length > 0) {
+            if (res.status !== "success") {
+              throw new Error(res.message || "Server tidak dapat memuat assignment proyek.");
+            }
+            if (!Array.isArray(res.data)) {
+              throw new Error("Format daftar proyek dari server tidak valid.");
+            }
+            if (res.data.length > 0) {
               activeProjects = res.data;
               hasAssignedProject = true;
               setNewChangeLocked(false);
 
-              // Ambil data proyek pertama (index 0)
               const assignedProject = res.data[0];
-              const projectId = assignedProject.project_id; // Contoh: "PRJ-001"
-
-              // 3. Cari elemen input HTML Anda berdasarkan ID
+              const projectId = assignedProject.project_id;
               const projectAreaInput = document.getElementById("projectArea");
 
               if (projectAreaInput) {
-                // Autofill nilainya dengan Kode Proyek
                 projectAreaInput.value = projectId;
-
-                // [PENTING] Kunci kolom agar tidak bisa diketik/diubah manual oleh user
                 projectAreaInput.readOnly = true;
-
-                // Beri efek visual abu-abu agar user paham kolom ini otomatis
                 projectAreaInput.style.backgroundColor = "#e9ecef";
                 projectAreaInput.style.cursor = "not-allowed";
+              }
+              const projectDisplay = document.getElementById("selectedProjectDisplay");
+              if (projectDisplay) {
+                projectDisplay.textContent = `${projectId} - ${assignedProject.project_name || "Proyek"}`;
               }
             } else {
               activeProjects = [];
               hasAssignedProject = false;
+              setNewChangeLocked(true);
+              const projectAreaInput = document.getElementById("projectArea");
+              if (projectAreaInput) projectAreaInput.value = "";
+              const projectDisplay = document.getElementById("selectedProjectDisplay");
+              if (projectDisplay) projectDisplay.textContent = "Belum ada proyek yang di-assign";
               console.warn("User ini tidak di-assign ke proyek mana pun.");
               promptUnassignedProjectLogout();
             }
           })
           .catch((error) => {
             activeProjects = [];
-            hasAssignedProject = false;
-            setNewChangeLocked(true);
+            hasAssignedProject = null;
+            setNewChangeLocked(false);
+            const projectAreaInput = document.getElementById("projectArea");
+            if (projectAreaInput) projectAreaInput.value = "";
+            const projectDisplay = document.getElementById("selectedProjectDisplay");
+            if (projectDisplay) projectDisplay.textContent = "Proyek gagal dimuat";
+            if (errorMessage) errorMessage.textContent = `${error.message} Form dapat dibuka, tetapi pengajuan perlu assignment proyek yang valid.`;
+            if (errorBanner) errorBanner.style.display = "block";
             console.error("Gagal menarik data proyek:", error);
           });
       }
@@ -3281,12 +3357,21 @@
             return [];
           }
         }
+        function escapeCrAttribute(value) {
+          return String(value ?? "").replace(/[&<>"']/g, character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;",
+            "'": "&#39;",
+          })[character]);
+        }
 
         const costRows = parseSafe(selectedChange.impactCost)
           .map(
             (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.item || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${escapeCrAttribute(row.item || row.description || "")}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
                           <option value="Penambahan" ${row.sifat === "Penambahan" ? "selected" : ""}>Penambahan</option>
@@ -3306,7 +3391,7 @@
           .map(
             (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${escapeCrAttribute(row.aktivitas || row.description || "")}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
                           <option value="Percepatan" ${row.sifat === "Percepatan" ? "selected" : ""}>Percepatan</option>
@@ -3326,7 +3411,7 @@
           .map(
             (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.lingkup || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${escapeCrAttribute(row.lingkup || row.description || "")}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
                           <option value="Penambahan" ${row.sifat === "Penambahan" ? "selected" : ""}>Penambahan</option>
@@ -3346,7 +3431,7 @@
           .map(
             (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.item || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${escapeCrAttribute(row.item || row.description || "")}" ${readonlyAttr}></td>
                   <td><input type="text" class="input-col-2" value="${row.spesifikasiAwal || ""}" ${readonlyAttr}></td>
                   <td><input type="text" class="input-col-3" value="${row.spesifikasiBaru || ""}" ${readonlyAttr}></td>
                   <td>
@@ -3366,7 +3451,7 @@
           .map(
             (row) => `
               <tr>
-                  <td><input type="text" class="input-col-1" value="${row.aktivitas || ""}" ${readonlyAttr}></td>
+                  <td><input type="text" class="input-col-1" value="${escapeCrAttribute(row.aktivitas || row.description || "")}" ${readonlyAttr}></td>
                   <td>
                       <select class="input-col-2" ${disabledAttr}>
                           <option value="Risiko Baru" ${row.sifat === "Risiko Baru" ? "selected" : ""}>Risiko Baru</option>
@@ -6443,6 +6528,9 @@
         if (changeDate) {
           changeDate.value = new Date().toISOString().split("T")[0];
         }
+        const draftKey = `siteEngineerChangeDraft:${projectAreaInput?.value || "default"}`;
+        localStorage.removeItem(draftKey);
+        promptedDraftKey = "";
         if (typeof setLoggedUserToForm === "function") setLoggedUserToForm();
         if (activeProjects.length > 0 && projectAreaInput) {
           projectAreaInput.value = activeProjects[0].project_id;
@@ -6709,6 +6797,7 @@
           indicator.innerText = `${input.files.length} file (${sizeMb} MB) - ` + (valid ? "Valid" : "Melebihi batas!");
           indicator.style.color = valid ? "#16a34a" : "#dc2626";
         }
+        validateEvidenceFiles(false);
       }
 
       function previewSelectedEvidence() {
@@ -6741,16 +6830,123 @@
         window.open(url, "_blank");
       }
 
+      let promptedDraftKey = "";
+
+      function getChangeDraftKey() {
+        const projectArea = document.getElementById("projectArea")?.value || "default";
+        return `siteEngineerChangeDraft:${projectArea}`;
+      }
+
       function saveDraftCR() {
-        const changeId = document.getElementById("changeId")?.value || "CR-Draft";
-        alert("Draft " + changeId + " berhasil disimpan secara lokal pada peramban.");
+        const form = document.getElementById("newChangePage");
+        const fields = Array.from(form.querySelectorAll("input:not([type=file]), select, textarea"))
+          .filter(field => field.id)
+          .map(field => [field.id, field.value]);
+        const draft = { savedAt: new Date().toISOString(), fields };
+        try {
+          localStorage.setItem(getChangeDraftKey(), JSON.stringify(draft));
+          alert(`Draft ${document.getElementById("changeId")?.value || ""} berhasil disimpan di peramban ini. File bukti harus dipilih ulang saat submit.`);
+        } catch (error) {
+          console.error("Gagal menyimpan draft Change Request:", error);
+          alert("Draft tidak dapat disimpan di peramban. Periksa ruang penyimpanan lokal browser.");
+        }
+      }
+
+      function restoreDraftCR() {
+        const draftKey = getChangeDraftKey();
+        if (promptedDraftKey === draftKey) return;
+        promptedDraftKey = draftKey;
+
+        const rawDraft = localStorage.getItem(draftKey);
+        if (!rawDraft) return;
+
+        let draft;
+        try {
+          draft = JSON.parse(rawDraft);
+        } catch (error) {
+          console.error("Draft Change Request tersimpan tidak dapat dibaca:", error);
+          alert("Draft tersimpan rusak dan tidak dapat dipulihkan. Gunakan Reset Form untuk menghapus isian.");
+          return;
+        }
+        if (!Array.isArray(draft.fields)) {
+          alert("Format draft Change Request tidak dikenali.");
+          return;
+        }
+        const savedAt = draft.savedAt ? new Date(draft.savedAt).toLocaleString("id-ID") : "waktu tidak diketahui";
+        if (!confirm(`Draft tersimpan (${savedAt}) ditemukan. Pulihkan isian form?`)) return;
+
+        const savedFields = new Map(draft.fields);
+        syncWbsSelects(
+          document.getElementById("wbsLevel4"),
+          document.getElementById("wbsLevel5"),
+          document.getElementById("wbsLevel6"),
+          savedFields.get("wbsLevel4") || "",
+          savedFields.get("wbsLevel5") || "",
+          savedFields.get("wbsLevel6") || "",
+          document.getElementById("wbsLevel2"),
+          document.getElementById("wbsLevel3"),
+        );
+
+        draft.fields.forEach(([id, value]) => {
+          if (["wbsLevel2", "wbsLevel3", "wbsLevel4", "wbsLevel5", "wbsLevel6", "riskCategory", "riskVariable"].includes(id)) return;
+          const field = document.getElementById(id);
+          if (field && field.type !== "file" && id !== "projectArea" && id !== "submittedBy") field.value = value;
+        });
+
+        const riskCategory = document.getElementById("riskCategory");
+        const riskVariable = document.getElementById("riskVariable");
+        if (riskCategory && savedFields.has("riskCategory")) {
+          riskCategory.value = savedFields.get("riskCategory");
+          riskCategory.dispatchEvent(new Event("change"));
+          if (riskVariable && savedFields.has("riskVariable")) {
+            riskVariable.value = savedFields.get("riskVariable");
+            riskVariable.dispatchEvent(new Event("change"));
+          }
+        }
+        const riskDescription = document.getElementById("riskDescription");
+        if (riskDescription && savedFields.has("riskDescription")) riskDescription.value = savedFields.get("riskDescription");
+      }
+
+      function validateEvidenceFiles(showMessage = false) {
+        const files = Array.from(document.getElementById("photo")?.files || []);
+        const indicator = document.getElementById("evidenceSizeIndicator");
+        const invalidType = files.find(file => !file.type.startsWith("image/") && file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf"));
+        const oversizedFile = files.find(file => file.size > 15 * 1024 * 1024);
+        const valid = !invalidType && !oversizedFile;
+        if (indicator && files.length) {
+          indicator.textContent = invalidType
+            ? `Format tidak didukung: ${invalidType.name}`
+            : oversizedFile
+              ? `Ukuran melebihi 15 MB: ${oversizedFile.name}`
+              : `${files.length} file · Valid`;
+          indicator.style.color = valid ? "#16a34a" : "#dc2626";
+        }
+        if (!valid && showMessage) {
+          alert(invalidType
+            ? "Bukti hanya boleh berupa gambar atau file PDF."
+            : `Ukuran file ${oversizedFile.name} melebihi batas 15 MB.`);
+        }
+        return valid;
+      }
+
+      function handleEvidenceDrop(event) {
+        event.preventDefault();
+        const dropzone = event.currentTarget;
+        dropzone.classList.remove("is-dragover");
+        const input = document.getElementById("photo");
+        if (!input || !event.dataTransfer?.files?.length) return;
+        const transfer = new DataTransfer();
+        Array.from(event.dataTransfer.files).forEach(file => transfer.items.add(file));
+        input.files = transfer.files;
+        handleEvidenceFileSelect(input);
+        validateEvidenceFiles(true);
       }
 
       function submitCR(event) {
         if (event) event.preventDefault();
 
         const changeId = document.getElementById("changeId")?.value;
-        const projectArea = document.getElementById("projectArea")?.value || "PRJ-001";
+        const projectArea = document.getElementById("projectArea")?.value || "";
         const wbsLevel4 = document.getElementById("wbsLevel4")?.value;
         const wbsLevel5 = document.getElementById("wbsLevel5")?.value;
         const wbsLevel6 = document.getElementById("wbsLevel6")?.value;
@@ -6766,6 +6962,10 @@
 
         if (!changeId || changeId === "Loading...") {
           alert("Mohon tunggu Change ID otomatis dimuat.");
+          return;
+        }
+        if (hasAssignedProject !== true || !activeProjects.some(project => project.project_id === projectArea)) {
+          alert("Proyek belum berhasil dimuat atau akun belum memiliki assignment yang valid. Coba muat ulang proyek sebelum submit.");
           return;
         }
         if (!wbsLevel4 || !wbsLevel5) {
@@ -6784,6 +6984,18 @@
           alert("Skor Risiko wajib diisi.");
           return;
         }
+        if (Number(risk) < 1 || Number(risk) > 10) {
+          alert("Skor Risiko harus berada pada rentang 1 sampai 10.");
+          return;
+        }
+        if (!ownerRequest) {
+          alert("Owner Request wajib dipilih.");
+          return;
+        }
+        if (!locationFormat) {
+          alert("Format Lokasi wajib dipilih.");
+          return;
+        }
         if (!location) {
           alert("Detail Lokasi wajib diisi.");
           return;
@@ -6796,6 +7008,19 @@
           alert("Deskripsi Singkat wajib diisi.");
           return;
         }
+        if (!document.getElementById("changeDate")?.value) {
+          alert("Tanggal Change Request wajib diisi.");
+          return;
+        }
+        if (!document.getElementById("riskCategory")?.value || !document.getElementById("riskVariable")?.value) {
+          alert("Kategori Risiko dan Variabel Risiko wajib dipilih.");
+          return;
+        }
+        if (!descriptionDetail?.trim()) {
+          alert("Detail Deskripsi wajib diisi.");
+          return;
+        }
+        if (!validateEvidenceFiles(true)) return;
 
         const formData = new FormData();
         formData.append("changeId", changeId);
@@ -6818,19 +7043,10 @@
         formData.append("description", description);
         formData.append("descriptionDetail", descriptionDetail || "");
 
-        // Dampak Biaya, Lingkup, K3 (Dampak waktu dan dampak mutu DIHAPUS sesuai instruksi)
-        const costVal = document.getElementById("impactCost")?.value?.trim() || "";
-        if (costVal) {
-          formData.append("impactCost", JSON.stringify([{ description: costVal }]));
-        }
-        const scopeVal = document.getElementById("impactScope")?.value?.trim() || "";
-        if (scopeVal) {
-          formData.append("impactScope", JSON.stringify([{ description: scopeVal }]));
-        }
-        const safetyVal = document.getElementById("impactSafety")?.value?.trim() || "";
-        if (safetyVal) {
-          formData.append("impactSafety", JSON.stringify([{ description: safetyVal }]));
-        }
+        ["impactCost", "impactTime", "impactScope", "impactQuality", "impactSafety"].forEach(fieldId => {
+          const value = document.getElementById(fieldId)?.value?.trim() || "";
+          formData.append(fieldId, value ? JSON.stringify([{ description: value }]) : "[]");
+        });
 
         const fileInput = document.getElementById("photo");
         if (fileInput && fileInput.files && fileInput.files.length > 0) {
@@ -6855,6 +7071,8 @@
             if (data.status === "success") {
               alert("✅ Change Request " + changeId + " berhasil disimpan ke database!");
               try {
+                localStorage.removeItem(getChangeDraftKey());
+                promptedDraftKey = "";
                 if (typeof fetchDashboardData === "function") fetchDashboardData();
                 resetNewChangeFormAfterSubmit();
                 generateAutoChangeId();
@@ -7102,6 +7320,9 @@
         // BIM & WBS Viewer: load viewer 3D BIM (lazy, sekali saja)
         if (pageId === "bimPage" && typeof bimViewerInit === "function") {
           bimViewerInit();
+        }
+        if (pageId === "newChangePage") {
+          restoreDraftCR();
         }
 
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -7602,20 +7823,41 @@
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         let prevMouse = { x: 0, y: 0 };
+        let dragMoved = false;
+        let suppressClickUntil = 0;
 
-        canvas.addEventListener('mousedown', e => { prevMouse = { x: e.clientX, y: e.clientY }; });
-        canvas.addEventListener('mousemove', e => {
-          if (e.buttons === 1) {
-            const dx = e.clientX - prevMouse.x;
-            camera.position.applyAxisAngle(new THREE.Vector3(0, 1, 0), -dx * 0.005);
-            prevMouse = { x: e.clientX, y: e.clientY };
-          }
+        canvas.addEventListener('pointerdown', e => {
+          prevMouse = { x: e.clientX, y: e.clientY };
+          dragMoved = false;
         });
+        canvas.addEventListener('pointermove', e => {
+          if (e.buttons !== 1) return;
+          const dx = e.clientX - prevMouse.x;
+          const dy = e.clientY - prevMouse.y;
+          if (Math.abs(dx) + Math.abs(dy) > 1) dragMoved = true;
+          const target = new THREE.Vector3(0, 2, 0);
+          const offset = camera.position.clone().sub(target);
+          const orbit = new THREE.Spherical().setFromVector3(offset);
+          orbit.theta -= dx * 0.005;
+          orbit.phi = THREE.MathUtils.clamp(orbit.phi + THREE.MathUtils.clamp(dy, -40, 40) * 0.005, 0.12, Math.PI - 0.12);
+          camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));
+          prevMouse = { x: e.clientX, y: e.clientY };
+        });
+        canvas.addEventListener('pointerup', () => {
+          if (dragMoved) suppressClickUntil = performance.now() + 200;
+          dragMoved = false;
+        });
+        canvas.style.touchAction = 'none';
         canvas.addEventListener('wheel', e => {
-          camera.position.multiplyScalar(1 + e.deltaY * 0.001);
+          const target = new THREE.Vector3(0, 2, 0);
+          const offset = camera.position.clone().sub(target);
+          const orbit = new THREE.Spherical().setFromVector3(offset);
+          orbit.radius = THREE.MathUtils.clamp(orbit.radius * (1 + e.deltaY * 0.001), 6, 40);
+          camera.position.copy(target).add(new THREE.Vector3().setFromSpherical(orbit));
           e.preventDefault();
         }, { passive: false });
         canvas.addEventListener('click', e => {
+          if (performance.now() < suppressClickUntil) return;
           const rect = canvas.getBoundingClientRect();
           mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
           mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
@@ -7857,5 +8099,6 @@
         }
       }
     </script>
+    <script src="assets/bim-aps-models.js" defer></script>
   </body>
 </html>
