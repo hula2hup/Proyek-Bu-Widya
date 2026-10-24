@@ -1813,16 +1813,18 @@
       <div class="topbar">
         <div><h2>BIM & WBS Viewer (Read-Only)</h2><p>Fitur PM untuk melihat visualisasi elemen yang terdampak sebelum memberikan persetujuan.</p></div>
         <div class="viewer-mode-bar">
-          <div class="mode-switch">
-            <button id="btnModeAps" class="mode-btn active" onclick="switchViewerMode('aps')" title="Overpass Lingkar Pekanbaru (https://autode.sk/4yBQZAy)">🏗️ Autodesk BIM (Overpass)</button>
-            <button id="btnModeThree" class="mode-btn" onclick="switchViewerMode('three')" title="Underpass Betung-Jambi Seksi 4 (https://autode.sk/47G5Yym)">🧊 Autodesk BIM (Underpass)</button>
-            <button id="btnModeLocal" class="mode-btn" onclick="switchViewerMode('local')" title="Model 3D Interaktif Lokal">🧱 Three.js 3D (Lokal)</button>
+            <div class="mode-switch">
+              <button id="btnModeAps" class="mode-btn active" onclick="switchViewerMode('aps')" title="Tampilkan Autodesk BIM">🏗️ Autodesk BIM</button>
+              <button id="btnModeThree" class="mode-btn" onclick="switchViewerMode('three')" title="Tampilkan Three.js 3D">🧊 Three.js</button>
+            </div>
+            <select id="bimModelSelect" onchange="changeBimModel(this.value)" class="mode-btn" style="background:#fff;color:#0f172a;cursor:pointer;padding:7px 11px;font-size:12px;font-weight:600;border:1px solid #cbd5e1;border-radius:8px;">
+              <option value="overpass">Overpass Lingkar Pekanbaru (STA 200+780)</option>
+              <option value="underpass">Underpass Betung-Jambi Seksi 4 (STA 161+650)</option>
+            </select>
+            <span class="aps-status-chip on" id="apsStatusChip">Autodesk Viewer Aktif</span>
           </div>
-          <span class="aps-status-chip on" id="apsStatusChip">Autodesk Viewer Aktif</span>
         </div>
-      </div>
-
-      <div class="card" style="padding:0;overflow:hidden;border-radius:20px;">
+        <div class="card" style="padding:0;overflow:hidden;border-radius:20px;">
         <div class="bim-viewer-wrap" id="bimViewerWrap" style="height: 540px; position: relative;">
           <canvas id="bimThreeCanvas" style="width: 100%; height: 100%; display: none;"></canvas>
           <div id="forgeViewerDiv" style="width: 100%; height: 100%; position: relative; display: block;">
@@ -5569,7 +5571,7 @@ function closeCrDetail() {
     document.getElementById(id).classList.add('active');
     if (btn) { document.querySelectorAll('nav button').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
     if (id === "knowledge-base") pmKbLoadData(currentProjectId || document.getElementById("projectDropdown")?.value || "");
-    if (id === "bim") { pmInitializeWbsMapping(); bimViewerInit(); }
+    if (id === "bim") { pmInitializeWbsMapping(); if (typeof switchViewerMode === "function") switchViewerMode(currentViewerMode || "aps"); else bimViewerInit(); }
     window.scrollTo({ top:0, behavior:'smooth' });
     closeMobileChrome();
   }
@@ -5744,7 +5746,7 @@ function closeCrDetail() {
 
   function bimViewerInit() {
     if (bimState.ready) { bimRefreshStatusColors(); return; }
-    initApsAuto();
+    
     const canvas = document.getElementById('bimThreeCanvas');
     const wrap = document.getElementById('bimViewerWrap');
     if (!canvas || !wrap || typeof THREE === 'undefined') return;
@@ -5895,114 +5897,151 @@ function closeCrDetail() {
   // AUTODESK APS — mode model RVT asli (alternatif dari Three.js representatif)
   // Production mode: token diambil otomatis dari server (.env), tidak ada input manual.
   // ══════════════════════════════════════════
-  const FORGE_URN = 'urn:adsk.objects:os.object:gbc1y5bytf1lnyjs9nj5-bimwbs-prod/FILE-P2.rvt';
-  let apsMode  = false;
-  let apsToken = null;
-  let apsUrn   = FORGE_URN;
-  let apsViewer = null;
-
-  const autodeskLinks = {
-    aps: {
-      key: 'aps',
-      name: 'Overpass Lingkar Pekanbaru (STA 200+780)',
-      shortUrl: 'https://autode.sk/4yBQZAy',
-      embedUrl: 'backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F4yBQZAy',
-      directId: 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI0OTNfNjY2ZDlhMTAtZTc1MS00NWQwLTg2Y2UtZWJkNDJjNDgyYjY5LnJ2dA',
-      defaultWbs: '7.2.6 Pekerjaan Struktur Jembatan Overpass'
+  
+  // ════════════════════════════════════════════════════════════════
+  // BIM & WBS VIEWER DUAL AUTODESK + THREE.JS ENGINE
+  // ════════════════════════════════════════════════════════════════
+  const autodeskModels = {
+    overpass: {
+      key: "overpass",
+      name: "Overpass Lingkar Pekanbaru (STA 200+780)",
+      shortUrl: "https://autode.sk/4yBQZAy",
+      embedUrl: "backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F4yBQZAy",
+      directId: "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI0OTNfNjY2ZDlhMTAtZTc1MS00NWQwLTg2Y2UtZWJkNDJjNDgyYjY5LnJ2dA",
+      defaultWbs: "7.2.6 Pekerjaan Struktur Jembatan Overpass"
     },
-    three: {
-      key: 'three',
-      name: 'Underpass Betung-Jambi Seksi 4 (STA 161+650)',
-      shortUrl: 'https://autode.sk/47G5Yym',
-      embedUrl: 'backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F47G5Yym',
-      directId: 'dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI5MzBfOTBlYzA0NDMtZjFkNi00YzRkLWI5MTgtYWVlMzg2NDE4ZGRhLnJ2dA',
-      defaultWbs: '3.2.6 Galian Struktur & Box Underpass'
+    underpass: {
+      key: "underpass",
+      name: "Underpass Betung-Jambi Seksi 4 (STA 161+650)",
+      shortUrl: "https://autode.sk/47G5Yym",
+      embedUrl: "backend/proxy_viewer.php?url=https%3A%2F%2Fautode.sk%2F47G5Yym",
+      directId: "dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6YTM2MHZpZXdlci1wcm90ZWN0ZWQvdDE3OTI3NDI5MzBfOTBlYzA0NDMtZjFkNi00YzRkLWI5MTgtYWVlMzg2NDE4ZGRhLnJ2dA",
+      defaultWbs: "3.2.6 Galian Struktur & Box Underpass"
     }
   };
-  let currentBimMode = 'aps';
+  let currentViewerMode = "aps";
+  let activeModelKey = "overpass";
 
   function initApsAuto() {
-    switchViewerMode('aps');
+    switchViewerMode("aps");
+  }
+
+  function changeBimModel(modelKey) {
+    if (!autodeskModels[modelKey]) return;
+    activeModelKey = modelKey;
+    const model = autodeskModels[modelKey];
+    const selector = document.getElementById("bimModelSelect");
+    if (selector && selector.value !== modelKey) selector.value = modelKey;
+
+    const badge = document.getElementById("bimTargetLabel");
+    if (badge) badge.textContent = model.name;
+
+    const oiId = document.getElementById("bimOiId");
+    const oiType = document.getElementById("bimOiType");
+    const oiWbs = document.getElementById("bimOiWbs");
+    const oiStatus = document.getElementById("bimOiStatus");
+    const oiCr = document.getElementById("bimOiCr");
+    if (oiId) oiId.textContent = (modelKey === "overpass") ? "OVERPASS-STA200" : "UNDERPASS-STA161";
+    if (oiType) oiType.textContent = model.name;
+    if (oiWbs) oiWbs.textContent = model.defaultWbs;
+    if (oiStatus) oiStatus.textContent = "Model Revit Terhubung";
+    if (oiCr) oiCr.innerHTML = `<a href="${model.shortUrl}" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline;">${model.shortUrl} ↗</a>`;
+
+    if (currentViewerMode === "aps") {
+      const iframe = document.getElementById("bimAutodeskIframe");
+      if (iframe) {
+        const isLocalHttp = window.location.protocol.startsWith("http");
+        iframe.src = isLocalHttp ? model.embedUrl : `https://viewer.autodesk.com/id/${model.directId}`;
+      }
+    }
   }
 
   function switchViewerMode(mode) {
-    currentBimMode = mode;
-    const btnAps = document.getElementById('btnModeAps');
-    const btnThree = document.getElementById('btnModeThree');
-    const btnLocal = document.getElementById('btnModeLocal');
-    const chip = document.getElementById('apsStatusChip');
-    const threeCanvas = document.getElementById('bimThreeCanvas');
-    const forgeDiv = document.getElementById('forgeViewerDiv');
-    const iframe = document.getElementById('bimAutodeskIframe');
-    const badge = document.getElementById('bimTargetLabel');
-    const btnWireframe = document.getElementById('btnBimWireframe');
-    const btnHighlight = document.getElementById('btnBimHighlight');
-    const btnReset = document.getElementById('btnBimReset');
-    const btnExternal = document.getElementById('btnBimExternal');
+    currentViewerMode = mode;
+    const btnAps = document.getElementById("btnModeAps");
+    const btnThree = document.getElementById("btnModeThree");
+    const chip = document.getElementById("apsStatusChip");
+    const threeCanvas = document.getElementById("bimThreeCanvas");
+    const forgeDiv = document.getElementById("forgeViewerDiv");
+    const iframe = document.getElementById("bimAutodeskIframe");
+    const badge = document.getElementById("bimTargetLabel");
+    const btnWireframe = document.getElementById("btnBimWireframe");
+    const btnHighlight = document.getElementById("btnBimHighlight");
+    const btnReset = document.getElementById("btnBimReset");
+    const btnExternal = document.getElementById("btnBimExternal");
+    const selector = document.getElementById("bimModelSelect");
 
-    if (btnAps) btnAps.classList.toggle('active', mode === 'aps');
-    if (btnThree) btnThree.classList.toggle('active', mode === 'three');
-    if (btnLocal) btnLocal.classList.toggle('active', mode === 'local');
+    if (btnAps) btnAps.classList.toggle("active", mode === "aps");
+    if (btnThree) btnThree.classList.toggle("active", mode === "three");
 
-    if (mode === 'local') {
-      if (threeCanvas) threeCanvas.style.display = 'block';
-      if (forgeDiv) forgeDiv.style.display = 'none';
+    if (mode === "three") {
+      if (threeCanvas) threeCanvas.style.display = "block";
+      if (forgeDiv) forgeDiv.style.display = "none";
       if (chip) {
-        chip.textContent = 'Three.js 3D Lokal Aktif';
-        chip.className = 'aps-status-chip on';
+        chip.textContent = "Three.js 3D Aktif";
+        chip.className = "aps-status-chip on";
       }
-      if (badge) badge.textContent = 'Model 3D Lokal (Klik elemen jembatan)';
-      if (btnWireframe) btnWireframe.style.display = 'inline-block';
-      if (btnHighlight) btnHighlight.style.display = 'inline-block';
-      if (btnReset) btnReset.style.display = 'inline-block';
-      if (btnExternal) btnExternal.style.display = 'none';
-      if (typeof bimViewerInit === 'function') bimViewerInit();
+      if (badge) badge.textContent = "Model 3D Jembatan (Klik elemen)";
+      if (btnWireframe) btnWireframe.style.display = "inline-block";
+      if (btnHighlight) btnHighlight.style.display = "inline-block";
+      if (btnReset) btnReset.style.display = "inline-block";
+      if (btnExternal) btnExternal.style.display = "none";
+      if (typeof bimViewerInit === "function") {
+        bimViewerInit();
+        if (bimState && bimState.renderer && bimState.camera) {
+          const wrap = document.getElementById("bimViewerWrap");
+          if (wrap && wrap.clientWidth) {
+            bimState.camera.aspect = wrap.clientWidth / wrap.clientHeight;
+            bimState.camera.updateProjectionMatrix();
+            bimState.renderer.setSize(wrap.clientWidth, wrap.clientHeight);
+          }
+        }
+      }
     } else {
-      const model = autodeskLinks[mode] || autodeskLinks.aps;
-      if (threeCanvas) threeCanvas.style.display = 'none';
-      if (forgeDiv) forgeDiv.style.display = 'block';
+      const model = autodeskModels[activeModelKey] || autodeskModels.overpass;
+      if (threeCanvas) threeCanvas.style.display = "none";
+      if (forgeDiv) forgeDiv.style.display = "block";
       if (chip) {
-        chip.textContent = 'Autodesk BIM Aktif';
-        chip.className = 'aps-status-chip on';
+        chip.textContent = "Autodesk Viewer Aktif";
+        chip.className = "aps-status-chip on";
       }
       if (badge) badge.textContent = model.name;
-      if (btnWireframe) btnWireframe.style.display = 'none';
-      if (btnHighlight) btnHighlight.style.display = 'none';
-      if (btnReset) btnReset.style.display = 'inline-block';
+      if (btnWireframe) btnWireframe.style.display = "none";
+      if (btnHighlight) btnHighlight.style.display = "none";
+      if (btnReset) btnReset.style.display = "inline-block";
       if (btnExternal) {
-        btnExternal.style.display = 'inline-block';
-        btnExternal.textContent = '↗ Buka ' + (mode === 'aps' ? 'Overpass' : 'Underpass');
+        btnExternal.style.display = "inline-block";
+        btnExternal.textContent = "↗ Buka di Tab Baru";
       }
 
       if (iframe) {
-        const isLocalHttp = window.location.protocol.startsWith('http');
+        const isLocalHttp = window.location.protocol.startsWith("http");
         const targetSrc = isLocalHttp ? model.embedUrl : `https://viewer.autodesk.com/id/${model.directId}`;
-        if (iframe.getAttribute('data-active-mode') !== mode) {
-          iframe.setAttribute('data-active-mode', mode);
+        if (!iframe.src || iframe.src.indexOf(encodeURIComponent(model.shortUrl)) === -1) {
           iframe.src = targetSrc;
         }
       }
 
-      const oiId = document.getElementById('bimOiId');
-      const oiType = document.getElementById('bimOiType');
-      const oiWbs = document.getElementById('bimOiWbs');
-      const oiStatus = document.getElementById('bimOiStatus');
-      const oiCr = document.getElementById('bimOiCr');
-      if (oiId) oiId.textContent = (mode === 'aps') ? 'OVERPASS-STA200' : 'UNDERPASS-STA161';
+      const oiId = document.getElementById("bimOiId");
+      const oiType = document.getElementById("bimOiType");
+      const oiWbs = document.getElementById("bimOiWbs");
+      const oiStatus = document.getElementById("bimOiStatus");
+      const oiCr = document.getElementById("bimOiCr");
+      if (oiId) oiId.textContent = (activeModelKey === "overpass") ? "OVERPASS-STA200" : "UNDERPASS-STA161";
       if (oiType) oiType.textContent = model.name;
       if (oiWbs) oiWbs.textContent = model.defaultWbs;
-      if (oiStatus) oiStatus.textContent = 'Model Revit Terhubung (Bisa klik komponen langsung)';
+      if (oiStatus) oiStatus.textContent = "Model Revit Terhubung";
       if (oiCr) oiCr.innerHTML = `<a href="${model.shortUrl}" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:underline;">${model.shortUrl} ↗</a>`;
     }
   }
 
   function openAutodeskExternal() {
-    const model = autodeskLinks[currentBimMode] || autodeskLinks.aps;
-    window.open(model.shortUrl, '_blank', 'noopener,noreferrer');
+    const model = autodeskModels[activeModelKey] || autodeskModels.overpass;
+    window.open(model.shortUrl, "_blank", "noopener,noreferrer");
   }
 
   function toggleBimFullscreen() {
-    const wrap = document.getElementById('bimViewerWrap');
+    const wrap = document.getElementById("bimViewerWrap");
     if (!wrap) return;
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
       if (wrap.requestFullscreen) wrap.requestFullscreen();
@@ -6014,9 +6053,18 @@ function closeCrDetail() {
   }
 
   function toggleBimInfoPanel() {
-    const panel = document.getElementById('bimObjInfoPanel');
+    const panel = document.getElementById("bimObjInfoPanel");
     if (!panel) return;
-    panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
+    panel.style.display = (panel.style.display === "none") ? "block" : "none";
+  }
+
+  function bimResetCamera() {
+    if (currentViewerMode === "three") {
+      if (bimState.camera) bimState.camera.position.set(11, 8, 14);
+    } else {
+      const iframe = document.getElementById("bimAutodeskIframe");
+      if (iframe) iframe.src = iframe.src;
+    }
   }
 
   function bimFocusObjectById(bimId) {
@@ -6283,6 +6331,5 @@ function closeCrDetail() {
     });
   })();
 </script>
-  <script src="assets/bim-aps-models.js" defer></script>
-</body>
+  </body>
 </html>
